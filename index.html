@@ -3,515 +3,2071 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kwa Sukela Storytelling Academy</title>
-<link rel="stylesheet" href="style.css">
+<title>Kwa Sukela — Learning Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
-/* HERO */
-.hero {
-  background: linear-gradient(135deg, #450a0a 0%, #7F1D1D 45%, #0c2d4a 100%);
-  padding: 6rem 2rem 5rem; color: #fff; position: relative; overflow: hidden;
+:root{
+  /* New palette — matches index.html */
+  --ink:#0B0F1A;--ink2:#111827;--ink3:#1C2333;
+  --teal:#0D9488;--teal-l:#2DD4BF;--teal-xl:#99F6E4;
+  --amber:#D97706;--amber-l:#FCD34D;
+  --terra:#C2410C;--terra-l:#FB923C;
+  --rose:#9F1239;--rose-l:#FB7185;
+  --cream:#FEFCE8;
+  --mist:rgba(255,255,255,0.06);--mist2:rgba(255,255,255,0.10);
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);
+  /* legacy compat for game code */
+  --crimson:#9F1239;--maroon:#7f0f2e;--deep:#0B0F1A;
+  --sky:#2DD4BF;--sky-l:#99F6E4;--indigo:#1e3a6e;
+  --gold:#FCD34D;--gold-l:#FDE68A;--peach:rgba(252,211,77,.08);
+  --forest:#0D9488;--sand:rgba(255,255,255,.18);
+  --ok:#0D9488;--err:#9F1239;--text:#fff;
+  --level1:#2DD4BF;--level2:#0D9488;--level3:#FCD34D;
+  --level4:#C2410C;--level5:#9F1239;
 }
-.hero::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse at 80% 50%, rgba(249,115,22,.12), transparent 55%);
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--ink);color:rgba(255,255,255,.87);
+  overflow-x:hidden;cursor:none;
+  -webkit-font-smoothing:antialiased;
 }
-.hero-grid { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1fr 440px; gap: 4rem; align-items: center; position: relative; z-index: 1; }
-.hero-pill { display: inline-flex; align-items: center; gap: .45rem; background: rgba(249,115,22,.18); border: 1px solid rgba(249,115,22,.35); color: #FED7AA; font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .3rem .85rem; border-radius: 999px; margin-bottom: 1.2rem; }
-.hero-h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 900; line-height: .95; margin-bottom: 1.2rem; }
-.hero-h1 em { color: #FCD34D; font-style: italic; display: block; }
-.hero-sub { font-size: 1.05rem; color: rgba(255,255,255,.7); line-height: 1.8; max-width: 480px; margin-bottom: 2rem; }
-.hero-actions { display: flex; gap: .9rem; flex-wrap: wrap; }
-.hero-stats { display: flex; gap: 2.5rem; margin-top: 3rem; padding-top: 2.5rem; border-top: 1px solid rgba(255,255,255,.12); flex-wrap: wrap; }
-.hs-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: #FCD34D; line-height: 1; }
-.hs-lbl { font-size: .78rem; color: rgba(255,255,255,.5); margin-top: .15rem; }
 
-/* hero panel */
-.hero-panel { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: 16px; padding: 1.8rem; }
-.hp-label { font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 1rem; }
-.hp-course { display: flex; align-items: center; gap: 1rem; padding: .9rem 1rem; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); border-radius: 10px; margin-bottom: .6rem; }
-.hp-icon { font-size: 1.4rem; }
-.hp-name { font-size: .88rem; font-weight: 600; color: rgba(255,255,255,.88); }
-.hp-meta { font-size: .72rem; color: rgba(255,255,255,.4); margin-top: .1rem; }
-.hp-price { margin-left: auto; font-size: .72rem; font-weight: 700; padding: .18rem .55rem; border-radius: 999px; white-space: nowrap; }
-.hp-paid { background: rgba(14,165,233,.2); color: #7DD3FC; }
-.hp-free { background: rgba(34,197,94,.2); color: #86EFAC; }
+/* ── CURSOR ── */
+#hub-cur{width:10px;height:10px;border-radius:50%;background:var(--teal-l);position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;}
+#hub-ring{width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(45,212,191,.4);position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .18s cubic-bezier(.25,.46,.45,.94),width .25s,height .25s;}
 
-/* ALERT BANNER */
-.alert-bar { background: var(--red); color: #fff; padding: 1rem 2rem; display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-wrap: wrap; text-align: center; }
-.ab-tag { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; background: rgba(255,255,255,.15); padding: .18rem .65rem; border-radius: 999px; }
-.ab-text { font-size: .92rem; font-weight: 600; }
-.ab-date { font-size: .82rem; opacity: .8; }
-.ab-link { font-size: .8rem; font-weight: 700; background: #fff; color: var(--red); padding: .35rem 1rem; border-radius: 6px; text-decoration: none; }
-
-/* TRUST STRIP */
-.trust { background: var(--g50); border-bottom: 1px solid var(--g200); padding: 1.5rem 2rem; }
-.trust-inner { max-width: 1180px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
-.trust-item { display: flex; align-items: center; gap: .5rem; font-size: .82rem; color: var(--g500); font-weight: 500; }
-
-/* ABOUT */
-.about-grid { display: grid; grid-template-columns: 360px 1fr; gap: 5rem; align-items: center; }
-.about-photo {
-  width: 100%; aspect-ratio: 3/4; border-radius: 14px; overflow: hidden;
-  background: linear-gradient(160deg, #7F1D1D, #450a0a 40%, #0c2d4a);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  color: rgba(255,255,255,.3); font-size: .78rem; text-align: center; padding: 2rem; gap: .6rem; position: relative;
+/* ── TOP BAR ── */
+.top-bar{
+  background:rgba(11,15,26,.9);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  padding:.85rem 2.5rem;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200;
+  flex-wrap:wrap;gap:.5rem;
 }
-.about-photo::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg,transparent,transparent 18px,rgba(249,115,22,.05) 18px,rgba(249,115,22,.05) 20px); }
-.about-photo-hint { position: relative; z-index: 1; line-height: 1.9; }
-.award-chip { display: inline-flex; align-items: center; gap: .5rem; background: #FFFBEB; border: 1px solid #FCD34D; color: #92400E; font-size: .8rem; font-weight: 600; padding: .45rem .9rem; border-radius: 8px; margin: .8rem 0 1.1rem; }
-.about-quote { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-style: italic; color: var(--g700); line-height: 1.55; border-left: 3px solid var(--orange); padding-left: 1.1rem; margin-bottom: 1.2rem; }
-.about-body { font-size: .93rem; line-height: 1.85; color: var(--g500); margin-bottom: .85rem; }
-.tag-row { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1.4rem; }
-.tag { font-size: .72rem; font-weight: 600; padding: .22rem .7rem; background: var(--sky-l); color: var(--sky-d); border-radius: 999px; }
-
-/* COURSES */
-.course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; margin-top: 2.5rem; }
-.c-card { border-radius: 12px; border: 1px solid var(--g200); overflow: hidden; background: #fff; transition: box-shadow .2s, transform .2s; }
-.c-card:hover { box-shadow: 0 10px 36px rgba(0,0,0,.1); transform: translateY(-3px); }
-.c-top { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
-.ct-1 { background: linear-gradient(135deg,#450a0a,#7F1D1D); }
-.ct-2 { background: linear-gradient(135deg,#0c2d4a,#0369A1); }
-.ct-3 { background: linear-gradient(135deg,#431407,#C2410C); }
-.ct-4 { background: linear-gradient(135deg,#14532D,#15803D); }
-.ct-5 { background: linear-gradient(135deg,#1e1b4b,#4338CA); }
-.ct-6 { background: linear-gradient(135deg,#451a03,#B45309); }
-.c-body { padding: 1.1rem; }
-.c-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--g900); margin: .5rem 0 .25rem; line-height: 1.25; }
-.c-meta { font-size: .76rem; color: var(--g400); display: flex; gap: .8rem; margin-bottom: .7rem; flex-wrap: wrap; }
-.c-desc { font-size: .83rem; color: var(--g500); line-height: 1.6; margin-bottom: .9rem; }
-.c-foot { display: flex; align-items: center; justify-content: space-between; padding-top: .75rem; border-top: 1px solid var(--g100); }
-.c-price { font-size: .95rem; font-weight: 700; color: var(--g900); }
-
-/* HUB STRIP */
-.hub-strip {
-  background: var(--g900); padding: 5rem 2rem; position: relative; overflow: hidden;
+.top-logo{
+  font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;
+  background:linear-gradient(90deg,var(--teal-l),var(--amber-l));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:.02em;
 }
-.hub-strip::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 75% 50%, rgba(14,165,233,.07), transparent 55%),
-    radial-gradient(ellipse at 20% 80%, rgba(249,115,22,.06), transparent 50%);
+.top-right{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
+.score-badge{
+  font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--amber-l);
+  border:1px solid rgba(252,211,77,.25);padding:.3rem .9rem;white-space:nowrap;
+  border-radius:100px;background:rgba(252,211,77,.06);
 }
-.hub-grid { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; position: relative; z-index: 1; }
-.hub-eyebrow { font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--sky); margin-bottom: .7rem; }
-.hub-h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 900; color: #fff; line-height: 1; margin-bottom: .9rem; }
-.hub-h2 em { color: #FCD34D; font-style: italic; }
-.hub-desc { font-size: .95rem; color: rgba(255,255,255,.55); line-height: 1.8; margin-bottom: 1.8rem; }
-.hub-feat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
-.hf { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); border-radius: 10px; padding: .85rem 1rem; display: flex; gap: .75rem; align-items: flex-start; }
-.hf-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: .05rem; }
-.hf-title { font-size: .83rem; font-weight: 600; color: rgba(255,255,255,.85); }
-.hf-sub { font-size: .72rem; color: rgba(255,255,255,.38); line-height: 1.45; margin-top: .1rem; }
-
-/* EVENTS */
-.event-table { border: 1px solid var(--g200); border-radius: 12px; overflow: hidden; margin-top: 2rem; }
-.event-row { display: grid; grid-template-columns: 80px 1fr auto; align-items: center; gap: 1.5rem; padding: 1.1rem 1.4rem; border-bottom: 1px solid var(--g200); background: #fff; transition: background .15s; }
-.event-row:last-child { border-bottom: none; }
-.event-row:hover { background: var(--g50); }
-.ev-day { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 900; color: var(--red); line-height: 1; }
-.ev-mon { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--g400); }
-.ev-name { font-size: .92rem; font-weight: 600; color: var(--g900); margin-bottom: .15rem; }
-.ev-loc { font-size: .78rem; color: var(--g400); }
-
-/* BOOKFAIR */
-.bf-box { background: var(--red-l); border: 1px solid #FECACA; border-radius: 16px; padding: 3rem; }
-.bf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
-.bf-h { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: var(--maroon); line-height: 1.1; margin-bottom: .4rem; }
-.bf-sub { font-size: .95rem; color: var(--red); font-weight: 600; margin-bottom: 1.2rem; }
-.fee-table { border-collapse: collapse; width: 100%; }
-.fee-table th { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--g400); padding: .45rem .7rem; text-align: left; border-bottom: 1px solid #FECACA; }
-.fee-table td { font-size: .88rem; padding: .65rem .7rem; border-bottom: 1px solid #FEE2E2; color: var(--g700); }
-.fee-table tr:last-child td { border-bottom: none; }
-.fee-amt { font-weight: 700; color: var(--maroon); }
-.bank-box { background: #fff; border: 1px solid #FECACA; border-radius: 10px; padding: 1.1rem; margin-top: 1rem; }
-.bank-box h4 { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--g400); margin-bottom: .75rem; }
-.bank-row { display: flex; justify-content: space-between; font-size: .83rem; padding: .28rem 0; border-bottom: 1px solid #FEF2F2; }
-.bank-row:last-child { border: none; }
-.bk { color: var(--g500); }
-.bv { font-weight: 600; color: var(--g800); }
-
-/* CONTACT */
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
-.ci { display: flex; gap: .9rem; align-items: flex-start; margin-bottom: 1.4rem; }
-.ci-icon { font-size: 1.2rem; margin-top: .1rem; flex-shrink: 0; }
-.ci-lbl { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--g400); margin-bottom: .12rem; }
-.ci-val { font-size: .92rem; color: var(--g700); }
-.ci-val a { color: var(--sky-d); text-decoration: none; }
-.form-box { background: #fff; border: 1px solid var(--g200); border-radius: 12px; padding: 2rem; }
-.form-box h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--g900); margin-bottom: 1.4rem; }
-.form-success { display: none; text-align: center; padding: 2rem 1rem; background: #F0FDF4; border-radius: 8px; border: 1px solid #86EFAC; }
-.fs-icon { font-size: 2.2rem; margin-bottom: .4rem; }
-.fs-msg { font-size: .92rem; color: #166534; font-weight: 600; }
-
-/* ZINTSOMI BAND */
-.zint-band { background: #FFF7ED; border-top: 1px solid #FED7AA; border-bottom: 1px solid #FED7AA; padding: 2.5rem 2rem; }
-.zint-inner { max-width: 1180px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap; }
-.zint-label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: #92400E; margin-bottom: .25rem; }
-.zint-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--maroon); }
-.zint-sub { font-size: .85rem; color: #92400E; margin-top: .2rem; }
-
-/* RESPONSIVE */
-@media (max-width: 1020px) {
-  .hero-grid { grid-template-columns: 1fr; }
-  .hero-panel { display: none; }
-  .about-grid { grid-template-columns: 1fr; }
-  .about-photo { max-width: 340px; aspect-ratio: 4/3; }
-  .course-grid { grid-template-columns: repeat(2,1fr); }
-  .hub-grid { grid-template-columns: 1fr; gap: 3rem; }
-  .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
-  .bf-grid { grid-template-columns: 1fr; }
+.home-link{
+  font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;
+  transition:color .2s;display:flex;align-items:center;gap:.4rem;
 }
-@media (max-width: 640px) {
-  .course-grid { grid-template-columns: 1fr; }
-  .hub-feat-grid { grid-template-columns: 1fr; }
-  .event-row { grid-template-columns: 65px 1fr; }
-  .event-row .badge { display: none; }
-  .hero-stats { gap: 1.5rem; }
-  .trust-inner { gap: 1.2rem; }
-  .trust-item:nth-child(n+4) { display: none; }
+.home-link:hover{color:var(--teal-l);}
+
+/* ── HUB HERO ── */
+.hub-hero{
+  background:linear-gradient(160deg,var(--ink) 0%,#0F172A 50%,var(--ink2) 100%);
+  padding:3rem 2.5rem 2rem;text-align:center;position:relative;overflow:hidden;
+  border-bottom:1px solid var(--border);
+}
+.hub-hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(45,212,191,.03) 39px,rgba(45,212,191,.03) 40px),
+    repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(45,212,191,.03) 39px,rgba(45,212,191,.03) 40px),
+    repeating-linear-gradient(45deg,transparent,transparent 19px,rgba(217,119,6,.025) 19px,rgba(217,119,6,.025) 20px);
+  background-size:40px 40px,40px 40px,20px 20px;
+}
+.hub-hero h1{
+  font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);
+  font-weight:900;color:#fff;line-height:1;margin-bottom:.4rem;position:relative;
+  letter-spacing:-.02em;
+}
+.hub-hero h1 em{
+  font-style:italic;font-weight:400;
+  background:linear-gradient(90deg,var(--teal-l),var(--amber-l));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hub-hero p{font-size:.95rem;color:rgba(255,255,255,.45);
+  max-width:520px;margin:.6rem auto 0;position:relative;font-weight:300;}
+.xp-section{margin-top:1.2rem;position:relative;}
+.xp-bar-wrap{max-width:380px;margin:.5rem auto 0;
+  background:rgba(255,255,255,.08);height:6px;border-radius:3px;overflow:hidden;}
+.xp-bar{height:100%;background:linear-gradient(90deg,var(--teal),var(--amber-l));
+  border-radius:3px;width:0%;transition:width .8s ease;}
+.xp-label{font-family:'Space Mono',monospace;font-size:.55rem;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(252,211,77,.6);margin-top:.5rem;}
+
+/* ── TABS ── */
+.tab-strip{
+  display:flex;background:var(--ink2);border-bottom:1px solid var(--border);
+  overflow-x:auto;position:sticky;top:57px;z-index:150;
+}
+.tab-btn{
+  font-family:'Space Mono',monospace;font-size:.58rem;letter-spacing:.1em;
+  text-transform:uppercase;padding:.9rem 1.5rem;color:rgba(255,255,255,.35);
+  background:none;border:none;cursor:none;white-space:nowrap;
+  border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .2s,border-color .2s;
+}
+.tab-btn:hover{color:rgba(255,255,255,.7);}
+.tab-btn.active{color:var(--teal-l);border-bottom-color:var(--teal);}
+
+/* ── PANELS ── */
+.panel{display:none;padding:2.5rem;}
+.panel.active{display:block;}
+#panel-vr{padding:0;}
+
+/* ── SHARED ── */
+.s-eyebrow{
+  font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.25em;
+  text-transform:uppercase;color:var(--crimson);margin-bottom:.4rem;
+  display:flex;align-items:center;gap:.6rem;
+}
+.s-eyebrow::after{content:'';width:28px;height:2px;background:var(--sky);}
+.s-title{
+  font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3.5vw,2.5rem);
+  font-weight:900;color:var(--text);margin-bottom:.8rem;line-height:1.05;
+}
+.s-title em{color:var(--crimson);font-style:italic;}
+.s-desc{font-size:.95rem;line-height:1.8;color:rgba(26,3,5,.65);
+  max-width:680px;margin-bottom:2rem;}
+
+.btn-gold{
+  font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.12em;
+  text-transform:uppercase;padding:.65rem 1.4rem;background:var(--gold);
+  color:var(--maroon);border:none;cursor:pointer;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+  transition:background .2s;
+}
+.btn-gold:hover{background:var(--gold-l);}
+.btn-crim{
+  font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.12em;
+  text-transform:uppercase;padding:.65rem 1.4rem;background:var(--crimson);
+  color:var(--cream);border:none;cursor:pointer;transition:background .2s;
+}
+.btn-crim:hover{background:var(--maroon);}
+
+/* XP POP */
+@keyframes xpPop{0%{opacity:1;transform:translateY(0) scale(1);}100%{opacity:0;transform:translateY(-50px) scale(1.6);}}
+.xp-pop{position:fixed;font-family:'Playfair Display',serif;font-weight:900;
+  font-size:2rem;color:var(--gold);pointer-events:none;z-index:9999;
+  text-shadow:0 2px 8px rgba(0,0,0,.5);animation:xpPop 1s forwards;}
+
+/* ══════════════════════════════
+   🧩 BRAIN TEASERS
+══════════════════════════════ */
+.puzzle-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1.5rem;}
+.p-card{background:#fff;border:2px solid transparent;overflow:hidden;transition:border-color .3s;}
+.p-card:hover{border-color:var(--sand);}
+.p-card.solved{border-color:var(--ok);}
+.p-card-head{
+  padding:1rem 1.4rem;display:flex;justify-content:space-between;align-items:center;
+}
+.p-type{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--cream);padding:.2rem .6rem;}
+.pt-riddle{background:var(--crimson);}
+.pt-spine{background:var(--indigo);}
+.pt-proverb{background:var(--forest);}
+.pt-rhythm{background:#7A3D00;}
+.pt-arch{background:#6B3D14;}
+.pt-plot{background:#1A4A5A;}
+.p-diff{font-family:'DM Mono',monospace;font-size:.52rem;color:var(--sand);}
+.p-body{padding:.2rem 1.4rem 1.4rem;}
+.p-q{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;
+  color:var(--text);margin-bottom:1rem;line-height:1.4;}
+.p-hint{font-size:.85rem;font-style:italic;color:var(--indigo);
+  background:var(--peach);padding:.5rem .8rem;margin-bottom:.8rem;
+  display:none;border-left:3px solid var(--gold);}
+.p-hint.show{display:block;}
+.mc-opts{display:flex;flex-direction:column;gap:.4rem;}
+.mc-btn{
+  font-family:'Lora',serif;font-size:.88rem;padding:.65rem .9rem;
+  background:var(--cream);border:2px solid rgba(44,62,122,.18);
+  cursor:pointer;text-align:left;transition:all .2s;color:var(--text);
+}
+.mc-btn:hover:not(.locked){border-color:var(--indigo);background:var(--peach);}
+.mc-btn.correct{background:#d4edda;border-color:var(--ok);color:var(--ok);cursor:default;}
+.mc-btn.wrong{background:#f8d7da;border-color:var(--err);color:var(--err);cursor:default;}
+.p-actions{display:flex;gap:.5rem;margin-top:.9rem;flex-wrap:wrap;align-items:center;}
+.p-btn{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.1em;
+  text-transform:uppercase;padding:.45rem .9rem;border:none;cursor:pointer;transition:all .2s;}
+.pb-hint{background:var(--peach);color:var(--maroon);border:1px solid var(--sand);}
+.pb-check{background:var(--crimson);color:var(--cream);}
+.pb-reset{background:var(--indigo);color:var(--cream);}
+.p-fb{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.05em;
+  padding:.4rem .8rem;margin-top:.5rem;display:none;}
+.p-fb.show{display:block;}
+.p-fb.ok{background:#d4edda;color:var(--ok);}
+.p-fb.err{background:#f8d7da;color:var(--err);}
+.progress-row{
+  background:var(--peach);border:2px solid var(--sand);margin-bottom:2rem;
+}
+.progress-fill{height:8px;background:linear-gradient(90deg,var(--crimson),var(--gold));width:0%;transition:width .6s;}
+.progress-lbl{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--maroon);padding:.3rem .8rem;}
+/* spine */
+.spine-builder{display:flex;flex-direction:column;gap:.5rem;}
+.spine-line{display:flex;align-items:center;gap:.6rem;}
+.spine-prompt{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--indigo);min-width:105px;}
+.spine-inp{flex:1;padding:.45rem .7rem;border:2px solid rgba(44,62,122,.18);
+  font-family:'Lora',serif;font-size:.88rem;background:var(--cream);
+  outline:none;transition:border-color .25s;}
+.spine-inp:focus{border-color:var(--crimson);}
+/* proverb match */
+.prov-match{display:flex;gap:.8rem;flex-wrap:wrap;}
+.prov-col{flex:1;min-width:110px;}
+.prov-col-h{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:.4rem;}
+.prov-item{padding:.55rem .7rem;background:var(--cream);border:2px solid rgba(44,62,122,.18);
+  margin-bottom:.35rem;cursor:pointer;font-size:.82rem;line-height:1.35;transition:all .2s;user-select:none;}
+.prov-item:hover{border-color:var(--gold);background:var(--peach);}
+.prov-item.selected{border-color:var(--indigo);background:var(--sky-l);}
+.prov-item.matched{border-color:var(--ok);background:#d4edda;cursor:default;}
+.prov-item.mismatch{border-color:var(--err);background:#f8d7da;}
+/* rhythm */
+.rhythm-display{
+  font-family:'DM Mono',monospace;font-size:1rem;letter-spacing:.1em;
+  color:var(--gold);background:var(--deep);padding:.8rem;
+  text-align:center;margin-bottom:.6rem;min-height:2.5rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.beats-row{display:flex;gap:.35rem;justify-content:center;margin-bottom:.5rem;flex-wrap:wrap;}
+.beat{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);
+  border:2px solid rgba(240,165,0,.25);display:flex;align-items:center;
+  justify-content:center;font-size:.65rem;transition:all .15s;cursor:pointer;}
+.beat.strong{background:var(--crimson);border-color:var(--crimson);color:var(--cream);}
+.beat.player{background:var(--sky);border-color:var(--sky);color:var(--deep);}
+.tap-btn{width:100%;padding:.85rem;background:var(--crimson);color:var(--cream);
+  border:none;cursor:pointer;font-family:'DM Mono',monospace;font-size:.65rem;
+  letter-spacing:.15em;text-transform:uppercase;transition:all .15s;}
+.tap-btn:active{transform:scale(.97);background:var(--maroon);}
+
+/* ══════════════════════════════
+   🎮 GAMES — LEVEL SYSTEM
+══════════════════════════════ */
+.game-nav{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:2rem;}
+.g-tab{
+  font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;
+  text-transform:uppercase;padding:.55rem 1.1rem;background:var(--peach);
+  border:2px solid var(--sand);color:var(--maroon);cursor:pointer;transition:all .2s;
+}
+.g-tab.active{background:var(--crimson);border-color:var(--crimson);color:var(--cream);}
+.game-panel{display:none;}
+.game-panel.active{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start;}
+
+/* level selector */
+.level-selector{display:flex;gap:.4rem;margin-bottom:1.2rem;flex-wrap:wrap;}
+.lvl-btn{
+  font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.1em;
+  text-transform:uppercase;padding:.4rem .9rem;border:2px solid;
+  cursor:pointer;background:transparent;transition:all .2s;position:relative;
+}
+.lvl-btn[data-lv="1"]{border-color:var(--level1);color:var(--level1);}
+.lvl-btn[data-lv="2"]{border-color:var(--level2);color:var(--level2);}
+.lvl-btn[data-lv="3"]{border-color:var(--level3);color:var(--level3);}
+.lvl-btn[data-lv="4"]{border-color:var(--level4);color:var(--level4);}
+.lvl-btn[data-lv="5"]{border-color:var(--level5);color:var(--level5);}
+.lvl-btn.active[data-lv="1"]{background:var(--level1);color:#fff;}
+.lvl-btn.active[data-lv="2"]{background:var(--level2);color:#fff;}
+.lvl-btn.active[data-lv="3"]{background:var(--level3);color:var(--deep);}
+.lvl-btn.active[data-lv="4"]{background:var(--level4);color:#fff;}
+.lvl-btn.active[data-lv="5"]{background:var(--level5);color:#fff;}
+.lvl-btn.locked{opacity:.35;cursor:not-allowed;}
+.lvl-btn .lock-icon{position:absolute;top:-6px;right:-6px;font-size:.6rem;}
+
+.level-info{
+  background:var(--deep);color:var(--cream);padding:.8rem 1.2rem;
+  margin-bottom:1.2rem;border-left:4px solid var(--gold);
+}
+.level-info-title{font-family:'Playfair Display',serif;font-size:1rem;
+  font-weight:700;color:var(--gold);margin-bottom:.2rem;}
+.level-info-desc{font-family:'DM Mono',monospace;font-size:.58rem;
+  letter-spacing:.05em;color:rgba(255,255,255,.7);line-height:1.5;}
+.level-goal{display:inline-block;margin-top:.4rem;background:rgba(240,165,0,.15);
+  padding:.2rem .6rem;font-family:'DM Mono',monospace;font-size:.55rem;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--gold-l);}
+
+.game-canvas{
+  width:100%;position:relative;overflow:hidden;border:3px solid var(--gold);
+  background:linear-gradient(135deg,#3D1A0A,#6B3010);
+}
+.game-status-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  background:var(--deep);padding:.5rem 1rem;margin-bottom:1rem;
+}
+.gs-item{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--gold-l);}
+.gs-val{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;
+  color:var(--gold);display:block;}
+
+/* win overlay */
+.win-overlay{
+  position:absolute;inset:0;background:rgba(61,0,9,.92);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:2rem;z-index:10;
+}
+.win-overlay.show{display:flex;}
+.win-icon{font-size:3.5rem;margin-bottom:.5rem;}
+.win-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;
+  color:var(--gold);margin-bottom:.5rem;}
+.win-msg{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.08em;
+  color:var(--cream);margin-bottom:1rem;line-height:1.6;}
+.win-xp{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold-l);}
+
+/* mancala */
+#mancala-wrap{padding:1rem;}
+.man-row{display:flex;gap:.35rem;justify-content:center;align-items:center;}
+.man-pit{
+  width:46px;height:46px;border-radius:50%;
+  background:rgba(240,165,0,.12);border:2px solid rgba(240,165,0,.35);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;
+  color:var(--gold);cursor:pointer;transition:all .2s;
+  flex-direction:column;position:relative;
+}
+.man-pit:hover:not(.empty-pit){background:rgba(240,165,0,.28);border-color:var(--gold);}
+.man-pit.empty-pit{opacity:.4;cursor:default;}
+.man-pit.highlight{border-color:var(--sky);background:rgba(91,184,212,.2);}
+.man-store{
+  width:52px;height:90px;border-radius:26px;
+  background:rgba(232,75,15,.12);border:2px solid rgba(232,75,15,.35);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--gold-l);
+}
+.man-store small{font-family:'DM Mono',monospace;font-size:.45rem;letter-spacing:.08em;
+  text-transform:uppercase;color:rgba(255,200,100,.5);margin-top:.2rem;}
+.man-pit-seeds{font-size:.5rem;position:absolute;bottom:2px;
+  color:rgba(255,200,100,.5);font-family:'DM Mono',monospace;}
+
+/* diketo */
+#diketo-wrap{padding:1rem;min-height:220px;position:relative;}
+.stone{
+  display:inline-flex;width:32px;height:32px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#b5a18a,#6e5a42);
+  cursor:pointer;margin:4px;transition:transform .15s;
+  box-shadow:1px 2px 4px rgba(0,0,0,.4);align-items:center;justify-content:center;
+  vertical-align:middle;
+}
+.stone:hover{transform:scale(1.2);}
+.stone.grabbed{transform:scale(1.35);background:radial-gradient(circle at 35% 30%,var(--gold-l),var(--gold));box-shadow:0 0 10px rgba(240,165,0,.5);}
+.stone.scored{animation:fly .4s forwards;}
+@keyframes fly{to{transform:translateY(-60px) scale(.2);opacity:0;}}
+.toss-target{
+  width:80px;height:80px;border-radius:50%;border:3px dashed var(--gold);
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;background:rgba(240,165,0,.08);
+  animation:targetPulse 1.5s infinite;
+}
+@keyframes targetPulse{0%,100%{border-color:rgba(240,165,0,.5);}50%{border-color:var(--gold);box-shadow:0 0 16px rgba(240,165,0,.3);}}
+.timer-ring{
+  font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;
+  color:var(--gold);text-align:center;margin:1rem 0;
+}
+
+/* kgati */
+#kgati-wrap{
+  padding:1.5rem;display:flex;flex-direction:column;
+  align-items:center;gap:.8rem;min-height:240px;position:relative;
+}
+.kgati-rope{
+  width:85%;height:10px;border-radius:5px;
+  background:linear-gradient(90deg,var(--sand),#c49a4a,var(--sand));
+  transition:transform .2s;position:relative;
+}
+.kgati-rope::before,.kgati-rope::after{
+  content:'○';position:absolute;top:50%;transform:translateY(-50%);
+  font-size:1.2rem;color:var(--gold);
+}
+.kgati-rope::before{left:-1.5rem;}
+.kgati-rope::after{right:-1.5rem;}
+.jumper-fig{
+  transition:transform .25s ease;display:flex;flex-direction:column;align-items:center;
+}
+.j-head{width:22px;height:22px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#c49a6a,#7a5a3a);border:2px solid var(--sand);}
+.j-body{width:14px;height:26px;background:var(--crimson);border-radius:4px;margin-top:2px;}
+.kgati-score-display{
+  font-family:'Playfair Display',serif;font-size:3rem;font-weight:900;color:var(--gold);
+}
+.kgati-chant{
+  font-family:'Lora',serif;font-style:italic;font-size:.9rem;
+  color:var(--sky-l);text-align:center;min-height:1.5rem;
+  background:rgba(255,255,255,.05);padding:.4rem 1rem;width:100%;
+}
+.kgati-cue{
+  font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gold-l);text-align:center;
+}
+
+/* ncuva */
+#ncuva-wrap{padding:.8rem;}
+.ncuva-grid{display:grid;gap:3px;}
+.ncuva-cell{
+  aspect-ratio:1;background:rgba(240,165,0,.08);border:1px solid rgba(240,165,0,.2);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:.85rem;transition:all .2s;border-radius:2px;
+}
+.ncuva-cell:hover{background:rgba(240,165,0,.2);}
+.ncuva-cell.pa{background:rgba(232,75,15,.3);}
+.ncuva-cell.pb{background:rgba(91,184,212,.25);}
+.ncuva-cell.selected{background:rgba(240,165,0,.4);border-color:var(--gold);}
+.ncuva-cell.valid-move{background:rgba(45,106,79,.3);border-color:var(--ok);}
+
+/* game instructions side */
+.game-info-panel{}
+.game-title-big{font-family:'Playfair Display',serif;font-size:1.6rem;
+  font-weight:900;color:var(--text);margin-bottom:.2rem;}
+.game-origin{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--sky);margin-bottom:1rem;}
+.game-step{display:flex;gap:.8rem;margin-bottom:.8rem;padding:.8rem;
+  background:#fff;border-left:3px solid var(--gold);}
+.step-n{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;
+  color:var(--crimson);line-height:1;min-width:1.5rem;}
+.step-t{font-size:.88rem;line-height:1.6;color:rgba(26,3,5,.72);}
+.step-t strong{color:var(--maroon);}
+.story-connection{background:var(--indigo);color:var(--cream);
+  padding:.9rem 1.1rem;margin-top:.8rem;font-size:.88rem;
+  line-height:1.65;font-style:italic;border-left:4px solid var(--gold-l);}
+.story-connection strong{color:var(--gold-l);font-style:normal;
+  font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.1em;
+  text-transform:uppercase;display:block;margin-bottom:.2rem;}
+
+/* ══════════════════════════════
+   🎵 INSTRUMENTS
+══════════════════════════════ */
+.inst-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;}
+.inst-card{background:#fff;border:2px solid transparent;overflow:hidden;
+  transition:border-color .3s;cursor:pointer;}
+.inst-card:hover,.inst-card.open{border-color:var(--crimson);}
+.inst-head{padding:1.3rem;display:flex;gap:1rem;align-items:center;border-bottom:2px solid var(--peach);}
+.inst-icon{font-size:2.5rem;line-height:1;}
+.inst-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--maroon);}
+.inst-org{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--sky);margin-top:.15rem;}
+.inst-body{padding:0 1.3rem;max-height:0;overflow:hidden;transition:max-height .5s ease,padding .4s;}
+.inst-body.open{max-height:900px;padding:1.3rem;}
+.inst-desc{font-size:.92rem;line-height:1.8;color:rgba(26,3,5,.68);margin-bottom:1rem;}
+.tech-h{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--crimson);margin:.8rem 0 .4rem;}
+.tech-step{display:flex;gap:.7rem;margin-bottom:.5rem;font-size:.88rem;
+  color:rgba(26,3,5,.68);line-height:1.5;}
+.t-n{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;
+  color:var(--gold);min-width:1.3rem;line-height:1.5;}
+.rh-pattern{display:flex;gap:.25rem;align-items:center;flex-wrap:wrap;margin:.6rem 0;}
+.rb{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:.5rem;font-family:'DM Mono',monospace;
+  border:2px solid;cursor:pointer;transition:all .15s;user-select:none;}
+.rb.strong{background:var(--crimson);border-color:var(--crimson);color:#fff;}
+.rb.weak{background:transparent;border-color:var(--sand);color:var(--sand);}
+.rb.rest{background:transparent;border-color:transparent;color:rgba(26,3,5,.2);}
+.rb.lit{transform:scale(1.3);box-shadow:0 0 10px currentColor;}
+.play-rh-btn{
+  font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;
+  text-transform:uppercase;padding:.45rem 1.1rem;border:none;cursor:pointer;
+  background:var(--forest);color:var(--cream);transition:background .2s;
+  margin-top:.5rem;display:inline-block;
+}
+.play-rh-btn:hover{background:var(--indigo);}
+.inst-story-box{background:var(--indigo);color:var(--cream);padding:.9rem 1.1rem;
+  margin-top:.8rem;font-size:.85rem;line-height:1.6;font-style:italic;
+  border-left:4px solid var(--gold-l);}
+.inst-story-box strong{color:var(--gold-l);font-style:normal;
+  font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;
+  text-transform:uppercase;display:block;margin-bottom:.2rem;}
+
+/* ══════════════════════════════
+   🌍 VR VILLAGE
+══════════════════════════════ */
+#vr-container{
+  position:relative;width:100%;height:calc(100vh - 120px);min-height:480px;
+  background:#1a0a02;overflow:hidden;
+}
+#vr-canvas{width:100%;height:100%;display:block;}
+.vr-ui{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;}
+.vr-title{
+  position:absolute;top:1.5rem;left:50%;transform:translateX(-50%);
+  text-align:center;pointer-events:none;
+}
+.vr-title h2{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,3vw,2.2rem);
+  font-weight:900;color:var(--gold);text-shadow:0 0 20px rgba(240,165,0,.5);}
+.vr-title p{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--sky-l);margin-top:.2rem;
+  text-shadow:0 1px 4px rgba(0,0,0,.8);}
+.hotspot{
+  position:absolute;pointer-events:all;cursor:pointer;transform:translate(-50%,-50%);
+}
+.hs-ring{
+  width:44px;height:44px;border-radius:50%;border:3px solid var(--gold);
+  background:rgba(240,165,0,.15);display:flex;align-items:center;
+  justify-content:center;font-size:1.2rem;
+  animation:hsPulse 2.2s ease-in-out infinite;transition:transform .2s,background .2s;
+}
+.hotspot:hover .hs-ring{transform:scale(1.2);background:rgba(240,165,0,.32);}
+.hs-lbl{
+  position:absolute;bottom:-1.6rem;left:50%;transform:translateX(-50%);
+  font-family:'DM Mono',monospace;font-size:.46rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gold-l);white-space:nowrap;
+  text-shadow:0 1px 4px rgba(0,0,0,.9);
+}
+@keyframes hsPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(240,165,0,.4);}
+  50%{box-shadow:0 0 0 12px rgba(240,165,0,0);}
+}
+.story-modal{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:rgba(61,0,9,.96);border:3px solid var(--gold);
+  max-width:400px;width:88%;padding:1.8rem;z-index:50;
+  display:none;backdrop-filter:blur(8px);
+}
+.story-modal.open{display:block;}
+.modal-close{
+  position:absolute;top:.7rem;right:.8rem;background:none;border:none;
+  color:var(--gold-l);font-size:1.1rem;cursor:pointer;pointer-events:all;
+}
+.modal-icon{font-size:2.8rem;margin-bottom:.6rem;display:block;}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.4rem;
+  font-weight:900;color:var(--gold);margin-bottom:.4rem;}
+.modal-text{font-size:.9rem;line-height:1.75;color:rgba(255,248,238,.8);margin-bottom:.8rem;}
+.modal-lesson{background:rgba(91,184,212,.1);border-left:3px solid var(--sky);
+  padding:.7rem .9rem;font-size:.82rem;font-style:italic;
+  color:var(--sky-l);margin-bottom:.8rem;line-height:1.55;}
+.modal-xp{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gold-l);
+  background:rgba(240,165,0,.1);padding:.35rem .7rem;display:inline-block;}
+.vr-controls{
+  position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);
+  display:flex;gap:.6rem;align-items:center;pointer-events:all;
+}
+.vr-cb{
+  font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;
+  text-transform:uppercase;padding:.45rem .9rem;background:rgba(0,0,0,.5);
+  color:var(--cream);border:1px solid rgba(240,165,0,.3);cursor:pointer;
+  backdrop-filter:blur(4px);transition:all .2s;
+}
+.vr-cb:hover{background:rgba(240,165,0,.2);border-color:var(--gold);}
+.vr-hint{
+  position:absolute;bottom:4.5rem;left:50%;transform:translateX(-50%);
+  font-family:'Playfair Display',serif;font-style:italic;font-size:.9rem;
+  color:rgba(240,165,0,.5);text-align:center;pointer-events:none;
+  animation:breathe 3s ease-in-out infinite;white-space:nowrap;
+}
+@keyframes breathe{0%,100%{opacity:.35;}50%{opacity:.7;}}
+
+/* ══════════════════════════════
+   🏆 UNLOCK / CERTIFICATE
+══════════════════════════════ */
+.unlock-section{
+  background:linear-gradient(135deg,var(--deep),var(--maroon) 50%,var(--indigo));
+  padding:3rem;text-align:center;margin-top:2rem;
+  border:3px solid var(--gold);position:relative;overflow:hidden;
+}
+.unlock-section::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-conic-gradient(rgba(240,165,0,.04) 0deg 10deg,transparent 10deg 20deg);
+}
+.unlock-title{font-family:'Playfair Display',serif;font-size:2rem;
+  font-weight:900;color:var(--gold);margin-bottom:.5rem;position:relative;}
+.unlock-desc{font-size:.95rem;color:rgba(255,248,238,.65);margin-bottom:1.5rem;position:relative;}
+.unlock-locks{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;position:relative;}
+.unlock-item{
+  background:rgba(255,255,255,.06);border:2px solid rgba(240,165,0,.25);
+  padding:.8rem 1.2rem;text-align:center;min-width:120px;transition:all .3s;
+}
+.unlock-item.earned{border-color:var(--gold);background:rgba(240,165,0,.12);}
+.unlock-item .ui-icon{font-size:2rem;display:block;margin-bottom:.3rem;}
+.unlock-item .ui-name{font-family:'DM Mono',monospace;font-size:.55rem;
+  letter-spacing:.1em;text-transform:uppercase;color:rgba(255,248,238,.5);}
+.unlock-item.earned .ui-name{color:var(--gold-l);}
+.unlock-progress{font-family:'DM Mono',monospace;font-size:.62rem;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--gold);position:relative;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .game-panel.active{grid-template-columns:1fr;}
+  .inst-grid{grid-template-columns:1fr;}
+  .panel{padding:1.5rem;}
+}
+@media(max-width:580px){
+  .puzzle-grid{grid-template-columns:1fr;}
+  .top-bar{padding:.7rem 1.2rem;}
 }
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <a href="index.html" class="nav-brand">Kwa <span>Sukela</span></a>
-  <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#courses">Courses</a></li>
-    <li><a href="#events">Events</a></li>
-    <li><a href="learn.html">Brain Teasers</a></li>
-    <li><a href="learn.html">Games</a></li>
-    <li><a href="learn.html">Instruments</a></li>
-    <li><a href="learn.html">Village World</a></li>
-    <li><a href="#contact" class="nav-cta">Contact</a></li>
-  </ul>
-</nav>
+<!-- CURSOR -->
+<div id="hub-cur"></div>
+<div id="hub-ring"></div>
 
-<!-- ALERT BANNER -->
-<div class="alert-bar">
-  <span class="ab-tag">📅 2026</span>
-  <span class="ab-text">4th International Storytelling Children's Bookfair — Durban</span>
-  <span class="ab-date">31 July – 2 August · Balmoral Hotel, Durban Beachfront</span>
-  <a href="#bookfair" class="ab-link">View Details</a>
-</div>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-grid">
-    <div>
-      <div class="hero-pill">🌍 A Zintsomi Academy · South Africa</div>
-      <h1 class="hero-h1">Where African<br><em>Stories Come Alive</em></h1>
-      <p class="hero-sub">Kwa Sukela Storytelling Academy trains professional storytellers, preserves African oral traditions, and connects communities through the power of narrative — led by Dr. Nomsa Mdlalose.</p>
-      <div class="hero-actions">
-        <a href="#courses" class="btn btn-orange btn-lg">Browse Courses</a>
-        <a href="#about" class="btn btn-lg" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);">About Dr. Sasa</a>
-      </div>
-      <div class="hero-stats">
-        <div><div class="hs-num">20+</div><div class="hs-lbl">Years of Experience</div></div>
-        <div><div class="hs-num">1st</div><div class="hs-lbl">African Storytelling Course</div></div>
-        <div><div class="hs-num">🏆</div><div class="hs-lbl">Imbokodo Award 2015</div></div>
-      </div>
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="top-logo">Kwa Sukela · Learning Hub</div>
+  <div class="top-right">
+    <a href="index.html" class="home-link">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      Main Site
+    </a>
+    <div class="score-badge">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:.3rem;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <span id="xp-display">0</span> XP · Level <span id="lv-display">1</span>
     </div>
-    <div class="hero-panel">
-      <div class="hp-label">Available Programmes</div>
-      <div class="hp-course"><span class="hp-icon">📖</span><div><div class="hp-name">Introduction to African Storytelling</div><div class="hp-meta">Online · 6 Weeks · Self-paced</div></div><span class="hp-price hp-paid">R 1,200</span></div>
-      <div class="hp-course"><span class="hp-icon">🎓</span><div><div class="hp-name">Professional Storytelling Certification</div><div class="hp-meta">Hybrid · 12 Weeks</div></div><span class="hp-price hp-paid">R 3,500</span></div>
-      <div class="hp-course"><span class="hp-icon">🏫</span><div><div class="hp-name">Storytelling for Educators</div><div class="hp-meta">Workshop · 2 Days</div></div><span class="hp-price hp-paid">R 850</span></div>
-      <div class="hp-course"><span class="hp-icon">🎮</span><div><div class="hp-name">Interactive Learning Hub</div><div class="hp-meta">Games · Puzzles · Village</div></div><span class="hp-price hp-free">Free</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- TRUST STRIP -->
-<div class="trust">
-  <div class="trust-inner">
-    <div class="trust-item">🎓 Wits University Doctorate</div>
-    <div class="trust-item">🌍 Tennessee State University</div>
-    <div class="trust-item">🏛️ National Arts Council</div>
-    <div class="trust-item">📚 SA Folklore Society</div>
-    <div class="trust-item">🤝 A Zintsomi Initiative</div>
   </div>
 </div>
 
-<!-- ABOUT -->
-<section class="section" id="about">
-  <div class="container">
-    <div class="about-grid">
-      <div>
-        <div class="about-photo">
-          <!--
-            HOW TO ADD DR. SASA'S PHOTO:
-            Replace this entire <div class="about-photo"> with:
-            <img src="dr-sasa.jpg" alt="Dr Nomsa Mdlalose"
-              style="width:100%;aspect-ratio:3/4;border-radius:14px;object-fit:cover;object-position:top;">
-          -->
-          <div class="about-photo-hint">
-            📷<br><br>
-            <strong style="color:rgba(255,255,255,.5);">Add Dr. Sasa's photo here</strong><br>
-            See comment in code
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="eyebrow">Our Founder</div>
-        <h2 class="page-title">Dr. Nomsa Mdlalose<br><em>— Dr. Sasa</em></h2>
-        <div class="award-chip">🏆 Imbokodo Award 2015 — African Languages & Storytelling</div>
-        <blockquote class="about-quote">"It is through the arts that we preserve our languages, culture and history in a non-conflicting manner."</blockquote>
-        <p class="about-body">Dr. Nomsa Mdlalose is a folklorist, researcher, writer, storyteller, and social entrepreneur. She holds a Storytelling Master's from Tennessee State University (USA) and a Doctorate in Folklore from Wits University, specialising in African Oral Literature and Linguistics.</p>
-        <p class="about-body">With over 20 years of experience, Dr. Sasa has performed and facilitated storytelling across South Africa and internationally. She founded Kwa Sukela Storytelling Academy and Zintsomi — South Africa's leading storytelling hub dedicated to preserving African stories and their tellers.</p>
-        <p class="about-body">She has served on the literature panel of the National Arts Council of South Africa, Freedom Park Council, and is a board member of the Southern African Folklore Society.</p>
-        <div class="tag-row">
-          <span class="tag">Folklorist</span>
-          <span class="tag">Researcher</span>
-          <span class="tag">Published Author</span>
-          <span class="tag">Social Entrepreneur</span>
-          <span class="tag">Wits University</span>
-          <span class="tag">Tennessee State</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- COURSES -->
-<section class="section section-alt" id="courses">
-  <div class="container">
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:.5rem;">
-      <div>
-        <div class="eyebrow">Programmes & Courses</div>
-        <h2 class="page-title">Grow as a Storyteller</h2>
-      </div>
-      <a href="#contact" class="btn btn-outline-sky">View All & Enrol</a>
-    </div>
-    <p class="section-desc" style="margin-bottom:0;">From beginners to professionals — every programme is rooted in authentic African oral tradition.</p>
-    <div class="course-grid">
-      <div class="c-card">
-        <div class="c-top ct-1">📖</div>
-        <div class="c-body">
-          <div style="display:flex;gap:.35rem;"><span class="badge badge-sky">Online</span><span class="badge badge-orange">Beginner</span></div>
-          <div class="c-title">Introduction to African Storytelling</div>
-          <div class="c-meta"><span>⏱ 6 Weeks</span><span>📱 Self-paced</span></div>
-          <div class="c-desc">Explore the foundations of African oral literature — story structure, character archetypes, and the art of performance.</div>
-          <div class="c-foot"><span class="c-price">R 1,200</span><a href="#contact" class="btn btn-sky btn-sm">Enrol</a></div>
-        </div>
-      </div>
-      <div class="c-card">
-        <div class="c-top ct-2">🎓</div>
-        <div class="c-body">
-          <div style="display:flex;gap:.35rem;"><span class="badge badge-sky">Hybrid</span><span class="badge badge-red">Professional</span></div>
-          <div class="c-title">Professional Storytelling Certification</div>
-          <div class="c-meta"><span>⏱ 12 Weeks</span><span>📍 Online + In-person</span></div>
-          <div class="c-desc">Africa's first dedicated professional storytelling course — train as a performer, facilitator, and storytelling business owner.</div>
-          <div class="c-foot"><span class="c-price">R 3,500</span><a href="#contact" class="btn btn-sky btn-sm">Enrol</a></div>
-        </div>
-      </div>
-      <div class="c-card">
-        <div class="c-top ct-3">🏫</div>
-        <div class="c-body">
-          <div style="display:flex;gap:.35rem;"><span class="badge badge-green">Workshop</span><span class="badge badge-orange">2 Days</span></div>
-          <div class="c-title">Storytelling for Educators</div>
-          <div class="c-meta"><span>⏱ 2 Days</span><span>👥 Group</span></div>
-          <div class="c-desc">Equip teachers and facilitators with storytelling tools to boost literacy, engagement, and cultural pride in the classroom.</div>
-          <div class="c-foot"><span class="c-price">R 850</span><a href="#contact" class="btn btn-sky btn-sm">Enrol</a></div>
-        </div>
-      </div>
-      <div class="c-card">
-        <div class="c-top ct-4">💼</div>
-        <div class="c-body">
-          <div style="display:flex;gap:.35rem;"><span class="badge badge-sky">Tailored</span><span class="badge badge-green">On-site</span></div>
-          <div class="c-title">Corporate Storytelling Masterclass</div>
-          <div class="c-meta"><span>⏱ Flexible</span><span>📍 Your venue</span></div>
-          <div class="c-desc">Help your team communicate with clarity and impact using narrative frameworks from African oral tradition.</div>
-          <div class="c-foot"><span class="c-price">Contact us</span><a href="#contact" class="btn btn-sky btn-sm">Enquire</a></div>
-        </div>
-      </div>
-      <div class="c-card">
-        <div class="c-top ct-5">🤝</div>
-        <div class="c-body">
-          <div style="display:flex;gap:.35rem;"><span class="badge badge-orange">Mentorship</span></div>
-          <div class="c-title">One-on-One Mentorship</div>
-          <div class="c-meta"><span>⏱ Ongoing</span><span>👤 Personal</span></div>
-          <div class="c-desc">Direct mentorship from Dr. Sasa — combining artistic development, writing skills, and storytelling business guidance.</div>
-          <div class="c-foot"><span class="c-price">Contact us</span><a href="#contact" class="btn btn-sky btn-sm">Apply</a></div>
-        </div>
-      </div>
-      <div class="c-card">
-        <div class="c-top ct-6">🎮</div>
-        <div class="c-body">
-          <div style="display:flex;gap:.35rem;"><span class="badge badge-green">Free</span><span class="badge badge-sky">Interactive</span></div>
-          <div class="c-title">Interactive Learning Hub</div>
-          <div class="c-meta"><span>🧩 Puzzles</span><span>🎮 Games</span><span>🌍 Village</span></div>
-          <div class="c-desc">Storytelling puzzles, African games, instrument guides, and an explorable African village — each teaching a real craft skill.</div>
-          <div class="c-foot"><span class="c-price">Free</span><a href="learn.html" class="btn btn-orange btn-sm">Explore →</a></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HUB STRIP -->
-<section class="hub-strip" id="hub">
-  <div class="hub-grid">
-    <div>
-      <div class="hub-eyebrow">Interactive Learning</div>
-      <h2 class="hub-h2">Discover the<br><em>Storyteller's Hub</em></h2>
-      <p class="hub-desc">Deepen your craft with interactive tools — African storytelling puzzles, traditional games with progression levels, instrument guides, and an explorable 3D village at sunset. Each experience teaches a skill used by professional storytellers.</p>
-      <div style="display:flex;gap:.8rem;flex-wrap:wrap;">
-        <a href="learn.html" class="btn btn-sky btn-lg">🧩 Storytelling Puzzles</a>
-        <a href="learn.html" class="btn btn-lg" style="background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.15);">🌍 Village World</a>
-      </div>
-    </div>
-    <div class="hub-feat-grid">
-      <div class="hf"><span class="hf-icon">🧩</span><div><div class="hf-title">Storytelling Puzzles</div><div class="hf-sub">Proverbs, archetypes, plot twists, call & response — 6 craft exercises</div></div></div>
-      <div class="hf"><span class="hf-icon">🎮</span><div><div class="hf-title">African Games</div><div class="hf-sub">Mancala, Diketo, Kgati, Ncuva — 5 progressive levels each</div></div></div>
-      <div class="hf"><span class="hf-icon">🎵</span><div><div class="hf-title">Instruments Guide</div><div class="hf-sub">Djembe, Mbira, Hosho, Uhadi — with interactive rhythm patterns</div></div></div>
-      <div class="hf"><span class="hf-icon">🌍</span><div><div class="hf-title">3D Village World</div><div class="hf-sub">Explore an African village at sunset — 6 story discovery points</div></div></div>
-      <div class="hf"><span class="hf-icon">⭐</span><div><div class="hf-title">XP & Progression</div><div class="hf-sub">Earn points and unlock achievements as you advance</div></div></div>
-      <div class="hf"><span class="hf-icon">🏆</span><div><div class="hf-title">Storyteller Certificate</div><div class="hf-sub">Complete all challenges to earn your Kwa Sukela certificate</div></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- EVENTS -->
-<section class="section" id="events">
-  <div class="container">
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:.5rem;">
-      <div>
-        <div class="eyebrow">Calendar</div>
-        <h2 class="page-title">Upcoming Events</h2>
-      </div>
-      <a href="#contact" class="btn btn-outline-sky">Book Dr. Sasa</a>
-    </div>
-    <div class="event-table">
-      <div class="event-row"><div><div class="ev-day">31</div><div class="ev-mon">Jul 2026</div></div><div><div class="ev-name">4th International Storytelling Children's Bookfair</div><div class="ev-loc">📍 Balmoral Hotel, Durban Beachfront · 31 Jul – 2 Aug 2026</div></div><span class="badge badge-red">Featured</span></div>
-      <div class="event-row"><div><div class="ev-day">14</div><div class="ev-mon">Mar 2026</div></div><div><div class="ev-name">African Storytelling Summit</div><div class="ev-loc">📍 Johannesburg, South Africa</div></div><span class="badge badge-sky">Summit</span></div>
-      <div class="event-row"><div><div class="ev-day">22</div><div class="ev-mon">Apr 2026</div></div><div><div class="ev-name">Storytelling for Educators Workshop</div><div class="ev-loc">📍 Durban, KwaZulu-Natal</div></div><span class="badge badge-orange">Workshop</span></div>
-      <div class="event-row"><div><div class="ev-day">10</div><div class="ev-mon">May 2026</div></div><div><div class="ev-name">Children's Storytelling Festival</div><div class="ev-loc">📍 Cape Town, Western Cape</div></div><span class="badge badge-green">Festival</span></div>
-    </div>
-  </div>
-</section>
-
-<div class="divider"></div>
-
-<!-- BOOKFAIR -->
-<section class="section" id="bookfair">
-  <div class="container">
-    <div class="eyebrow" style="margin-bottom:1.5rem;">Featured Event 2026</div>
-    <div class="bf-box">
-      <div class="bf-grid">
-        <div>
-          <div class="bf-h">4th International Storytelling Children's Bookfair</div>
-          <div class="bf-sub">31 July – 2 August 2026 · Balmoral Hotel, Durban Beachfront</div>
-          <p style="font-size:.92rem;color:var(--g600);line-height:1.8;margin-bottom:1.3rem;">Exhibit your books, launch new titles, and share stories from African oral traditions, folktales, and contemporary literature. Connect with readers, educators, and fellow creators from across the continent.</p>
-          <div style="font-size:.9rem;color:var(--g700);line-height:2;">📚 Authors &nbsp; ✏️ Illustrators &nbsp; 🏢 Publishers</div>
-          <p style="font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:var(--maroon);margin:1.2rem 0 1.5rem;line-height:1.5;">"Celebrate Stories. Share Voices. Inspire Young Readers."</p>
-          <a href="#contact" class="btn btn-orange">Register to Exhibit</a>
-        </div>
-        <div>
-          <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--maroon);margin-bottom:.9rem;">Exhibition Fees</h3>
-          <table class="fee-table">
-            <thead><tr><th>Category</th><th>Fee</th><th>Duration</th></tr></thead>
-            <tbody>
-              <tr><td>Authors</td><td class="fee-amt">R 750</td><td>3 days</td></tr>
-              <tr><td>Small Publishers</td><td class="fee-amt">R 1,500</td><td>3 days</td></tr>
-              <tr><td>Publishing Houses</td><td class="fee-amt">R 3,500</td><td>3 days</td></tr>
-            </tbody>
-          </table>
-          <div class="bank-box">
-            <h4>Payment Details</h4>
-            <div class="bank-row"><span class="bk">Account Name</span><span class="bv">Zintsomi</span></div>
-            <div class="bank-row"><span class="bk">Type</span><span class="bv">Gold Business Account</span></div>
-            <div class="bank-row"><span class="bk">Account No.</span><span class="bv">6505 966 2184</span></div>
-            <div class="bank-row"><span class="bk">Branch Code</span><span class="bv">250117</span></div>
-            <div class="bank-row"><span class="bk">Swift Code</span><span class="bv">FIRNZAJJ</span></div>
-            <div class="bank-row"><span class="bk">Reference</span><span class="bv">Your name / company</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ZINTSOMI -->
-<div class="zint-band">
-  <div class="zint-inner">
-    <div>
-      <div class="zint-label">Part of the Family</div>
-      <div class="zint-name">A Zintsomi Initiative</div>
-      <div class="zint-sub">South Africa's leading storytelling & publishing hub</div>
-    </div>
-    <a href="https://zintsomi.co.za" target="_blank" class="btn btn-orange">Visit Zintsomi →</a>
+<!-- HUB HERO -->
+<div class="hub-hero">
+  <h1>The <em>Storyteller's</em> Learning Hub</h1>
+  <p>Real puzzles. Real game levels. An African village to explore. No placeholders.</p>
+  <div class="xp-section">
+    <div class="xp-bar-wrap"><div class="xp-bar" id="xp-bar"></div></div>
+    <div class="xp-label">Level <span id="xp-lv">1</span> Storyteller · <span id="xp-cur">0</span> / 300 XP to next level</div>
   </div>
 </div>
 
-<!-- CONTACT -->
-<section class="section" id="contact">
-  <div class="container">
-    <div class="contact-grid">
-      <div>
-        <div class="eyebrow">Get in Touch</div>
-        <h2 class="page-title">Start Your<br>Story Journey</h2>
-        <p style="font-size:.93rem;color:var(--g500);line-height:1.8;margin-bottom:2rem;">Whether you are enrolling in a course, booking Dr. Sasa for an event, or exhibiting at the Bookfair — we would love to hear from you.</p>
-        <div class="ci"><span class="ci-icon">📞</span><div><div class="ci-lbl">Phone</div><div class="ci-val"><a href="tel:+27615265356">+27 61 526 5356</a></div></div></div>
-        <div class="ci"><span class="ci-icon">✉️</span><div><div class="ci-lbl">Email</div><div class="ci-val"><a href="mailto:nomsa@zintsomi.co.za">nomsa@zintsomi.co.za</a></div></div></div>
-        <div class="ci"><span class="ci-icon">🌐</span><div><div class="ci-lbl">Website</div><div class="ci-val"><a href="https://zintsomi.co.za" target="_blank">zintsomi.co.za</a></div></div></div>
-        <div class="ci"><span class="ci-icon">📍</span><div><div class="ci-lbl">Location</div><div class="ci-val">Johannesburg & Durban, South Africa</div></div></div>
-      </div>
-      <div class="form-box">
-        <h3>Send a Message</h3>
-        <div id="cForm">
-          <div class="field"><label>Full Name *</label><input id="cn" placeholder="Your full name"></div>
-          <div class="field"><label>Email Address *</label><input type="email" id="ce" placeholder="your@email.com"></div>
-          <div class="field"><label>I am interested in…</label>
-            <select id="ci">
-              <option value="">— Select —</option>
-              <option>Enrolling in a course</option>
-              <option>Booking Dr. Sasa for an event</option>
-              <option>Exhibiting at the Bookfair</option>
-              <option>Storytelling mentorship</option>
-              <option>Partnership or collaboration</option>
-              <option>General enquiry</option>
-            </select>
-          </div>
-          <div class="field"><label>Message</label><textarea id="cm" placeholder="Tell us more…"></textarea></div>
-          <button class="btn btn-sky" style="width:100%;" onclick="sendContact()">Send Message →</button>
-        </div>
-        <div class="form-success" id="cSuccess">
-          <div class="fs-icon">✅</div>
-          <div class="fs-msg">Thank you! We will be in touch within 2–3 working days.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- TAB STRIP -->
+<div class="tab-strip">
+  <button class="tab-btn active" id="tab-teasers" onclick="showTab('teasers')">🧩 Brain Teasers</button>
+  <button class="tab-btn" id="tab-games" onclick="showTab('games')">🎮 African Games</button>
+  <button class="tab-btn" id="tab-instruments" onclick="showTab('instruments')">🎵 Instruments</button>
+  <button class="tab-btn" id="tab-vr" onclick="showTab('vr')">🌍 Village World</button>
+</div>
 
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-grid">
-    <div>
-      <div class="footer-brand">Kwa <span>Sukela</span></div>
-      <p class="footer-tagline">Where African stories are celebrated, preserved, and brought to life. A Zintsomi Storytelling initiative.</p>
+<!-- ══ BRAIN TEASERS PANEL ══ -->
+<div class="panel active" id="panel-teasers">
+  <div class="s-eyebrow">Storytelling Craft</div>
+  <h2 class="s-title">Brain Teasers & <em>Story Puzzles</em></h2>
+  <p class="s-desc">Real storytelling technique exercises used by professional griots and storytellers. Each puzzle builds a specific craft skill. Earn XP for every correct answer.</p>
+
+  <div class="progress-row">
+    <div class="progress-lbl">Completed: <span id="p-count">0</span> / 6</div>
+    <div class="progress-fill" id="p-fill"></div>
+  </div>
+
+  <div class="puzzle-grid">
+    <!-- PUZZLE 1 — Character Riddle -->
+    <div class="p-card" id="pc1">
+      <div class="p-card-head"><span class="p-type pt-riddle">Character Riddle</span><span class="p-diff">★☆☆</span></div>
+      <div class="p-body">
+        <p class="p-q">🎭 "I speak but have no mouth. I move but have no feet. I make children cry and elders laugh. I live only when someone believes in me." — What am I?</p>
+        <div class="p-hint" id="h1">Think about what a storyteller CREATES that lives only in imagination — not a ghost, not a dream, but something with a name and purpose.</div>
+        <div class="mc-opts" id="mc1">
+          <button class="mc-btn" onclick="chkMC('mc1',this,'w','A shadow')">A shadow</button>
+          <button class="mc-btn" onclick="chkMC('mc1',this,'c','A story character')">A story character</button>
+          <button class="mc-btn" onclick="chkMC('mc1',this,'w','The wind')">The wind</button>
+          <button class="mc-btn" onclick="chkMC('mc1',this,'w','A drum')">A drum</button>
+        </div>
+        <div class="p-actions">
+          <button class="p-btn pb-hint" onclick="toggleHint('h1')">💡 Hint</button>
+        </div>
+        <div class="p-fb" id="fb1"></div>
+      </div>
     </div>
-    <div class="footer-col"><h4>Academy</h4><ul><li><a href="#about">About Dr. Sasa</a></li><li><a href="#courses">Courses</a></li><li><a href="#events">Events</a></li><li><a href="#bookfair">Bookfair 2026</a></li><li><a href="#contact">Contact</a></li></ul></div>
-    <div class="footer-col"><h4>Learning Hub</h4><ul><li><a href="learn.html">Brain Teasers</a></li><li><a href="learn.html">African Games</a></li><li><a href="learn.html">Instruments</a></li><li><a href="learn.html">Village World</a></li></ul></div>
-    <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+27615265356">+27 61 526 5356</a></li><li><a href="mailto:nomsa@zintsomi.co.za">nomsa@zintsomi.co.za</a></li><li><a href="https://zintsomi.co.za" target="_blank">zintsomi.co.za</a></li></ul></div>
+
+    <!-- PUZZLE 2 — Story Spine -->
+    <div class="p-card" id="pc2">
+      <div class="p-card-head"><span class="p-type pt-spine">Story Spine</span><span class="p-diff">★★☆</span></div>
+      <div class="p-body">
+        <p class="p-q">🌱 Build a story using the Story Spine — the structure used by Pixar AND African griots for centuries. Fill at least 4 lines, then read it aloud!</p>
+        <div class="spine-builder">
+          <div class="spine-line"><span class="spine-prompt">Once upon a time…</span><input class="spine-inp" id="sp1" placeholder="there was a village…"></div>
+          <div class="spine-line"><span class="spine-prompt">Every day…</span><input class="spine-inp" id="sp2" placeholder="the children would…"></div>
+          <div class="spine-line"><span class="spine-prompt">Until one day…</span><input class="spine-inp" id="sp3" placeholder="a stranger arrived…"></div>
+          <div class="spine-line"><span class="spine-prompt">Because of that…</span><input class="spine-inp" id="sp4" placeholder="everything changed…"></div>
+          <div class="spine-line"><span class="spine-prompt">Until finally…</span><input class="spine-inp" id="sp5" placeholder="the community learned…"></div>
+          <div class="spine-line"><span class="spine-prompt">And ever since…</span><input class="spine-inp" id="sp6" placeholder="they always…"></div>
+        </div>
+        <div class="p-actions">
+          <button class="p-btn pb-check" onclick="chkSpine()">✅ Complete Story</button>
+          <button class="p-btn pb-hint" onclick="toggleHint('h2')">💡 Tip</button>
+        </div>
+        <div class="p-hint" id="h2">The key link is "Because of that" — this is where the CONSEQUENCE lives. African stories always plant a lesson in the final line.</div>
+        <div class="p-fb" id="fb2"></div>
+      </div>
+    </div>
+
+    <!-- PUZZLE 3 — Proverb Match -->
+    <div class="p-card" id="pc3">
+      <div class="p-card-head"><span class="p-type pt-proverb">African Proverbs</span><span class="p-diff">★★☆</span></div>
+      <div class="p-body">
+        <p class="p-q">🌍 Match each African proverb to its storytelling meaning. Proverbs are the seeds every story grows from.</p>
+        <div class="prov-match">
+          <div class="prov-col">
+            <div class="prov-col-h">Proverb</div>
+            <div class="prov-item" onclick="selProv(this,'p1')" data-id="p1">"Until the lion learns to write, every story will glorify the hunter."</div>
+            <div class="prov-item" onclick="selProv(this,'p2')" data-id="p2">"A child not embraced by the village will burn it down to feel its warmth."</div>
+            <div class="prov-item" onclick="selProv(this,'p3')" data-id="p3">"The axe forgets, but the tree remembers."</div>
+            <div class="prov-item" onclick="selProv(this,'p4')" data-id="p4">"Speak softly and carry a big story."</div>
+          </div>
+          <div class="prov-col">
+            <div class="prov-col-h">Meaning</div>
+            <div class="prov-item" onclick="matchProv(this,'p3')" data-match="p3">Power forgets harm done; the powerless carry those wounds forever.</div>
+            <div class="prov-item" onclick="matchProv(this,'p1')" data-match="p1">History is told by the powerful — the voiceless must claim their own narrative.</div>
+            <div class="prov-item" onclick="matchProv(this,'p4')" data-match="p4">Quiet depth and a powerful narrative move mountains.</div>
+            <div class="prov-item" onclick="matchProv(this,'p2')" data-match="p2">Community belonging is essential — exclusion breeds destruction.</div>
+          </div>
+        </div>
+        <div class="p-fb" id="fb3"></div>
+      </div>
+    </div>
+
+    <!-- PUZZLE 4 — Call & Response Rhythm -->
+    <div class="p-card" id="pc4">
+      <div class="p-card-head"><span class="p-type pt-rhythm">Call & Response</span><span class="p-diff">★☆☆</span></div>
+      <div class="p-body">
+        <p class="p-q">🥁 Call-and-response is the heartbeat of African storytelling. Hear the pattern, then TAP it back. This is how storytellers activate audience participation.</p>
+        <div class="rhythm-display" id="rdisp">Press PLAY to hear</div>
+        <div class="beats-row" id="beats-master"></div>
+        <p style="font-size:.75rem;color:rgba(26,3,5,.4);font-style:italic;margin-bottom:.4rem;">● = strong beat &nbsp; ○ = rest</p>
+        <div class="beats-row" id="beats-player"></div>
+        <button class="tap-btn" onclick="doTap()">👏 TAP</button>
+        <div class="p-actions">
+          <button class="p-btn pb-hint" onclick="playRhythm()">▶ Play Pattern</button>
+          <button class="p-btn pb-check" onclick="chkRhythm()">Check Rhythm</button>
+          <button class="p-btn pb-reset" onclick="resetRhythm()">↺ Reset</button>
+        </div>
+        <div class="p-fb" id="fb4"></div>
+      </div>
+    </div>
+
+    <!-- PUZZLE 5 — Character Archetype -->
+    <div class="p-card" id="pc5">
+      <div class="p-card-head"><span class="p-type pt-arch">Archetypes</span><span class="p-diff">★★☆</span></div>
+      <div class="p-body">
+        <p class="p-q">🦁 Which African storytelling archetype fits this description?<br><br><em style="color:var(--indigo);font-size:.9rem;">"She appears as an old woman selling groundnuts. She knows the names of everyone's ancestors. She asks questions she already knows the answers to. She tests the young."</em></p>
+        <div class="p-hint" id="h5">She is neither villain nor helper — she is something older. In Yoruba tradition she is Ìyá Àgbà. In Zulu she is the Umkhulu. She does not stop heroes; she reveals whether they are ready.</div>
+        <div class="mc-opts" id="mc5">
+          <button class="mc-btn" onclick="chkMC('mc5',this,'w','The Trickster (Anansi)')">The Trickster (Anansi)</button>
+          <button class="mc-btn" onclick="chkMC('mc5',this,'c','The Threshold Guardian / Wise Crone')">The Threshold Guardian / Wise Crone</button>
+          <button class="mc-btn" onclick="chkMC('mc5',this,'w','The Shadow (villain)')">The Shadow (villain)</button>
+          <button class="mc-btn" onclick="chkMC('mc5',this,'w','The Herald (messenger)')">The Herald (messenger)</button>
+        </div>
+        <div class="p-actions"><button class="p-btn pb-hint" onclick="toggleHint('h5')">💡 Hint</button></div>
+        <div class="p-fb" id="fb5"></div>
+      </div>
+    </div>
+
+    <!-- PUZZLE 6 — Isigqi Plot Twist -->
+    <div class="p-card" id="pc6">
+      <div class="p-card-head"><span class="p-type pt-plot">Plot Twist — Isigqi</span><span class="p-diff">★★★</span></div>
+      <div class="p-body">
+        <p class="p-q">🔀 "Isigqi" (isiZulu: the unexpected reversal that teaches) is Africa's most powerful narrative device. Which twist uses true Isigqi?</p>
+        <div style="background:var(--peach);padding:.8rem;border-left:3px solid var(--gold);margin-bottom:.8rem;font-style:italic;font-size:.85rem;line-height:1.55;">
+          "The warrior Siyanda had defeated every enemy. The whole village praised him. One morning, a girl of seven arrived at the gates holding only a calabash of water…"
+        </div>
+        <div class="mc-opts" id="mc6">
+          <button class="mc-btn" onclick="chkMC('mc6',this,'w','The girl was a spy.')">The girl was a spy.</button>
+          <button class="mc-btn" onclick="chkMC('mc6',this,'c','The girl was the last guardian of the village\'s true power — and Siyanda had to learn from her.')">The girl was the last guardian of the village's true power — and Siyanda had to learn from her.</button>
+          <button class="mc-btn" onclick="chkMC('mc6',this,'w','The warrior fell in love.')">The warrior fell in love.</button>
+          <button class="mc-btn" onclick="chkMC('mc6',this,'w','The warrior was the king in disguise.')">The warrior was the king in disguise.</button>
+        </div>
+        <div class="p-hint" id="h6">True Isigqi: the weakest character becomes the teacher. The twist must carry a LESSON — the small reveals what the mighty missed.</div>
+        <div class="p-actions"><button class="p-btn pb-hint" onclick="toggleHint('h6')">💡 What is Isigqi?</button></div>
+        <div class="p-fb" id="fb6"></div>
+      </div>
+    </div>
   </div>
-  <div class="footer-bottom">
-    <p>© 2025 Kwa Sukela Storytelling Academy. A Zintsomi Initiative. Founded by Dr. Nomsa Mdlalose.</p>
-    <p style="color:#4B5563;">Johannesburg & Durban, South Africa</p>
+</div>
+
+<!-- ══ GAMES PANEL ══ -->
+<div class="panel" id="panel-games">
+  <div class="s-eyebrow">Play & Learn</div>
+  <h2 class="s-title">African Games — <em>Real Levels</em></h2>
+  <p class="s-desc">Each game has 5 real levels with genuine difficulty progression and win conditions. Complete all levels to unlock your Storyteller Certificate.</p>
+
+  <div class="game-nav">
+    <button class="g-tab active" onclick="showGame('mancala',event)">Mancala / Umlabalaba</button>
+    <button class="g-tab" onclick="showGame('diketo',event)">Diketo</button>
+    <button class="g-tab" onclick="showGame('kgati',event)">Kgati</button>
+    <button class="g-tab" onclick="showGame('ncuva',event)">Ncuva</button>
   </div>
-</footer>
+
+  <!-- MANCALA -->
+  <div class="game-panel active" id="gp-mancala">
+    <div>
+      <div class="level-selector" id="man-levels"></div>
+      <div class="level-info" id="man-info"></div>
+      <div class="game-status-bar">
+        <div class="gs-item">Your Store<span class="gs-val" id="man-store-a">0</span></div>
+        <div class="gs-item">Turn<span class="gs-val" id="man-turn">A</span></div>
+        <div class="gs-item" style="text-align:right;">AI Store<span class="gs-val" id="man-store-b">0</span></div>
+      </div>
+      <div class="game-canvas" style="background:linear-gradient(135deg,#3D1A0A,#6B3010);min-height:200px;position:relative;">
+        <div id="mancala-wrap"></div>
+        <div class="win-overlay" id="man-win">
+          <div class="win-icon">🏆</div>
+          <div class="win-title" id="man-win-title">Level Complete!</div>
+          <div class="win-msg" id="man-win-msg"></div>
+          <div class="win-xp" id="man-win-xp"></div>
+          <br><button class="btn-gold" style="margin-top:1rem;" onclick="manNextLevel()">Next Level →</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-top:.8rem;">
+        <button class="btn-gold" onclick="initMancala()">↺ Restart Level</button>
+        <span id="man-msg" style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--maroon);padding:.4rem;align-self:center;"></span>
+      </div>
+    </div>
+    <div class="game-info-panel">
+      <div class="game-title-big">Mancala / Umlabalaba</div>
+      <div class="game-origin">🌍 Played across Africa for 7,000+ years</div>
+      <div class="game-step"><div class="step-n">1</div><div class="step-t">The board has <strong>12 pits</strong> (6 per side) and 2 stores. Each pit starts with seeds depending on the level.</div></div>
+      <div class="game-step"><div class="step-n">2</div><div class="step-t">Pick ALL seeds from one of your pits and <strong>sow them anti-clockwise</strong>, dropping one per pit.</div></div>
+      <div class="game-step"><div class="step-n">3</div><div class="step-t">Seeds landing in <strong>your store</strong> count as points. Skip the opponent's store.</div></div>
+      <div class="game-step"><div class="step-n">4</div><div class="step-t">Last seed in your <strong>empty pit</strong>? Capture the opposite pit's seeds. Last seed in your store? <strong>Take another turn.</strong></div></div>
+      <div class="story-connection"><strong>🎭 Storytelling Connection</strong>Every move plants seeds for future moves — exactly how a master storyteller plants details early that bloom into meaning at the climax.</div>
+    </div>
+  </div>
+
+  <!-- DIKETO -->
+  <div class="game-panel" id="gp-diketo">
+    <div>
+      <div class="level-selector" id="dik-levels"></div>
+      <div class="level-info" id="dik-info"></div>
+      <div class="game-status-bar">
+        <div class="gs-item">Score<span class="gs-val" id="dik-score">0</span></div>
+        <div class="gs-item">Target<span class="gs-val" id="dik-target">—</span></div>
+        <div class="gs-item" style="text-align:right;">Time<span class="gs-val" id="dik-timer">—</span></div>
+      </div>
+      <div class="game-canvas" style="background:linear-gradient(135deg,#5a3010,#8B5E3C);min-height:220px;position:relative;">
+        <div id="diketo-wrap" style="padding:1rem;min-height:220px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:2px;position:relative;"></div>
+        <div class="win-overlay" id="dik-win">
+          <div class="win-icon">🪨</div>
+          <div class="win-title" id="dik-win-title">Level Complete!</div>
+          <div class="win-msg" id="dik-win-msg"></div>
+          <div class="win-xp" id="dik-win-xp"></div>
+          <br><button class="btn-gold" style="margin-top:1rem;" onclick="dikNextLevel()">Next Level →</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-top:.8rem;flex-wrap:wrap;">
+        <button class="btn-gold" onclick="dikStart()">▶ Toss & Catch!</button>
+        <button class="btn-crim" onclick="initDiketo()">↺ Restart</button>
+        <span id="dik-msg" style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--maroon);padding:.4rem;align-self:center;"></span>
+      </div>
+    </div>
+    <div class="game-info-panel">
+      <div class="game-title-big">Diketo</div>
+      <div class="game-origin">🌍 Sotho · Tswana · Pedi peoples · Southern Africa</div>
+      <div class="game-step"><div class="step-n">1</div><div class="step-t">Scatter stones on the ground. <strong>Select the required number</strong> by clicking them — they glow gold when grabbed.</div></div>
+      <div class="game-step"><div class="step-n">2</div><div class="step-t">Click <strong>"Toss & Catch"</strong> to throw one stone up and catch it while scooping your selected stones in time.</div></div>
+      <div class="game-step"><div class="step-n">3</div><div class="step-t">Each level raises the <strong>pickup target</strong>. Level 4 adds a time limit. Level 5 requires accuracy — wrong count = fail.</div></div>
+      <div class="story-connection"><strong>🎭 Storytelling Connection</strong>Diketo teaches timing — the same skill a storyteller uses to pause, breathe, and deliver the punchline at exactly the right moment.</div>
+    </div>
+  </div>
+
+  <!-- KGATI -->
+  <div class="game-panel" id="gp-kgati">
+    <div>
+      <div class="level-selector" id="kga-levels"></div>
+      <div class="level-info" id="kga-info"></div>
+      <div class="game-status-bar">
+        <div class="gs-item">Jumps<span class="gs-val" id="kga-jumps">0</span></div>
+        <div class="gs-item">Target<span class="gs-val" id="kga-target">—</span></div>
+        <div class="gs-item" style="text-align:right;">Streak<span class="gs-val" id="kga-streak">0</span></div>
+      </div>
+      <div class="game-canvas" style="background:linear-gradient(135deg,#1a3a1a,#2D6A4F);position:relative;">
+        <div id="kgati-wrap">
+          <div class="jumper-fig" id="kga-fig" style="margin-bottom:.5rem;">
+            <div class="j-head"></div><div class="j-body"></div>
+          </div>
+          <div class="kgati-rope" id="kga-rope"></div>
+          <div class="kgati-score-display" id="kga-score-d">0</div>
+          <div class="kgati-chant" id="kga-chant">"The rope sings what the mouth cannot say…"</div>
+          <div class="kgati-cue" id="kga-cue">Press JUMP when you see ▶</div>
+          <button class="btn-gold" onclick="doJump()" style="margin-top:.5rem;">⬆ JUMP!</button>
+        </div>
+        <div class="win-overlay" id="kga-win">
+          <div class="win-icon">🎀</div>
+          <div class="win-title" id="kga-win-title">Level Complete!</div>
+          <div class="win-msg" id="kga-win-msg"></div>
+          <div class="win-xp" id="kga-win-xp"></div>
+          <br><button class="btn-gold" style="margin-top:1rem;" onclick="kgaNextLevel()">Next Level →</button>
+        </div>
+      </div>
+      <button class="btn-crim" style="margin-top:.8rem;" onclick="initKgati()">↺ Restart Level</button>
+    </div>
+    <div class="game-info-panel">
+      <div class="game-title-big">Kgati</div>
+      <div class="game-origin">🌍 Sotho & Tswana peoples · Botswana · Lesotho · South Africa</div>
+      <div class="game-step"><div class="step-n">1</div><div class="step-t">Two players swing the rope. <strong>Jump when the cue appears</strong> — mistimed jumps break your streak.</div></div>
+      <div class="game-step"><div class="step-n">2</div><div class="step-t">Each level gets <strong>faster</strong> and adds new challenges: chant-fill (Level 3), trick timing (Level 4), lead the chant (Level 5).</div></div>
+      <div class="game-step"><div class="step-n">3</div><div class="step-t">A broken <strong>streak of 3+</strong> resets your bonus multiplier. Consistency wins over speed.</div></div>
+      <div class="story-connection"><strong>🎭 Storytelling Connection</strong>Kgati chants ARE stories — they teach history, morality and jokes while the body moves. The storyteller's mind must multi-task exactly like a jumper.</div>
+    </div>
+  </div>
+
+  <!-- NCUVA -->
+  <div class="game-panel" id="gp-ncuva">
+    <div>
+      <div class="level-selector" id="ncu-levels"></div>
+      <div class="level-info" id="ncu-info"></div>
+      <div class="game-status-bar">
+        <div class="gs-item">Your Pieces<span class="gs-val" id="ncu-score-a">—</span></div>
+        <div class="gs-item">AI Pieces<span class="gs-val" id="ncu-score-b">—</span></div>
+        <div class="gs-item" style="text-align:right;">Turn<span class="gs-val" id="ncu-turn">You</span></div>
+      </div>
+      <div class="game-canvas" style="background:linear-gradient(135deg,#1A1A3D,#2C3E7A);position:relative;">
+        <div id="ncuva-wrap" style="padding:1rem;">
+          <div class="ncuva-grid" id="ncuva-grid"></div>
+        </div>
+        <div class="win-overlay" id="ncu-win">
+          <div class="win-icon">♟️</div>
+          <div class="win-title" id="ncu-win-title">Level Complete!</div>
+          <div class="win-msg" id="ncu-win-msg"></div>
+          <div class="win-xp" id="ncu-win-xp"></div>
+          <br><button class="btn-gold" style="margin-top:1rem;" onclick="ncuNextLevel()">Next Level →</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-top:.8rem;align-items:center;">
+        <button class="btn-crim" onclick="initNcuva()">↺ Restart</button>
+        <span id="ncu-msg" style="font-family:'DM Mono',monospace;font-size:.58rem;color:var(--sky);padding:.4rem;"></span>
+      </div>
+    </div>
+    <div class="game-info-panel">
+      <div class="game-title-big">Ncuva</div>
+      <div class="game-origin">🌍 Tsonga & Venda peoples · Limpopo · Mozambique</div>
+      <div class="game-step"><div class="step-n">1</div><div class="step-t">Click a <strong>red piece</strong> to select it. Green cells show valid moves. Click a green cell to move.</div></div>
+      <div class="game-step"><div class="step-n">2</div><div class="step-t">The AI plays blue pieces. <strong>Capture</strong> by surrounding opponent pieces. Higher levels = smarter AI.</div></div>
+      <div class="game-step"><div class="step-n">3</div><div class="step-t">Win by capturing more pieces than the AI within <strong>the move limit</strong>. Level 5 is full strategic play with no hints.</div></div>
+      <div class="story-connection"><strong>🎭 Storytelling Connection</strong>Ncuva elders narrate their moves aloud — "I go here so the enemy thinks I go there." This misdirection is exactly how a master storyteller plants false trails before the revelation.</div>
+    </div>
+  </div>
+
+  <!-- UNLOCK SECTION -->
+  <div class="unlock-section" id="unlock-section" style="margin-top:3rem;">
+    <div class="unlock-title">🏆 Complete All Levels to Unlock</div>
+    <p class="unlock-desc">Finish all 5 levels of every game to earn these rewards from Dr. Sasa.</p>
+    <div class="unlock-locks">
+      <div class="unlock-item" id="unlock-cert">
+        <span class="ui-icon">🎓</span>
+        <div class="ui-name">Storyteller Certificate</div>
+      </div>
+      <div class="unlock-item" id="unlock-story">
+        <span class="ui-icon">📜</span>
+        <div class="ui-name">Dr. Sasa's Bonus Story</div>
+      </div>
+      <div class="unlock-item" id="unlock-vr">
+        <span class="ui-icon">🌍</span>
+        <div class="ui-name">Secret VR Location</div>
+      </div>
+    </div>
+    <div class="unlock-progress" id="unlock-prog">Games mastered: 0 / 4</div>
+  </div>
+</div>
+
+<!-- ══ INSTRUMENTS PANEL ══ -->
+<div class="panel" id="panel-instruments">
+  <div class="s-eyebrow">Music & Story</div>
+  <h2 class="s-title">African Instruments <em>How-To</em></h2>
+  <p class="s-desc">African storytelling was never silent. Click each instrument to expand its full guide — real technique, real rhythm patterns you can play, and its storytelling role.</p>
+  <div class="inst-grid">
+    <!-- DJEMBE -->
+    <div class="inst-card" onclick="toggleInst('djembe')">
+      <div class="inst-head"><div class="inst-icon">🥁</div><div><div class="inst-name">Djembe</div><div class="inst-org">West Africa · Mandinka / Malinke peoples</div></div></div>
+      <div class="inst-body" id="ib-djembe">
+        <p class="inst-desc">The djembe's name comes from "Anke djé, anke bé" — "everyone gather in peace." It is the griot's voice, producing three tones from one skin: bass, tone, and slap.</p>
+        <div class="tech-h">The Three Tones</div>
+        <div class="tech-step"><div class="t-n">1</div><div>🔴 <strong>Bass (GUN)</strong> — Strike the drum's centre with your full relaxed hand. Deep, booming. The heartbeat of the story.</div></div>
+        <div class="tech-step"><div class="t-n">2</div><div>🟡 <strong>Tone (GO)</strong> — Strike the edge with flat fingers, slightly relaxed. Clear ring. The story's main narrative beat.</div></div>
+        <div class="tech-step"><div class="t-n">3</div><div>🔵 <strong>Slap (PA)</strong> — Strike the edge, fingers relaxed and snapping back fast. Sharp crack. Used for plot twists and climax moments.</div></div>
+        <div class="tech-h">Kuku Rhythm — "Female Rhythm" (used at coming-of-age celebrations)</div>
+        <div class="rh-pattern" id="rp-djembe">
+          <div class="rb strong" data-s="GUN">GUN</div><div class="rb weak" data-s="go">go</div>
+          <div class="rb strong" data-s="PA">PA</div><div class="rb weak" data-s="go">go</div>
+          <div class="rb strong" data-s="GUN">GUN</div><div class="rb rest">—</div>
+          <div class="rb strong" data-s="PA">PA</div><div class="rb weak" data-s="go">go</div>
+        </div>
+        <button class="play-rh-btn" onclick="playRhPattern('rp-djembe',this)">▶ Play Kuku Rhythm</button>
+        <div class="inst-story-box"><strong>🎭 Storytelling Uses</strong>Opening ceremonies · Calling audience to attention · Marking climax · Signalling when elders speak</div>
+      </div>
+    </div>
+    <!-- MBIRA -->
+    <div class="inst-card" onclick="toggleInst('mbira')">
+      <div class="inst-head"><div class="inst-icon">🎹</div><div><div class="inst-name">Mbira / Thumb Piano</div><div class="inst-org">Shona people · Zimbabwe & Southern Africa</div></div></div>
+      <div class="inst-body" id="ib-mbira">
+        <p class="inst-desc">The mbira dzavadzimu — "voice of the ancestors" — has been played for over 1,000 years. 22–28 metal tines plucked with both thumbs create overlapping, hypnotic cycles.</p>
+        <div class="tech-h">How to Play</div>
+        <div class="tech-step"><div class="t-n">1</div><div>Hold the mbira in both hands, <strong>thumbs pointing upward</strong>. The board rests in your palms.</div></div>
+        <div class="tech-step"><div class="t-n">2</div><div>Press down on a tine and <strong>let it snap upward</strong> — don't pluck outward. Let notes overlap and sustain.</div></div>
+        <div class="tech-step"><div class="t-n">3</div><div><strong>Left thumb = bass notes</strong> (left tines). <strong>Right thumb = treble</strong>. Right forefinger adds upper melody.</div></div>
+        <div class="tech-step"><div class="t-n">4</div><div>Place inside a <strong>gourd resonator (deze)</strong> for fuller sound. Add shells for buzzing overtones.</div></div>
+        <div class="tech-h">Nyamaropa — Ancestor Calling Pattern</div>
+        <div class="rh-pattern" id="rp-mbira">
+          <div class="rb strong" data-s="L">L</div><div class="rb weak" data-s="h">h</div>
+          <div class="rb strong" data-s="M">M</div><div class="rb weak" data-s="l">l</div>
+          <div class="rb strong" data-s="H">H</div><div class="rb weak" data-s="m">m</div>
+          <div class="rb strong" data-s="L">L</div><div class="rb weak" data-s="h">h</div>
+          <div class="rb strong" data-s="M">M</div><div class="rb rest">—</div>
+          <div class="rb strong" data-s="H">H</div><div class="rb weak" data-s="l">l</div>
+        </div>
+        <button class="play-rh-btn" onclick="playRhPattern('rp-mbira',this)">▶ Play Nyamaropa</button>
+        <div class="inst-story-box"><strong>🎭 Storytelling Uses</strong>Bira spirit ceremonies · Calling ancestors · Nighttime story sessions · Opening the storyteller's mind</div>
+      </div>
+    </div>
+    <!-- HOSHO -->
+    <div class="inst-card" onclick="toggleInst('hosho')">
+      <div class="inst-head"><div class="inst-icon">🪘</div><div><div class="inst-name">Hosho</div><div class="inst-org">Shona people · Zimbabwe · Gourd Shaker</div></div></div>
+      <div class="inst-body" id="ib-hosho">
+        <p class="inst-desc">Always played in pairs — one in each hand — the hosho are the pulse of every mbira ensemble. They are the story circle's timekeeper. Once started, they never stop.</p>
+        <div class="tech-h">Technique</div>
+        <div class="tech-step"><div class="t-n">1</div><div><strong>Right hosho leads</strong> — plays on the downbeat. Left hosho fills the offbeats. They interlock, never duplicate.</div></div>
+        <div class="tech-step"><div class="t-n">2</div><div><strong>Shake DOWN</strong> for a strong accent (seeds hit the bottom). <strong>Tilt UP</strong> for a soft offbeat (seeds scatter gently).</div></div>
+        <div class="tech-step"><div class="t-n">3</div><div>Together they create an <strong>interlocking hocket pattern</strong> — like two storytellers finishing each other's sentences.</div></div>
+        <div class="tech-h">Classic Interlocking Pattern (R=Right down · r=right up · L=Left down · l=left up)</div>
+        <div class="rh-pattern" id="rp-hosho">
+          <div class="rb strong" data-s="R">R</div><div class="rb weak" data-s="l">l</div>
+          <div class="rb strong" data-s="R">R</div><div class="rb weak" data-s="l">l</div>
+          <div class="rb strong" data-s="L">L</div><div class="rb weak" data-s="r">r</div>
+          <div class="rb strong" data-s="R">R</div><div class="rb weak" data-s="l">l</div>
+        </div>
+        <button class="play-rh-btn" onclick="playRhPattern('rp-hosho',this)">▶ Play Hosho Pattern</button>
+        <div class="inst-story-box"><strong>🎭 Storytelling Uses</strong>Grounding the storyteller's pace · Signalling chapter transitions · Building hypnotic trance for deep listening</div>
+      </div>
+    </div>
+    <!-- UHADI -->
+    <div class="inst-card" onclick="toggleInst('uhadi')">
+      <div class="inst-head"><div class="inst-icon">🎻</div><div><div class="inst-name">Uhadi</div><div class="inst-org">Xhosa people · Eastern Cape, South Africa</div></div></div>
+      <div class="inst-body" id="ib-uhadi">
+        <p class="inst-desc">A single-stringed musical bow played exclusively by Xhosa women. The gourd resonates against the player's chest — your body becomes part of the instrument. One of Southern Africa's oldest musical traditions.</p>
+        <div class="tech-h">How to Play</div>
+        <div class="tech-step"><div class="t-n">1</div><div>Hold the bow <strong>vertically</strong>, gourd resting against your chest or stomach. The gourd vibrates through your body.</div></div>
+        <div class="tech-step"><div class="t-n">2</div><div>Use a <strong>thin stick or grass stem</strong> to strike the string. Each section of the string gives a different pitch.</div></div>
+        <div class="tech-step"><div class="t-n">3</div><div>Open and close your <strong>mouth against the gourd</strong> as you play — your mouth shapes the overtones, creating melody from one string.</div></div>
+        <div class="tech-step"><div class="t-n">4</div><div>The uhadi is <strong>intimate and personal</strong> — it carries a woman's life story, grief, and joy in its overtones.</div></div>
+        <div class="tech-h">Basic Pattern (H=High bow · L=Low bow · O=Mouth open · C=Mouth closed)</div>
+        <div class="rh-pattern" id="rp-uhadi">
+          <div class="rb strong" data-s="H·O">H·O</div><div class="rb rest">—</div>
+          <div class="rb weak" data-s="L·C">L·C</div><div class="rb strong" data-s="H·O">H·O</div>
+          <div class="rb rest">—</div><div class="rb weak" data-s="L·C">L·C</div>
+          <div class="rb strong" data-s="H·O">H·O</div><div class="rb weak" data-s="L·C">L·C</div>
+        </div>
+        <button class="play-rh-btn" onclick="playRhPattern('rp-uhadi',this)">▶ Play Uhadi Pattern</button>
+        <div class="inst-story-box"><strong>🎭 Storytelling Uses</strong>Women's izibongo (praise poetry) · Expressing what cannot be spoken · Mourning · Meditation on ancestral stories</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ VR VILLAGE PANEL ══ -->
+<div class="panel" id="panel-vr" style="padding:0;">
+  <div id="vr-container">
+    <canvas id="vr-canvas"></canvas>
+    <div class="vr-ui">
+      <div class="vr-title">
+        <h2>🌅 The Village at Sunset</h2>
+        <p>Click glowing spots · Rotate with buttons below</p>
+      </div>
+      <div class="hotspot" style="top:57%;left:48%;" onclick="openModal('fire')"><div class="hs-ring">🔥</div><div class="hs-lbl">Story Fire</div></div>
+      <div class="hotspot" style="top:38%;left:19%;" onclick="openModal('baobab')"><div class="hs-ring">🌳</div><div class="hs-lbl">Elder Baobab</div></div>
+      <div class="hotspot" style="top:46%;left:76%;" onclick="openModal('hut')"><div class="hs-ring">🏠</div><div class="hs-lbl">Storyteller's Hut</div></div>
+      <div class="hotspot" style="top:28%;left:62%;" onclick="openModal('stars')"><div class="hs-ring">⭐</div><div class="hs-lbl">Star Map</div></div>
+      <div class="hotspot" style="top:68%;left:26%;" onclick="openModal('drum')"><div class="hs-ring">🥁</div><div class="hs-lbl">Drum Circle</div></div>
+      <div class="hotspot" style="top:72%;left:67%;" onclick="openModal('calabash')"><div class="hs-ring">🫙</div><div class="hs-lbl">Calabash</div></div>
+      <div class="hotspot secret-hs" id="secret-hs" style="top:20%;left:40%;display:none;" onclick="openModal('secret')"><div class="hs-ring" style="border-color:var(--gold-l);background:rgba(255,209,102,.2);">✨</div><div class="hs-lbl">Secret Grove</div></div>
+
+      <div class="story-modal" id="vr-modal">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <span class="modal-icon" id="m-icon">🔥</span>
+        <div class="modal-title" id="m-title"></div>
+        <div class="modal-text" id="m-text"></div>
+        <div class="modal-lesson" id="m-lesson"></div>
+        <div class="modal-xp" id="m-xp"></div>
+      </div>
+
+      <div class="vr-hint">Click glowing circles to discover stories, lessons & wisdom</div>
+      <div class="vr-controls">
+        <button class="vr-cb" onclick="rotateCam(-1)">◀ Left</button>
+        <button class="vr-cb" onclick="resetCam()">⌂ Centre</button>
+        <button class="vr-cb" onclick="rotateCam(1)">Right ▶</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
-function sendContact() {
-  const n = document.getElementById('cn').value.trim();
-  const e = document.getElementById('ce').value.trim();
-  if (!n || !e) { alert('Please fill in your name and email.'); return; }
-  document.getElementById('cForm').style.display = 'none';
-  document.getElementById('cSuccess').style.display = 'block';
+// ═══════════════════════════════
+// CURSOR
+// ═══════════════════════════════
+const hubCur=document.getElementById('hub-cur');
+const hubRing=document.getElementById('hub-ring');
+let hx=0,hy=0,hrx=0,hry=0;
+document.addEventListener('mousemove',e=>{hx=e.clientX;hy=e.clientY;hubCur.style.left=hx+'px';hubCur.style.top=hy+'px';});
+(function hloop(){hrx+=(hx-hrx)*.1;hry+=(hy-hry)*.1;hubRing.style.left=hrx+'px';hubRing.style.top=hry+'px';requestAnimationFrame(hloop);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{hubRing.style.width='55px';hubRing.style.height='55px';});
+  el.addEventListener('mouseleave',()=>{hubRing.style.width='38px';hubRing.style.height='38px';});
+});
+
+// ═══════════════════════════════
+// XP SYSTEM
+// ═══════════════════════════════
+let totalXP=0, currentLevel=1;
+const levelThresholds=[0,50,120,220,350,500,700];
+
+function addXP(pts,el){
+  totalXP+=pts;
+  ['xp-display','xp-cur'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=totalXP;});
+  let lv=1;
+  for(let i=0;i<levelThresholds.length;i++) if(totalXP>=levelThresholds[i]) lv=i+1;
+  currentLevel=lv;
+  ['lv-display','xp-lv'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=lv;});
+  const bar=document.getElementById('xp-bar');
+  if(bar) bar.style.width=Math.min(totalXP/700*100,100)+'%';
+  // pop
+  const pop=document.createElement('div');
+  pop.className='xp-pop';
+  pop.textContent='+'+pts+' XP';
+  const ref=el||document.body;
+  const r=ref.getBoundingClientRect?ref.getBoundingClientRect():{left:window.innerWidth/2,top:window.innerHeight/2,width:0};
+  pop.style.cssText=`left:${r.left+r.width/2-20}px;top:${r.top+window.scrollY-10}px;`;
+  document.body.appendChild(pop);
+  setTimeout(()=>pop.remove(),1050);
+  checkUnlocks();
 }
+
+// ═══════════════════════════════
+// TABS
+// ═══════════════════════════════
+function showTab(name){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  if(name==='vr'&&!vrInited) initVR();
+}
+
+// ═══════════════════════════════
+// BRAIN TEASERS
+// ═══════════════════════════════
+let puzzlesDone=0;
+let puzzleDone={};
+
+function toggleHint(id){ document.getElementById(id).classList.toggle('show'); }
+
+function chkMC(groupId,btn,result){
+  const group=document.getElementById(groupId);
+  if(group.querySelector('.correct,.wrong')) return;
+  group.querySelectorAll('.mc-btn').forEach(b=>b.classList.add('locked'));
+  const fbId='fb'+groupId.replace('mc','');
+  if(result==='c'){
+    btn.classList.add('correct');
+    showFB(fbId,'✅ Correct! Well done, storyteller. +30 XP','ok');
+    addXP(30,btn);
+    markPuzzle(groupId.replace('mc',''));
+  } else {
+    btn.classList.add('wrong');
+    showFB(fbId,'❌ Not quite — try the hint and think again.','err');
+    group.querySelectorAll('.mc-btn').forEach(b=>b.classList.remove('locked'));
+    btn.classList.add('locked');
+  }
+}
+
+function showFB(id,msg,cls){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.textContent=msg; el.className='p-fb show '+cls;
+}
+
+function markPuzzle(n){
+  if(puzzleDone[n]) return;
+  puzzleDone[n]=true; puzzlesDone++;
+  const fill=document.getElementById('p-fill');
+  const lbl=document.getElementById('p-count');
+  if(fill) fill.style.width=(puzzlesDone/6*100)+'%';
+  if(lbl) lbl.textContent=puzzlesDone;
+  document.getElementById('pc'+n)&&document.getElementById('pc'+n).classList.add('solved');
+}
+
+function chkSpine(){
+  const ids=['sp1','sp2','sp3','sp4','sp5','sp6'];
+  const filled=ids.filter(id=>document.getElementById(id).value.trim().length>3).length;
+  if(filled<4){showFB('fb2','⚠️ Fill in at least 4 lines to complete your story spine!','err');return;}
+  showFB('fb2','🌟 Story complete! Now read it aloud — that is the true test of a storyteller. +40 XP','ok');
+  addXP(40,document.getElementById('sp1'));
+  markPuzzle('2');
+}
+
+let selProv_id=null, provMatched=0;
+function selProv(el,id){
+  if(el.classList.contains('matched')) return;
+  document.querySelectorAll('.prov-item').forEach(i=>{if(!i.classList.contains('matched'))i.classList.remove('selected');});
+  selProv_id=id; el.classList.add('selected');
+}
+function matchProv(el,matchId){
+  if(!selProv_id) return;
+  if(el.classList.contains('matched')) return;
+  if(selProv_id===matchId){
+    el.classList.add('matched');
+    document.querySelector('[data-id="'+selProv_id+'"]').classList.remove('selected');
+    document.querySelector('[data-id="'+selProv_id+'"]').classList.add('matched');
+    provMatched++;
+    if(provMatched===4){showFB('fb3','🏆 All 4 proverbs matched! You know the wisdom of your ancestors. +50 XP','ok');addXP(50,el);markPuzzle('3');}
+  } else {
+    el.classList.add('mismatch');
+    setTimeout(()=>el.classList.remove('mismatch'),700);
+    showFB('fb3','↩ That pairing is off. Feel the meaning before matching.','err');
+  }
+  selProv_id=null;
+}
+
+// Rhythm
+const masterPat=[1,0,1,1,0,1,0,1];
+let playerTaps=[];
+let rhythmPlayingGlobal=false;
+function buildRhythmBeats(){
+  const m=document.getElementById('beats-master');
+  const p=document.getElementById('beats-player');
+  if(!m||!p) return;
+  m.innerHTML=''; p.innerHTML='';
+  masterPat.forEach(v=>{
+    const b=document.createElement('div');
+    b.className='beat'+(v?' strong':'');
+    b.textContent=v?'●':'○';
+    m.appendChild(b);
+  });
+  masterPat.forEach((_,i)=>{
+    const b=document.createElement('div');
+    b.className='beat'; b.textContent='○'; b.dataset.i=i;
+    p.appendChild(b);
+  });
+  playerTaps=[];
+}
+function doTap(){
+  if(playerTaps.length>=masterPat.length) return;
+  const i=playerTaps.length; playerTaps.push(1);
+  const beats=document.querySelectorAll('#beats-player .beat');
+  if(beats[i]){beats[i].classList.add('player');beats[i].textContent='●';}
+}
+function playRhythm(){
+  if(rhythmPlayingGlobal) return; rhythmPlayingGlobal=true;
+  const disp=document.getElementById('rdisp');
+  const beats=document.querySelectorAll('#beats-master .beat');
+  let i=0;
+  const iv=setInterval(()=>{
+    beats.forEach(b=>b.classList.remove('strong'));
+    if(i<masterPat.length){
+      beats[i].classList.add('strong');
+      if(disp) disp.textContent=masterPat[i]?'● STRONG BEAT':'○ rest';
+      i++;
+    } else {
+      clearInterval(iv);
+      beats.forEach(b=>{b.classList.remove('strong');if(b.dataset){b.className='beat'+(masterPat[parseInt(b.dataset.i||0)]?' strong':'');}});
+      if(disp) disp.textContent='Now tap it back!';
+      rhythmPlayingGlobal=false;
+    }
+  },480);
+}
+function chkRhythm(){
+  if(!playerTaps.length){showFB('fb4','Tap the button to record your rhythm first!','err');return;}
+  while(playerTaps.length<masterPat.length) playerTaps.push(0);
+  const matches=masterPat.filter((_,i)=>playerTaps[i]===masterPat[i]).length;
+  const pct=Math.round(matches/masterPat.length*100);
+  if(pct>=75){showFB('fb4','🎵 Great rhythm! '+pct+'% accurate. +25 XP','ok');addXP(25,document.getElementById('tap-btn')||document.body);markPuzzle('4');}
+  else showFB('fb4','Keep practising! '+pct+'% — play the pattern again then tap it back.','err');
+}
+function resetRhythm(){buildRhythmBeats();const d=document.getElementById('rdisp');if(d)d.textContent='Press PLAY to hear';document.getElementById('fb4').className='p-fb';}
+
+// ═══════════════════════════════
+// GAME LEVEL CONFIG
+// ═══════════════════════════════
+const gameLevels={
+  mancala:[
+    {lv:1,name:'Tutorial',desc:'Learn the basics. Seeds start at 4. No AI — just explore the board.',goal:'Score 10+ seeds in your store',xp:20},
+    {lv:2,name:'Beginner AI',desc:'Face a basic AI that plays randomly. Seeds start at 4.',goal:'Beat the AI (more seeds in your store)',xp:35},
+    {lv:3,name:'Intermediate AI',desc:'The AI now tries to land in its store for extra turns.',goal:'Win with 5+ more seeds than AI',xp:55},
+    {lv:4,name:'Advanced AI',desc:'AI looks 2 moves ahead. Seeds start at 6. Limited captures.',goal:'Win on a board with 6 seeds per pit',xp:80},
+    {lv:5,name:'Grandmaster',desc:'Full AI with capture strategy. Seeds at 8. AI goes for multi-turn chains.',goal:'Beat the Grandmaster AI',xp:120},
+  ],
+  diketo:[
+    {lv:1,name:'Pick 1 Stone',desc:'Click any stone to grab it, then Toss & Catch to score. Pick exactly 1 at a time.',goal:'Score 8 stones',xp:15},
+    {lv:2,name:'Pick 2 Stones',desc:'Select exactly 2 stones before tossing. Selecting wrong count loses a turn.',goal:'Score 10 stones (5 successful tosses of 2)',xp:25},
+    {lv:3,name:'Pick 3 Stones',desc:'Select exactly 3 stones. A 10-second timer starts when you begin selecting.',goal:'Score 12 stones within time',xp:40},
+    {lv:4,name:'Speed Round',desc:'8-second timer. Must pick 2–4 stones as the prompt changes each round.',goal:'Complete 8 successful tosses',xp:65},
+    {lv:5,name:'Eyes Closed Mode',desc:'Stones are hidden — you must pick by position memory from the previous layout.',goal:'Score 10 without seeing stone positions',xp:100},
+  ],
+  kgati:[
+    {lv:1,name:'Slow Rope',desc:'Rope swings slowly. Jump when the cue glows green. No penalty for mistiming.',goal:'10 successful jumps',xp:15},
+    {lv:2,name:'Faster Rope',desc:'Speed increases. Missing 2 in a row resets your streak bonus.',goal:'15 jumps with a max streak of 5',xp:28},
+    {lv:3,name:'Chant & Jump',desc:'A chant line appears — choose the correct next word AND jump in rhythm.',goal:'10 jumps + 5 correct chant words',xp:45},
+    {lv:4,name:'Trick Timing',desc:'Two jump cues appear — one is a fake. Jump only on the solid cue.',goal:'20 jumps, max 3 mistakes',xp:70},
+    {lv:5,name:'Lead the Chant',desc:'You choose the chant words. Build a 4-line story while jumping 25 times.',goal:'25 jumps + complete a 4-line chant story',xp:110},
+  ],
+  ncuva:[
+    {lv:1,name:'Place Pieces',desc:'Arrange your red pieces to form a line of 3. AI does not move yet.',goal:'Create a line of 3 red pieces',xp:15},
+    {lv:2,name:'Basic Capture',desc:'AI moves randomly. Surround an AI piece to capture it.',goal:'Capture 3 AI pieces',xp:30},
+    {lv:3,name:'Strategic Play',desc:'AI blocks your lines. You must capture more than AI within 20 moves.',goal:'Win the capture count in 20 moves',xp:50},
+    {lv:4,name:'Full Match',desc:'Smarter AI. 30 moves. AI will try to surround your pieces too.',goal:'Have more pieces at game end',xp:80},
+    {lv:5,name:'Grandmaster',desc:'No move hints. Full AI strategy. Narrate your move in the text box to earn bonus XP.',goal:'Beat the AI + narrate 3 moves',xp:120},
+  ]
+};
+
+let gameState={
+  mancala:{lv:1,unlocked:[1]},
+  diketo:{lv:1,unlocked:[1]},
+  kgati:{lv:1,unlocked:[1]},
+  ncuva:{lv:1,unlocked:[1]},
+};
+let gamesCompleted={mancala:[],diketo:[],kgati:[],ncuva:[]};
+
+function buildLevelSelector(game){
+  const el=document.getElementById(game.slice(0,3)+(game==='mancala'?'ancala':game==='diketo'?'ik':game==='kgati'?'ga':'cu')+'-levels');
+  // find the prefix
+  const prefixes={mancala:'man',diketo:'dik',kgati:'kga',ncuva:'ncu'};
+  const pre=prefixes[game];
+  const container=document.getElementById(pre+'-levels');
+  if(!container) return;
+  container.innerHTML='';
+  gameLevels[game].forEach(lvData=>{
+    const btn=document.createElement('button');
+    btn.className='lvl-btn'+(gameState[game].lv===lvData.lv?' active':'');
+    btn.setAttribute('data-lv',lvData.lv);
+    const unlocked=gameState[game].unlocked.includes(lvData.lv);
+    if(!unlocked) btn.classList.add('locked');
+    btn.innerHTML=`Lv ${lvData.lv}: ${lvData.name}${!unlocked?'<span class="lock-icon">🔒</span>':''}`;
+    btn.onclick=()=>{
+      if(!unlocked){alert('Complete Level '+(lvData.lv-1)+' first!');return;}
+      gameState[game].lv=lvData.lv;
+      buildLevelSelector(game);
+      updateLevelInfo(game);
+      window['init'+game.charAt(0).toUpperCase()+game.slice(1)]();
+    };
+    container.appendChild(btn);
+  });
+}
+
+function updateLevelInfo(game){
+  const prefixes={mancala:'man',diketo:'dik',kgati:'kga',ncuva:'ncu'};
+  const pre=prefixes[game];
+  const info=document.getElementById(pre+'-info');
+  if(!info) return;
+  const lvData=gameLevels[game][gameState[game].lv-1];
+  info.innerHTML=`<div class="level-info-title">Level ${lvData.lv}: ${lvData.name}</div>
+    <div class="level-info-desc">${lvData.desc}</div>
+    <span class="level-goal">🎯 Goal: ${lvData.goal}</span>`;
+}
+
+function completeLevel(game, el){
+  const lv=gameState[game].lv;
+  const lvData=gameLevels[game][lv-1];
+  if(gamesCompleted[game].includes(lv)) return;
+  gamesCompleted[game].push(lv);
+  addXP(lvData.xp,el||document.body);
+  // unlock next
+  if(lv<5&&!gameState[game].unlocked.includes(lv+1)){
+    gameState[game].unlocked.push(lv+1);
+  }
+  buildLevelSelector(game);
+  const prefixes={mancala:'man',diketo:'dik',kgati:'kga',ncuva:'ncu'};
+  const pre=prefixes[game];
+  const win=document.getElementById(pre+'-win');
+  document.getElementById(pre+'-win-title').textContent=lv===5?'🏆 MASTERED!':'Level '+lv+' Complete!';
+  document.getElementById(pre+'-win-msg').textContent=lv===5?
+    'You have mastered '+game+'! A true storyteller knows this game in their bones.':
+    'Excellent! Level '+(lv+1)+' is now unlocked.';
+  document.getElementById(pre+'-win-xp').textContent='+'+lvData.xp+' XP';
+  if(win) win.classList.add('show');
+  checkUnlocks();
+}
+
+function checkUnlocks(){
+  const allGames=['mancala','diketo','kgati','ncuva'];
+  const mastered=allGames.filter(g=>gamesCompleted[g].includes(5)).length;
+  document.getElementById('unlock-prog').textContent='Games mastered: '+mastered+' / 4';
+  if(mastered>=1) document.getElementById('unlock-cert').classList.add('earned');
+  if(mastered>=2) document.getElementById('unlock-story').classList.add('earned');
+  if(mastered>=3) document.getElementById('unlock-vr').classList.add('earned');
+  if(mastered>=4){
+    // show secret VR location
+    const sh=document.getElementById('secret-hs');
+    if(sh) sh.style.display='block';
+  }
+}
+
+// ═══════════════════════════════
+// MANCALA — REAL GAME
+// ═══════════════════════════════
+let manPits,manStores,manTurn,manMoving;
+function initMancala(){
+  document.getElementById('man-win').classList.remove('show');
+  const seeds=gameState.mancala.lv<=3?4:gameState.mancala.lv===4?6:8;
+  manPits={a:[...Array(6)].map(()=>seeds),b:[...Array(6)].map(()=>seeds)};
+  manStores={a:0,b:0}; manTurn='a'; manMoving=false;
+  updateLevelInfo('mancala');
+  renderMancala();
+  document.getElementById('man-msg').textContent="Your turn — click a pit on your row";
+}
+function renderMancala(){
+  const wrap=document.getElementById('mancala-wrap');
+  wrap.innerHTML='';
+  const row=document.createElement('div');
+  row.style.cssText='display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.8rem;flex-wrap:wrap;';
+  // Store B
+  const stB=document.createElement('div');
+  stB.className='man-store';
+  stB.innerHTML=`${manStores.b}<small>AI Store</small>`;
+  row.appendChild(stB);
+  // Board
+  const board=document.createElement('div');
+  board.style.cssText='display:flex;flex-direction:column;gap:.4rem;';
+  // Row B (opponent, reversed display)
+  const rowB=document.createElement('div');
+  rowB.style.cssText='display:flex;gap:.3rem;';
+  [...manPits.b].reverse().forEach((v,ri)=>{
+    const i=5-ri;
+    const pit=document.createElement('div');
+    pit.className='man-pit'+(v===0?' empty-pit':'');
+    pit.textContent=v;
+    pit.onclick=()=>{}; // AI row not clickable
+    rowB.appendChild(pit);
+  });
+  board.appendChild(rowB);
+  // Row A (player)
+  const rowA=document.createElement('div');
+  rowA.style.cssText='display:flex;gap:.3rem;';
+  manPits.a.forEach((v,i)=>{
+    const pit=document.createElement('div');
+    pit.className='man-pit'+(v===0?' empty-pit':'');
+    pit.textContent=v;
+    if(manTurn==='a'&&v>0&&!manMoving) pit.onclick=()=>sowMan('a',i);
+    rowA.appendChild(pit);
+  });
+  board.appendChild(rowA);
+  row.appendChild(board);
+  // Store A
+  const stA=document.createElement('div');
+  stA.className='man-store';
+  stA.innerHTML=`${manStores.a}<small>Your Store</small>`;
+  row.appendChild(stA);
+  wrap.appendChild(row);
+  document.getElementById('man-store-a').textContent=manStores.a;
+  document.getElementById('man-store-b').textContent=manStores.b;
+  document.getElementById('man-turn').textContent=manTurn==='a'?'You':'AI';
+}
+
+function sowMan(player,pitIdx){
+  if(manMoving) return;
+  let seeds=manPits[player][pitIdx];
+  if(seeds===0) return;
+  manMoving=true;
+  manPits[player][pitIdx]=0;
+  let cur=pitIdx; let side=player; let extraTurn=false;
+  while(seeds>0){
+    if(side===player){
+      cur++;
+      if(cur<6){manPits[side][cur]++;seeds--;}
+      else{
+        // own store
+        manStores[player]++;seeds--;
+        if(seeds===0){extraTurn=true;break;}
+        side=player==='a'?'b':'a'; cur=-1;
+      }
+    } else {
+      cur++;
+      if(cur<6){manPits[side][cur]++;seeds--;}
+      else{
+        // skip opponent store, switch back
+        side=player; cur=-1;
+      }
+    }
+  }
+  // capture: last seed in empty own pit
+  if(!extraTurn&&cur>=0&&cur<6&&side===player&&manPits[player][cur]===1){
+    const opp=player==='a'?'b':'a';
+    const oppIdx=5-cur;
+    if(manPits[opp][oppIdx]>0){
+      manStores[player]+=manPits[opp][oppIdx]+1;
+      manPits[opp][oppIdx]=0; manPits[player][cur]=0;
+    }
+  }
+  if(!extraTurn) manTurn=manTurn==='a'?'b':'a';
+  manMoving=false;
+  renderMancala();
+  checkManEnd();
+  if(manTurn==='b'&&!extraTurn) setTimeout(aiMancala,700);
+}
+
+function aiMancala(){
+  const lv=gameState.mancala.lv;
+  let choice=-1;
+  const validPits=manPits.b.map((v,i)=>v>0?i:-1).filter(i=>i>=0);
+  if(!validPits.length){checkManEnd();return;}
+  if(lv<=2){
+    // Random
+    choice=validPits[Math.floor(Math.random()*validPits.length)];
+  } else if(lv===3){
+    // Prefer landing in store (pit count = distance to store)
+    choice=validPits.find(i=>manPits.b[i]===(5-i))||validPits[Math.floor(Math.random()*validPits.length)];
+  } else {
+    // Lv 4-5: prefer most seeds
+    choice=validPits.reduce((best,i)=>manPits.b[i]>manPits.b[best]?i:best,validPits[0]);
+  }
+  sowMan('b',choice);
+}
+
+function checkManEnd(){
+  const aEmpty=manPits.a.every(v=>v===0);
+  const bEmpty=manPits.b.every(v=>v===0);
+  if(aEmpty||bEmpty){
+    manStores.a+=manPits.a.reduce((s,v)=>s+v,0);
+    manStores.b+=manPits.b.reduce((s,v)=>s+v,0);
+    manPits.a.fill(0); manPits.b.fill(0);
+    renderMancala();
+    const win=manStores.a>manStores.b;
+    const lv=gameState.mancala.lv;
+    const margin=manStores.a-manStores.b;
+    let passed=false;
+    if(lv===1&&manStores.a>=10) passed=true;
+    else if(lv===2&&win) passed=true;
+    else if(lv===3&&win&&margin>=5) passed=true;
+    else if(lv>=4&&win) passed=true;
+    if(passed) completeLevel('mancala',document.getElementById('mancala-wrap'));
+    else document.getElementById('man-msg').textContent=win?'You won but didn\'t meet the goal. Try again!':'AI won. Try again!';
+  }
+}
+function manNextLevel(){
+  document.getElementById('man-win').classList.remove('show');
+  if(gameState.mancala.lv<5){gameState.mancala.lv++;initMancala();}
+}
+
+// ═══════════════════════════════
+// DIKETO — REAL LEVELS
+// ═══════════════════════════════
+let dikScore=0,dikTarget=0,dikTimeLeft=0,dikTimer=null,dikLvData=null,dikSelected=[],dikPhase='select';
+function initDiketo(){
+  document.getElementById('dik-win').classList.remove('show');
+  if(dikTimer) clearInterval(dikTimer);
+  dikLvData=gameLevels.diketo[gameState.diketo.lv-1];
+  dikScore=0; dikSelected=[]; dikPhase='select';
+  dikTarget=[0,8,10,12,8,10][gameState.diketo.lv];
+  document.getElementById('dik-score').textContent=0;
+  document.getElementById('dik-target').textContent=dikTarget;
+  document.getElementById('dik-timer').textContent=gameState.diketo.lv>=3?'Ready':'—';
+  document.getElementById('dik-msg').textContent='Select exactly '+(gameState.diketo.lv<=3?gameState.diketo.lv:'2–4')+' stone(s) then Toss!';
+  updateLevelInfo('diketo');
+  renderDiketo();
+}
+function renderDiketo(){
+  const wrap=document.getElementById('diketo-wrap');
+  wrap.innerHTML='';
+  const count=gameState.diketo.lv===5?0:18;
+  for(let i=0;i<count;i++){
+    const s=document.createElement('div');
+    s.className='stone'; s.dataset.i=i;
+    s.onclick=()=>toggleStone(s,i);
+    wrap.appendChild(s);
+  }
+  if(gameState.diketo.lv===5){
+    const msg=document.createElement('div');
+    msg.style.cssText='color:rgba(255,248,238,.5);font-family:"DM Mono",monospace;font-size:.7rem;letter-spacing:.1em;text-align:center;padding:2rem;width:100%;';
+    msg.textContent='LEVEL 5: Stones are hidden. Type how many to pick then Toss!';
+    const inp=document.createElement('input');
+    inp.type='number';inp.id='dik-blind-count';inp.min=1;inp.max=5;
+    inp.style.cssText='width:80px;padding:.5rem;font-size:1.2rem;text-align:center;margin-top:.5rem;';
+    inp.placeholder='1-5';
+    wrap.appendChild(msg); wrap.appendChild(inp);
+  }
+}
+function toggleStone(el,i){
+  if(dikSelected.includes(i)){dikSelected=dikSelected.filter(x=>x!==i);el.classList.remove('grabbed');}
+  else{dikSelected.push(i);el.classList.add('grabbed');}
+}
+function dikStart(){
+  const lv=gameState.diketo.lv;
+  const required=lv<=3?lv:null; // lv4=2-4, lv5=blind
+  let count=lv===5?(parseInt(document.getElementById('dik-blind-count')?.value)||1):dikSelected.length;
+  if(required&&count!==required){
+    document.getElementById('dik-msg').textContent='⚠️ You must select exactly '+required+' stone(s)!';
+    return;
+  }
+  if(lv===4&&(count<2||count>4)){document.getElementById('dik-msg').textContent='⚠️ Select 2–4 stones!';return;}
+  // animate scored
+  dikSelected.forEach(i=>{
+    const s=document.querySelector(`.stone[data-i="${i}"]`);
+    if(s){s.classList.add('scored');setTimeout(()=>{if(s.parentNode)s.remove();},420);}
+  });
+  dikScore+=count;
+  dikSelected=[];
+  document.getElementById('dik-score').textContent=dikScore;
+  document.getElementById('dik-msg').textContent='✓ Caught! Score: '+dikScore+' / '+dikTarget;
+  addXP(count,document.getElementById('diketo-wrap'));
+  // timer for lv 3+
+  if((lv===3||lv===4)&&!dikTimer){
+    dikTimeLeft=lv===3?30:25;
+    document.getElementById('dik-timer').textContent=dikTimeLeft+'s';
+    dikTimer=setInterval(()=>{
+      dikTimeLeft--;
+      document.getElementById('dik-timer').textContent=dikTimeLeft+'s';
+      if(dikTimeLeft<=0){clearInterval(dikTimer);dikTimer=null;checkDikEnd(true);}
+    },1000);
+  }
+  setTimeout(()=>{renderDiketo();},450);
+  checkDikEnd(false);
+}
+function checkDikEnd(timeUp){
+  if(dikScore>=dikTarget){
+    if(dikTimer){clearInterval(dikTimer);dikTimer=null;}
+    completeLevel('diketo',document.getElementById('diketo-wrap'));
+  } else if(timeUp&&dikScore<dikTarget){
+    document.getElementById('dik-msg').textContent='Time up! Score: '+dikScore+'/'+dikTarget+'. Try again!';
+  }
+}
+function dikNextLevel(){
+  document.getElementById('dik-win').classList.remove('show');
+  if(gameState.diketo.lv<5){gameState.diketo.lv++;initDiketo();}
+}
+
+// ═══════════════════════════════
+// KGATI — REAL LEVELS
+// ═══════════════════════════════
+let kgaJumps=0,kgaStreak=0,kgaTarget=0,kgaCueActive=false,kgaCueTimer=null,kgaInterval=null;
+let kgaChantWords=[],kgaChantCorrect=0,kgaStoryLines=[];
+const kgaChants=[
+  {line:'"Kgati e bina…"', options:['re bina le yona','re robala ka yona','re ja ka yona'], correct:0},
+  {line:'"Jump high…"', options:['jump low','jump left','jump away'], correct:0},
+  {line:'"One for the chief…"', options:['two for the rain','two for the sun','two for the sky'], correct:0},
+  {line:'"The rope sings…"', options:['what the mouth cannot say','what the drum cannot play','what the fire cannot show'], correct:0},
+  {line:'"A good jump…"', options:['starts with listening','starts with running','starts with sleeping'], correct:0},
+];
+function initKgati(){
+  document.getElementById('kga-win').classList.remove('show');
+  if(kgaInterval) clearInterval(kgaInterval);
+  if(kgaCueTimer) clearTimeout(kgaCueTimer);
+  const lv=gameState.kgati.lv;
+  kgaJumps=0; kgaStreak=0; kgaChantCorrect=0; kgaStoryLines=[];
+  kgaTarget=gameLevels.kgati[lv-1].goal.match(/\d+/)[0]*1;
+  document.getElementById('kga-jumps').textContent=0;
+  document.getElementById('kga-target').textContent=kgaTarget;
+  document.getElementById('kga-streak').textContent=0;
+  document.getElementById('kga-score-d').textContent=0;
+  const speeds=[null,1400,900,700,550,450];
+  const cue=document.getElementById('kga-cue');
+  updateLevelInfo('kgati');
+  // Start rope swing interval
+  let ropeRight=true;
+  const rope=document.getElementById('kga-rope');
+  kgaInterval=setInterval(()=>{
+    if(rope){rope.style.transform=ropeRight?'rotate(12deg) scaleY(1.08)':'rotate(-12deg) scaleY(.92)';}
+    ropeRight=!ropeRight;
+    // show cue
+    if(cue){cue.textContent='▶ JUMP NOW!';cue.style.color='var(--gold)';}
+    if(kgaCueTimer) clearTimeout(kgaCueTimer);
+    kgaCueTimer=setTimeout(()=>{
+      if(cue){cue.textContent='Wait…';cue.style.color='rgba(255,255,255,.3)';}
+    },lv===4?300:450);
+  },speeds[lv]);
+  // Lv 3 chant
+  if(lv===3) showChantPrompt();
+}
+function doJump(){
+  const lv=gameState.kgati.lv;
+  const cue=document.getElementById('kga-cue');
+  const isCueActive=cue&&cue.textContent.includes('▶');
+  const fig=document.getElementById('kga-fig');
+  if(fig){fig.style.transform='translateY(-55px)';setTimeout(()=>{fig.style.transform='';},280);}
+  if(lv===4&&!isCueActive){
+    // fake cue — penalise
+    kgaStreak=0;
+    document.getElementById('kga-streak').textContent=0;
+    document.getElementById('kga-chant').textContent='Mistimed! Wait for the SOLID cue.';
+    return;
+  }
+  kgaJumps++;kgaStreak++;
+  document.getElementById('kga-jumps').textContent=kgaJumps;
+  document.getElementById('kga-score-d').textContent=kgaJumps;
+  document.getElementById('kga-streak').textContent=kgaStreak;
+  addXP(2,document.getElementById('kga-score-d'));
+  // chants
+  const chantLines=['"Kgati e bina, re bina le yona!"','"Jump high, jump low, the rope remembers!"','"One for the chief, two for the rain!"','"The rope sings what the mouth cannot say."','"A good jump starts with listening."'];
+  document.getElementById('kga-chant').textContent=chantLines[kgaJumps%chantLines.length];
+  // check lv3 chant + lv5 story
+  if(lv===3&&kgaJumps%3===0) showChantPrompt();
+  if(lv===5&&kgaJumps%5===0) showStoryLinePrompt();
+  checkKgaEnd();
+}
+function showChantPrompt(){
+  const idx=kgaChantCorrect%kgaChants.length;
+  const ch=kgaChants[idx];
+  const chant=document.getElementById('kga-chant');
+  if(!chant) return;
+  chant.innerHTML=ch.line+'<br>'+ch.options.map((o,i)=>`<button onclick="chkChant(${i},${idx})" style="margin:.2rem;padding:.2rem .6rem;background:var(--indigo);color:var(--cream);border:none;cursor:pointer;font-size:.7rem;">${o}</button>`).join('');
+}
+function chkChant(chosen,idx){
+  const ch=kgaChants[idx];
+  if(chosen===ch.correct){kgaChantCorrect++;addXP(5,document.getElementById('kga-chant'));document.getElementById('kga-chant').textContent='✓ Correct chant! Keep jumping!';}
+  else{document.getElementById('kga-chant').textContent='❌ Wrong word. Listen to the rhythm!';}
+}
+function showStoryLinePrompt(){
+  const lines=['Set the scene of your story:','Introduce your character:','What did they discover?','What lesson did they learn?'];
+  const idx=Math.min(kgaStoryLines.length,3);
+  const chant=document.getElementById('kga-chant');
+  if(!chant) return;
+  chant.innerHTML=lines[idx]+'<input id="kga-story-inp" style="width:100%;padding:.3rem;margin-top:.3rem;font-size:.8rem;" placeholder="Type your story line..."><button onclick="submitStoryLine()" style="margin-top:.3rem;padding:.2rem .6rem;background:var(--gold);border:none;cursor:pointer;font-size:.7rem;color:var(--maroon);">Add Line</button>';
+}
+function submitStoryLine(){
+  const inp=document.getElementById('kga-story-inp');
+  if(!inp||!inp.value.trim()) return;
+  kgaStoryLines.push(inp.value.trim());
+  addXP(8,document.getElementById('kga-chant'));
+  document.getElementById('kga-chant').textContent='Line '+kgaStoryLines.length+' added! Keep jumping!';
+}
+function checkKgaEnd(){
+  const lv=gameState.kgati.lv;
+  let passed=false;
+  if(lv===1&&kgaJumps>=10) passed=true;
+  else if(lv===2&&kgaJumps>=15&&kgaStreak>=5) passed=true;
+  else if(lv===3&&kgaJumps>=10&&kgaChantCorrect>=5) passed=true;
+  else if(lv===4&&kgaJumps>=20) passed=true;
+  else if(lv===5&&kgaJumps>=25&&kgaStoryLines.length>=4) passed=true;
+  if(passed){
+    if(kgaInterval){clearInterval(kgaInterval);kgaInterval=null;}
+    completeLevel('kgati',document.getElementById('kgati-wrap'));
+  }
+}
+function kgaNextLevel(){
+  document.getElementById('kga-win').classList.remove('show');
+  if(gameState.kgati.lv<5){gameState.kgati.lv++;initKgati();}
+}
+
+// ═══════════════════════════════
+// NCUVA — REAL LEVELS
+// ═══════════════════════════════
+let ncuBoard=[],ncuSelected=null,ncuMoves=0,ncuMaxMoves=0,ncuTurn='player';
+const ROWS=4,COLS=8;
+function initNcuva(){
+  document.getElementById('ncu-win').classList.remove('show');
+  const lv=gameState.ncuva.lv;
+  ncuMoves=0; ncuSelected=null; ncuTurn='player';
+  ncuMaxMoves=lv<=2?999:lv===3?20:lv===4?30:40;
+  ncuBoard=[];
+  for(let r=0;r<ROWS;r++){
+    ncuBoard.push([]);
+    for(let c=0;c<COLS;c++){
+      if(r<2) ncuBoard[r].push('b');
+      else ncuBoard[r].push('a');
+    }
+  }
+  updateLevelInfo('ncuva');
+  renderNcuva();
+  document.getElementById('ncu-msg').textContent='Click a red 🔴 piece to select it.';
+  document.getElementById('ncu-turn').textContent='You';
+  updateNcuScores();
+}
+function updateNcuScores(){
+  let a=0,b=0;
+  ncuBoard.forEach(row=>row.forEach(c=>{if(c==='a')a++;if(c==='b')b++;}));
+  document.getElementById('ncu-score-a').textContent=a;
+  document.getElementById('ncu-score-b').textContent=b;
+}
+function renderNcuva(){
+  const grid=document.getElementById('ncuva-grid');
+  if(!grid) return;
+  grid.style.gridTemplateColumns=`repeat(${COLS},1fr)`;
+  grid.innerHTML='';
+  for(let r=0;r<ROWS;r++){
+    for(let c=0;c<COLS;c++){
+      const cell=document.createElement('div');
+      const v=ncuBoard[r][c];
+      cell.className='ncuva-cell'+(v==='a'?' pa':v==='b'?' pb':'');
+      if(ncuSelected&&ncuSelected[0]===r&&ncuSelected[1]===c) cell.classList.add('selected');
+      // show valid moves
+      if(ncuSelected&&isValidMove(ncuSelected[0],ncuSelected[1],r,c)&&!v) cell.classList.add('valid-move');
+      cell.textContent=v==='a'?'🔴':v==='b'?'🔵':'·';
+      cell.onclick=()=>ncuClick(r,c);
+      grid.appendChild(cell);
+    }
+  }
+}
+function isValidMove(fr,fc,tr,tc){
+  return Math.abs(tr-fr)<=1&&Math.abs(tc-fc)<=1&&!(tr===fr&&tc===fc);
+}
+function ncuClick(r,c){
+  if(ncuTurn!=='player') return;
+  const lv=gameState.ncuva.lv;
+  if(ncuBoard[r][c]==='a'){
+    ncuSelected=[r,c];
+    renderNcuva();
+    document.getElementById('ncu-msg').textContent='Selected! Move to a highlighted cell.';
+  } else if(ncuSelected&&isValidMove(ncuSelected[0],ncuSelected[1],r,c)&&!ncuBoard[r][c]){
+    ncuBoard[r][c]='a';
+    ncuBoard[ncuSelected[0]][ncuSelected[1]]='';
+    ncuMoves++;
+    ncuSelected=null;
+    // capture adjacent
+    if(lv>=2) ncuCapture(r,c,'a');
+    renderNcuva();
+    updateNcuScores();
+    checkNcuEnd();
+    // AI turn
+    if(lv>=2){
+      ncuTurn='ai';
+      document.getElementById('ncu-turn').textContent='AI';
+      setTimeout(aiNcuva,600);
+    }
+  } else {
+    ncuSelected=null; renderNcuva();
+  }
+}
+function ncuCapture(r,c,player){
+  const opp=player==='a'?'b':'a';
+  [[-1,0],[1,0],[0,-1],[0,1]].forEach(([dr,dc])=>{
+    const nr=r+dr,nc=c+dc;
+    if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS&&ncuBoard[nr][nc]===opp){
+      // check if surrounded
+      const surrounded=[[nr-1,nc],[nr+1,nc],[nr,nc-1],[nr,nc+1]].every(([rr,cc])=>{
+        if(rr<0||rr>=ROWS||cc<0||cc>=COLS) return true;
+        return ncuBoard[rr][cc]===player||ncuBoard[rr][cc]==='';
+      });
+      if(surrounded){ncuBoard[nr][nc]='';addXP(5,document.getElementById('ncuva-grid'));}
+    }
+  });
+}
+function aiNcuva(){
+  const lv=gameState.ncuva.lv;
+  const bPieces=[];
+  ncuBoard.forEach((row,r)=>row.forEach((v,c)=>{if(v==='b')bPieces.push([r,c]);}));
+  if(!bPieces.length){checkNcuEnd();return;}
+  // Find moves
+  let moved=false;
+  if(lv>=3){
+    // Try to capture
+    for(const [r,c] of bPieces){
+      for(const [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]]){
+        const nr=r+dr,nc=c+dc;
+        if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS&&!ncuBoard[nr][nc]){
+          ncuBoard[nr][nc]='b';ncuBoard[r][c]='';
+          ncuCapture(nr,nc,'b');moved=true;break;
+        }
+      }
+      if(moved) break;
+    }
+  }
+  if(!moved){
+    const [r,c]=bPieces[Math.floor(Math.random()*bPieces.length)];
+    const dirs=[[-1,0],[1,0],[0,-1],[0,1],[-1,-1],[-1,1],[1,-1],[1,1]];
+    for(const [dr,dc] of dirs.sort(()=>Math.random()-.5)){
+      const nr=r+dr,nc=c+dc;
+      if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS&&!ncuBoard[nr][nc]){
+        ncuBoard[nr][nc]='b';ncuBoard[r][c]='';moved=true;break;
+      }
+    }
+  }
+  ncuMoves++;
+  renderNcuva();
+  updateNcuScores();
+  ncuTurn='player';
+  document.getElementById('ncu-turn').textContent='You';
+  checkNcuEnd();
+}
+function checkNcuEnd(){
+  const lv=gameState.ncuva.lv;
+  let a=0,b=0;
+  ncuBoard.forEach(row=>row.forEach(v=>{if(v==='a')a++;if(v==='b')b++;}));
+  let passed=false;
+  if(lv===1){
+    // check line of 3
+    for(let r=0;r<ROWS;r++) for(let c=0;c<COLS-2;c++) if(ncuBoard[r][c]==='a'&&ncuBoard[r][c+1]==='a'&&ncuBoard[r][c+2]==='a') passed=true;
+    for(let c=0;c<COLS;c++) for(let r=0;r<ROWS-2;r++) if(ncuBoard[r][c]==='a'&&ncuBoard[r+1][c]==='a'&&ncuBoard[r+2][c]==='a') passed=true;
+  } else if(lv===2){passed=b<=ROWS*COLS/2-3;}
+  else if(lv===3){passed=a>b&&ncuMoves<=20;}
+  else if(lv>=4){if(ncuMoves>=ncuMaxMoves) passed=a>b;}
+  if(passed) completeLevel('ncuva',document.getElementById('ncuva-grid'));
+  else if(ncuMoves>=ncuMaxMoves&&lv>=3&&!passed) document.getElementById('ncu-msg').textContent='Move limit reached. AI had more pieces. Try again!';
+}
+function ncuNextLevel(){
+  document.getElementById('ncu-win').classList.remove('show');
+  if(gameState.ncuva.lv<5){gameState.ncuva.lv++;initNcuva();}
+}
+
+// ═══════════════════════════════
+// GAME PANEL SWITCHING
+// ═══════════════════════════════
+function showGame(name,evt){
+  document.querySelectorAll('.game-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.g-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('gp-'+name).classList.add('active');
+  if(evt&&evt.target) evt.target.classList.add('active');
+  buildLevelSelector(name);
+  updateLevelInfo(name);
+  if(name==='mancala') initMancala();
+  else if(name==='diketo') initDiketo();
+  else if(name==='kgati') initKgati();
+  else if(name==='ncuva') initNcuva();
+}
+
+// ═══════════════════════════════
+// INSTRUMENTS
+// ═══════════════════════════════
+function toggleInst(id){
+  const body=document.getElementById('ib-'+id);
+  const card=body.closest('.inst-card');
+  const isOpen=body.classList.contains('open');
+  document.querySelectorAll('.inst-body').forEach(b=>b.classList.remove('open'));
+  document.querySelectorAll('.inst-card').forEach(c=>c.classList.remove('open'));
+  if(!isOpen){body.classList.add('open');card.classList.add('open');addXP(10,card);}
+}
+let rhTimers={};
+function playRhPattern(id,btn){
+  if(rhTimers[id]){clearInterval(rhTimers[id]);delete rhTimers[id];
+    document.querySelectorAll('#'+id+' .rb').forEach(b=>b.classList.remove('lit'));
+    btn.textContent=btn.textContent.replace('■','▶');return;}
+  const beats=document.querySelectorAll('#'+id+' .rb');
+  let i=0;
+  btn.textContent=btn.textContent.replace('▶','■');
+  rhTimers[id]=setInterval(()=>{
+    beats.forEach(b=>b.classList.remove('lit'));
+    if(i<beats.length){beats[i].classList.add('lit');i++;}
+    else{clearInterval(rhTimers[id]);delete rhTimers[id];
+      btn.textContent=btn.textContent.replace('■','▶');}
+  },370);
+}
+
+// ═══════════════════════════════
+// VR VILLAGE
+// ═══════════════════════════════
+const vrStories={
+  fire:{icon:'🔥',title:'The Story Fire',
+    text:'In every African village, the fire is the storyteller\'s stage. Children gather as the sun falls, and the griot waits for silence before speaking. The fire does not just give light — it gives permission. When the fire burns, stories may be told. When it dies, the session ends. The fire is both clock and altar.',
+    lesson:'"A story told without fire is a seed planted without water." — Zulu proverb.\n\nLesson: Great stories need the right environment and the right moment.',xp:25},
+  baobab:{icon:'🌳',title:'The Elder Baobab',
+    text:'The baobab is called the Tree of Life — and the Tree of Stories. It lives for thousands of years and has heard every story ever told beneath it. To sit beneath a baobab is to sit in the presence of all stories that came before yours. Many storytellers begin: "The baobab has seen what I will now tell you…"',
+    lesson:'"The baobab does not brag about its height — it simply holds the stories in its roots."\n\nLesson: A great storyteller\'s depth speaks for them. They do not shout.',xp:20},
+  hut:{icon:'🏠',title:"The Storyteller's Hut",
+    text:"The griot's hut is the village library — but nothing is written. Everything lives in memory, voice, and gesture. Inside: a drum worn smooth by decades of hands; a calabash holding the names of every ancestor seven generations back; feathers used as story props; and sometimes — silence. Because the greatest storytellers know that silence is the most powerful word.",
+    lesson:'"The mouth is small, but the stories it holds are larger than any house."\n\nLesson: What a storyteller carries inside — memory, empathy, observation — is their true instrument.',xp:20},
+  stars:{icon:'⭐',title:'The Star Map',
+    text:'Before maps existed, African navigators and storytellers read the stars. The Pleiades told farmers when to plant. The Southern Cross showed direction. But stories gave the stars their names — and their names gave the stars their meaning. The Zulu call the Milky Way "Umthala weZinkanyezi" — the trail of the stars. The Khoi said it was the spine of the night.',
+    lesson:'"When you know the story of a star, you will never be lost."\n\nLesson: Stories are navigation tools. They tell us who we are and where we come from.',xp:30},
+  drum:{icon:'🥁',title:'The Drum Circle',
+    text:'The drum speaks language. The "talking drum" can mimic spoken tones so accurately that messages were sent kilometres between villages. In a storytelling session, different patterns signal: "A new character appears." "Danger is coming." "This is the lesson." "Applaud now." The audience learned to understand the drum as a second narrator.',
+    lesson:'"The drum speaks what the mouth fears to say."\n\nLesson: Use all instruments of expression — voice, pause, gesture, rhythm. Not just words.',xp:25},
+  calabash:{icon:'🫙',title:'The Calabash of Wisdom',
+    text:'The calabash — a hollowed gourd — carries water, seeds, medicine. But in storytelling, it carries something invisible: wisdom. When an elder in a story gives a calabash to the young hero, it always contains a hidden truth. The calabash IS the story itself: on the outside, simple and ordinary. Inside — everything you need to survive.',
+    lesson:'"Do not judge the calabash by its outside."\n\nLesson: Every person carries a story more rich than their surface suggests. A great storyteller reveals what others overlook.',xp:30},
+  secret:{icon:'✨',title:'The Secret Grove — Dr. Sasa\'s Story',
+    text:'You have unlocked Dr. Sasa\'s Bonus Story!\n\n"There was a girl who was told she could not be a storyteller because she was too quiet. She said nothing. She went into the forest, sat beneath the oldest baobab, and listened for seven days. On the eighth day she came back and told a story so complete that it contained all the silences of the seven days within it. And the village understood — at last — that the best stories are not made by loud voices. They are made by listening."',
+    lesson:'"The story was already there. I just became quiet enough to hear it." — Dr. Nomsa Mdlalose\n\nThis is the lesson of Kwa Sukela: before you speak, learn to listen.',xp:100},
+};
+let modalVisited={};
+function openModal(key){
+  const d=vrStories[key];
+  document.getElementById('m-icon').textContent=d.icon;
+  document.getElementById('m-title').textContent=d.title;
+  document.getElementById('m-text').textContent=d.text;
+  document.getElementById('m-lesson').textContent=d.lesson;
+  document.getElementById('m-xp').textContent='+'+d.xp+' XP earned';
+  document.getElementById('vr-modal').classList.add('open');
+  if(!modalVisited[key]){addXP(d.xp,document.getElementById('vr-modal'));modalVisited[key]=true;}
+}
+function closeModal(){document.getElementById('vr-modal').classList.remove('open');}
+
+// THREE.JS
+let vrInited=false,vrRenderer,vrCamera,vrScene,vrCamAngle=0,vrTime=0;
+function initVR(){
+  if(vrInited) return; vrInited=true;
+  const canvas=document.getElementById('vr-canvas');
+  const W=canvas.parentElement.clientWidth,H=canvas.parentElement.clientHeight;
+  vrScene=new THREE.Scene();
+  vrScene.background=new THREE.Color(0x160803);
+  vrScene.fog=new THREE.Fog(0x160803,20,38);
+  vrCamera=new THREE.PerspectiveCamera(72,W/H,0.1,1000);
+  vrCamera.position.set(0,3,13);vrCamera.lookAt(0,1.5,0);
+  vrRenderer=new THREE.WebGLRenderer({canvas,antialias:true});
+  vrRenderer.setSize(W,H);vrRenderer.shadowMap.enabled=true;
+  vrRenderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  // Lights
+  vrScene.add(new THREE.AmbientLight(0xFF6B35,.35));
+  const fireL=new THREE.PointLight(0xFF4500,3,14,2);fireL.position.set(0,.9,0);vrScene.add(fireL);
+  const moon=new THREE.DirectionalLight(0x4466AA,.4);moon.position.set(-6,10,-5);vrScene.add(moon);
+  // Ground
+  const gnd=new THREE.Mesh(new THREE.PlaneGeometry(50,50),new THREE.MeshLambertMaterial({color:0x4A2810}));
+  gnd.rotation.x=-Math.PI/2;vrScene.add(gnd);
+  const circ=new THREE.Mesh(new THREE.CircleGeometry(5.5,32),new THREE.MeshLambertMaterial({color:0x6A3820}));
+  circ.rotation.x=-Math.PI/2;circ.position.y=.01;vrScene.add(circ);
+  // Fire
+  [[.2,.6,0xFF4500],[.13,.85,0xFF8C00],[.06,.55,0xFFD700]].forEach(([r,h,col],i)=>{
+    const f=new THREE.Mesh(new THREE.ConeGeometry(r,h,8),new THREE.MeshBasicMaterial({color:col}));
+    f.position.set((i-.9)*.13,h/2,0);vrScene.add(f);
+  });
+  for(let i=0;i<4;i++){
+    const log=new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,.9,8),new THREE.MeshLambertMaterial({color:0x2A1000}));
+    log.rotation.z=Math.PI/2;log.rotation.y=i*Math.PI/4;
+    log.position.set(Math.cos(i*Math.PI/2)*.28,.06,Math.sin(i*Math.PI/2)*.28);vrScene.add(log);
+  }
+  // Baobab
+  const tMat=new THREE.MeshLambertMaterial({color:0x4A2810});
+  const trunk=new THREE.Mesh(new THREE.CylinderGeometry(.45,.6,4,10),tMat);
+  trunk.position.set(-5.5,2,-3.5);vrScene.add(trunk);
+  const crown=new THREE.Mesh(new THREE.SphereGeometry(2,10,10),new THREE.MeshLambertMaterial({color:0x1F3A12}));
+  crown.position.set(-5.5,5.2,-3.5);vrScene.add(crown);
+  for(let i=0;i<5;i++){
+    const br=new THREE.Mesh(new THREE.CylinderGeometry(.06,.13,1.3,6),tMat);
+    br.position.set(-5.5+Math.cos(i*1.26)*.9,3.6,-3.5+Math.sin(i*1.26)*.9);
+    br.rotation.z=Math.cos(i*1.26)*.6;vrScene.add(br);
+  }
+  // Huts
+  [[5,0,-2],[6.5,0,1.5],[5.2,0,4]].forEach(([x,y,z])=>{
+    const walls=new THREE.Mesh(new THREE.CylinderGeometry(.95,1.1,1.7,12),new THREE.MeshLambertMaterial({color:0xC08050}));
+    walls.position.set(x,.85,z);vrScene.add(walls);
+    const roof=new THREE.Mesh(new THREE.ConeGeometry(1.4,1.4,12),new THREE.MeshLambertMaterial({color:0x7A4A20}));
+    roof.position.set(x,2.3,z);vrScene.add(roof);
+  });
+  // People
+  [[1.8,0,2.2],[-1.8,0,2.2],[2.3,0,-.4],[-2.3,0,-.4],[0,0,3.2],[1,0,-1.2],[-1,0,-1.2],[0,0,-.8]].forEach(([x,y,z])=>{
+    const hue=Math.random()*60+10;
+    const body=new THREE.Mesh(new THREE.CylinderGeometry(.12,.18,.5,8),new THREE.MeshLambertMaterial({color:new THREE.Color(`hsl(${hue},55%,${28+Math.random()*18}%)`)}));
+    body.position.set(x,.25,z);vrScene.add(body);
+    const head=new THREE.Mesh(new THREE.SphereGeometry(.13,8,8),new THREE.MeshLambertMaterial({color:new THREE.Color().setHSL(.07,.4,.32+Math.random()*.12)}));
+    head.position.set(x,.68,z);vrScene.add(head);
+  });
+  // Drums
+  [[-1.4,0,1.8],[1.6,0,2]].forEach(([x,y,z])=>{
+    const d=new THREE.Mesh(new THREE.CylinderGeometry(.19,.15,.52,12),new THREE.MeshLambertMaterial({color:0x6A2E00}));
+    d.position.set(x,.26,z);vrScene.add(d);
+    const dh=new THREE.Mesh(new THREE.CircleGeometry(.19,12),new THREE.MeshLambertMaterial({color:0xBE9060}));
+    dh.rotation.x=-Math.PI/2;dh.position.set(x,.53,z);vrScene.add(dh);
+  });
+  // Stars
+  const sv=[];for(let i=0;i<900;i++) sv.push((Math.random()-.5)*70,(Math.random()*18+6),(Math.random()-.5)*70);
+  const sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.Float32BufferAttribute(sv,3));
+  vrScene.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0xFFFFCC,size:.07})));
+  vrAnimate();
+}
+function vrAnimate(){
+  requestAnimationFrame(vrAnimate);vrTime+=.016;
+  const fl=vrScene.children.find(c=>c.isPointLight);
+  if(fl) fl.intensity=2.5+Math.sin(vrTime*9)*.5+Math.random()*.25;
+  vrCamera.position.x=Math.sin(vrCamAngle)*13;
+  vrCamera.position.z=Math.cos(vrCamAngle)*13;
+  vrCamera.position.y=3+Math.sin(vrTime*.4)*.07;
+  vrCamera.lookAt(0,1.5,0);
+  vrRenderer.render(vrScene,vrCamera);
+}
+function rotateCam(d){vrCamAngle+=d*.14;}
+function resetCam(){vrCamAngle=0;}
+window.addEventListener('resize',()=>{
+  if(!vrRenderer) return;
+  const c=document.getElementById('vr-container');
+  vrCamera.aspect=c.clientWidth/c.clientHeight;vrCamera.updateProjectionMatrix();
+  vrRenderer.setSize(c.clientWidth,c.clientHeight);
+});
+
+// ═══════════════════════════════
+// INIT
+// ═══════════════════════════════
+window.addEventListener('load',()=>{
+  buildRhythmBeats();
+  // init all game level selectors
+  ['mancala','diketo','kgati','ncuva'].forEach(g=>{buildLevelSelector(g);updateLevelInfo(g);});
+  initMancala();
+  initDiketo();
+  initKgati();
+  initNcuva();
+  toggleInst('djembe');
+});
 </script>
 </body>
 </html>
