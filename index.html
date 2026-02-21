@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kwa Sukela Storytelling Academy</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, #450a0a 0%, #7F1D1D 45%, #0c2d4a 100%);
+  padding: 6rem 2rem 5rem; color: #fff; position: relative; overflow: hidden;
+}
+.hero::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 80% 50%, rgba(249,115,22,.12), transparent 55%);
+}
+.hero-grid { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1fr 440px; gap: 4rem; align-items: center; position: relative; z-index: 1; }
+.hero-pill { display: inline-flex; align-items: center; gap: .45rem; background: rgba(249,115,22,.18); border: 1px solid rgba(249,115,22,.35); color: #FED7AA; font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: .3rem .85rem; border-radius: 999px; margin-bottom: 1.2rem; }
+.hero-h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 900; line-height: .95; margin-bottom: 1.2rem; }
+.hero-h1 em { color: #FCD34D; font-style: italic; display: block; }
+.hero-sub { font-size: 1.05rem; color: rgba(255,255,255,.7); line-height: 1.8; max-width: 480px; margin-bottom: 2rem; }
+.hero-actions { display: flex; gap: .9rem; flex-wrap: wrap; }
+.hero-stats { display: flex; gap: 2.5rem; margin-top: 3rem; padding-top: 2.5rem; border-top: 1px solid rgba(255,255,255,.12); flex-wrap: wrap; }
+.hs-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: #FCD34D; line-height: 1; }
+.hs-lbl { font-size: .78rem; color: rgba(255,255,255,.5); margin-top: .15rem; }
+
+/* hero panel */
+.hero-panel { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); border-radius: 16px; padding: 1.8rem; }
+.hp-label { font-size: .68rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-bottom: 1rem; }
+.hp-course { display: flex; align-items: center; gap: 1rem; padding: .9rem 1rem; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); border-radius: 10px; margin-bottom: .6rem; }
+.hp-icon { font-size: 1.4rem; }
+.hp-name { font-size: .88rem; font-weight: 600; color: rgba(255,255,255,.88); }
+.hp-meta { font-size: .72rem; color: rgba(255,255,255,.4); margin-top: .1rem; }
+.hp-price { margin-left: auto; font-size: .72rem; font-weight: 700; padding: .18rem .55rem; border-radius: 999px; white-space: nowrap; }
+.hp-paid { background: rgba(14,165,233,.2); color: #7DD3FC; }
+.hp-free { background: rgba(34,197,94,.2); color: #86EFAC; }
+
+/* ALERT BANNER */
+.alert-bar { background: var(--red); color: #fff; padding: 1rem 2rem; display: flex; align-items: center; justify-content: center; gap: 1.5rem; flex-wrap: wrap; text-align: center; }
+.ab-tag { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; background: rgba(255,255,255,.15); padding: .18rem .65rem; border-radius: 999px; }
+.ab-text { font-size: .92rem; font-weight: 600; }
+.ab-date { font-size: .82rem; opacity: .8; }
+.ab-link { font-size: .8rem; font-weight: 700; background: #fff; color: var(--red); padding: .35rem 1rem; border-radius: 6px; text-decoration: none; }
+
+/* TRUST STRIP */
+.trust { background: var(--g50); border-bottom: 1px solid var(--g200); padding: 1.5rem 2rem; }
+.trust-inner { max-width: 1180px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
+.trust-item { display: flex; align-items: center; gap: .5rem; font-size: .82rem; color: var(--g500); font-weight: 500; }
+
+/* ABOUT */
+.about-grid { display: grid; grid-template-columns: 360px 1fr; gap: 5rem; align-items: center; }
+.about-photo {
+  width: 100%; aspect-ratio: 3/4; border-radius: 14px; overflow: hidden;
+  background: linear-gradient(160deg, #7F1D1D, #450a0a 40%, #0c2d4a);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: rgba(255,255,255,.3); font-size: .78rem; text-align: center; padding: 2rem; gap: .6rem; position: relative;
+}
+.about-photo::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg,transparent,transparent 18px,rgba(249,115,22,.05) 18px,rgba(249,115,22,.05) 20px); }
+.about-photo-hint { position: relative; z-index: 1; line-height: 1.9; }
+.award-chip { display: inline-flex; align-items: center; gap: .5rem; background: #FFFBEB; border: 1px solid #FCD34D; color: #92400E; font-size: .8rem; font-weight: 600; padding: .45rem .9rem; border-radius: 8px; margin: .8rem 0 1.1rem; }
+.about-quote { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-style: italic; color: var(--g700); line-height: 1.55; border-left: 3px solid var(--orange); padding-left: 1.1rem; margin-bottom: 1.2rem; }
+.about-body { font-size: .93rem; line-height: 1.85; color: var(--g500); margin-bottom: .85rem; }
+.tag-row { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: 1.4rem; }
+.tag { font-size: .72rem; font-weight: 600; padding: .22rem .7rem; background: var(--sky-l); color: var(--sky-d); border-radius: 999px; }
+
+/* COURSES */
+.course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; margin-top: 2.5rem; }
+.c-card { border-radius: 12px; border: 1px solid var(--g200); overflow: hidden; background: #fff; transition: box-shadow .2s, transform .2s; }
+.c-card:hover { box-shadow: 0 10px 36px rgba(0,0,0,.1); transform: translateY(-3px); }
+.c-top { height: 130px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+.ct-1 { background: linear-gradient(135deg,#450a0a,#7F1D1D); }
+.ct-2 { background: linear-gradient(135deg,#0c2d4a,#0369A1); }
+.ct-3 { background: linear-gradient(135deg,#431407,#C2410C); }
+.ct-4 { background: linear-gradient(135deg,#14532D,#15803D); }
+.ct-5 { background: linear-gradient(135deg,#1e1b4b,#4338CA); }
+.ct-6 { background: linear-gradient(135deg,#451a03,#B45309); }
+.c-body { padding: 1.1rem; }
+.c-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--g900); margin: .5rem 0 .25rem; line-height: 1.25; }
+.c-meta { font-size: .76rem; color: var(--g400); display: flex; gap: .8rem; margin-bottom: .7rem; flex-wrap: wrap; }
+.c-desc { font-size: .83rem; color: var(--g500); line-height: 1.6; margin-bottom: .9rem; }
+.c-foot { display: flex; align-items: center; justify-content: space-between; padding-top: .75rem; border-top: 1px solid var(--g100); }
+.c-price { font-size: .95rem; font-weight: 700; color: var(--g900); }
+
+/* HUB STRIP */
+.hub-strip {
+  background: var(--g900); padding: 5rem 2rem; position: relative; overflow: hidden;
+}
+.hub-strip::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 75% 50%, rgba(14,165,233,.07), transparent 55%),
+    radial-gradient(ellipse at 20% 80%, rgba(249,115,22,.06), transparent 50%);
+}
+.hub-grid { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; position: relative; z-index: 1; }
+.hub-eyebrow { font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--sky); margin-bottom: .7rem; }
+.hub-h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 900; color: #fff; line-height: 1; margin-bottom: .9rem; }
+.hub-h2 em { color: #FCD34D; font-style: italic; }
+.hub-desc { font-size: .95rem; color: rgba(255,255,255,.55); line-height: 1.8; margin-bottom: 1.8rem; }
+.hub-feat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+.hf { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); border-radius: 10px; padding: .85rem 1rem; display: flex; gap: .75rem; align-items: flex-start; }
+.hf-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: .05rem; }
+.hf-title { font-size: .83rem; font-weight: 600; color: rgba(255,255,255,.85); }
+.hf-sub { font-size: .72rem; color: rgba(255,255,255,.38); line-height: 1.45; margin-top: .1rem; }
+
+/* EVENTS */
+.event-table { border: 1px solid var(--g200); border-radius: 12px; overflow: hidden; margin-top: 2rem; }
+.event-row { display: grid; grid-template-columns: 80px 1fr auto; align-items: center; gap: 1.5rem; padding: 1.1rem 1.4rem; border-bottom: 1px solid var(--g200); background: #fff; transition: background .15s; }
+.event-row:last-child { border-bottom: none; }
+.event-row:hover { background: var(--g50); }
+.ev-day { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 900; color: var(--red); line-height: 1; }
+.ev-mon { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--g400); }
+.ev-name { font-size: .92rem; font-weight: 600; color: var(--g900); margin-bottom: .15rem; }
+.ev-loc { font-size: .78rem; color: var(--g400); }
+
+/* BOOKFAIR */
+.bf-box { background: var(--red-l); border: 1px solid #FECACA; border-radius: 16px; padding: 3rem; }
+.bf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+.bf-h { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: var(--maroon); line-height: 1.1; margin-bottom: .4rem; }
+.bf-sub { font-size: .95rem; color: var(--red); font-weight: 600; margin-bottom: 1.2rem; }
+.fee-table { border-collapse: collapse; width: 100%; }
+.fee-table th { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--g400); padding: .45rem .7rem; text-align: left; border-bottom: 1px solid #FECACA; }
+.fee-table td { font-size: .88rem; padding: .65rem .7rem; border-bottom: 1px solid #FEE2E2; color: var(--g700); }
+.fee-table tr:last-child td { border-bottom: none; }
+.fee-amt { font-weight: 700; color: var(--maroon); }
+.bank-box { background: #fff; border: 1px solid #FECACA; border-radius: 10px; padding: 1.1rem; margin-top: 1rem; }
+.bank-box h4 { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--g400); margin-bottom: .75rem; }
+.bank-row { display: flex; justify-content: space-between; font-size: .83rem; padding: .28rem 0; border-bottom: 1px solid #FEF2F2; }
+.bank-row:last-child { border: none; }
+.bk { color: var(--g500); }
+.bv { font-weight: 600; color: var(--g800); }
+
+/* CONTACT */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.ci { display: flex; gap: .9rem; align-items: flex-start; margin-bottom: 1.4rem; }
+.ci-icon { font-size: 1.2rem; margin-top: .1rem; flex-shrink: 0; }
+.ci-lbl { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--g400); margin-bottom: .12rem; }
+.ci-val { font-size: .92rem; color: var(--g700); }
+.ci-val a { color: var(--sky-d); text-decoration: none; }
+.form-box { background: #fff; border: 1px solid var(--g200); border-radius: 12px; padding: 2rem; }
+.form-box h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--g900); margin-bottom: 1.4rem; }
+.form-success { display: none; text-align: center; padding: 2rem 1rem; background: #F0FDF4; border-radius: 8px; border: 1px solid #86EFAC; }
+.fs-icon { font-size: 2.2rem; margin-bottom: .4rem; }
+.fs-msg { font-size: .92rem; color: #166534; font-weight: 600; }
+
+/* ZINTSOMI BAND */
+.zint-band { background: #FFF7ED; border-top: 1px solid #FED7AA; border-bottom: 1px solid #FED7AA; padding: 2.5rem 2rem; }
+.zint-inner { max-width: 1180px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap; }
+.zint-label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: #92400E; margin-bottom: .25rem; }
+.zint-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--maroon); }
+.zint-sub { font-size: .85rem; color: #92400E; margin-top: .2rem; }
+
+/* RESPONSIVE */
+@media (max-width: 1020px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-panel { display: none; }
+  .about-grid { grid-template-columns: 1fr; }
+  .about-photo { max-width: 340px; aspect-ratio: 4/3; }
+  .course-grid { grid-template-columns: repeat(2,1fr); }
+  .hub-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .bf-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .course-grid { grid-template-columns: 1fr; }
+  .hub-feat-grid { grid-template-columns: 1fr; }
+  .event-row { grid-template-columns: 65px 1fr; }
+  .event-row .badge { display: none; }
+  .hero-stats { gap: 1.5rem; }
+  .trust-inner { gap: 1.2rem; }
+  .trust-item:nth-child(n+4) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-brand">Kwa <span>Sukela</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#courses">Courses</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="learn.html">Brain Teasers</a></li>
+    <li><a href="learn.html">Games</a></li>
+    <li><a href="learn.html">Instruments</a></li>
+    <li><a href="learn.html">Village World</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ALERT BANNER -->
+<div class="alert-bar">
+  <span class="ab-tag">📅 2026</span>
+  <span class="ab-text">4th International Storytelling Children's Bookfair — Durban</span>
+  <span class="ab-date">31 July – 2 August · Balmoral Hotel, Durban Beachfront</span>
+  <a href="#bookfair" class="ab-link">View Details</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-pill">🌍 A Zintsomi Academy · South Africa</div>
+      <h1 class="hero-h1">Where African<br><em>Stories Come Alive</em></h1>
+      <p class="hero-sub">Kwa Sukela Storytelling Academy trains professional storytellers, preserves African oral traditions, and connects communities through the power of narrative — led by Dr. Nomsa Mdlalose.</p>
+      <div class="hero-actions">
+        <a href="#courses" class="btn btn-orange btn-lg">Browse Courses</a>
+        <a href="#about" class="btn btn-lg" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2);">About Dr. Sasa</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="hs-num">20+</div><div class="hs-lbl">Years of Experience</div></div>
+        <div><div class="hs-num">1st</div><div class="hs-lbl">African Storytelling Course</div></div>
+        <div><div class="hs-num">🏆</div><div class="hs-lbl">Imbokodo Award 2015</div></div>
+      </div>
+    </div>
+    <div class="hero-panel">
+      <div class="hp-label">Available Programmes</div>
+      <div class="hp-course"><span class="hp-icon">📖</span><div><div class="hp-name">Introduction to African Storytelling</div><div class="hp-meta">Online · 6 Weeks · Self-paced</div></div><span class="hp-price hp-paid">R 1,200</span></div>
+      <div class="hp-course"><span class="hp-icon">🎓</span><div><div class="hp-name">Professional Storytelling Certification</div><div class="hp-meta">Hybrid · 12 Weeks</div></div><span class="hp-price hp-paid">R 3,500</span></div>
+      <div class="hp-course"><span class="hp-icon">🏫</span><div><div class="hp-name">Storytelling for Educators</div><div class="hp-meta">Workshop · 2 Days</div></div><span class="hp-price hp-paid">R 850</span></div>
+      <div class="hp-course"><span class="hp-icon">🎮</span><div><div class="hp-name">Interactive Learning Hub</div><div class="hp-meta">Games · Puzzles · Village</div></div><span class="hp-price hp-free">Free</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust">
+  <div class="trust-inner">
+    <div class="trust-item">🎓 Wits University Doctorate</div>
+    <div class="trust-item">🌍 Tennessee State University</div>
+    <div class="trust-item">🏛️ National Arts Council</div>
+    <div class="trust-item">📚 SA Folklore Society</div>
+    <div class="trust-item">🤝 A Zintsomi Initiative</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div>
+        <div class="about-photo">
+          <!--
+            HOW TO ADD DR. SASA'S PHOTO:
+            Replace this entire <div class="about-photo"> with:
+            <img src="dr-sasa.jpg" alt="Dr Nomsa Mdlalose"
+              style="width:100%;aspect-ratio:3/4;border-radius:14px;object-fit:cover;object-position:top;">
+          -->
+          <div class="about-photo-hint">
+            📷<br><br>
+            <strong style="color:rgba(255,255,255,.5);">Add Dr. Sasa's photo here</strong><br>
+            See comment in code
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">Our Founder</div>
+        <h2 class="page-title">Dr. Nomsa Mdlalose<br><em>— Dr. Sasa</em></h2>
+        <div class="award-chip">🏆 Imbokodo Award 2015 — African Languages & Storytelling</div>
+        <blockquote class="about-quote">"It is through the arts that we preserve our languages, culture and history in a non-conflicting manner."</blockquote>
+        <p class="about-body">Dr. Nomsa Mdlalose is a folklorist, researcher, writer, storyteller, and social entrepreneur. She holds a Storytelling Master's from Tennessee State University (USA) and a Doctorate in Folklore from Wits University, specialising in African Oral Literature and Linguistics.</p>
+        <p class="about-body">With over 20 years of experience, Dr. Sasa has performed and facilitated storytelling across South Africa and internationally. She founded Kwa Sukela Storytelling Academy and Zintsomi — South Africa's leading storytelling hub dedicated to preserving African stories and their tellers.</p>
+        <p class="about-body">She has served on the literature panel of the National Arts Council of South Africa, Freedom Park Council, and is a board member of the Southern African Folklore Society.</p>
+        <div class="tag-row">
+          <span class="tag">Folklorist</span>
+          <span class="tag">Researcher</span>
+          <span class="tag">Published Author</span>
+          <span class="tag">Social Entrepreneur</span>
+          <span class="tag">Wits University</span>
+          <span class="tag">Tennessee State</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- COURSES -->
+<section class="section section-alt" id="courses">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:.5rem;">
+      <div>
+        <div class="eyebrow">Programmes & Courses</div>
+        <h2 class="page-title">Grow as a Storyteller</h2>
+      </div>
+      <a href="#contact" class="btn btn-outline-sky">View All & Enrol</a>
+    </div>
+    <p class="section-desc" style="margin-bottom:0;">From beginners to professionals — every programme is rooted in authentic African oral tradition.</p>
+    <div class="course-grid">
+      <div class="c-card">
+        <div class="c-top ct-1">📖</div>
+        <div class="c-body">
+          <div style="display:flex;gap:.35rem;"><span class="badge badge-sky">Online</span><span class="badge badge-orange">Beginner</span></div>
+          <div class="c-title">Introduction to African Storytelling</div>
+          <div class="c-meta"><span>⏱ 6 Weeks</span><span>📱 Self-paced</span></div>
+          <div class="c-desc">Explore the foundations of African oral literature — story structure, character archetypes, and the art of performance.</div>
+          <div class="c-foot"><span class="c-price">R 1,200</span><a href="#contact" class="btn btn-sky btn-sm">Enrol</a></div>
+        </div>
+      </div>
+      <div class="c-card">
+        <div class="c-top ct-2">🎓</div>
+        <div class="c-body">
+          <div style="display:flex;gap:.35rem;"><span class="badge badge-sky">Hybrid</span><span class="badge badge-red">Professional</span></div>
+          <div class="c-title">Professional Storytelling Certification</div>
+          <div class="c-meta"><span>⏱ 12 Weeks</span><span>📍 Online + In-person</span></div>
+          <div class="c-desc">Africa's first dedicated professional storytelling course — train as a performer, facilitator, and storytelling business owner.</div>
+          <div class="c-foot"><span class="c-price">R 3,500</span><a href="#contact" class="btn btn-sky btn-sm">Enrol</a></div>
+        </div>
+      </div>
+      <div class="c-card">
+        <div class="c-top ct-3">🏫</div>
+        <div class="c-body">
+          <div style="display:flex;gap:.35rem;"><span class="badge badge-green">Workshop</span><span class="badge badge-orange">2 Days</span></div>
+          <div class="c-title">Storytelling for Educators</div>
+          <div class="c-meta"><span>⏱ 2 Days</span><span>👥 Group</span></div>
+          <div class="c-desc">Equip teachers and facilitators with storytelling tools to boost literacy, engagement, and cultural pride in the classroom.</div>
+          <div class="c-foot"><span class="c-price">R 850</span><a href="#contact" class="btn btn-sky btn-sm">Enrol</a></div>
+        </div>
+      </div>
+      <div class="c-card">
+        <div class="c-top ct-4">💼</div>
+        <div class="c-body">
+          <div style="display:flex;gap:.35rem;"><span class="badge badge-sky">Tailored</span><span class="badge badge-green">On-site</span></div>
+          <div class="c-title">Corporate Storytelling Masterclass</div>
+          <div class="c-meta"><span>⏱ Flexible</span><span>📍 Your venue</span></div>
+          <div class="c-desc">Help your team communicate with clarity and impact using narrative frameworks from African oral tradition.</div>
+          <div class="c-foot"><span class="c-price">Contact us</span><a href="#contact" class="btn btn-sky btn-sm">Enquire</a></div>
+        </div>
+      </div>
+      <div class="c-card">
+        <div class="c-top ct-5">🤝</div>
+        <div class="c-body">
+          <div style="display:flex;gap:.35rem;"><span class="badge badge-orange">Mentorship</span></div>
+          <div class="c-title">One-on-One Mentorship</div>
+          <div class="c-meta"><span>⏱ Ongoing</span><span>👤 Personal</span></div>
+          <div class="c-desc">Direct mentorship from Dr. Sasa — combining artistic development, writing skills, and storytelling business guidance.</div>
+          <div class="c-foot"><span class="c-price">Contact us</span><a href="#contact" class="btn btn-sky btn-sm">Apply</a></div>
+        </div>
+      </div>
+      <div class="c-card">
+        <div class="c-top ct-6">🎮</div>
+        <div class="c-body">
+          <div style="display:flex;gap:.35rem;"><span class="badge badge-green">Free</span><span class="badge badge-sky">Interactive</span></div>
+          <div class="c-title">Interactive Learning Hub</div>
+          <div class="c-meta"><span>🧩 Puzzles</span><span>🎮 Games</span><span>🌍 Village</span></div>
+          <div class="c-desc">Storytelling puzzles, African games, instrument guides, and an explorable African village — each teaching a real craft skill.</div>
+          <div class="c-foot"><span class="c-price">Free</span><a href="learn.html" class="btn btn-orange btn-sm">Explore →</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HUB STRIP -->
+<section class="hub-strip" id="hub">
+  <div class="hub-grid">
+    <div>
+      <div class="hub-eyebrow">Interactive Learning</div>
+      <h2 class="hub-h2">Discover the<br><em>Storyteller's Hub</em></h2>
+      <p class="hub-desc">Deepen your craft with interactive tools — African storytelling puzzles, traditional games with progression levels, instrument guides, and an explorable 3D village at sunset. Each experience teaches a skill used by professional storytellers.</p>
+      <div style="display:flex;gap:.8rem;flex-wrap:wrap;">
+        <a href="learn.html" class="btn btn-sky btn-lg">🧩 Storytelling Puzzles</a>
+        <a href="learn.html" class="btn btn-lg" style="background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.15);">🌍 Village World</a>
+      </div>
+    </div>
+    <div class="hub-feat-grid">
+      <div class="hf"><span class="hf-icon">🧩</span><div><div class="hf-title">Storytelling Puzzles</div><div class="hf-sub">Proverbs, archetypes, plot twists, call & response — 6 craft exercises</div></div></div>
+      <div class="hf"><span class="hf-icon">🎮</span><div><div class="hf-title">African Games</div><div class="hf-sub">Mancala, Diketo, Kgati, Ncuva — 5 progressive levels each</div></div></div>
+      <div class="hf"><span class="hf-icon">🎵</span><div><div class="hf-title">Instruments Guide</div><div class="hf-sub">Djembe, Mbira, Hosho, Uhadi — with interactive rhythm patterns</div></div></div>
+      <div class="hf"><span class="hf-icon">🌍</span><div><div class="hf-title">3D Village World</div><div class="hf-sub">Explore an African village at sunset — 6 story discovery points</div></div></div>
+      <div class="hf"><span class="hf-icon">⭐</span><div><div class="hf-title">XP & Progression</div><div class="hf-sub">Earn points and unlock achievements as you advance</div></div></div>
+      <div class="hf"><span class="hf-icon">🏆</span><div><div class="hf-title">Storyteller Certificate</div><div class="hf-sub">Complete all challenges to earn your Kwa Sukela certificate</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section class="section" id="events">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:.5rem;">
+      <div>
+        <div class="eyebrow">Calendar</div>
+        <h2 class="page-title">Upcoming Events</h2>
+      </div>
+      <a href="#contact" class="btn btn-outline-sky">Book Dr. Sasa</a>
+    </div>
+    <div class="event-table">
+      <div class="event-row"><div><div class="ev-day">31</div><div class="ev-mon">Jul 2026</div></div><div><div class="ev-name">4th International Storytelling Children's Bookfair</div><div class="ev-loc">📍 Balmoral Hotel, Durban Beachfront · 31 Jul – 2 Aug 2026</div></div><span class="badge badge-red">Featured</span></div>
+      <div class="event-row"><div><div class="ev-day">14</div><div class="ev-mon">Mar 2026</div></div><div><div class="ev-name">African Storytelling Summit</div><div class="ev-loc">📍 Johannesburg, South Africa</div></div><span class="badge badge-sky">Summit</span></div>
+      <div class="event-row"><div><div class="ev-day">22</div><div class="ev-mon">Apr 2026</div></div><div><div class="ev-name">Storytelling for Educators Workshop</div><div class="ev-loc">📍 Durban, KwaZulu-Natal</div></div><span class="badge badge-orange">Workshop</span></div>
+      <div class="event-row"><div><div class="ev-day">10</div><div class="ev-mon">May 2026</div></div><div><div class="ev-name">Children's Storytelling Festival</div><div class="ev-loc">📍 Cape Town, Western Cape</div></div><span class="badge badge-green">Festival</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- BOOKFAIR -->
+<section class="section" id="bookfair">
+  <div class="container">
+    <div class="eyebrow" style="margin-bottom:1.5rem;">Featured Event 2026</div>
+    <div class="bf-box">
+      <div class="bf-grid">
+        <div>
+          <div class="bf-h">4th International Storytelling Children's Bookfair</div>
+          <div class="bf-sub">31 July – 2 August 2026 · Balmoral Hotel, Durban Beachfront</div>
+          <p style="font-size:.92rem;color:var(--g600);line-height:1.8;margin-bottom:1.3rem;">Exhibit your books, launch new titles, and share stories from African oral traditions, folktales, and contemporary literature. Connect with readers, educators, and fellow creators from across the continent.</p>
+          <div style="font-size:.9rem;color:var(--g700);line-height:2;">📚 Authors &nbsp; ✏️ Illustrators &nbsp; 🏢 Publishers</div>
+          <p style="font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic;color:var(--maroon);margin:1.2rem 0 1.5rem;line-height:1.5;">"Celebrate Stories. Share Voices. Inspire Young Readers."</p>
+          <a href="#contact" class="btn btn-orange">Register to Exhibit</a>
+        </div>
+        <div>
+          <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--maroon);margin-bottom:.9rem;">Exhibition Fees</h3>
+          <table class="fee-table">
+            <thead><tr><th>Category</th><th>Fee</th><th>Duration</th></tr></thead>
+            <tbody>
+              <tr><td>Authors</td><td class="fee-amt">R 750</td><td>3 days</td></tr>
+              <tr><td>Small Publishers</td><td class="fee-amt">R 1,500</td><td>3 days</td></tr>
+              <tr><td>Publishing Houses</td><td class="fee-amt">R 3,500</td><td>3 days</td></tr>
+            </tbody>
+          </table>
+          <div class="bank-box">
+            <h4>Payment Details</h4>
+            <div class="bank-row"><span class="bk">Account Name</span><span class="bv">Zintsomi</span></div>
+            <div class="bank-row"><span class="bk">Type</span><span class="bv">Gold Business Account</span></div>
+            <div class="bank-row"><span class="bk">Account No.</span><span class="bv">6505 966 2184</span></div>
+            <div class="bank-row"><span class="bk">Branch Code</span><span class="bv">250117</span></div>
+            <div class="bank-row"><span class="bk">Swift Code</span><span class="bv">FIRNZAJJ</span></div>
+            <div class="bank-row"><span class="bk">Reference</span><span class="bv">Your name / company</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ZINTSOMI -->
+<div class="zint-band">
+  <div class="zint-inner">
+    <div>
+      <div class="zint-label">Part of the Family</div>
+      <div class="zint-name">A Zintsomi Initiative</div>
+      <div class="zint-sub">South Africa's leading storytelling & publishing hub</div>
+    </div>
+    <a href="https://zintsomi.co.za" target="_blank" class="btn btn-orange">Visit Zintsomi →</a>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <div class="eyebrow">Get in Touch</div>
+        <h2 class="page-title">Start Your<br>Story Journey</h2>
+        <p style="font-size:.93rem;color:var(--g500);line-height:1.8;margin-bottom:2rem;">Whether you are enrolling in a course, booking Dr. Sasa for an event, or exhibiting at the Bookfair — we would love to hear from you.</p>
+        <div class="ci"><span class="ci-icon">📞</span><div><div class="ci-lbl">Phone</div><div class="ci-val"><a href="tel:+27615265356">+27 61 526 5356</a></div></div></div>
+        <div class="ci"><span class="ci-icon">✉️</span><div><div class="ci-lbl">Email</div><div class="ci-val"><a href="mailto:nomsa@zintsomi.co.za">nomsa@zintsomi.co.za</a></div></div></div>
+        <div class="ci"><span class="ci-icon">🌐</span><div><div class="ci-lbl">Website</div><div class="ci-val"><a href="https://zintsomi.co.za" target="_blank">zintsomi.co.za</a></div></div></div>
+        <div class="ci"><span class="ci-icon">📍</span><div><div class="ci-lbl">Location</div><div class="ci-val">Johannesburg & Durban, South Africa</div></div></div>
+      </div>
+      <div class="form-box">
+        <h3>Send a Message</h3>
+        <div id="cForm">
+          <div class="field"><label>Full Name *</label><input id="cn" placeholder="Your full name"></div>
+          <div class="field"><label>Email Address *</label><input type="email" id="ce" placeholder="your@email.com"></div>
+          <div class="field"><label>I am interested in…</label>
+            <select id="ci">
+              <option value="">— Select —</option>
+              <option>Enrolling in a course</option>
+              <option>Booking Dr. Sasa for an event</option>
+              <option>Exhibiting at the Bookfair</option>
+              <option>Storytelling mentorship</option>
+              <option>Partnership or collaboration</option>
+              <option>General enquiry</option>
+            </select>
+          </div>
+          <div class="field"><label>Message</label><textarea id="cm" placeholder="Tell us more…"></textarea></div>
+          <button class="btn btn-sky" style="width:100%;" onclick="sendContact()">Send Message →</button>
+        </div>
+        <div class="form-success" id="cSuccess">
+          <div class="fs-icon">✅</div>
+          <div class="fs-msg">Thank you! We will be in touch within 2–3 working days.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Kwa <span>Sukela</span></div>
+      <p class="footer-tagline">Where African stories are celebrated, preserved, and brought to life. A Zintsomi Storytelling initiative.</p>
+    </div>
+    <div class="footer-col"><h4>Academy</h4><ul><li><a href="#about">About Dr. Sasa</a></li><li><a href="#courses">Courses</a></li><li><a href="#events">Events</a></li><li><a href="#bookfair">Bookfair 2026</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Learning Hub</h4><ul><li><a href="learn.html">Brain Teasers</a></li><li><a href="learn.html">African Games</a></li><li><a href="learn.html">Instruments</a></li><li><a href="learn.html">Village World</a></li></ul></div>
+    <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+27615265356">+27 61 526 5356</a></li><li><a href="mailto:nomsa@zintsomi.co.za">nomsa@zintsomi.co.za</a></li><li><a href="https://zintsomi.co.za" target="_blank">zintsomi.co.za</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Kwa Sukela Storytelling Academy. A Zintsomi Initiative. Founded by Dr. Nomsa Mdlalose.</p>
+    <p style="color:#4B5563;">Johannesburg & Durban, South Africa</p>
+  </div>
+</footer>
+
+<script>
+function sendContact() {
+  const n = document.getElementById('cn').value.trim();
+  const e = document.getElementById('ce').value.trim();
+  if (!n || !e) { alert('Please fill in your name and email.'); return; }
+  document.getElementById('cForm').style.display = 'none';
+  document.getElementById('cSuccess').style.display = 'block';
+}
+</script>
+</body>
+</html>
