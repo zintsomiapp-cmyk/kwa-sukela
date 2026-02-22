@@ -1,26 +1,1270 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kwa Sukela</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kwa Sukela Storytelling Academy — Dr. Nomsa Mdlalose</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   EDITORIAL PALETTE — African Culture Magazine
+   Warm ivory paper + rich earth tones + ink
+══════════════════════════════════════════ */
+:root{
+  --paper:    #FAF7F2;
+  --paper2:   #F3EEE6;
+  --paper3:   #EDE5D8;
+  --ink:      #1A1209;
+  --ink2:     #2D2215;
+  --ink3:     #3D3020;
+  --ink-m:    rgba(26,18,9,.6);
+  --ink-l:    rgba(26,18,9,.35);
+  --ink-xl:   rgba(26,18,9,.18);
+  --crimson:  #8B1A1A;
+  --crimson-l:#B91C1C;
+  --gold:     #92400E;
+  --gold-l:   #B45309;
+  --gold-xl:  #D97706;
+  --terra:    #78350F;
+  --sienna:   #9A3412;
+  --teal:     #0F4C4C;
+  --teal-l:   #0D9488;
+  --forest:   #14532D;
+  --border:   rgba(26,18,9,.1);
+  --border2:  rgba(26,18,9,.18);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{
+  background:var(--paper);color:var(--ink);
+  font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ══ CURSOR ══ */
+#cur{width:8px;height:8px;border-radius:50%;background:var(--crimson);position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .08s,background .3s;mix-blend-mode:multiply;}
+#ring{width:32px;height:32px;border-radius:50%;border:1px solid rgba(139,26,26,.4);position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .25s,height .25s,border-color .3s;}
+@media(max-width:768px){#ring{display:none;}}
+
+/* ══ DECORATIVE NDEBELE BORDER STRIP ══ */
+.ndebele-strip{
+  height:6px;width:100%;
+  background:repeating-linear-gradient(90deg,
+    var(--crimson) 0,var(--crimson) 16.66%,
+    var(--gold-xl) 16.66%,var(--gold-xl) 33.33%,
+    var(--ink) 33.33%,var(--ink) 50%,
+    var(--teal-l) 50%,var(--teal-l) 66.66%,
+    var(--terra) 66.66%,var(--terra) 83.33%,
+    var(--paper3) 83.33%,var(--paper3) 100%);
+}
+
+/* ══ TEXTURE OVERLAY ══ */
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size:160px 160px;}
+
+/* ══ NAV ══ */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;background:rgba(250,247,242,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-strip{height:4px;background:repeating-linear-gradient(90deg,var(--crimson) 0,var(--crimson) 14.28%,var(--gold-xl) 14.28%,var(--gold-xl) 28.57%,var(--ink) 28.57%,var(--ink) 42.85%,var(--teal-l) 42.85%,var(--teal-l) 57.14%,var(--terra) 57.14%,var(--terra) 71.42%,var(--sienna) 71.42%,var(--sienna) 85.71%,var(--forest) 85.71%,var(--forest) 100%);}
+.nav-inner{max-width:1280px;margin:0 auto;padding:.8rem 2.5rem;display:flex;justify-content:space-between;align-items:center;}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.25rem;color:var(--ink);letter-spacing:.02em;text-decoration:none;}
+.nav-logo em{font-style:italic;color:var(--crimson);}
+.nav-links{display:flex;gap:2.2rem;list-style:none;}
+.nav-links a{font-family:'Syne',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-m);text-decoration:none;transition:color .2s;}
+.nav-links a:hover{color:var(--crimson);}
+.nav-cta{font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.55rem 1.4rem;background:var(--crimson);color:#FAF7F2;text-decoration:none;border-radius:1px;transition:background .2s;}
+.nav-cta:hover{background:var(--crimson-l);}
+.nav-ham{display:none;background:none;border:none;cursor:none;padding:.3rem;flex-direction:column;gap:5px;}
+.nav-ham span{display:block;width:20px;height:1.5px;background:var(--ink);border-radius:2px;}
+
+/* ══ HERO — Full magazine spread ══ */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden;padding-top:52px;}
+.hero-left{
+  background:var(--ink2);color:var(--paper);
+  padding:6rem 4rem 5rem;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.hero-left .grain{opacity:.04;}
+/* Ndebele geometric corner ornament */
+.hero-left::before{
+  content:'';position:absolute;bottom:0;left:0;width:100%;height:8px;
+  background:repeating-linear-gradient(90deg,var(--crimson) 0,var(--crimson) 25%,var(--gold-xl) 25%,var(--gold-xl) 50%,var(--teal-l) 50%,var(--teal-l) 75%,var(--terra) 75%,var(--terra) 100%);
+}
+.hero-issue{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(250,247,242,.35);margin-bottom:3rem;}
+.hero-category{
+  display:inline-block;font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--gold-xl);
+  border-bottom:1px solid rgba(217,119,6,.4);padding-bottom:.3rem;margin-bottom:1.5rem;
+}
+.hero-h1{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,5.5vw,5.5rem);
+  font-weight:300;line-height:.92;letter-spacing:-.02em;color:var(--paper);margin-bottom:1.5rem;
+}
+.hero-h1 strong{font-weight:700;display:block;}
+.hero-h1 em{font-style:italic;color:var(--gold-xl);}
+.hero-deck{font-size:.98rem;line-height:1.85;color:rgba(250,247,242,.55);max-width:420px;margin-bottom:2.5rem;font-weight:300;}
+.hero-byline{
+  font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.1em;
+  color:rgba(250,247,242,.3);border-top:1px solid rgba(250,247,242,.1);padding-top:1.2rem;
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+}
+.hero-byline strong{color:rgba(250,247,242,.7);}
+.hero-ctas{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:2.5rem;}
+
+.hero-right{
+  background:var(--paper2);
+  display:flex;flex-direction:column;
+  position:relative;overflow:hidden;
+}
+.hero-portrait-area{
+  flex:1;background:linear-gradient(160deg,#2D2215 0%,#78350F 40%,#92400E 70%,#1A1209 100%);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;min-height:420px;
+}
+.hero-monogram{
+  font-family:'Cormorant Garamond',serif;font-size:10rem;font-weight:700;
+  color:rgba(250,247,242,.07);letter-spacing:-.04em;user-select:none;
+  position:absolute;
+}
+.hero-ndebele-geo{
+  position:absolute;inset:0;opacity:.08;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 29px,rgba(250,247,242,.5) 29px,rgba(250,247,242,.5) 30px),
+    repeating-linear-gradient(90deg,transparent,transparent 29px,rgba(250,247,242,.5) 29px,rgba(250,247,242,.5) 30px);
+  background-size:30px 30px;
+}
+.hero-name-card{
+  position:absolute;bottom:2rem;left:2rem;right:2rem;
+  background:rgba(26,18,9,.75);backdrop-filter:blur(12px);
+  border:1px solid rgba(250,247,242,.12);border-radius:4px;padding:1.2rem 1.4rem;
+}
+.hnc-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--paper);}
+.hnc-title{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.08em;color:var(--gold-xl);margin-top:.2rem;}
+.hnc-tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem;}
+.hnc-tag{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.06em;padding:.2rem .6rem;border-radius:1px;background:rgba(250,247,242,.08);color:rgba(250,247,242,.45);}
+.hero-stats-bar{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--border);
+}
+.hstat{padding:1.4rem;border-right:1px solid var(--border);text-align:center;}
+.hstat:last-child{border-right:none;}
+.hstat-n{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--crimson);display:block;line-height:1;}
+.hstat-l{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-l);margin-top:.3rem;display:block;}
+
+/* ══ GLOBAL SECTION LAYOUT ══ */
+.section{padding:6rem 0;position:relative;}
+.container{max-width:1280px;margin:0 auto;padding:0 2.5rem;}
+.section-label{
+  font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--ink-l);margin-bottom:.8rem;
+  display:flex;align-items:center;gap:.8rem;
+}
+.section-label::before{content:'';width:32px;height:1px;background:var(--crimson);}
+.section-title{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,4.5vw,3.4rem);
+  font-weight:300;color:var(--ink);line-height:1;letter-spacing:-.02em;margin-bottom:.5rem;
+}
+.section-title strong{font-weight:700;}
+.section-title em{font-style:italic;color:var(--crimson);}
+.section-sub{font-size:.95rem;color:var(--ink-m);line-height:1.85;max-width:540px;font-weight:300;}
+hr.rule{border:none;border-top:1px solid var(--border);margin:0 2.5rem;}
+
+/* ══ BUTTONS ══ */
+.btn-p{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  padding:.7rem 1.6rem;background:var(--crimson);color:var(--paper);
+  text-decoration:none;border-radius:1px;border:none;cursor:none;
+  transition:background .2s,transform .15s;
+}
+.btn-p:hover{background:var(--crimson-l);transform:translateY(-2px);}
+.btn-o{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  padding:.7rem 1.6rem;background:transparent;color:var(--ink);
+  text-decoration:none;border-radius:1px;border:1.5px solid var(--border2);cursor:none;
+  transition:border-color .2s,color .2s;
+}
+.btn-o:hover{border-color:var(--crimson);color:var(--crimson);}
+.btn-gold{background:var(--gold);color:var(--paper);}
+.btn-gold:hover{background:var(--gold-l);}
+.btn-ink{background:var(--ink);color:var(--paper);}
+.btn-ink:hover{background:var(--ink2);}
+
+/* ══ ABOUT — DR SASA FULL EDITORIAL ══ */
+#about{background:var(--paper);}
+.about-grid{display:grid;grid-template-columns:2fr 3fr;gap:6rem;align-items:start;}
+.about-portrait-col{}
+.portrait-frame{
+  aspect-ratio:.78;background:linear-gradient(160deg,#2D2215,#78350F,#1A1209);
+  position:relative;overflow:hidden;border-radius:2px;
+}
+.portrait-inner-geo{
+  position:absolute;inset:0;opacity:.06;
+  background-image:
+    repeating-linear-gradient(45deg,transparent,transparent 14px,rgba(250,247,242,.8) 14px,rgba(250,247,242,.8) 15px),
+    repeating-linear-gradient(-45deg,transparent,transparent 14px,rgba(250,247,242,.8) 14px,rgba(250,247,242,.8) 15px);
+}
+.portrait-mono{font-family:'Cormorant Garamond',serif;font-size:12rem;font-weight:700;color:rgba(250,247,242,.06);letter-spacing:-.04em;position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);}
+.portrait-caption{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(to top,rgba(26,18,9,.92),rgba(26,18,9,.6),transparent);
+  padding:3rem 1.5rem 1.5rem;
+}
+.pc-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--paper);}
+.pc-title{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;color:var(--gold-xl);margin-top:.2rem;}
+.portrait-accent-strip{height:4px;background:repeating-linear-gradient(90deg,var(--crimson) 0,var(--crimson) 33%,var(--gold-xl) 33%,var(--gold-xl) 66%,var(--teal-l) 66%,var(--teal-l) 100%);}
+
+.about-content-col{}
+.about-pull-quote{
+  font-family:'Cormorant Garamond',serif;font-size:1.55rem;font-style:italic;font-weight:300;
+  color:var(--crimson);line-height:1.45;border-left:3px solid var(--crimson);
+  padding-left:1.5rem;margin:2rem 0;
+}
+.about-body-p{font-size:.97rem;line-height:1.95;color:var(--ink-m);margin-bottom:1.1rem;font-weight:300;}
+.cred-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin:2rem 0;}
+.cred-item{
+  padding:.9rem 1rem;background:var(--paper2);border:1px solid var(--border);
+  border-radius:2px;border-left:3px solid var(--crimson);
+}
+.ci-label{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-l);margin-bottom:.3rem;}
+.ci-val{font-size:.88rem;color:var(--ink);font-weight:400;line-height:1.4;}
+
+/* ══ SERVICES ══ */
+#services{background:var(--ink2);color:var(--paper);}
+#services .section-label{color:rgba(250,247,242,.3);}
+#services .section-label::before{background:var(--gold-xl);}
+#services .section-title{color:var(--paper);}
+#services .section-sub{color:rgba(250,247,242,.45);}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(250,247,242,.08);margin-top:3.5rem;}
+.svc-card{
+  background:var(--ink2);padding:2.5rem 2rem;
+  transition:background .25s;position:relative;overflow:hidden;
+}
+.svc-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--crimson),var(--gold-xl));transform:scaleX(0);transform-origin:left;transition:transform .35s;}
+.svc-card:hover{background:var(--ink3);}
+.svc-card:hover::after{transform:scaleX(1);}
+.svc-num{font-family:'Cormorant Garamond',serif;font-size:3.5rem;font-weight:700;color:rgba(250,247,242,.04);line-height:1;margin-bottom:.5rem;}
+.svc-name{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;color:var(--paper);margin-bottom:.6rem;}
+.svc-desc{font-size:.85rem;color:rgba(250,247,242,.4);line-height:1.7;font-weight:300;}
+
+/* ══ COURSES ══ */
+#courses{background:var(--paper2);}
+.courses-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-top:3rem;}
+.course-card{
+  background:var(--paper);border:1px solid var(--border);padding:2rem;border-radius:2px;
+  display:flex;flex-direction:column;gap:1rem;
+  transition:border-color .25s,box-shadow .25s,transform .25s;position:relative;
+}
+.course-card:hover{border-color:var(--crimson);box-shadow:0 8px 32px rgba(139,26,26,.08);transform:translateY(-2px);}
+.cc-tag{
+  font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;
+  padding:.3rem .8rem;border-radius:1px;width:fit-content;
+}
+.tag-on{background:rgba(15,76,76,.08);color:var(--teal);border:1px solid rgba(15,76,76,.2);}
+.tag-ip{background:rgba(146,64,14,.08);color:var(--gold);border:1px solid rgba(146,64,14,.2);}
+.tag-co{background:rgba(26,18,9,.06);color:var(--ink-m);border:1px solid var(--border2);}
+.cc-title{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:600;color:var(--ink);line-height:1.2;}
+.cc-meta{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.06em;color:var(--ink-l);}
+.cc-desc{font-size:.85rem;color:var(--ink-m);line-height:1.7;font-weight:300;}
+.cc-price{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;color:var(--crimson);}
+.cc-cta{
+  display:inline-flex;align-items:center;gap:.5rem;font-family:'Syne',sans-serif;
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--crimson);text-decoration:none;margin-top:auto;transition:gap .2s;
+}
+.cc-cta:hover{gap:.9rem;}
+.cc-cta svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;}
+
+/* ══ ENROL FORM ══ */
+#enrol{background:var(--paper);}
+.enrol-wrap{
+  display:grid;grid-template-columns:2fr 3fr;gap:5rem;align-items:start;margin-top:3rem;
+}
+.enrol-left{}
+.enrol-right{
+  background:var(--paper2);border:1px solid var(--border);padding:2.5rem;border-radius:2px;
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.form-row.single{grid-template-columns:1fr;}
+.form-field{display:flex;flex-direction:column;margin-bottom:.8rem;}
+.form-label{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-l);margin-bottom:.4rem;display:block;}
+.inp{width:100%;padding:.8rem 1rem;background:var(--paper);border:1px solid var(--border2);border-radius:1px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--ink);outline:none;transition:border-color .2s;}
+.inp::placeholder{color:var(--ink-l);}
+.inp:focus{border-color:var(--crimson);}
+select.inp option{background:var(--paper);color:var(--ink);}
+
+/* ══ EVENTS ══ */
+#events{background:var(--paper2);}
+.event-list{margin-top:2.5rem;display:flex;flex-direction:column;gap:0;}
+.event-item{
+  display:grid;grid-template-columns:80px 1px 1fr auto;gap:2rem;align-items:center;
+  padding:1.5rem 0;border-bottom:1px solid var(--border);
+  transition:padding-left .2s;
+}
+.event-item:hover{padding-left:.5rem;}
+.ev-date{text-align:center;}
+.ev-day{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:700;color:var(--crimson);line-height:1;}
+.ev-mon{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-l);}
+.ev-vline{width:1px;height:50px;background:var(--border2);}
+.ev-name{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--ink);margin-bottom:.3rem;}
+.ev-loc{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.04em;color:var(--ink-l);}
+.ev-badge{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .8rem;border-radius:1px;}
+.b-feat{background:rgba(139,26,26,.08);color:var(--crimson);border:1px solid rgba(139,26,26,.2);}
+.b-ws{background:rgba(146,64,14,.08);color:var(--gold);border:1px solid rgba(146,64,14,.2);}
+.b-fest{background:rgba(15,76,76,.08);color:var(--teal);border:1px solid rgba(15,76,76,.2);}
+
+/* ══ BOOKFAIR REGISTRATION PAGE ══ */
+#bookfair{background:var(--ink);color:var(--paper);position:relative;overflow:hidden;}
+#bookfair .section-label{color:rgba(250,247,242,.3);}
+#bookfair .section-label::before{background:var(--crimson);}
+.bf-headline{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,5vw,5rem);
+  font-weight:700;color:var(--paper);line-height:.9;letter-spacing:-.02em;
+  margin-bottom:.8rem;
+}
+.bf-headline em{font-style:italic;font-weight:300;color:var(--gold-xl);}
+.bf-dateline{
+  font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.15em;
+  color:var(--gold-xl);margin-bottom:2rem;
+}
+.bf-tagline{
+  font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-style:italic;
+  color:rgba(250,247,242,.5);margin-bottom:2.5rem;line-height:1.5;max-width:520px;
+}
+.bf-layout{display:grid;grid-template-columns:3fr 2fr;gap:5rem;align-items:start;margin-top:4rem;}
+.bf-info-col{}
+.bf-who-title{font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,247,242,.4);margin-bottom:1.2rem;}
+.bf-who-list{display:flex;flex-direction:column;gap:.6rem;margin-bottom:2.5rem;}
+.bf-who-item{
+  display:flex;align-items:center;gap:.8rem;padding:.8rem 1rem;
+  background:rgba(250,247,242,.04);border:1px solid rgba(250,247,242,.08);
+  border-radius:1px;font-size:.88rem;color:rgba(250,247,242,.65);
+}
+.bf-who-item svg{width:14px;height:14px;stroke:var(--gold-xl);fill:none;stroke-width:1.5;flex-shrink:0;}
+.fee-table{width:100%;border-collapse:collapse;margin-bottom:2rem;}
+.fee-table th{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(250,247,242,.3);padding:.6rem .8rem;border-bottom:1px solid rgba(250,247,242,.08);text-align:left;}
+.fee-table td{font-size:.88rem;color:rgba(250,247,242,.6);padding:.85rem .8rem;border-bottom:1px solid rgba(250,247,242,.06);}
+.fee-amt{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--gold-xl);}
+.bank-box{background:rgba(250,247,242,.04);border:1px solid rgba(250,247,242,.1);border-radius:2px;padding:1.5rem;}
+.bank-box h4{font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-xl);margin-bottom:1rem;}
+.bank-row{display:flex;justify-content:space-between;font-size:.82rem;padding:.5rem 0;border-bottom:1px solid rgba(250,247,242,.06);color:rgba(250,247,242,.45);}
+.bank-row:last-child{border:none;}
+.bv{color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:.75rem;}
+.bf-register-col{}
+.bf-reg-card{background:var(--paper);border-radius:2px;padding:2.5rem;position:sticky;top:80px;}
+.bf-reg-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--ink);margin-bottom:.5rem;}
+.bf-reg-sub{font-size:.82rem;color:var(--ink-m);margin-bottom:2rem;line-height:1.65;}
+.bf-geo-banner{
+  height:5px;
+  background:repeating-linear-gradient(90deg,var(--crimson) 0,var(--crimson) 20%,var(--gold-xl) 20%,var(--gold-xl) 40%,var(--ink2) 40%,var(--ink2) 60%,var(--teal-l) 60%,var(--teal-l) 80%,var(--terra) 80%,var(--terra) 100%);
+  margin:-2.5rem -2.5rem 2rem;
+}
+
+/* ══ VR TEASER ══ */
+#vr{background:var(--ink2);color:var(--paper);overflow:hidden;position:relative;}
+.vr-bg-geo{
+  position:absolute;inset:0;opacity:.04;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 49px,rgba(250,247,242,.8) 49px,rgba(250,247,242,.8) 50px),
+    repeating-linear-gradient(90deg,transparent,transparent 49px,rgba(250,247,242,.8) 49px,rgba(250,247,242,.8) 50px),
+    repeating-linear-gradient(45deg,transparent,transparent 24px,rgba(217,119,6,.5) 24px,rgba(217,119,6,.5) 25px);
+  background-size:50px 50px,50px 50px,25px 25px;
+}
+#vr .section-label{color:rgba(250,247,242,.3);}
+#vr .section-label::before{background:var(--teal-l);}
+.vr-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.vr-content{}
+.vr-eyebrow{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--teal-l);background:rgba(13,148,136,.08);border:1px solid rgba(13,148,136,.2);
+  padding:.35rem 1rem;border-radius:1px;margin-bottom:1.5rem;
+}
+.vr-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--teal-l);animation:vrpulse 2s infinite;}
+@keyframes vrpulse{0%,100%{opacity:1}50%{opacity:.3}}
+.vr-h2{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,4.5vw,4rem);
+  font-weight:700;color:var(--paper);line-height:.92;letter-spacing:-.02em;margin-bottom:1.2rem;
+}
+.vr-h2 em{font-style:italic;font-weight:300;color:var(--gold-xl);}
+.vr-body{font-size:.97rem;color:rgba(250,247,242,.5);line-height:1.85;font-weight:300;margin-bottom:2rem;max-width:440px;}
+.vr-claims{display:flex;flex-direction:column;gap:.5rem;margin-bottom:2.5rem;}
+.vr-claim{
+  display:flex;align-items:flex-start;gap:.8rem;
+  font-size:.85rem;color:rgba(250,247,242,.55);line-height:1.55;
+  padding:.65rem 0;border-bottom:1px solid rgba(250,247,242,.06);
+}
+.vr-claim:last-child{border-bottom:none;}
+.vr-claim svg{width:14px;height:14px;stroke:var(--teal-l);fill:none;stroke-width:1.5;flex-shrink:0;margin-top:.1rem;}
+.vr-preview{
+  background:var(--ink3);border-radius:4px;overflow:hidden;
+  border:1px solid rgba(250,247,242,.08);position:relative;
+}
+.vr-preview-screen{
+  aspect-ratio:16/10;
+  background:linear-gradient(160deg,#030508,#0a1a10,#050c14);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;cursor:none;
+}
+/* Procedural stars in preview */
+.vr-star{position:absolute;border-radius:50%;background:#fff;}
+.vr-orb{
+  width:60px;height:60px;border-radius:50%;
+  background:radial-gradient(circle,#2DD4BF,#0D9488 40%,transparent 70%);
+  box-shadow:0 0 40px rgba(45,212,191,.6),0 0 80px rgba(45,212,191,.2);
+  animation:vrorb 3s ease-in-out infinite;
+}
+@keyframes vrorb{0%,100%{transform:translateY(0) scale(1);opacity:.9}50%{transform:translateY(-12px) scale(1.08);opacity:1}}
+.vr-preview-label{
+  position:absolute;bottom:1rem;left:1rem;right:1rem;
+  background:rgba(26,18,9,.75);backdrop-filter:blur(8px);
+  border:1px solid rgba(250,247,242,.1);border-radius:2px;
+  padding:.7rem 1rem;display:flex;align-items:center;justify-content:space-between;
+}
+.vpl-text{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.06em;color:rgba(250,247,242,.6);}
+.vpl-badge{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.1em;padding:.2rem .6rem;background:rgba(45,212,191,.12);border:1px solid rgba(45,212,191,.25);color:#2DD4BF;border-radius:1px;}
+.vr-preview-footer{padding:1.2rem 1.5rem;display:flex;justify-content:space-between;align-items:center;}
+.vpf-info{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.06em;color:rgba(250,247,242,.3);}
+.worlds-dots{display:flex;gap:.5rem;}
+.wd{width:8px;height:8px;border-radius:50%;background:rgba(250,247,242,.15);}
+.wd.active{background:var(--teal-l);}
+
+/* ══ DR SASA BIO PAGE ══ */
+#drsasa{background:var(--paper2);position:relative;}
+.bio-layout{display:grid;grid-template-columns:1fr 2fr;gap:5rem;align-items:start;margin-top:3.5rem;}
+.bio-portrait{
+  background:linear-gradient(160deg,#2D2215,#78350F,#92400E 70%,#1A1209);
+  aspect-ratio:.75;border-radius:2px;position:relative;overflow:hidden;
+}
+.bio-port-geo{position:absolute;inset:0;opacity:.06;background-image:repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(250,247,242,.8) 19px,rgba(250,247,242,.8) 20px),repeating-linear-gradient(90deg,transparent,transparent 19px,rgba(250,247,242,.8) 19px,rgba(250,247,242,.8) 20px);background-size:20px 20px;}
+.bio-port-mono{font-family:'Cormorant Garamond',serif;font-size:14rem;font-weight:700;color:rgba(250,247,242,.05);letter-spacing:-.06em;position:absolute;top:50%;left:50%;transform:translate(-46%,-50%);}
+.bio-port-bottom{position:absolute;bottom:0;left:0;right:0;}
+.bio-port-strip{height:5px;background:repeating-linear-gradient(90deg,var(--crimson) 0,var(--crimson) 25%,var(--gold-xl) 25%,var(--gold-xl) 50%,var(--teal-l) 50%,var(--teal-l) 75%,var(--terra) 75%,var(--terra) 100%);}
+.bio-port-caption{background:rgba(26,18,9,.85);padding:1.2rem 1.5rem;}
+.bpc-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--paper);}
+.bpc-title{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.1em;color:var(--gold-xl);margin-top:.2rem;}
+.bio-content{}
+.bio-intro{
+  font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:300;font-style:italic;
+  color:var(--ink-m);line-height:1.6;margin-bottom:1.5rem;
+  border-bottom:1px solid var(--border);padding-bottom:1.5rem;
+}
+.bio-p{font-size:.97rem;color:var(--ink-m);line-height:1.95;font-weight:300;margin-bottom:1.1rem;}
+.bio-awards{margin:2rem 0;}
+.awards-label{font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-l);margin-bottom:1rem;}
+.award-item{
+  display:flex;gap:1rem;align-items:flex-start;padding:1rem;
+  background:var(--paper);border:1px solid var(--border);margin-bottom:.6rem;border-radius:1px;
+  border-left:3px solid var(--crimson);
+}
+.ai-year{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.06em;color:var(--ink-l);min-width:40px;margin-top:.1rem;}
+.ai-name{font-size:.9rem;color:var(--ink);font-weight:400;line-height:1.4;}
+.ai-org{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.04em;color:var(--ink-l);margin-top:.15rem;}
+.bio-publications{margin:2rem 0;}
+.pub-label{font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-l);margin-bottom:1rem;}
+.pub-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;}
+.pub-card{
+  background:var(--paper);border:1px solid var(--border);padding:1rem;border-radius:1px;
+  transition:border-color .2s;
+}
+.pub-card:hover{border-color:var(--crimson);}
+.pub-cover{
+  aspect-ratio:2.5;border-radius:1px;margin-bottom:.7rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.pc-1{background:linear-gradient(135deg,rgba(139,26,26,.15),rgba(146,64,14,.12));}
+.pc-2{background:linear-gradient(135deg,rgba(15,76,76,.12),rgba(139,26,26,.08));}
+.pc-3{background:linear-gradient(135deg,rgba(120,53,15,.12),rgba(15,76,76,.08));}
+.pc-4{background:linear-gradient(135deg,rgba(139,26,26,.1),rgba(26,83,45,.08));}
+.pub-title{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:600;color:var(--ink);line-height:1.2;margin-bottom:.2rem;}
+.pub-meta{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.06em;color:var(--ink-l);}
+
+/* ══ HUB SECTION ══ */
+#hub{background:var(--paper);}
+.hub-layout{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.hub-cards{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.hub-card{background:var(--paper);padding:1.5rem;transition:background .2s;}
+.hub-card:hover{background:var(--paper2);}
+.hbc-num{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:700;color:var(--crimson);opacity:.25;line-height:1;margin-bottom:.3rem;}
+.hbc-name{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:var(--ink);margin-bottom:.3rem;}
+.hbc-sub{font-size:.8rem;color:var(--ink-l);line-height:1.55;}
+.hbc-tag{font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;color:var(--crimson);margin-top:.5rem;}
+
+/* ══ STORY SUBMISSION ══ */
+#submit{background:var(--paper2);}
+.sub-layout{display:grid;grid-template-columns:2fr 3fr;gap:5rem;margin-top:3rem;}
+.sub-guidelines{display:flex;flex-direction:column;gap:.5rem;margin-top:1rem;}
+.sg-item{display:flex;gap:.7rem;align-items:flex-start;padding:.7rem 0;border-bottom:1px solid var(--border);font-size:.85rem;color:var(--ink-m);line-height:1.55;}
+.sg-item:last-child{border-bottom:none;}
+.sg-item svg{width:12px;height:12px;stroke:var(--crimson);fill:none;stroke-width:2;flex-shrink:0;margin-top:.2rem;}
+.sub-form{background:var(--paper);border:1px solid var(--border);padding:2.5rem;border-radius:1px;}
+
+/* ══ ZINTSOMI BAND ══ */
+.zint-band{
+  background:var(--ink);color:var(--paper);
+  padding:3rem 2.5rem;display:flex;justify-content:space-between;align-items:center;gap:2rem;flex-wrap:wrap;
+}
+.zint-label{font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,247,242,.3);margin-bottom:.3rem;}
+.zint-name{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--paper);}
+.zint-sub{font-size:.83rem;color:rgba(250,247,242,.4);margin-top:.2rem;}
+
+/* ══ SHOP ══ */
+#shop{background:var(--ink2);color:var(--paper);}
+#shop .section-label{color:rgba(250,247,242,.3);}
+#shop .section-label::before{background:var(--gold-xl);}
+#shop .section-title{color:var(--paper);}
+.shop-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(250,247,242,.08);margin-top:3rem;}
+.shop-card{background:var(--ink2);transition:background .2s;}
+.shop-card:hover{background:var(--ink3);}
+.sc-thumb{aspect-ratio:1;display:flex;align-items:center;justify-content:center;}
+.sc-t1{background:linear-gradient(135deg,rgba(15,76,76,.3),rgba(146,64,14,.2));}
+.sc-t2{background:linear-gradient(135deg,rgba(146,64,14,.25),rgba(154,52,18,.2));}
+.sc-t3{background:linear-gradient(135deg,rgba(139,26,26,.25),rgba(146,64,14,.15));}
+.sc-t4{background:linear-gradient(135deg,rgba(15,76,76,.2),rgba(139,26,26,.15));}
+.sc-body{padding:1.2rem;}
+.sc-name{font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--paper);margin-bottom:.3rem;}
+.sc-price{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--gold-xl);}
+.sc-add{display:block;width:100%;margin-top:.8rem;text-align:center;font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.6rem;border-top:1px solid rgba(250,247,242,.08);color:rgba(250,247,242,.45);background:none;border-left:none;border-right:none;border-bottom:none;cursor:none;transition:color .2s,background .2s;}
+.sc-add:hover{color:var(--gold-xl);background:rgba(217,119,6,.06);}
+
+/* ══ FOOTER ══ */
+footer{background:var(--ink);color:var(--paper);padding:5rem 0 2rem;}
+footer .ndebele-strip{margin-bottom:4rem;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;padding-bottom:4rem;border-bottom:1px solid rgba(250,247,242,.08);}
+.fl-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--paper);display:block;margin-bottom:.8rem;}
+.fl-logo em{font-style:italic;color:var(--gold-xl);}
+.fl-desc{font-size:.83rem;color:rgba(250,247,242,.3);line-height:1.8;max-width:260px;font-weight:300;}
+.fl-contact{margin-top:1.5rem;display:flex;flex-direction:column;gap:.6rem;}
+.fl-contact a{font-size:.8rem;color:rgba(250,247,242,.35);text-decoration:none;display:flex;align-items:center;gap:.6rem;transition:color .2s;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.02em;}
+.fl-contact a:hover{color:var(--gold-xl);}
+.fl-contact a svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5;flex-shrink:0;}
+footer h4{font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(250,247,242,.3);margin-bottom:1.2rem;}
+footer ul{list-style:none;display:flex;flex-direction:column;gap:.6rem;}
+footer ul li a{font-size:.82rem;color:rgba(250,247,242,.35);text-decoration:none;transition:color .2s;}
+footer ul li a:hover{color:var(--paper);}
+.footer-bottom{padding-top:1.5rem;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.04em;color:rgba(250,247,242,.2);flex-wrap:wrap;gap:.5rem;}
+
+/* ══ REVEAL ANIMATIONS ══ */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+.reveal-d1{transition-delay:.1s;}.reveal-d2{transition-delay:.2s;}.reveal-d3{transition-delay:.3s;}
+
+/* ══ SUCCESS STATES ══ */
+.success-box{text-align:center;padding:2.5rem;}
+.success-box svg{margin-bottom:1rem;}
+.success-box h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:var(--ink);margin-bottom:.5rem;}
+.success-box p{color:var(--ink-m);font-size:.88rem;}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1024px){
+  .hero{grid-template-columns:1fr;}
+  .hero-right{min-height:400px;}
+  .about-grid,.bio-layout,.vr-layout,.hub-layout,.enrol-wrap,.sub-layout,.bf-layout{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  .services-grid{grid-template-columns:1fr 1fr;}
+  .shop-grid{grid-template-columns:1fr 1fr;}
+  .cred-grid{grid-template-columns:1fr;}
+  .pub-grid{grid-template-columns:1fr 1fr;}
+  .bf-reg-card{position:static;}
+}
+@media(max-width:768px){
+  .nav-inner{padding:.8rem 1.5rem;}
+  .nav-links,.nav-cta{display:none;}
+  .nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(250,247,242,.98);padding:1.5rem;gap:1rem;border-bottom:1px solid var(--border);}
+  .nav-ham{display:flex;}
+  .container{padding:0 1.5rem;}
+  .hero-left{padding:5rem 1.5rem 4rem;}
+  .services-grid,.courses-grid,.hub-cards{grid-template-columns:1fr;}
+  .shop-grid{grid-template-columns:1fr 1fr;}
+  .footer-grid{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
+  .pub-grid{grid-template-columns:1fr;}
+  .cred-grid{grid-template-columns:1fr;}
+  .event-item{grid-template-columns:60px 1px 1fr;}.ev-badge{display:none;}
+}
+@media(max-width:480px){
+  .shop-grid{grid-template-columns:1fr;}
+  .hero-ctas{flex-direction:column;}
+}
+</style>
 </head>
 <body>
-    <header>
-        <div class="hero-card">
-            <h1>Welcome to Kwa Sukela</h1>
-            <img src="path/to/crayion_142006_image.jpg" alt="Dr. Sasa Portrait" />
+
+<div id="cur"></div>
+<div id="ring"></div>
+
+<!-- ══════════ NAV ══════════ -->
+<nav id="mainNav">
+  <div class="nav-strip"></div>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Kwa <em>Sukela</em></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#drsasa">Dr. Sasa</a></li>
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#events">Events</a></li>
+      <li><a href="#bookfair">Bookfair 2026</a></li>
+      <li><a href="#vr">VR World</a></li>
+      <li><a href="#shop">Shop</a></li>
+    </ul>
+    <a href="#enrol" class="nav-cta">Enrol Now</a>
+    <button class="nav-ham" id="navHam" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <div class="grain"></div>
+    <div class="hero-issue reveal">Vol. I · 2026 · South Africa's Storytelling Academy</div>
+    <div class="hero-category reveal">African Oral Tradition</div>
+    <h1 class="hero-h1 reveal">
+      Where Every<br>
+      <strong>Story</strong><br>
+      <em>Belongs.</em>
+    </h1>
+    <p class="hero-deck reveal reveal-d1">
+      South Africa's leading African oral storytelling academy. Guided by Dr. Nomsa Mdlalose — 20+ years shaping voices, preserving tradition, and building professional storytellers.
+    </p>
+    <div class="hero-ctas reveal reveal-d2">
+      <a href="#courses" class="btn-p">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Explore Courses
+      </a>
+      <a href="#drsasa" class="btn-o" style="border-color:rgba(250,247,242,.2);color:rgba(250,247,242,.65);">
+        Meet Dr. Sasa
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="hero-byline reveal reveal-d3">
+      <span>Founded by</span>
+      <strong>Dr. Nomsa Mdlalose "Dr. Sasa"</strong>
+      <span>·</span>
+      <span>Imbokodo Award Winner</span>
+      <span>·</span>
+      <span>Zintsomi Founder</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-portrait-area">
+      <div class="hero-ndebele-geo"></div>
+      <span class="hero-monogram">NM</span>
+      <div class="hero-name-card">
+        <div class="hnc-name">Dr. Nomsa Mdlalose</div>
+        <div class="hnc-title">Dr. Sasa · Founder & Master Storyteller</div>
+        <div class="hnc-tags">
+          <span class="hnc-tag">MA · Tennessee State</span>
+          <span class="hnc-tag">PhD Folklore · Wits</span>
+          <span class="hnc-tag">Imbokodo Award</span>
+          <span class="hnc-tag">Zintsomi Founder</span>
         </div>
-    </header>
-    <section class="about">
-        <h2>About Us</h2>
-        <p>Details about the Kwa Sukela and its mission.</p>
-        <img src="path/to/crayion_142006_image.jpg" alt="Dr. Sasa Portrait" />
-    </section>
-    <section class="upcoming-events">
-        <h2>Upcoming Events</h2>
-        <img src="path/to/WhatsApp_Image_2026-02-13_at_12.35.23_(1).jpg" alt="Event Poster" />
-        <p>List of upcoming events with details.</p>
-    </section>
+      </div>
+    </div>
+    <div class="hero-stats-bar">
+      <div class="hstat">
+        <span class="hstat-n">20+</span>
+        <span class="hstat-l">Years Experience</span>
+      </div>
+      <div class="hstat">
+        <span class="hstat-n">1st</span>
+        <span class="hstat-l">African Storytelling Course</span>
+      </div>
+      <div class="hstat">
+        <span class="hstat-n">🏅</span>
+        <span class="hstat-l">Imbokodo Award</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ABOUT ══════════ -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-portrait-col reveal">
+        <div class="portrait-frame">
+          <div class="portrait-inner-geo"></div>
+          <span class="portrait-mono">NM</span>
+          <div class="portrait-caption">
+            <div class="pc-name">Dr. Nomsa Mdlalose</div>
+            <div class="pc-title">"Dr. Sasa" · Master Storyteller & Academic</div>
+          </div>
+        </div>
+        <div class="portrait-accent-strip"></div>
+      </div>
+      <div class="reveal reveal-d1">
+        <div class="section-label">About the Academy</div>
+        <h2 class="section-title">A Voice That<br><em>Carries History</em></h2>
+        <blockquote class="about-pull-quote">"Storytelling is not entertainment alone — it is the archive of a people, the curriculum of a culture."</blockquote>
+        <p class="about-body-p">With a Master of Arts in Storytelling from Tennessee State University and a PhD in Folklore from the University of the Witwatersrand, Dr. Nomsa Mdlalose has spent over two decades at the intersection of tradition and teaching.</p>
+        <p class="about-body-p">Known across Southern Africa as "Dr. Sasa," she is the founder of Zintsomi, the creator of Africa's first accredited storytelling course, and an Imbokodo Award-winning voice for African women's narratives.</p>
+        <div class="cred-grid">
+          <div class="cred-item">
+            <div class="ci-label">Qualification</div>
+            <div class="ci-val">MA Storytelling — Tennessee State University</div>
+          </div>
+          <div class="cred-item">
+            <div class="ci-label">Doctorate</div>
+            <div class="ci-val">PhD Folklore — Univ. of the Witwatersrand</div>
+          </div>
+          <div class="cred-item">
+            <div class="ci-label">Award</div>
+            <div class="ci-val">Imbokodo Award — African Women's Arts</div>
+          </div>
+          <div class="cred-item">
+            <div class="ci-label">Achievement</div>
+            <div class="ci-val">Africa's First Accredited Storytelling Course</div>
+          </div>
+        </div>
+        <a href="#drsasa" class="btn-p" style="margin-top:1rem;">
+          Full Biography
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══════════ SERVICES ══════════ -->
+<section class="section" id="services">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">What We Offer</div>
+      <h2 class="section-title">Our <em>Services</em></h2>
+      <p class="section-sub" style="color:rgba(250,247,242,.45);">From live performances to school programmes — Kwa Sukela serves storytellers, educators, and organisations across Africa and beyond.</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card reveal reveal-d1"><div class="svc-num">01</div><div class="svc-name">Live Performances</div><div class="svc-desc">Captivating storytelling performances for festivals, corporate events, schools, and cultural gatherings across South Africa and internationally.</div></div>
+      <div class="svc-card reveal reveal-d2"><div class="svc-num">02</div><div class="svc-name">Professional Training</div><div class="svc-desc">Accredited courses and mentorship for aspiring and professional storytellers. Learn the craft from Africa's leading oral tradition academic.</div></div>
+      <div class="svc-card reveal reveal-d3"><div class="svc-num">03</div><div class="svc-name">Books & Publications</div><div class="svc-desc">A growing collection of African storytelling books, anthologies, and educational materials authored and curated by Dr. Sasa.</div></div>
+      <div class="svc-card reveal reveal-d1"><div class="svc-num">04</div><div class="svc-name">Digital Storytelling</div><div class="svc-desc">Audio recordings, video productions, and the world's first African WebXR storytelling metaverse — bringing African narratives to global audiences.</div></div>
+      <div class="svc-card reveal reveal-d2"><div class="svc-num">05</div><div class="svc-name">School Programmes</div><div class="svc-desc">Curriculum-aligned storytelling programmes for primary and secondary schools, integrating African oral tradition into the modern classroom.</div></div>
+      <div class="svc-card reveal reveal-d3"><div class="svc-num">06</div><div class="svc-name">Corporate Masterclasses</div><div class="svc-desc">Leadership narrative, brand storytelling through an African lens, and team cohesion through shared story — tailored for your organisation.</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" style="border-color:rgba(250,247,242,.08);">
+
+<!-- ══════════ COURSES ══════════ -->
+<section class="section" id="courses">
+  <div class="container">
+    <div class="reveal" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:3rem;">
+      <div>
+        <div class="section-label">Enrol &amp; Learn</div>
+        <h2 class="section-title">Courses &amp; <em>Programmes</em></h2>
+      </div>
+      <p class="section-sub" style="max-width:380px;">Whether you're beginning or ready to teach — there is a programme for exactly where you are.</p>
+    </div>
+    <div class="courses-grid">
+      <div class="course-card reveal reveal-d1">
+        <span class="cc-tag tag-on">Online · Self-paced</span>
+        <div class="cc-title">Introduction to African Storytelling</div>
+        <div class="cc-meta">6 Weeks · Beginner</div>
+        <p class="cc-desc">Foundations of oral tradition, African narrative structures, voice and performance technique. The perfect first step.</p>
+        <div class="cc-price">R 1,200</div>
+        <a href="#enrol" class="cc-cta">Enrol Now <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+      <div class="course-card reveal reveal-d2">
+        <span class="cc-tag tag-on">Online · Cohort</span>
+        <div class="cc-title">Professional Storytelling Certification</div>
+        <div class="cc-meta">12 Weeks · Intermediate</div>
+        <p class="cc-desc">Advanced repertoire development, professional performance craft, and storytelling for cultural preservation. Certification included.</p>
+        <div class="cc-price">R 3,500</div>
+        <a href="#enrol" class="cc-cta">Enrol Now <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+      <div class="course-card reveal reveal-d1">
+        <span class="cc-tag tag-ip">In-person · Weekend</span>
+        <div class="cc-title">Storytelling for Educators</div>
+        <div class="cc-meta">2 Days · All Levels</div>
+        <p class="cc-desc">Practical tools for bringing African oral tradition into the classroom. Certificate of attendance provided.</p>
+        <div class="cc-price">R 850</div>
+        <a href="#enrol" class="cc-cta">Enrol Now <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+      <div class="course-card reveal reveal-d2">
+        <span class="cc-tag tag-co">Corporate · Custom</span>
+        <div class="cc-title">Corporate Storytelling Masterclass</div>
+        <div class="cc-meta">Bespoke · Executive Level</div>
+        <p class="cc-desc">Leadership narrative, brand storytelling through an African lens, and team cohesion through shared story. Tailored for your organisation.</p>
+        <div class="cc-price" style="font-size:1.1rem;font-style:italic;font-family:'DM Sans',sans-serif;color:var(--ink-m);">Contact for pricing</div>
+        <a href="#contact" class="cc-cta">Get in Touch <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ENROL FORM ══════════ -->
+<section class="section" id="enrol" style="background:var(--paper2);">
+  <div class="container">
+    <div class="enrol-wrap">
+      <div class="reveal">
+        <div class="section-label">Register Interest</div>
+        <h2 class="section-title">Enrol in a<br><em>Course</em></h2>
+        <p class="section-sub" style="margin-top:1rem;">Dr. Sasa's team will confirm your place within 48 hours.</p>
+        <div style="margin-top:2rem;padding:1.2rem;background:var(--paper);border:1px solid var(--border);border-left:3px solid var(--crimson);border-radius:1px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--crimson);margin-bottom:.4rem;">Contact</div>
+          <div style="font-size:.88rem;color:var(--ink-m);">+27 61 526 5356 · zintsomi.co.za</div>
+        </div>
+      </div>
+      <div class="enrol-right reveal reveal-d1">
+        <div id="enrolForm">
+          <div class="form-row">
+            <div class="form-field"><label class="form-label">Full Name</label><input type="text" class="inp" id="en-name" placeholder="Your full name"></div>
+            <div class="form-field"><label class="form-label">Email</label><input type="email" class="inp" id="en-email" placeholder="your@email.com"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label class="form-label">Phone</label><input type="tel" class="inp" id="en-phone" placeholder="+27 xx xxx xxxx"></div>
+            <div class="form-field"><label class="form-label">Select Course</label>
+              <select class="inp" id="en-course">
+                <option value="">— Choose a course —</option>
+                <option>Introduction to African Storytelling — R1,200</option>
+                <option>Professional Certification — R3,500</option>
+                <option>Storytelling for Educators — R850</option>
+                <option>Corporate Masterclass — Contact for pricing</option>
+                <option>Bookfair Exhibition — R750/R1,500/R3,500</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-field form-row single"><label class="form-label">Message (optional)</label><input type="text" class="inp" id="en-msg" placeholder="Any questions or requirements?"></div>
+          <button class="btn-p" onclick="submitEnrol()" style="cursor:none;margin-top:.5rem;">Submit Enrolment <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        </div>
+        <div id="enrolSuccess" style="display:none;" class="success-box">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--crimson)" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <h3>Enrolment Received!</h3>
+          <p>Dr. Sasa's team will be in touch within 48 hours to confirm your place.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══════════ EVENTS ══════════ -->
+<section class="section" id="events">
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:.5rem;">
+      <div class="reveal">
+        <div class="section-label">Calendar</div>
+        <h2 class="section-title">Upcoming <em>Events</em></h2>
+      </div>
+      <a href="#contact" class="btn-o reveal">Book Dr. Sasa</a>
+    </div>
+    <div class="event-list">
+      <div class="event-item reveal">
+        <div class="ev-date"><div class="ev-day">31</div><div class="ev-mon">Jul 2026</div></div>
+        <div class="ev-vline"></div>
+        <div><div class="ev-name">4th International Storytelling Children's Bookfair</div><div class="ev-loc">Balmoral Hotel, Durban Beachfront · 31 Jul – 2 Aug 2026</div></div>
+        <span class="ev-badge b-feat">Featured</span>
+      </div>
+      <div class="event-item reveal reveal-d1">
+        <div class="ev-date"><div class="ev-day">14</div><div class="ev-mon">Mar 2026</div></div>
+        <div class="ev-vline"></div>
+        <div><div class="ev-name">African Storytelling Summit</div><div class="ev-loc">Johannesburg, South Africa</div></div>
+        <span class="ev-badge b-ws">Summit</span>
+      </div>
+      <div class="event-item reveal reveal-d2">
+        <div class="ev-date"><div class="ev-day">22</div><div class="ev-mon">Apr 2026</div></div>
+        <div class="ev-vline"></div>
+        <div><div class="ev-name">Storytelling for Educators Workshop</div><div class="ev-loc">Durban, KwaZulu-Natal</div></div>
+        <span class="ev-badge b-ws">Workshop</span>
+      </div>
+      <div class="event-item reveal reveal-d3">
+        <div class="ev-date"><div class="ev-day">10</div><div class="ev-mon">May 2026</div></div>
+        <div class="ev-vline"></div>
+        <div><div class="ev-name">Children's Storytelling Festival</div><div class="ev-loc">Cape Town, Western Cape</div></div>
+        <span class="ev-badge b-fest">Festival</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══════════ BOOKFAIR REGISTRATION ══════════ -->
+<section class="section" id="bookfair">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Featured Event 2026</div>
+    </div>
+    <div class="bf-layout">
+      <div class="bf-info-col reveal">
+        <h2 class="bf-headline">4th International<br>Storytelling Children's<br><em>Bookfair</em></h2>
+        <div class="bf-dateline">31 July – 2 August 2026 · Balmoral Hotel · Durban Beachfront</div>
+        <p class="bf-tagline">"Celebrate Stories. Share Voices. Inspire Young Readers."</p>
+        <p style="font-size:.92rem;color:rgba(250,247,242,.5);line-height:1.85;margin-bottom:2rem;font-weight:300;">Exhibit your books, launch new titles, and share stories from African oral traditions, folktales, and contemporary literature. Connect with readers, educators, and fellow creators from across the continent.</p>
+        <div class="bf-who-title">Calling All</div>
+        <div class="bf-who-list">
+          <div class="bf-who-item"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Authors — launch your books and meet your readers</div>
+          <div class="bf-who-item"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Creators &amp; Illustrators — showcase your visual storytelling</div>
+          <div class="bf-who-item"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> Publishers &amp; Publishing Houses — connect with Africa's authors</div>
+        </div>
+        <table class="fee-table">
+          <thead><tr><th>Category</th><th>Fee</th><th>Duration</th></tr></thead>
+          <tbody>
+            <tr><td>Authors</td><td class="fee-amt">R 750</td><td style="color:rgba(250,247,242,.3);font-family:'JetBrains Mono',monospace;font-size:.7rem;">3 days</td></tr>
+            <tr><td>Small Publishers</td><td class="fee-amt">R 1,500</td><td style="color:rgba(250,247,242,.3);font-family:'JetBrains Mono',monospace;font-size:.7rem;">3 days</td></tr>
+            <tr><td>Publishing Houses</td><td class="fee-amt">R 3,500</td><td style="color:rgba(250,247,242,.3);font-family:'JetBrains Mono',monospace;font-size:.7rem;">3 days</td></tr>
+          </tbody>
+        </table>
+        <div class="bank-box">
+          <h4>Payment Details</h4>
+          <div class="bank-row"><span>Account Name</span><span class="bv">Zintsomi</span></div>
+          <div class="bank-row"><span>Account Type</span><span class="bv">Gold Business Account</span></div>
+          <div class="bank-row"><span>Account Number</span><span class="bv">6505 966 2184</span></div>
+          <div class="bank-row"><span>Branch Code</span><span class="bv">250117</span></div>
+          <div class="bank-row"><span>Swift Code</span><span class="bv">FIRNZAJJ</span></div>
+          <div class="bank-row"><span>Reference</span><span class="bv">Name / Company Name</span></div>
+        </div>
+      </div>
+      <div class="bf-register-col reveal reveal-d2">
+        <div class="bf-reg-card">
+          <div class="bf-geo-banner"></div>
+          <div class="bf-reg-title">Register to Exhibit</div>
+          <p class="bf-reg-sub">Secure your exhibition space at Africa's premier storytelling bookfair. Limited spaces available — register now to avoid disappointment.</p>
+          <div id="bfForm">
+            <div class="form-field"><label class="form-label">Full Name / Organisation</label><input type="text" class="inp" id="bf-name" placeholder="Your name or organisation"></div>
+            <div class="form-field"><label class="form-label">Email Address</label><input type="email" class="inp" id="bf-email" placeholder="your@email.com"></div>
+            <div class="form-field"><label class="form-label">Phone Number</label><input type="tel" class="inp" id="bf-phone" placeholder="+27 xx xxx xxxx"></div>
+            <div class="form-field"><label class="form-label">Category</label>
+              <select class="inp" id="bf-cat">
+                <option value="">— Select your category —</option>
+                <option value="author">Author — R750 for 3 days</option>
+                <option value="small">Small Publisher — R1,500 for 3 days</option>
+                <option value="house">Publishing House — R3,500 for 3 days</option>
+              </select>
+            </div>
+            <div class="form-field"><label class="form-label">Books / What you will exhibit</label><input type="text" class="inp" id="bf-books" placeholder="Title(s) or brief description"></div>
+            <button class="btn-p" onclick="submitBookfair()" style="cursor:none;width:100%;justify-content:center;margin-top:.5rem;">
+              Register Now
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <p style="font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.06em;color:var(--ink-l);text-align:center;margin-top:1rem;">After registering, make your EFT payment using the details on the left and email your proof of payment to zintsomi.co.za</p>
+          </div>
+          <div id="bfSuccess" style="display:none;" class="success-box">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--crimson)" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <h3>Registration Received!</h3>
+            <p>Please complete your EFT payment to confirm your space. The team will be in touch within 48 hours.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ VR WORLD TEASER ══════════ -->
+<section class="section" id="vr">
+  <div class="vr-bg-geo"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="vr-layout">
+      <div class="vr-content reveal">
+        <div class="vr-eyebrow">Africa's First · WebXR Storytelling World</div>
+        <h2 class="vr-h2">Enter the <em>Ancestor<br>Tree</em> World</h2>
+        <p class="vr-body">Izwi Lezindaba — the world of stories — is a living, breathing VR universe built from Dr. Sasa's books and African folklore. No download. No app. Just your browser, a phone, or a headset.</p>
+        <div class="vr-claims">
+          <div class="vr-claim"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Works on any phone — tilt to look, tap to enter stories</div>
+          <div class="vr-claim"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Full VR on Meta Quest and Google Cardboard</div>
+          <div class="vr-claim"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> 5 worlds based on Dr. Sasa's folklore universe</div>
+          <div class="vr-claim"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Collect story fragments, earn Izwi, grow the Ancestor Tree</div>
+          <div class="vr-claim"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Your drum rhythm joins the world permanently — forever</div>
+        </div>
+        <div style="display:flex;gap:.8rem;flex-wrap:wrap;">
+          <a href="vr-world.html" class="btn-p btn-ink" style="background:var(--teal-l);color:var(--ink);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8c0-1.1.9-2 2-2h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8zm6 4a4 4 0 1 0 8 0 4 4 0 0 0-8 0zm4 0a2 2 0 1 0-4 0 2 2 0 0 0 4 0zm6 0a2 2 0 1 0-4 0 2 2 0 0 0 4 0z"/></svg>
+            Enter VR World
+          </a>
+          <a href="learn.html" class="btn-o" style="border-color:rgba(250,247,242,.2);color:rgba(250,247,242,.6);">Learning Hub</a>
+        </div>
+      </div>
+      <div class="reveal reveal-d2">
+        <div class="vr-preview">
+          <div class="vr-preview-screen" id="vrPreview">
+            <!-- JS renders stars here -->
+            <div class="vr-orb" id="vrOrb"></div>
+            <div class="vr-preview-label">
+              <span class="vpl-text">The Ancestor Tree · Izwi Lezindaba</span>
+              <span class="vpl-badge">LIVE</span>
+            </div>
+          </div>
+          <div class="vr-preview-footer">
+            <span class="vpf-info">5 Worlds · WebXR · Zero Download</span>
+            <div class="worlds-dots">
+              <div class="wd active"></div>
+              <div class="wd"></div>
+              <div class="wd"></div>
+              <div class="wd"></div>
+              <div class="wd"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ DR SASA FULL BIO ══════════ -->
+<section class="section" id="drsasa">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">The Storyteller Behind the Academy</div>
+      <h2 class="section-title">Dr. Nomsa <em>Mdlalose</em></h2>
+    </div>
+    <div class="bio-layout">
+      <div class="reveal">
+        <div class="bio-portrait">
+          <div class="bio-port-geo"></div>
+          <div class="bio-port-mono">NM</div>
+          <div class="bio-port-bottom">
+            <div class="bio-port-strip"></div>
+            <div class="bio-port-caption">
+              <div class="bpc-name">Dr. Nomsa Mdlalose</div>
+              <div class="bpc-title">"Dr. Sasa" · Master Storyteller, Author & Folklorist</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bio-content reveal reveal-d1">
+        <p class="bio-intro">"The story does not begin with the storyteller. It begins the moment the listener leans in."</p>
+        <p class="bio-p">Dr. Nomsa Mdlalose — known widely as "Dr. Sasa" — is one of South Africa's most celebrated storytelling academics and practitioners. With over two decades of work at the intersection of tradition, education, and performance, she has carved a unique space in African cultural life.</p>
+        <p class="bio-p">Holding a Master of Arts in Storytelling from Tennessee State University and a PhD in Folklore from the University of the Witwatersrand, her academic grounding is matched only by her warmth and magnetism as a performer. She has told stories on stages from rural KwaZulu-Natal to international festivals.</p>
+        <p class="bio-p">As the founder of Zintsomi — South Africa's leading storytelling hub — Dr. Sasa has built an institution that serves storytellers, educators, children, and organisations. Zintsomi means "story" in isiXhosa, and the organisation lives up to its name: it is a living archive and launching pad for African narrative.</p>
+        <p class="bio-p">Her books — including the beloved <em>Khalulu: The Story Doll</em> series — are used in classrooms across the country. Her research on African oral tradition informs curriculum development at multiple universities. And now, her work is becoming the foundation of Africa's first WebXR storytelling metaverse.</p>
+        <div class="bio-awards">
+          <div class="awards-label">Awards &amp; Recognition</div>
+          <div class="award-item"><div class="ai-year">2019</div><div><div class="ai-name">Imbokodo Award — Excellence in African Women's Arts</div><div class="ai-org">National Award, South Africa</div></div></div>
+          <div class="award-item"><div class="ai-year">2016</div><div><div class="ai-name">Creator of Africa's First Accredited Storytelling Course</div><div class="ai-org">University of the Witwatersrand</div></div></div>
+          <div class="award-item"><div class="ai-year">2012</div><div><div class="ai-name">Founder — Zintsomi Storytelling Hub</div><div class="ai-org">Johannesburg &amp; Durban, South Africa</div></div></div>
+        </div>
+        <div class="bio-publications">
+          <div class="pub-label">Publications &amp; Books</div>
+          <div class="pub-grid">
+            <div class="pub-card"><div class="pub-cover pc-1"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(139,26,26,.5)" stroke-width="1.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="pub-title">Khalulu — The Story Doll</div><div class="pub-meta">Children's Fiction · Zintsomi Press</div></div>
+            <div class="pub-card"><div class="pub-cover pc-2"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(15,76,76,.5)" stroke-width="1.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="pub-title">African Folktales Collection</div><div class="pub-meta">Anthology · Zintsomi Press</div></div>
+            <div class="pub-card"><div class="pub-cover pc-3"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(120,53,15,.5)" stroke-width="1.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="pub-title">Zintsomi Curriculum Series</div><div class="pub-meta">Educational · Curriculum Materials</div></div>
+            <div class="pub-card"><div class="pub-cover pc-4"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(26,83,45,.5)" stroke-width="1.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="pub-title">Oral Tradition &amp; Identity</div><div class="pub-meta">Academic Research · Wits University</div></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem;">
+          <a href="#enrol" class="btn-p">Learn With Dr. Sasa</a>
+          <a href="#contact" class="btn-o">Book For Your Event</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══════════ LEARNING HUB ══════════ -->
+<section class="section" id="hub">
+  <div class="container">
+    <div class="hub-layout">
+      <div class="reveal">
+        <div class="section-label">Interactive Learning</div>
+        <h2 class="section-title">The Storyteller's<br><em>Learning Hub</em></h2>
+        <p class="section-sub" style="margin:1rem 0 2rem;">Story puzzles, traditional games, playable instruments, and a 3D African village — deepen your craft and earn your Storyteller Certificate.</p>
+        <a href="learn.html" class="btn-p">Open Learning Hub <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+      <div class="reveal reveal-d1">
+        <div class="hub-cards">
+          <div class="hub-card"><div class="hbc-num">01</div><div class="hbc-name">Story Puzzles</div><div class="hbc-sub">Proverbs, archetypes, call & response rhythm</div><div class="hbc-tag">6 exercises</div></div>
+          <div class="hub-card"><div class="hbc-num">02</div><div class="hbc-name">African Games</div><div class="hbc-sub">Mancala, Diketo, Kgati, Ncuva — 5 levels each</div><div class="hbc-tag">4 games · 20 levels</div></div>
+          <div class="hub-card"><div class="hbc-num">03</div><div class="hbc-name">Instruments</div><div class="hbc-sub">Djembe, Mbira, Hosho, Uhadi — interactive rhythms</div><div class="hbc-tag">4 instruments</div></div>
+          <div class="hub-card"><div class="hbc-num">04</div><div class="hbc-name">Village World</div><div class="hbc-sub">3D African village — 6 story discovery points</div><div class="hbc-tag">6 locations</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- ══════════ SHOP ══════════ -->
+<section class="section" id="shop">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Store</div>
+      <h2 class="section-title">Books &amp; <em>Resources</em></h2>
+    </div>
+    <div class="shop-grid">
+      <div class="shop-card reveal reveal-d1"><div class="sc-thumb sc-t1"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(15,76,76,.6)" stroke-width="1.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="sc-body"><div class="sc-name">Khalulu — The Story Doll</div><div class="sc-price">R 350</div><button class="sc-add">Add to Cart</button></div></div>
+      <div class="shop-card reveal reveal-d2"><div class="sc-thumb sc-t2"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(146,64,14,.6)" stroke-width="1.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div class="sc-body"><div class="sc-name">African Folktales Collection</div><div class="sc-price">R 180</div><button class="sc-add">Add to Cart</button></div></div>
+      <div class="shop-card reveal reveal-d3"><div class="sc-thumb sc-t3"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(139,26,26,.6)" stroke-width="1.2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><div class="sc-body"><div class="sc-name">Audio Storytelling Collection</div><div class="sc-price">R 120</div><button class="sc-add">Add to Cart</button></div></div>
+      <div class="shop-card reveal reveal-d1"><div class="sc-thumb sc-t4"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(26,83,45,.6)" stroke-width="1.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="sc-body"><div class="sc-name">Online Course Access</div><div class="sc-price">From R 850</div><button class="sc-add">Enrol Now</button></div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" style="border-color:rgba(250,247,242,.08);">
+
+<!-- ══════════ STORY SUBMISSION ══════════ -->
+<section class="section" id="submit" style="background:var(--paper);">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Share Your Voice</div>
+      <h2 class="section-title">Submit a <em>Story</em></h2>
+    </div>
+    <div class="sub-layout">
+      <div class="reveal">
+        <p class="section-sub">We accept original stories rooted in African oral tradition, folklore, and lived experience. Selected stories may be featured in Kwa Sukela publications.</p>
+        <div class="sub-guidelines">
+          <div class="sg-item"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Stories must be rooted in African oral tradition, folklore, or lived experience</div>
+          <div class="sg-item"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Original work only — you retain full copyright of your submission</div>
+          <div class="sg-item"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Maximum 2,000 words for written submissions</div>
+          <div class="sg-item"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>All age groups and storytelling styles welcome</div>
+          <div class="sg-item"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Selected stories may be featured in Kwa Sukela publications</div>
+        </div>
+      </div>
+      <div class="sub-form reveal reveal-d1">
+        <div id="storyForm">
+          <div class="form-field"><label class="form-label">Your Name</label><input type="text" class="inp" id="st-name" placeholder="Full name"></div>
+          <div class="form-field"><label class="form-label">Email</label><input type="email" class="inp" id="st-email" placeholder="your@email.com"></div>
+          <div class="form-field"><label class="form-label">Story Title</label><input type="text" class="inp" id="st-title" placeholder="The title of your story"></div>
+          <div class="form-field"><label class="form-label">Your Story</label><textarea class="inp" id="st-story" rows="7" placeholder="Share your story here…" style="resize:vertical;line-height:1.7;"></textarea></div>
+          <button class="btn-p" onclick="submitStory()" style="cursor:none;">Submit Story <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+        </div>
+        <div id="storySuccess" style="display:none;" class="success-box">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--crimson)" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <h3>Thank you for sharing your story.</h3>
+          <p>We will review your submission and be in touch shortly.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ ZINTSOMI BAND ══════════ -->
+<div class="zint-band">
+  <div>
+    <div class="zint-label">Part of the Family</div>
+    <div class="zint-name">A Zintsomi Initiative</div>
+    <div class="zint-sub">South Africa's leading storytelling &amp; publishing hub</div>
+  </div>
+  <a href="https://zintsomi.co.za" target="_blank" class="btn-p btn-gold">Visit Zintsomi <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+</div>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer id="contact">
+  <div class="container">
+    <div class="ndebele-strip"></div>
+    <div class="footer-grid">
+      <div>
+        <span class="fl-logo">Kwa <em>Sukela</em></span>
+        <p class="fl-desc">Africa's home for professional storytelling education. Rooted in tradition. Shaped for today.</p>
+        <div class="fl-contact">
+          <a href="tel:+27615265356"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.13 6.13l.93-.93a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.01z"/></svg>+27 61 526 5356</a>
+          <a href="https://zintsomi.co.za" target="_blank"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>zintsomi.co.za</a>
+        </div>
+      </div>
+      <div>
+        <h4>Academy</h4>
+        <ul>
+          <li><a href="#about">About Kwa Sukela</a></li>
+          <li><a href="#drsasa">Dr. Sasa</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#courses">Courses</a></li>
+          <li><a href="#enrol">Enrol</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Events</h4>
+        <ul>
+          <li><a href="#events">Upcoming Events</a></li>
+          <li><a href="#bookfair">Bookfair 2026</a></li>
+          <li><a href="#submit">Submit a Story</a></li>
+          <li><a href="#contact">Book Dr. Sasa</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Digital</h4>
+        <ul>
+          <li><a href="vr-world.html">VR World — Enter</a></li>
+          <li><a href="learn.html">Learning Hub</a></li>
+          <li><a href="#shop">Shop</a></li>
+          <li><a href="https://zintsomi.co.za" target="_blank">Zintsomi.co.za</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Kwa Sukela Storytelling Academy. All rights reserved.</span>
+      <span>Johannesburg &amp; Durban, South Africa · A Zintsomi Initiative</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── CURSOR ──
+const cur=document.getElementById('cur'),ring=document.getElementById('ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='54px';ring.style.height='54px';ring.style.borderColor='rgba(139,26,26,.5)';cur.style.background='var(--gold-xl)';});
+  el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';ring.style.borderColor='rgba(139,26,26,.4)';cur.style.background='var(--crimson)';});
+});
+
+// ── NAV ──
+function toggleMenu(){document.getElementById('navLinks').classList.toggle('open');}
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').style.background=window.scrollY>80?'rgba(250,247,242,.98)':'rgba(250,247,242,.92)';
+});
+
+// ── SCROLL REVEAL ──
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target);}});},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// ── VR PREVIEW STARS ──
+(function(){
+  const screen=document.getElementById('vrPreview');
+  if(!screen)return;
+  for(let i=0;i<120;i++){
+    const s=document.createElement('div');
+    const sz=Math.random()<0.05?3:Math.random()<0.15?2:1;
+    s.className='vr-star';
+    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;opacity:${.2+Math.random()*.8};`;
+    if(Math.random()>.85){
+      s.style.animation=`startwinkle ${1+Math.random()*2}s ease-in-out infinite`;
+      s.style.animationDelay=Math.random()*3+'s';
+    }
+    screen.insertBefore(s,screen.firstChild);
+  }
+  const style=document.createElement('style');
+  style.textContent='@keyframes startwinkle{0%,100%{opacity:.2}50%{opacity:1}}';
+  document.head.appendChild(style);
+})();
+
+// ── FORMS ──
+function submitEnrol(){
+  const n=document.getElementById('en-name').value.trim();
+  const e=document.getElementById('en-email').value.trim();
+  const c=document.getElementById('en-course').value;
+  if(!n||!e||!c){alert('Please fill in your name, email and select a course.');return;}
+  document.getElementById('enrolForm').style.display='none';
+  document.getElementById('enrolSuccess').style.display='block';
+}
+function submitBookfair(){
+  const n=document.getElementById('bf-name').value.trim();
+  const e=document.getElementById('bf-email').value.trim();
+  const c=document.getElementById('bf-cat').value;
+  if(!n||!e||!c){alert('Please fill in your name, email and select a category.');return;}
+  document.getElementById('bfForm').style.display='none';
+  document.getElementById('bfSuccess').style.display='block';
+}
+function submitStory(){
+  const n=document.getElementById('st-name').value.trim();
+  const e=document.getElementById('st-email').value.trim();
+  const t=document.getElementById('st-title').value.trim();
+  const s=document.getElementById('st-story').value.trim();
+  if(!n||!e||!t||!s){alert('Please fill in all fields.');return;}
+  document.getElementById('storyForm').style.display='none';
+  document.getElementById('storySuccess').style.display='block';
+}
+</script>
 </body>
 </html>
