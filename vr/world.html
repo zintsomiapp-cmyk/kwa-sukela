@@ -1,1 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Izwi Lezindaba — Enter the World · Kwa Sukela</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aframe/1.5.0/aframe.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fire:#E8540A;--fire-l:#F97316;--fire-xl:#FBA94C;
+  --gold:#C4820A;--gold-xl:#F5C842;
+  --teal:#0F9488;--teal-glow:#14E8C8;
+  --night:#0E0A05;--paper:#FAF6EE;
+  --crimson:#9B1C1C;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--night);font-family:'DM Sans',sans-serif;overflow:hidden;}
+
+/* ── LOADING SCREEN ── */
+#loader{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--night);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2rem;
+  transition:opacity .8s ease, visibility .8s ease;
+}
+#loader.hidden{opacity:0;visibility:hidden;}
+.loader-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,6vw,3.5rem);
+  font-weight:700;color:var(--paper);
+  text-align:center;line-height:1;
+}
+.loader-title em{font-style:italic;color:var(--fire-l);}
+.loader-sub{
+  font-family:'Syne',sans-serif;font-size:.72rem;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(250,246,238,.4);text-align:center;
+}
+.loader-fire{
+  width:60px;height:80px;position:relative;
+}
+.loader-flame{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  border-radius:50% 50% 20% 20%;
+  animation:flicker 1.2s ease-in-out infinite alternate;
+}
+.f1{width:30px;height:50px;background:radial-gradient(ellipse,var(--fire-xl),var(--fire));animation-delay:0s;}
+.f2{width:20px;height:35px;background:radial-gradient(ellipse,#fff6,var(--gold-xl));animation-delay:.15s;}
+@keyframes flicker{0%{transform:translateX(-50%) scaleY(1) scaleX(1);}100%{transform:translateX(-50%) scaleY(1.1) scaleX(.95);}}
+.loader-bar{
+  width:180px;height:2px;background:rgba(250,246,238,.1);border-radius:2px;overflow:hidden;
+}
+.loader-fill{
+  height:100%;background:linear-gradient(90deg,var(--fire),var(--gold-xl));
+  border-radius:2px;width:0;
+  animation:fillBar 2.5s ease forwards;
+}
+@keyframes fillBar{to{width:100%;}}
+.loader-lang{
+  font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;
+  color:rgba(250,246,238,.35);text-align:center;
+  animation:langCycle 3s ease infinite;
+}
+@keyframes langCycle{
+  0%,20%{content:'Sawubona';}
+  25%,45%{opacity:0;}
+  50%,70%{opacity:1;}
+  75%,95%{opacity:0;}
+  100%{opacity:1;}
+}
+
+/* ── UI OVERLAY ── */
+#ui{
+  position:fixed;inset:0;z-index:100;
+  pointer-events:none;
+}
+
+/* Top bar */
+#topbar{
+  position:absolute;top:0;left:0;right:0;
+  padding:1rem 1.5rem;
+  display:flex;justify-content:space-between;align-items:center;
+  background:linear-gradient(to bottom,rgba(14,10,5,.8),transparent);
+  pointer-events:auto;
+}
+.tb-logo{
+  font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;
+  color:var(--paper);text-decoration:none;
+}
+.tb-logo em{font-style:italic;color:var(--fire-l);}
+.tb-world{
+  font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;
+  letter-spacing:.15em;text-transform:uppercase;
+  color:rgba(250,246,238,.45);
+}
+.tb-back{
+  font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(250,246,238,.5);text-decoration:none;
+  padding:.4rem .9rem;border:1px solid rgba(250,246,238,.15);border-radius:2px;
+  transition:color .2s,border-color .2s;
+}
+.tb-back:hover{color:var(--fire-xl);border-color:rgba(232,84,10,.4);}
+
+/* Bottom controls */
+#controls{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:1.5rem;
+  display:flex;justify-content:space-between;align-items:flex-end;
+  background:linear-gradient(to top,rgba(14,10,5,.85),transparent);
+  pointer-events:auto;
+}
+.world-selector{display:flex;gap:.5rem;flex-wrap:wrap;}
+.world-btn{
+  font-family:'Syne',sans-serif;font-size:.56rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:.35rem .9rem;border-radius:40px;
+  border:1px solid rgba(20,232,200,.2);
+  background:rgba(20,232,200,.06);
+  color:rgba(20,232,200,.6);
+  cursor:pointer;transition:all .2s;
+}
+.world-btn:hover,.world-btn.active{
+  background:rgba(20,232,200,.18);
+  border-color:rgba(20,232,200,.5);
+  color:var(--teal-glow);
+}
+.vr-hint{
+  font-family:'Syne',sans-serif;font-size:.58rem;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(250,246,238,.25);text-align:right;
+  line-height:1.6;
+}
+.vr-hint strong{color:rgba(250,246,238,.5);display:block;}
+
+/* Story orb tooltip */
+#orb-tooltip{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  max-width:320px;width:90vw;
+  background:rgba(14,10,5,.92);
+  border:1px solid rgba(232,84,10,.3);
+  border-radius:4px;padding:1.5rem;
+  text-align:center;
+  pointer-events:auto;
+  display:none;
+  backdrop-filter:blur(12px);
+}
+#orb-tooltip.show{display:block;animation:popIn .3s cubic-bezier(.22,1,.36,1);}
+@keyframes popIn{0%{opacity:0;transform:translate(-50%,-50%) scale(.9);}100%{opacity:1;transform:translate(-50%,-50%) scale(1);}}
+.ot-lang{
+  font-family:'Syne',sans-serif;font-size:.58rem;font-weight:700;
+  letter-spacing:.15em;text-transform:uppercase;
+  color:var(--fire-xl);margin-bottom:.5rem;
+}
+.ot-title{
+  font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;
+  color:var(--paper);margin-bottom:.5rem;
+}
+.ot-body{
+  font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;
+  color:rgba(250,246,238,.65);line-height:1.6;margin-bottom:1.2rem;
+}
+.ot-close{
+  font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:.4rem 1rem;border:1px solid rgba(250,246,238,.15);
+  background:none;color:rgba(250,246,238,.4);cursor:pointer;border-radius:2px;
+  transition:all .2s;
+}
+.ot-close:hover{border-color:var(--fire);color:var(--fire-xl);}
+
+/* Centre crosshair for desktop */
+#crosshair{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:20px;height:20px;pointer-events:none;
+}
+#crosshair::before,#crosshair::after{
+  content:'';position:absolute;background:rgba(250,246,238,.3);border-radius:2px;
+}
+#crosshair::before{width:1px;height:100%;top:0;left:50%;}
+#crosshair::after{width:100%;height:1px;top:50%;left:0;}
+
+/* Leaf count badge */
+#leaf-badge{
+  position:absolute;top:50%;right:1.5rem;transform:translateY(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.3rem;
+  pointer-events:none;
+}
+.lb-n{
+  font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;
+  color:var(--teal-glow);line-height:1;
+}
+.lb-l{
+  font-family:'Syne',sans-serif;font-size:.52rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(20,232,200,.4);
+}
+
+/* Enter VR button */
+#enterVR{
+  position:absolute;top:50%;left:1.5rem;transform:translateY(-50%);
+  font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:.5rem 1rem;
+  background:rgba(20,232,200,.1);border:1px solid rgba(20,232,200,.3);
+  color:var(--teal-glow);cursor:pointer;border-radius:2px;
+  transition:all .2s;pointer-events:auto;
+  writing-mode:vertical-rl;text-orientation:mixed;
+}
+#enterVR:hover{background:rgba(20,232,200,.2);}
+
+/* Ancestor leaf modal */
+#leafModal{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(14,10,5,.85);
+  backdrop-filter:blur(16px);
+  display:flex;align-items:center;justify-content:center;
+  padding:1.5rem;
+  display:none;
+}
+#leafModal.show{display:flex;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.leaf-card{
+  background:rgba(28,16,7,.95);
+  border:1px solid rgba(232,84,10,.25);
+  border-radius:6px;padding:2.5rem;
+  max-width:480px;width:100%;
+  position:relative;
+}
+.lc-strip{height:4px;background:repeating-linear-gradient(90deg,var(--fire) 0,var(--fire) 20%,var(--gold-xl) 20%,var(--gold-xl) 40%,var(--night) 40%,var(--night) 60%,var(--teal) 60%,var(--teal) 80%,var(--crimson) 80%,var(--crimson) 100%);margin:-2.5rem -2.5rem 2rem;border-radius:5px 5px 0 0;}
+.lc-title{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:700;color:var(--paper);margin-bottom:.3rem;}
+.lc-sub{font-family:'Syne',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(20,232,200,.6);margin-bottom:1.5rem;}
+.lc-label{font-family:'Syne',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(250,246,238,.35);margin-bottom:.4rem;display:block;}
+.lc-input{
+  width:100%;padding:.8rem 1rem;
+  background:rgba(250,246,238,.05);
+  border:1px solid rgba(250,246,238,.12);
+  border-radius:2px;color:var(--paper);
+  font-family:'Cormorant Garamond',serif;font-size:1rem;
+  outline:none;margin-bottom:1rem;
+  transition:border-color .2s;
+}
+.lc-input:focus{border-color:rgba(232,84,10,.5);}
+.lc-input::placeholder{color:rgba(250,246,238,.2);}
+.lc-langs{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap;}
+.lang-btn{
+  font-family:'Syne',sans-serif;font-size:.58rem;font-weight:700;
+  letter-spacing:.06em;padding:.3rem .8rem;
+  border-radius:40px;border:1px solid rgba(250,246,238,.12);
+  background:none;color:rgba(250,246,238,.35);cursor:pointer;
+  transition:all .2s;
+}
+.lang-btn:hover,.lang-btn.active{
+  border-color:rgba(232,84,10,.5);color:var(--fire-xl);
+  background:rgba(232,84,10,.08);
+}
+textarea.lc-input{resize:none;line-height:1.6;height:90px;}
+.lc-btns{display:flex;gap:.8rem;margin-top:.5rem;}
+.lc-submit{
+  flex:1;font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:.75rem 1.2rem;background:var(--fire);color:var(--paper);
+  border:none;border-radius:2px;cursor:pointer;
+  transition:background .2s,box-shadow .2s;
+}
+.lc-submit:hover{background:var(--fire-l);box-shadow:0 0 20px rgba(232,84,10,.4);}
+.lc-cancel{
+  font-family:'Syne',sans-serif;font-size:.65rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:.75rem 1rem;background:none;
+  border:1px solid rgba(250,246,238,.12);color:rgba(250,246,238,.35);
+  border-radius:2px;cursor:pointer;transition:all .2s;
+}
+.lc-cancel:hover{border-color:rgba(250,246,238,.3);color:rgba(250,246,238,.6);}
+
+/* Leaves display */
+#leavesWall{
+  position:absolute;bottom:5rem;left:1.5rem;
+  max-width:260px;pointer-events:none;
+}
+.leaf-entry{
+  font-family:'Cormorant Garamond',serif;font-size:.88rem;font-style:italic;
+  color:rgba(20,232,200,.55);line-height:1.5;
+  padding:.3rem 0;border-bottom:1px solid rgba(20,232,200,.08);
+  animation:leafSlide .5s ease;
+}
+.leaf-entry:last-child{border:none;}
+.leaf-entry .leaf-name{
+  font-family:'Syne',sans-serif;font-size:.5rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(20,232,200,.3);display:block;margin-top:.2rem;
+}
+@keyframes leafSlide{from{opacity:0;transform:translateX(-10px);}to{opacity:1;transform:none;}}
+
+/* Add leaf trigger button */
+#addLeafBtn{
+  position:absolute;bottom:5.5rem;right:1.5rem;
+  font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:.6rem 1.1rem;
+  background:rgba(20,232,200,.1);
+  border:1px solid rgba(20,232,200,.3);
+  color:var(--teal-glow);cursor:pointer;border-radius:2px;
+  transition:all .2s;pointer-events:auto;
+  display:flex;align-items:center;gap:.5rem;
+}
+#addLeafBtn:hover{background:rgba(20,232,200,.2);box-shadow:0 0 16px rgba(20,232,200,.2);}
+#addLeafBtn::before{content:'🌿';font-size:.8rem;}
+</style>
+</head>
+<body>
+
+<!-- ══ LOADING SCREEN ══ -->
+<div id="loader">
+  <div class="loader-fire">
+    <div class="loader-flame f1"></div>
+    <div class="loader-flame f2"></div>
+  </div>
+  <div class="loader-title">Izwi <em>Lezindaba</em></div>
+  <div class="loader-sub">The World of Stories · Kwa Sukela</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-lang" id="langGreet">Sawubona — Welcome — Dumela — Molo</div>
+</div>
+
+<!-- ══ A-FRAME VR WORLD ══ -->
+<a-scene
+  id="vrScene"
+  background="color:#030A05"
+  fog="type:exponential;color:#030A05;density:0.015"
+  renderer="antialias:true;colorManagement:true;physicallyCorrectLights:true"
+  vr-mode-ui="enabled:true"
+  loading-screen="enabled:false"
+>
+
+  <!-- ══ ASSETS ══ -->
+  <a-assets>
+    <!-- Story orb sounds would be loaded here in production -->
+  </a-assets>
+
+  <!-- ══ SKY — Southern Hemisphere night ══ -->
+  <a-sky color="#020608"></a-sky>
+
+  <!-- ══ STARS — Southern Cross and Milky Way ══ -->
+  <a-entity id="stars">
+    <!-- Southern Cross constellation — distinctive to Southern Africa -->
+    <!-- Crux constellation points: Gacrux (top), Acrux (bottom), left, right -->
+    <a-sphere position="-8 28 -50" radius=".08" color="#E8F4FF" opacity=".95"
+      animation="property:material.opacity;from:.95;to:.4;dur:2000;dir:alternate;loop:true;easing:easeInOutSine"></a-sphere>
+    <a-sphere position="-8 22 -50" radius=".1" color="#B8D4FF" opacity=".9"
+      animation="property:material.opacity;from:.9;to:.3;dur:2400;dir:alternate;loop:true"></a-sphere>
+    <a-sphere position="-11 25 -50" radius=".06" color="#FFFFFF" opacity=".8"
+      animation="property:material.opacity;from:.8;to:.35;dur:1800;dir:alternate;loop:true"></a-sphere>
+    <a-sphere position="-5 25 -50" radius=".07" color="#FFE8C8" opacity=".85"
+      animation="property:material.opacity;from:.85;to:.3;dur:2200;dir:alternate;loop:true"></a-sphere>
+    <!-- Pointer star to Southern Cross -->
+    <a-sphere position="2 23 -50" radius=".09" color="#C8E0FF" opacity=".7"></a-sphere>
+    <a-sphere position="5 21 -50" radius=".08" color="#C8E0FF" opacity=".65"></a-sphere>
+  </a-entity>
+
+  <!-- Procedural star field via JS -->
+  <a-entity id="starfield"></a-entity>
+
+  <!-- ══ GROUND — African red earth ══ -->
+  <a-cylinder
+    position="0 -0.05 0"
+    radius="80" height=".1"
+    color="#2A1005"
+    roughness="1" metalness="0"
+  ></a-cylinder>
+
+  <!-- Ground detail rings — Ndebele geometric -->
+  <a-torus position="0 .01 0" radius="8" radius-tubular=".02" color="#3D1A08" rotation="-90 0 0" opacity=".6"></a-torus>
+  <a-torus position="0 .01 0" radius="14" radius-tubular=".015" color="#2A1005" rotation="-90 0 0" opacity=".4"></a-torus>
+  <a-torus position="0 .01 0" radius="22" radius-tubular=".01" color="#1C0E03" rotation="-90 0 0" opacity=".3"></a-torus>
+
+  <!-- ══ THE GREAT BAOBAB — Ancestor Tree ══ -->
+  <a-entity id="baobab" position="0 0 -18">
+    <!-- Main trunk -->
+    <a-cylinder position="0 4 0" radius-bottom="1.6" radius-top="1.1" height="8" color="#1A0A04" roughness=".95"></a-cylinder>
+    <!-- Trunk texture rings -->
+    <a-cylinder position="0 1 0" radius-bottom="1.65" radius-top="1.6" height=".3" color="#120804" roughness="1"></a-cylinder>
+    <a-cylinder position="0 3 0" radius-bottom="1.62" radius-top="1.58" height=".2" color="#120804" roughness="1"></a-cylinder>
+    <a-cylinder position="0 6 0" radius-bottom="1.18" radius-top="1.12" height=".2" color="#0E0602" roughness="1"></a-cylinder>
+
+    <!-- Major branches -->
+    <a-cylinder position="1.8 9 0" rotation="0 0 -50" radius=".35" height="4.5" color="#140802"></a-cylinder>
+    <a-cylinder position="-1.8 9 0" rotation="0 0 50" radius=".3" height="4" color="#140802"></a-cylinder>
+    <a-cylinder position="0 9.5 -1.5" rotation="45 0 0" radius=".28" height="4" color="#140802"></a-cylinder>
+    <a-cylinder position="0 9.5 1.5" rotation="-40 0 0" radius=".25" height="3.5" color="#140802"></a-cylinder>
+    <a-cylinder position="1.2 9.2 1.2" rotation="-30 45 -40" radius=".2" height="3.5" color="#140802"></a-cylinder>
+    <a-cylinder position="-1.2 9.2 -1.2" rotation="30 -45 40" radius=".2" height="3" color="#140802"></a-cylinder>
+
+    <!-- Sub branches -->
+    <a-cylinder position="3.2 11.5 0" rotation="0 0 -70" radius=".15" height="3" color="#0E0602"></a-cylinder>
+    <a-cylinder position="-3 11 0" rotation="0 0 65" radius=".12" height="2.8" color="#0E0602"></a-cylinder>
+    <a-cylinder position=".5 13 -2.5" rotation="55 10 5" radius=".12" height="2.5" color="#0E0602"></a-cylinder>
+    <a-cylinder position="-.5 13 2.5" rotation="-50 -10 -5" radius=".1" height="2.2" color="#0E0602"></a-cylinder>
+
+    <!-- Glowing ancestor leaves — teal bioluminescent -->
+    <a-sphere position="3.8 13.5 0" radius=".5" color="#0F9488" opacity=".35" material="emissive:#0F9488;emissiveIntensity:.4"
+      animation="property:material.opacity;from:.35;to:.15;dur:3000;dir:alternate;loop:true"></a-sphere>
+    <a-sphere position="-3.2 13 .5" radius=".4" color="#0F9488" opacity=".3" material="emissive:#0F9488;emissiveIntensity:.3"
+      animation="property:material.opacity;from:.3;to:.1;dur:2500;dir:alternate;loop:true"></a-sphere>
+    <a-sphere position=".8 14.5 -3" radius=".6" color="#14E8C8" opacity=".25" material="emissive:#14E8C8;emissiveIntensity:.5"
+      animation="property:material.opacity;from:.25;to:.08;dur:3500;dir:alternate;loop:true"></a-sphere>
+    <a-sphere position="1.5 14 3" radius=".45" color="#0F9488" opacity=".2" material="emissive:#0F9488;emissiveIntensity:.3"
+      animation="property:material.opacity;from:.2;to:.06;dur:2800;dir:alternate;loop:true"></a-sphere>
+    <a-sphere position="-1 15 1" radius=".55" color="#14E8C8" opacity=".3" material="emissive:#14E8C8;emissiveIntensity:.5"
+      animation="property:material.opacity;from:.3;to:.1;dur:4000;dir:alternate;loop:true"></a-sphere>
+    <a-sphere position="2.5 12.5 -1.5" radius=".35" color="#0F9488" opacity=".2" material="emissive:#0F9488;emissiveIntensity:.25"
+      animation="property:material.opacity;from:.2;to:.05;dur:3200;dir:alternate;loop:true"></a-sphere>
+    <a-sphere position="-2 14 -2" radius=".4" color="#14E8C8" opacity=".25" material="emissive:#14E8C8;emissiveIntensity:.4"
+      animation="property:material.opacity;from:.25;to:.08;dur:2700;dir:alternate;loop:true"></a-sphere>
+
+    <!-- Trunk inner glow — the fire within -->
+    <a-light type="point" color="#E8540A" intensity=".6" position="0 3 0" distance="8"></a-light>
+    <!-- Canopy ambient glow -->
+    <a-light type="point" color="#0F9488" intensity=".4" position="0 14 0" distance="12"></a-light>
+  </a-entity>
+
+  <!-- ══ THE FIRE at the gathering circle's centre ══ -->
+  <a-entity id="fire" position="0 0 -5">
+    <!-- Fire base stones -->
+    <a-torus position="0 .08 0" radius=".6" radius-tubular=".08" color="#3D1A08" roughness="1" rotation="-90 0 0"></a-torus>
+    <!-- Fire glow sphere -->
+    <a-sphere position="0 .3 0" radius=".25" color="#E8540A" opacity=".8"
+      material="emissive:#E8540A;emissiveIntensity:1.2;transparent:true"
+      animation="property:material.opacity;from:.8;to:.5;dur:600;dir:alternate;loop:true"
+      animation__scale="property:scale;from:1 1 1;to:1.1 1.2 1.1;dur:500;dir:alternate;loop:true"
+    ></a-sphere>
+    <a-sphere position="0 .5 0" radius=".18" color="#FBA94C" opacity=".7"
+      material="emissive:#FBA94C;emissiveIntensity:1.5;transparent:true"
+      animation="property:material.opacity;from:.7;to:.3;dur:400;dir:alternate;loop:true"
+      animation__scale="property:scale;from:1 1 1;to:.9 1.3 .9;dur:380;dir:alternate;loop:true"
+    ></a-sphere>
+    <a-sphere position="0 .7 0" radius=".1" color="#FFFFFF" opacity=".5"
+      material="emissive:#FFFFFF;emissiveIntensity:2;transparent:true"
+      animation="property:material.opacity;from:.5;to:.1;dur:300;dir:alternate;loop:true"
+    ></a-sphere>
+    <!-- Fire light -->
+    <a-light type="point" color="#E8540A" intensity="2.5" position="0 .5 0" distance="15"
+      animation="property:intensity;from:2.5;to:1.8;dur:600;dir:alternate;loop:true"
+    ></a-light>
+  </a-entity>
+
+  <!-- ══ STORYTELLING CIRCLE — 12 seat stones ══ -->
+  <a-entity id="circle">
+    <!-- 12 stones around the fire at radius 4 -->
+    <a-cylinder position="0 .1 -4" radius=".3" height=".18" color="#1C0A03" roughness="1"></a-cylinder>
+    <a-cylinder position="2 .1 -3.46" radius=".28" height=".15" color="#1A0902" roughness="1"></a-cylinder>
+    <a-cylinder position="3.46 .1 -2" radius=".3" height=".16" color="#1C0A03" roughness="1"></a-cylinder>
+    <a-cylinder position="4 .1 0" radius=".28" height=".18" color="#1A0902" roughness="1"></a-cylinder>
+    <a-cylinder position="3.46 .1 2" radius=".3" height=".15" color="#1C0A03" roughness="1"></a-cylinder>
+    <a-cylinder position="2 .1 3.46" radius=".28" height=".16" color="#1A0902" roughness="1"></a-cylinder>
+    <a-cylinder position="0 .1 4" radius=".3" height=".18" color="#1C0A03" roughness="1"></a-cylinder>
+    <a-cylinder position="-2 .1 3.46" radius=".28" height=".15" color="#1A0902" roughness="1"></a-cylinder>
+    <a-cylinder position="-3.46 .1 2" radius=".3" height=".16" color="#1C0A03" roughness="1"></a-cylinder>
+    <a-cylinder position="-4 .1 0" radius=".28" height=".18" color="#1A0902" roughness="1"></a-cylinder>
+    <a-cylinder position="-3.46 .1 -2" radius=".3" height=".15" color="#1C0A03" roughness="1"></a-cylinder>
+    <a-cylinder position="-2 .1 -3.46" radius=".28" height=".16" color="#1A0902" roughness="1"></a-cylinder>
+
+    <!-- Glowing seat indicators -->
+    <a-sphere position="0 .25 -4" radius=".06" color="#F5C842" opacity=".5" material="emissive:#F5C842;emissiveIntensity:.8"
+      animation="property:material.opacity;from:.5;to:.2;dur:2000;dir:alternate;loop:true"></a-sphere>
+    <a-sphere position="4 .25 0" radius=".06" color="#F5C842" opacity=".4" material="emissive:#F5C842;emissiveIntensity:.7"
+      animation="property:material.opacity;from:.4;to:.15;dur:2300;dir:alternate;loop:true"></a-sphere>
+    <a-sphere position="-4 .25 0" radius=".06" color="#F5C842" opacity=".45" material="emissive:#F5C842;emissiveIntensity:.75"
+      animation="property:material.opacity;from:.45;to:.18;dur:1900;dir:alternate;loop:true"></a-sphere>
+    <a-sphere position="0 .25 4" radius=".06" color="#F5C842" opacity=".5" material="emissive:#F5C842;emissiveIntensity:.8"
+      animation="property:material.opacity;from:.5;to:.2;dur:2100;dir:alternate;loop:true"></a-sphere>
+  </a-entity>
+
+  <!-- ══ STORY ORBS — floating, clickable ══ -->
+
+  <!-- Orb 1: Khalulu — isiZulu -->
+  <a-entity id="orb1" position="3 2.5 -6"
+    animation="property:position;from:3 2.5 -6;to:3 3.2 -6;dur:3000;dir:alternate;loop:true;easing:easeInOutSine">
+    <a-sphere radius=".35" color="#E8540A" opacity=".85"
+      material="emissive:#E8540A;emissiveIntensity:.8;transparent:true"
+      animation="property:material.opacity;from:.85;to:.5;dur:2000;dir:alternate;loop:true">
+    </a-sphere>
+    <a-sphere radius=".5" color="#E8540A" opacity=".15"
+      material="emissive:#E8540A;emissiveIntensity:.3;transparent:true"
+      animation="property:material.opacity;from:.15;to:.05;dur:2000;dir:alternate;loop:true">
+    </a-sphere>
+    <a-light type="point" color="#E8540A" intensity=".8" distance="4"></a-light>
+    <!-- Clickable target -->
+    <a-sphere radius=".6" opacity="0" class="story-orb" data-story="1" cursor-listener></a-sphere>
+  </a-entity>
+
+  <!-- Orb 2: Folktale — isiXhosa -->
+  <a-entity id="orb2" position="-4 3 -10"
+    animation="property:position;from:-4 3 -10;to:-4 3.8 -10;dur:3500;dir:alternate;loop:true;easing:easeInOutSine">
+    <a-sphere radius=".4" color="#14E8C8" opacity=".8"
+      material="emissive:#14E8C8;emissiveIntensity:.7;transparent:true"
+      animation="property:material.opacity;from:.8;to:.4;dur:2500;dir:alternate;loop:true">
+    </a-sphere>
+    <a-sphere radius=".55" color="#14E8C8" opacity=".12"
+      material="emissive:#14E8C8;emissiveIntensity:.2;transparent:true"
+      animation="property:material.opacity;from:.12;to:.04;dur:2500;dir:alternate;loop:true">
+    </a-sphere>
+    <a-light type="point" color="#0F9488" intensity=".6" distance="4"></a-light>
+    <a-sphere radius=".65" opacity="0" class="story-orb" data-story="2" cursor-listener></a-sphere>
+  </a-entity>
+
+  <!-- Orb 3: Proverb — Sesotho -->
+  <a-entity id="orb3" position="0 4 -14"
+    animation="property:position;from:0 4 -14;to:0 4.6 -14;dur:4000;dir:alternate;loop:true;easing:easeInOutSine">
+    <a-sphere radius=".45" color="#F5C842" opacity=".8"
+      material="emissive:#F5C842;emissiveIntensity:.9;transparent:true"
+      animation="property:material.opacity;from:.8;to:.45;dur:3000;dir:alternate;loop:true">
+    </a-sphere>
+    <a-sphere radius=".65" color="#F5C842" opacity=".1"
+      material="emissive:#F5C842;emissiveIntensity:.2;transparent:true"
+      animation="property:material.opacity;from:.1;to:.03;dur:3000;dir:alternate;loop:true">
+    </a-sphere>
+    <a-light type="point" color="#C4820A" intensity=".7" distance="5"></a-light>
+    <a-sphere radius=".7" opacity="0" class="story-orb" data-story="3" cursor-listener></a-sphere>
+  </a-entity>
+
+  <!-- ══ FLOATING ANCESTOR LEAVES ══ -->
+  <a-entity id="ancestor-leaves"></a-entity>
+
+  <!-- ══ AMBIENT LIGHTING ══ -->
+  <a-light type="ambient" color="#0A0603" intensity=".8"></a-light>
+  <!-- Moonlight -->
+  <a-light type="directional" color="#1A2840" intensity=".3" position="10 20 5"></a-light>
+
+  <!-- ══ DISTANT LANDSCAPE — Kopjes (rocky outcrops) ══ -->
+  <a-cone position="35 0 -60" radius-bottom="18" radius-top="2" height="22" color="#0A0502" roughness="1"></a-cone>
+  <a-cone position="-40 0 -55" radius-bottom="14" radius-top="1" height="18" color="#0C0603" roughness="1"></a-cone>
+  <a-cone position="0 0 -70" radius-bottom="22" radius-top="3" height="28" color="#080402" roughness="1"></a-cone>
+  <!-- Acacia silhouettes in distance -->
+  <a-cylinder position="20 0 -40" radius=".15" height="5" color="#080402"></a-cylinder>
+  <a-sphere position="20 5.5 -40" radius="2.5" color="#060301" opacity=".8"></a-sphere>
+  <a-cylinder position="-25 0 -35" radius=".12" height="4" color="#080402"></a-cylinder>
+  <a-sphere position="-25 4.5 -35" radius="2" color="#060301" opacity=".7"></a-sphere>
+
+  <!-- ══ CAMERA with cursor for orb interaction ══ -->
+  <a-entity camera look-controls wasd-controls position="0 1.6 0">
+    <a-cursor
+      color="#F97316"
+      opacity=".85"
+      fuse="false"
+      raycaster="objects:.story-orb"
+      animation__click="property:scale;startEvents:click;from:0.1 0.1 0.1;to:1 1 1;dur:150"
+    ></a-cursor>
+  </a-entity>
+
+</a-scene>
+
+<!-- ══ UI OVERLAY ══ -->
+<div id="ui">
+  <!-- Top bar -->
+  <div id="topbar">
+    <a href="index.html" class="tb-logo">Kwa <em>Sukela</em></a>
+    <div class="tb-world">Izwi Lezindaba · The Ancestor Tree</div>
+    <a href="index.html" class="tb-back">← Exit World</a>
+  </div>
+
+  <!-- Centre crosshair -->
+  <div id="crosshair"></div>
+
+  <!-- Leaf count -->
+  <div id="leaf-badge">
+    <span class="lb-n" id="leafCount">0</span>
+    <span class="lb-l">Leaves</span>
+  </div>
+
+  <!-- Enter full VR -->
+  <button id="enterVR" onclick="document.querySelector('a-scene').enterVR()">Full VR</button>
+
+  <!-- Add leaf button -->
+  <button id="addLeafBtn" onclick="showLeafModal()">Leave Your Story</button>
+
+  <!-- Recent leaves wall -->
+  <div id="leavesWall"></div>
+
+  <!-- World selector -->
+  <div id="controls">
+    <div class="world-selector">
+      <button class="world-btn active" onclick="switchWorld('tree')">Ancestor Tree</button>
+      <button class="world-btn" onclick="switchWorld('village')">Village Square</button>
+      <button class="world-btn" onclick="switchWorld('river')">River of Voices</button>
+      <button class="world-btn" onclick="switchWorld('mountain')">Mountain of Elders</button>
+      <button class="world-btn" onclick="switchWorld('forest')">Dream Forest</button>
+    </div>
+    <div class="vr-hint">
+      <strong>Look around · Approach the orbs</strong>
+      Click an orb to hear a story<br>
+      On mobile: tilt your phone · Full VR: use a headset
+    </div>
+  </div>
+</div>
+
+<!-- Story orb tooltip -->
+<div id="orb-tooltip">
+  <div class="ot-lang" id="ot-lang"></div>
+  <div class="ot-title" id="ot-title"></div>
+  <div class="ot-body" id="ot-body"></div>
+  <button class="ot-close" onclick="closeOrb()">Close · Vala · Kgokha</button>
+</div>
+
+<!-- Ancestor leaf modal -->
+<div id="leafModal">
+  <div class="leaf-card">
+    <div class="lc-strip"></div>
+    <div class="lc-title">Leave Your Mark</div>
+    <div class="lc-sub">Ubuntu · I am because we are</div>
+
+    <label class="lc-label">Your name</label>
+    <input class="lc-input" id="leaf-name" type="text" placeholder="Thandi, Sipho, Lerato…" maxlength="40">
+
+    <label class="lc-label">Your language</label>
+    <div class="lc-langs">
+      <button class="lang-btn active" data-lang="isiZulu">isiZulu</button>
+      <button class="lang-btn" data-lang="isiXhosa">isiXhosa</button>
+      <button class="lang-btn" data-lang="Sesotho">Sesotho</button>
+      <button class="lang-btn" data-lang="English">English</button>
+      <button class="lang-btn" data-lang="Afrikaans">Afrikaans</button>
+    </div>
+
+    <label class="lc-label">One sentence — a memory, a proverb, a word from home</label>
+    <textarea class="lc-input" id="leaf-text" placeholder="Umuntu ngumuntu ngabantu…" maxlength="140"></textarea>
+
+    <div class="lc-btns">
+      <button class="lc-cancel" onclick="hideLeafModal()">Cancel</button>
+      <button class="lc-submit" onclick="submitLeaf()">Plant Your Leaf 🌿</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ STORY DATA ══
+const stories={
+  1:{
+    lang:'isiZulu',
+    title:'UKhalulu — The Story Doll',
+    body:'"Indaba iyaqala lapho umlaleli eguqa." — The story begins the moment the listener leans in. Khalulu was not a toy. She was a vessel for every story the grandmother ever forgot to tell.'
+  },
+  2:{
+    lang:'isiXhosa',
+    title:'Intliziyo Yenganekwane',
+    body:'"Umntu ngumntu ngabantu." — A person is a person through other people. The old woman at the river did not speak in words. She spoke in water. And the children learned to listen with their feet.'
+  },
+  3:{
+    lang:'Sesotho',
+    title:'Leano la Baholo',
+    body:'"Motho ke motho ka batho ba bang." — A proverb is not old. It is the youngest thing in any room, because it is always being proven true for the first time by someone new.'
+  }
+};
+
+// ══ LOADER ══
+window.addEventListener('load',()=>{
+  // Cycle greetings
+  const greetings=['Sawubona — isiZulu','Molo — isiXhosa','Dumela — Sesotho','Welkom — Afrikaans','Welcome'];
+  let gi=0;
+  const gl=document.getElementById('langGreet');
+  const gInt=setInterval(()=>{gi=(gi+1)%greetings.length;gl.style.opacity=0;setTimeout(()=>{gl.textContent=greetings[gi];gl.style.opacity=1;},300);},1200);
+  setTimeout(()=>{
+    clearInterval(gInt);
+    document.getElementById('loader').classList.add('hidden');
+    buildStarfield();
+    loadLeaves();
+    buildAncestorLeafOrbs();
+  },3000);
+});
+
+// ══ STARFIELD — Southern Hemisphere, dense ══
+function buildStarfield(){
+  const sf=document.getElementById('starfield');
+  if(!sf)return;
+  for(let i=0;i<300;i++){
+    const phi=Math.random()*Math.PI*2;
+    // Southern hemisphere bias — more stars below the equator
+    const theta=Math.random()*Math.PI*.75;
+    const r=80;
+    const x=r*Math.sin(theta)*Math.cos(phi);
+    const y=r*Math.cos(theta)+5;
+    const z=r*Math.sin(theta)*Math.sin(phi);
+    const s=document.createElement('a-sphere');
+    const sz=Math.random()<.03?.12:Math.random()<.15?.07:.04;
+    const brightness=Math.random();
+    const colors=['#FFFFFF','#E8F0FF','#FFE8D0','#D0E8FF','#FFF8E8'];
+    s.setAttribute('position',`${x} ${y} ${z}`);
+    s.setAttribute('radius',sz);
+    s.setAttribute('color',colors[Math.floor(Math.random()*colors.length)]);
+    s.setAttribute('opacity',(.3+brightness*.7).toFixed(2));
+    s.setAttribute('material',`emissive:${colors[Math.floor(Math.random()*colors.length)]};emissiveIntensity:${(brightness*.5).toFixed(2)}`);
+    if(Math.random()>.75){
+      s.setAttribute('animation',`property:material.opacity;from:${(.3+brightness*.7).toFixed(2)};to:${(.1+brightness*.2).toFixed(2)};dur:${1500+Math.random()*3000};dir:alternate;loop:true;easing:easeInOutSine`);
+    }
+    sf.appendChild(s);
+  }
+}
+
+// ══ STORY ORB CLICKS ══
+document.querySelectorAll('.story-orb').forEach(orb=>{
+  orb.addEventListener('click',function(){
+    const id=parseInt(this.getAttribute('data-story'));
+    openOrb(id);
+  });
+});
+// Also A-Frame click events
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.story-orb').forEach(orb=>{
+    orb.addEventListener('click',function(){
+      const id=parseInt(this.parentElement.getAttribute('data-story')||this.getAttribute('data-story'));
+      openOrb(id);
+    });
+  });
+});
+
+function openOrb(id){
+  const s=stories[id];
+  if(!s)return;
+  document.getElementById('ot-lang').textContent=s.lang;
+  document.getElementById('ot-title').textContent=s.title;
+  document.getElementById('ot-body').textContent=s.body;
+  const tt=document.getElementById('orb-tooltip');
+  tt.classList.add('show');
+}
+function closeOrb(){
+  document.getElementById('orb-tooltip').classList.remove('show');
+}
+
+// ══ LEAF SYSTEM — Ubuntu contributions ══
+let leaves=JSON.parse(localStorage.getItem('izwi-leaves')||'[]');
+let selectedLang='isiZulu';
+
+function loadLeaves(){
+  document.getElementById('leafCount').textContent=leaves.length;
+  renderLeavesWall();
+  buildAncestorLeafOrbs();
+}
+
+function renderLeavesWall(){
+  const wall=document.getElementById('leavesWall');
+  wall.innerHTML='';
+  const recent=leaves.slice(-4).reverse();
+  recent.forEach(l=>{
+    const div=document.createElement('div');
+    div.className='leaf-entry';
+    div.innerHTML=`"${l.text}"<span class="leaf-name">${l.name} · ${l.lang}</span>`;
+    wall.appendChild(div);
+  });
+}
+
+function buildAncestorLeafOrbs(){
+  // Place user leaf orbs near the baobab
+  const container=document.getElementById('ancestor-leaves');
+  container.innerHTML='';
+  const recent=leaves.slice(-8);
+  recent.forEach((l,i)=>{
+    const angle=(i/8)*Math.PI*2;
+    const r=2+Math.random()*1.5;
+    const x=Math.cos(angle)*r;
+    const z=-18+Math.sin(angle)*r;
+    const y=8+Math.random()*6;
+    const orb=document.createElement('a-sphere');
+    orb.setAttribute('position',`${x.toFixed(2)} ${y.toFixed(2)} ${z.toFixed(2)}`);
+    orb.setAttribute('radius',.12+Math.random()*.08+'');
+    orb.setAttribute('color','#14E8C8');
+    orb.setAttribute('opacity','.5');
+    orb.setAttribute('material','emissive:#14E8C8;emissiveIntensity:.6;transparent:true');
+    orb.setAttribute('animation',`property:position;from:${x.toFixed(2)} ${y.toFixed(2)} ${z.toFixed(2)};to:${x.toFixed(2)} ${(y+.4).toFixed(2)} ${z.toFixed(2)};dur:${2000+i*400};dir:alternate;loop:true;easing:easeInOutSine`);
+    container.appendChild(orb);
+  });
+}
+
+// Language selector
+document.querySelectorAll('.lang-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+    selectedLang=this.getAttribute('data-lang');
+  });
+});
+
+function showLeafModal(){document.getElementById('leafModal').style.display='flex';document.getElementById('leafModal').classList.add('show');}
+function hideLeafModal(){document.getElementById('leafModal').style.display='none';}
+
+function submitLeaf(){
+  const name=document.getElementById('leaf-name').value.trim();
+  const text=document.getElementById('leaf-text').value.trim();
+  if(!name||!text){alert('Please enter your name and your story.');return;}
+  const leaf={name,text,lang:selectedLang,time:Date.now()};
+  leaves.push(leaf);
+  localStorage.setItem('izwi-leaves',JSON.stringify(leaves));
+  document.getElementById('leafCount').textContent=leaves.length;
+  renderLeavesWall();
+  buildAncestorLeafOrbs();
+  hideLeafModal();
+  document.getElementById('leaf-name').value='';
+  document.getElementById('leaf-text').value='';
+  // Quick thank you
+  const badge=document.getElementById('leaf-badge');
+  badge.style.color='var(--fire-xl)';
+  setTimeout(()=>badge.style.color='',1500);
+}
+
+// ══ WORLD SWITCHER ══
+const worldMessages={
+  tree:'The Ancestor Tree · Izwi Lezindaba',
+  village:'Village Square · Umuzi — Coming Soon',
+  river:'River of Voices — Coming Soon',
+  mountain:'Mountain of Elders — Coming Soon',
+  forest:'Dream Forest — Coming Soon'
+};
+function switchWorld(w){
+  document.querySelectorAll('.world-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelector('.tb-world').textContent=worldMessages[w]||w;
+  if(w!=='tree'){
+    // Show coming soon briefly
+    const tt=document.getElementById('orb-tooltip');
+    document.getElementById('ot-lang').textContent='Coming Soon';
+    document.getElementById('ot-title').textContent='This world is growing…';
+    document.getElementById('ot-body').textContent='"A story does not end. It rests, and waits for the right listener." — Plant your leaf in the Ancestor Tree and return when the next world opens.';
+    tt.classList.add('show');
+    setTimeout(()=>tt.classList.remove('show'),4000);
+  }
+}
+
+// ══ CURSOR ══
+const cur=document.createElement('div');
+cur.id='wvcur';
+Object.assign(cur.style,{
+  width:'12px',height:'12px',borderRadius:'50%',
+  background:'#F97316',
+  boxShadow:'0 0 12px #F97316,0 0 24px rgba(249,115,22,.4)',
+  position:'fixed',top:0,left:0,
+  pointerEvents:'none',zIndex:99999,
+  transform:'translate(-50%,-50%)',
+  transition:'width .1s,height .1s'
+});
+document.body.appendChild(cur);
+document.addEventListener('mousemove',e=>{
+  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+});
+</script>
+</body>
+</html>
 
