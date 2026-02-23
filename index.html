@@ -3,75 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kwa-Sukela | Story Worlds</title>
+<title>Kwa-Sukela | African Story Worlds</title>
 
 <style>
 :root{
+--bg-dark:#0d0a07;
 --earth:#2b1d0e;
---sand:#fdf6e3;
 --gold:#f4a261;
 --red:#e63946;
 --teal:#2a9d8f;
---deep:#111;
+--sand:#fdf6e3;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
 font-family:'Segoe UI',sans-serif;
-background:var(--sand);
-color:var(--deep);
+background:var(--bg-dark);
+color:white;
 overflow-x:hidden;
 scroll-behavior:smooth;
 }
 
-/* ---------- INTRO SCENE ---------- */
+/* ================= INTRO ================= */
 
 #intro{
 position:fixed;
 inset:0;
 background:radial-gradient(circle at center,#3a250f,#000);
 display:flex;
+flex-direction:column;
 align-items:center;
 justify-content:center;
-flex-direction:column;
 z-index:9999;
-animation:fadeOut 1.5s ease 5s forwards;
+animation:fadeOut 2s ease 6s forwards;
 }
 
-.ndebele-frame{
+.ndebele-svg{
 position:absolute;
 inset:0;
-border:25px solid transparent;
-border-image:linear-gradient(45deg,#ffcc00,#e63946,#2a9d8f,#264653) 1;
+pointer-events:none;
 }
 
-.fire{
-width:90px;
-height:90px;
-background:radial-gradient(circle,#ffae00,#ff4500);
-border-radius:50%;
-animation:flicker .2s infinite alternate;
+.fire-wrapper{
+position:relative;
+width:120px;
+height:150px;
 margin-bottom:30px;
 }
 
-.kids{
-width:240px;
-height:60px;
-background:black;
+.flame{
+position:absolute;
+bottom:0;
+left:50%;
+transform:translateX(-50%);
+width:40px;
+height:80px;
+background:radial-gradient(circle,#ffcc00,#ff4500 70%);
 border-radius:50%;
-opacity:.6;
+animation:flicker .25s infinite alternate;
+filter:blur(1px);
+}
+
+.flame:nth-child(2){
+width:60px;
+height:100px;
+opacity:.7;
+animation-delay:.1s;
+}
+
+.flame:nth-child(3){
+width:80px;
+height:120px;
+opacity:.4;
+animation-delay:.2s;
 }
 
 @keyframes flicker{
-from{transform:scale(1);}
-to{transform:scale(1.12);}
+from{transform:translateX(-50%) scale(1);}
+to{transform:translateX(-50%) scale(1.15);}
 }
 
+.children{
+display:flex;
+gap:20px;
+margin-top:20px;
+}
+
+.child{
+width:40px;
+height:60px;
+background:black;
+border-radius:20px 20px 10px 10px;
+}
+
+/* Fade out intro */
 @keyframes fadeOut{
 to{opacity:0;visibility:hidden;}
 }
 
-/* ---------- NAV ---------- */
+/* ================= NAV ================= */
 
 header{
 background:var(--earth);
@@ -79,7 +109,6 @@ padding:20px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-color:white;
 position:sticky;
 top:0;
 z-index:10;
@@ -89,29 +118,35 @@ nav a{
 color:white;
 margin-left:20px;
 text-decoration:none;
-font-weight:600;
+font-weight:bold;
 transition:.3s;
 }
 
 nav a:hover{color:var(--gold);}
 
-/* ---------- HERO ---------- */
+/* ================= HERO ================= */
 
 .hero{
-padding:140px 20px;
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
 text-align:center;
-background:linear-gradient(to bottom,var(--earth),#000);
-color:white;
+background:linear-gradient(to bottom,#1a1208,#000);
+padding:20px;
 }
 
 .hero h1{
 font-size:3rem;
+max-width:800px;
 margin-bottom:20px;
 }
 
 .hero p{
 max-width:600px;
-margin:0 auto 30px;
+opacity:.85;
+margin-bottom:30px;
 }
 
 .btn{
@@ -124,24 +159,30 @@ font-weight:bold;
 transition:.3s;
 }
 
-.primary{background:var(--gold);}
+.primary{background:var(--gold);color:black;}
 .secondary{background:var(--teal);color:white;}
 
 .btn:hover{transform:translateY(-4px);}
 
-/* ---------- SECTIONS ---------- */
+/* ================= SECTIONS ================= */
 
 section{
-padding:100px 20px;
+padding:120px 20px;
 text-align:center;
+opacity:0;
+transform:translateY(40px);
+transition:1s ease;
+}
+
+section.reveal{
+opacity:1;
+transform:translateY(0);
 }
 
 h2{
 font-size:2.2rem;
 margin-bottom:50px;
 }
-
-/* ---------- CARDS ---------- */
 
 .grid{
 display:grid;
@@ -152,50 +193,23 @@ margin:auto;
 }
 
 .card{
-background:white;
+background:#1e1a16;
 padding:30px;
 border-radius:15px;
-box-shadow:0 10px 25px rgba(0,0,0,.1);
 transition:.4s;
+border:2px solid transparent;
 }
 
 .card:hover{
 transform:translateY(-10px);
-box-shadow:0 20px 40px rgba(0,0,0,.2);
+border-color:var(--gold);
 }
 
-/* ---------- GALLERY ---------- */
-
-.gallery{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:12px;
-}
-
-.gallery div{
-height:200px;
-background:linear-gradient(135deg,var(--red),var(--teal));
-border-radius:10px;
-transition:.4s;
-}
-
-.gallery div:hover{
-transform:scale(1.05);
-}
-
-/* ---------- VR SECTION ---------- */
-
-.vr-section{
-background:var(--earth);
-color:white;
-}
-
-/* ---------- FOOTER ---------- */
+/* ================= FOOTER ================= */
 
 footer{
-background:#000;
-color:white;
-padding:50px;
+background:black;
+padding:60px;
 text-align:center;
 }
 </style>
@@ -203,100 +217,115 @@ text-align:center;
 
 <body>
 
-<!-- INTRO -->
+<!-- ================= INTRO SCENE ================= -->
 <div id="intro">
-<div class="ndebele-frame"></div>
-<div class="fire"></div>
-<div class="kids"></div>
+
+<!-- NDEBELE SVG FRAME -->
+<svg class="ndebele-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+<rect x="0" y="0" width="100" height="5" fill="#e63946"/>
+<rect x="0" y="95" width="100" height="5" fill="#2a9d8f"/>
+<rect x="0" y="0" width="5" height="100" fill="#ffcc00"/>
+<rect x="95" y="0" width="5" height="100" fill="#264653"/>
+</svg>
+
+<div class="fire-wrapper">
+<div class="flame"></div>
+<div class="flame"></div>
+<div class="flame"></div>
+</div>
+
+<div class="children">
+<div class="child"></div>
+<div class="child"></div>
+<div class="child"></div>
+</div>
+
 </div>
 
 <header>
 <h1>Kwa-Sukela</h1>
 <nav>
-<a href="#courses">Courses</a>
+<a href="#academy">Academy</a>
 <a href="#games">Games</a>
 <a href="#books">Books</a>
-<a href="#gallery">Gallery</a>
 <a href="vr/world.html">VR School</a>
 </nav>
 </header>
 
 <section class="hero">
-<h1>Where African Stories Become Living Worlds</h1>
-<p>Children gather. Fire glows. Stories travel through time — now reborn in immersive digital space.</p>
+<h1>Children gather. Fire glows. Stories travel through time — now reborn in immersive digital space.</h1>
+<p>An African storytelling universe blending oral tradition with digital worlds.</p>
 <button class="btn primary" onclick="location.href='vr/world.html'">Enter VR School</button>
-<button class="btn secondary">Explore Courses</button>
+<button class="btn secondary">Explore Academy</button>
 </section>
 
-<section id="courses">
+<section id="academy">
 <h2>Storytelling Academy</h2>
 <div class="grid">
 <div class="card">
 <h3>Oral Tradition Foundations</h3>
-<p>Learn how stories preserved identity across generations.</p>
+<p>Preserving ancestral knowledge through narrative.</p>
 </div>
 <div class="card">
 <h3>Worldbuilding for Young Creators</h3>
-<p>Design myths, heroes and immersive African universes.</p>
+<p>Create heroes, myths and African universes.</p>
 </div>
 <div class="card">
-<h3>Digital Animation & Story Tech</h3>
-<p>Transform cultural stories into digital experiences.</p>
+<h3>Digital Story Animation</h3>
+<p>Transform culture into immersive tech experiences.</p>
 </div>
 </div>
 </section>
 
 <section id="games">
-<h2>Interactive Games & Music Lab</h2>
+<h2>Interactive Music & Story Games</h2>
 <div class="grid">
 <div class="card">
+<h3>Drum Circle Lab</h3>
+<p>Compose rhythms with traditional African beats.</p>
+</div>
+<div class="card">
 <h3>Story Quest Levels</h3>
-<p>Unlock new chapters by completing creative challenges.</p>
-</div>
-<div class="card">
-<h3>Drum Circle Experience</h3>
-<p>Compose rhythms and join the community beat.</p>
-</div>
-<div class="card">
-<h3>African Instruments Lab</h3>
-<p>Explore djembe, mbira and sound creation tools.</p>
+<p>Unlock chapters through creative challenges.</p>
 </div>
 </div>
 </section>
 
 <section id="books">
-<h2>Books & Archives</h2>
+<h2>Books & Story Archives</h2>
 <div class="grid">
 <div class="card">
 <h3>Legends of the Fire</h3>
-<p>A curated anthology of traditional African tales.</p>
+<p>A curated anthology of African tales.</p>
 </div>
 <div class="card">
 <h3>The Dr Sasa Universe</h3>
-<p>Stories designed to spark imagination in young minds.</p>
+<p>Stories designed to ignite imagination.</p>
 </div>
 </div>
-</section>
-
-<section id="gallery">
-<h2>Gallery</h2>
-<div class="gallery">
-<div></div>
-<div></div>
-<div></div>
-<div></div>
-</div>
-</section>
-
-<section class="vr-section">
-<h2>Virtual Story School</h2>
-<p>Step into a living African storytelling world built for classrooms.</p>
-<button class="btn primary" onclick="location.href='vr/world.html'">Enter VR World</button>
 </section>
 
 <footer>
 <p>© 2026 Kwa-Sukela | African Story Worlds</p>
 </footer>
+
+<!-- ================= FIRE AUDIO ================= -->
+<audio id="fireSound" autoplay loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_5b96c1b16b.mp3?filename=campfire-110118.mp3" type="audio/mp3">
+</audio>
+
+<script>
+/* Scroll reveal */
+const sections = document.querySelectorAll("section");
+window.addEventListener("scroll",()=>{
+sections.forEach(sec=>{
+const top = sec.getBoundingClientRect().top;
+if(top < window.innerHeight - 100){
+sec.classList.add("reveal");
+}
+});
+});
+</script>
 
 </body>
 </html>
