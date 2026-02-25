@@ -23,8 +23,8 @@ body{background:#fff;color:var(--ink);font-family:'DM Sans',sans-serif;overflow-
 #intro-canvas{position:absolute;inset:0;width:100%;height:100%}
 #intro-logo{position:relative;z-index:2;text-align:center;opacity:0;transform:translateY(30px);transition:opacity 1.4s ease,transform 1.4s ease}
 #intro-logo.show{opacity:1;transform:none}
-#intro-logo h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,6vw,5rem);font-weight:700;color:#fff;letter-spacing:-.02em;line-height:.9}
-#intro-logo h1 em{font-style:italic;color:#F5A040}
+#intro-logo h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,6vw,5rem);font-weight:700;color:#fff;letter-spacing:-.02em;line-height:.9;text-shadow:0 2px 30px rgba(0,0,0,.8)}
+#intro-logo h1 em{font-style:italic;color:#fff;-webkit-text-stroke:1px #F5A040;text-shadow:0 0 40px rgba(245,160,64,.9),0 2px 30px rgba(0,0,0,.8)}
 #intro-logo p{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.38);margin-top:.9rem}
 #skip-btn{position:absolute;bottom:1.8rem;right:1.8rem;z-index:3;font-family:'JetBrains Mono',monospace;font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.28);border:1px solid rgba(255,255,255,.14);padding:.38rem .9rem;border-radius:2px;cursor:pointer;background:none;transition:color .2s,border-color .2s}
 #skip-btn:hover{color:#fff;border-color:rgba(255,255,255,.5)}
@@ -1243,7 +1243,17 @@ function showAuthMsg(msg, type) {
   el.style.display = 'block';
 }
 
+let authMode = 'login';
+
 function openAuthModal() {
+  authMode = 'login';
+  document.getElementById('auth-mode-title').textContent = 'Log In';
+  document.getElementById('auth-name-row').style.display = 'none';
+  document.getElementById('auth-submit-btn').textContent = 'Log In';
+  document.getElementById('auth-toggle-link').textContent = 'No account? Sign up free';
+  document.getElementById('auth-msg').style.display = 'none';
+  document.getElementById('auth-email').value = '';
+  document.getElementById('auth-password').value = '';
   document.getElementById('auth-overlay').style.display = 'flex';
 }
 
@@ -1252,20 +1262,21 @@ function closeAuthModal() {
 }
 
 function toggleAuthMode() {
-  const isLogin = document.getElementById('auth-mode-title').textContent === 'Log In';
-  document.getElementById('auth-mode-title').textContent = isLogin ? 'Sign Up' : 'Log In';
-  document.getElementById('auth-name-row').style.display = isLogin ? 'block' : 'none';
-  document.getElementById('auth-submit-btn').textContent = isLogin ? 'Create Account' : 'Log In';
-  document.getElementById('auth-toggle-link').textContent = isLogin ? 'Already have an account? Log in' : 'No account? Sign up free';
+  authMode = authMode === 'login' ? 'signup' : 'login';
+  const isSignup = authMode === 'signup';
+  document.getElementById('auth-mode-title').textContent = isSignup ? 'Sign Up' : 'Log In';
+  document.getElementById('auth-name-row').style.display = isSignup ? 'block' : 'none';
+  document.getElementById('auth-submit-btn').textContent = isSignup ? 'Create Account' : 'Log In';
+  document.getElementById('auth-toggle-link').textContent = isSignup ? 'Already have an account? Log in' : 'No account? Sign up free';
   document.getElementById('auth-msg').style.display = 'none';
 }
 
 function handleAuthSubmit() {
   const email = document.getElementById('auth-email').value.trim();
   const password = document.getElementById('auth-password').value;
-  const isSignup = document.getElementById('auth-mode-title').textContent === 'Sign Up';
-  if (isSignup) {
-    const name = document.getElementById('auth-name').value.trim();
+  if (!email || !password) { showAuthMsg('Please fill in email and password.', 'error'); return; }
+  if (authMode === 'signup') {
+    const name = document.getElementById('auth-name').value.trim() || email.split('@')[0];
     signUp(email, password, name);
   } else {
     logIn(email, password);
