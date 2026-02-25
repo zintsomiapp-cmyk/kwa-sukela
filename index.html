@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zintsomi — Africa's Oral Heritage Platform</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,300;1,600&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --ink:#1B2A3A;--ink2:#22344A;--white:#fff;--paper:#F7FAFC;
@@ -484,8 +485,42 @@ nav{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.97);backdrop-
         <button class="npill" onclick="showWorld('courses')" style="border-color:#9B59B6;color:#9B59B6">📚 Courses</button>
         <button class="npill" onclick="showWorld('audio')">🎵 Audio</button>
       </div>
+      <div style="display:flex;align-items:center;gap:.7rem;flex-shrink:0">
+        <span id="auth-nav-name" style="font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.05em;color:var(--i35);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+        <button id="auth-nav-btn" class="btn" style="padding:.38rem .9rem;font-size:.55rem" onclick="openAuthModal()">Log In</button>
+      </div>
     </div>
   </nav>
+
+  <!-- AUTH MODAL -->
+  <div id="auth-overlay" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.75);align-items:center;justify-content:center;padding:1rem">
+    <div style="background:#1B2A3A;border-radius:10px;width:100%;max-width:380px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 20px 60px rgba(0,0,0,.5)">
+      <div style="background:var(--orange);padding:1.1rem 1.4rem;display:flex;justify-content:space-between;align-items:center">
+        <div id="auth-mode-title" style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:#fff">Log In</div>
+        <button onclick="closeAuthModal()" style="background:none;border:none;color:rgba(255,255,255,.6);font-size:1.2rem;cursor:pointer;line-height:1">✕</button>
+      </div>
+      <div style="padding:1.6rem;display:flex;flex-direction:column;gap:.75rem">
+        <div id="auth-name-row" style="display:none">
+          <label style="font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);display:block;margin-bottom:.3rem">Full Name</label>
+          <input id="auth-name" type="text" placeholder="Your name" style="width:100%;padding:.65rem .9rem;border-radius:4px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+        </div>
+        <div>
+          <label style="font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);display:block;margin-bottom:.3rem">Email</label>
+          <input id="auth-email" type="email" placeholder="you@email.com" style="width:100%;padding:.65rem .9rem;border-radius:4px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+        </div>
+        <div>
+          <label style="font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);display:block;margin-bottom:.3rem">Password</label>
+          <input id="auth-password" type="password" placeholder="Min 6 characters" style="width:100%;padding:.65rem .9rem;border-radius:4px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+        </div>
+        <div id="auth-msg" style="display:none;font-size:.78rem;padding:.5rem .7rem;border-radius:3px;background:rgba(255,255,255,.04)"></div>
+        <button id="auth-submit-btn" class="btn" style="width:100%;justify-content:center;margin-top:.3rem" onclick="handleAuthSubmit()">Log In</button>
+        <button id="auth-toggle-link" onclick="toggleAuthMode()" style="background:none;border:none;font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.05em;color:rgba(255,255,255,.32);cursor:pointer;text-align:center;margin-top:-.2rem">No account? Sign up free</button>
+        <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:.8rem;text-align:center">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:.44rem;letter-spacing:.05em;color:rgba(255,255,255,.2)">Premium unlocks all courses, notes & audio · R65/month</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- HOME -->
   <div class="world active" id="home-world">
@@ -1114,6 +1149,130 @@ nav{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.97);backdrop-
 </div>
 
 <script>
+// ════ SUPABASE ════
+const SUPA_URL = 'https://natjezquifgddzzawhgo.supabase.co';
+const SUPA_KEY = 'sb_publishable_cF6cT_pyFJiO4kfsg_a5Ow_Pd-qx7Ix';
+const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
+let currentUser = null;
+
+// Check session on every page load
+supa.auth.onAuthStateChange(async (event, session) => {
+  if (session) {
+    currentUser = session.user;
+    await loadUserProfile();
+  } else {
+    currentUser = null;
+    updateNavForUser(null);
+  }
+});
+
+async function signUp(email, password, fullName) {
+  const { data, error } = await supa.auth.signUp({ email, password, options: { data: { full_name: fullName } } });
+  if (error) { showAuthMsg(error.message, 'error'); return; }
+  await supa.from('profiles').insert({ id: data.user.id, email, full_name: fullName, is_premium: false });
+  showAuthMsg('Account created! Check your email to confirm.', 'ok');
+}
+
+async function logIn(email, password) {
+  const { data, error } = await supa.auth.signInWithPassword({ email, password });
+  if (error) { showAuthMsg(error.message, 'error'); return; }
+  currentUser = data.user;
+  await loadUserProfile();
+  closeAuthModal();
+}
+
+async function logOut() {
+  await supa.auth.signOut();
+  currentUser = null;
+  updateNavForUser(null);
+}
+
+async function loadUserProfile() {
+  if (!currentUser) return;
+  const { data } = await supa.from('profiles').select('*').eq('id', currentUser.id).single();
+  if (data) {
+    currentUser.profile = data;
+    updateNavForUser(data);
+    await loadAllProgress();
+  }
+}
+
+function isPremium() {
+  return currentUser && currentUser.profile && currentUser.profile.is_premium;
+}
+
+function updateNavForUser(profile) {
+  const btn = document.getElementById('auth-nav-btn');
+  const name = document.getElementById('auth-nav-name');
+  if (!btn) return;
+  if (profile) {
+    btn.textContent = 'Log Out';
+    btn.onclick = logOut;
+    if (name) name.textContent = (profile.full_name || profile.email) + (profile.is_premium ? ' ⭐' : '');
+  } else {
+    btn.textContent = 'Log In';
+    btn.onclick = openAuthModal;
+    if (name) name.textContent = '';
+  }
+}
+
+function showAuthMsg(msg, type) {
+  const el = document.getElementById('auth-msg');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = type === 'error' ? '#F1948A' : '#6EE78E';
+  el.style.display = 'block';
+}
+
+function openAuthModal() {
+  document.getElementById('auth-overlay').style.display = 'flex';
+}
+
+function closeAuthModal() {
+  document.getElementById('auth-overlay').style.display = 'none';
+}
+
+function toggleAuthMode() {
+  const isLogin = document.getElementById('auth-mode-title').textContent === 'Log In';
+  document.getElementById('auth-mode-title').textContent = isLogin ? 'Sign Up' : 'Log In';
+  document.getElementById('auth-name-row').style.display = isLogin ? 'block' : 'none';
+  document.getElementById('auth-submit-btn').textContent = isLogin ? 'Create Account' : 'Log In';
+  document.getElementById('auth-toggle-link').textContent = isLogin ? 'Already have an account? Log in' : 'No account? Sign up free';
+  document.getElementById('auth-msg').style.display = 'none';
+}
+
+function handleAuthSubmit() {
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  const isSignup = document.getElementById('auth-mode-title').textContent === 'Sign Up';
+  if (isSignup) {
+    const name = document.getElementById('auth-name').value.trim();
+    signUp(email, password, name);
+  } else {
+    logIn(email, password);
+  }
+}
+
+async function saveProgress(courseIndex, completedArray) {
+  if (!currentUser) return;
+  await supa.from('course_progress').upsert({
+    user_id: currentUser.id,
+    course_index: courseIndex,
+    completed_modules: JSON.stringify(completedArray),
+    updated_at: new Date().toISOString()
+  }, { onConflict: 'user_id,course_index' });
+}
+
+async function loadAllProgress() {
+  if (!currentUser) return;
+  const { data } = await supa.from('course_progress').select('*').eq('user_id', currentUser.id);
+  if (data) {
+    data.forEach(row => {
+      completedModules[row.course_index] = JSON.parse(row.completed_modules || '[]');
+    });
+  }
+}
+
 // ════ INTRO ════
 var introCanvas=document.getElementById('intro-canvas');
 var ictx=introCanvas.getContext('2d');
@@ -1980,6 +2139,7 @@ function markDone(){
   if(!completedModules[activeCourse].includes(activeModule)){
     completedModules[activeCourse].push(activeModule);
   }
+  saveProgress(activeCourse, completedModules[activeCourse]);
   renderModuleList();
   renderLesson();
 }
