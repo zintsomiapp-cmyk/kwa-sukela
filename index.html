@@ -1169,8 +1169,15 @@ supa.auth.onAuthStateChange(async (event, session) => {
 async function signUp(email, password, fullName) {
   const { data, error } = await supa.auth.signUp({ email, password, options: { data: { full_name: fullName } } });
   if (error) { showAuthMsg(error.message, 'error'); return; }
-  await supa.from('profiles').insert({ id: data.user.id, email, full_name: fullName, is_premium: false });
-  showAuthMsg('Account created! Check your email to confirm.', 'ok');
+  // Try to create profile row — won't fail even if table doesn't exist yet
+  try {
+    await supa.from('profiles').insert({ id: data.user.id, email, full_name: fullName, is_premium: false });
+  } catch(e) {}
+  currentUser = data.user;
+  currentUser.profile = { email, full_name: fullName, is_premium: false };
+  updateNavForUser(currentUser.profile);
+  closeAuthModal();
+  showAuthMsg('Welcome to Zintsomi!', 'ok');
 }
 
 async function logIn(email, password) {
@@ -1189,12 +1196,24 @@ async function logOut() {
 
 async function loadUserProfile() {
   if (!currentUser) return;
-  const { data } = await supa.from('profiles').select('*').eq('id', currentUser.id).single();
-  if (data) {
-    currentUser.profile = data;
-    updateNavForUser(data);
-    await loadAllProgress();
-  }
+  // Try to get profile from table
+  try {
+    const { data } = await supa.from('profiles').select('*').eq('id', currentUser.id).single();
+    if (data) {
+      currentUser.profile = data;
+      updateNavForUser(data);
+      await loadAllProgress();
+      return;
+    }
+  } catch(e) {}
+  // Fallback — use auth metadata if profiles table not set up yet
+  const meta = currentUser.user_metadata || {};
+  currentUser.profile = {
+    email: currentUser.email,
+    full_name: meta.full_name || currentUser.email,
+    is_premium: false
+  };
+  updateNavForUser(currentUser.profile);
 }
 
 function isPremium() {
@@ -1203,16 +1222,16 @@ function isPremium() {
 
 function updateNavForUser(profile) {
   const btn = document.getElementById('auth-nav-btn');
-  const name = document.getElementById('auth-nav-name');
+  const nameEl = document.getElementById('auth-nav-name');
   if (!btn) return;
   if (profile) {
     btn.textContent = 'Log Out';
-    btn.onclick = logOut;
-    if (name) name.textContent = (profile.full_name || profile.email) + (profile.is_premium ? ' ⭐' : '');
+    btn.onclick = function(){ logOut(); };
+    if (nameEl) nameEl.textContent = (profile.full_name || profile.email || '') + (profile.is_premium ? ' ⭐' : '');
   } else {
     btn.textContent = 'Log In';
-    btn.onclick = openAuthModal;
-    if (name) name.textContent = '';
+    btn.onclick = function(){ openAuthModal(); };
+    if (nameEl) nameEl.textContent = '';
   }
 }
 
