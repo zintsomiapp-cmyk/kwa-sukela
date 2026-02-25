@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kwa Sukela — Interactive World</title>
+<title>Zintsomi — Africa's Oral Heritage Platform</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,300;1,600&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -316,7 +316,49 @@ nav{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.97);backdrop-
 .tc-badge.maths{background:rgba(26,110,168,.07);color:var(--blue);border-color:rgba(26,110,168,.13)}
 .tc-badge.science{background:rgba(155,89,182,.07);color:#9B59B6;border-color:rgba(155,89,182,.13)}
 
-/* ZINTSOMI COURSES SECTION */
+/* COURSES */
+.course-tab{flex:1;min-width:120px;padding:.9rem .7rem;background:transparent;border:none;border-bottom:3px solid transparent;cursor:pointer;text-align:center;transition:all .2s;color:rgba(255,255,255,.45)}
+.course-tab:hover{background:rgba(155,89,182,.06);color:rgba(255,255,255,.7)}
+.course-tab.active{border-bottom-color:#9B59B6;color:#fff;background:rgba(155,89,182,.1)}
+.module-item{display:flex;align-items:center;gap:.7rem;padding:.75rem 1.2rem;cursor:pointer;transition:background .18s;border-left:3px solid transparent}
+.module-item:hover{background:rgba(255,255,255,.03)}
+.module-item.active{background:rgba(155,89,182,.1);border-left-color:#9B59B6}
+.module-item.done{border-left-color:#27AE60}
+.module-num{font-family:'JetBrains Mono',monospace;font-size:.46rem;letter-spacing:.06em;color:rgba(255,255,255,.28);flex-shrink:0;width:18px}
+.module-name{font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;color:#fff;flex:1;line-height:1.3}
+.module-tick{font-size:.75rem;flex-shrink:0}
+.lesson-header{margin-bottom:1.8rem}
+.lesson-course-tag{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:#9B59B6;margin-bottom:.5rem}
+.lesson-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3vw,2.3rem);font-weight:700;color:#fff;line-height:1.1;margin-bottom:.6rem}
+.lesson-meta{font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.05em;color:rgba(255,255,255,.28);display:flex;gap:1rem;flex-wrap:wrap}
+.lesson-body{font-size:.9rem;color:rgba(255,255,255,.62);line-height:1.95;font-weight:300}
+.lesson-body h3{font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#C39BD3;margin:1.6rem 0 .6rem;padding-bottom:.35rem;border-bottom:1px solid rgba(155,89,182,.18)}
+.lesson-body p{margin-bottom:1rem}
+.lesson-body strong{color:#fff;font-weight:600}
+.lesson-body em{color:#C39BD3;font-style:italic}
+.lesson-callout{background:rgba(155,89,182,.07);border:1px solid rgba(155,89,182,.18);border-left:3px solid #9B59B6;border-radius:5px;padding:1rem 1.2rem;margin:1.2rem 0}
+.lesson-callout .lc-label{font-family:'JetBrains Mono',monospace;font-size:.46rem;letter-spacing:.09em;text-transform:uppercase;color:#9B59B6;margin-bottom:.35rem}
+.lesson-callout p{margin-bottom:0;color:rgba(255,255,255,.65);font-style:italic}
+.lesson-reflection{background:rgba(202,92,8,.06);border:1px solid rgba(202,92,8,.18);border-left:3px solid var(--orange);border-radius:5px;padding:1rem 1.2rem;margin:1.2rem 0}
+.lesson-reflection .lr-label{font-family:'JetBrains Mono',monospace;font-size:.46rem;letter-spacing:.09em;text-transform:uppercase;color:var(--orange);margin-bottom:.35rem}
+.quiz-wrap{background:rgba(255,255,255,.03);border:1px solid rgba(155,89,182,.18);border-radius:8px;padding:1.5rem;margin-top:1.8rem}
+.quiz-title{font-family:'Syne',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#C39BD3;margin-bottom:1.1rem}
+.quiz-q{font-size:.92rem;color:#fff;margin-bottom:.9rem;line-height:1.58}
+.quiz-opts{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem}
+.quiz-opt{padding:.75rem 1rem;border-radius:5px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:rgba(255,255,255,.65);cursor:pointer;font-size:.85rem;text-align:left;transition:all .18s;font-family:'DM Sans',sans-serif}
+.quiz-opt:hover{border-color:#9B59B6;color:#fff}
+.quiz-opt.correct{border-color:#27AE60;background:rgba(39,174,96,.1);color:#6EE78E}
+.quiz-opt.wrong{border-color:#E74C3C;background:rgba(231,76,60,.08);color:#F1948A}
+.quiz-opt.disabled{cursor:default}
+.quiz-feedback{font-size:.84rem;padding:.7rem 1rem;border-radius:4px;margin-bottom:.9rem;display:none;line-height:1.6}
+.quiz-feedback.correct{background:rgba(39,174,96,.08);border:1px solid rgba(39,174,96,.18);color:#6EE78E}
+.quiz-feedback.wrong{background:rgba(231,76,60,.06);border:1px solid rgba(231,76,60,.18);color:#F1948A}
+.lesson-nav{display:flex;gap:.7rem;margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.07);flex-wrap:wrap;align-items:center;justify-content:space-between}
+.complete-btn{background:linear-gradient(135deg,#9B59B6,#7D3C98);border:none;border-radius:4px;padding:.65rem 1.4rem;font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#fff;cursor:pointer;transition:opacity .2s}
+.complete-btn:hover{opacity:.84}
+.complete-btn:disabled{opacity:.35;cursor:default}
+@media(max-width:780px){#course-layout{grid-template-columns:1fr}#module-list-wrap{position:static}}
+
 .zintsomi-section{background:linear-gradient(135deg,#1B2A3A,#22344A);padding:4rem 0}
 .zintsomi-section .sec-lbl{color:rgba(255,255,255,.28)}
 .zintsomi-section .sec-lbl::before{background:#F5A040}
@@ -421,7 +463,7 @@ nav{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.97);backdrop-
 <div id="intro">
   <canvas id="intro-canvas"></canvas>
   <div id="intro-logo">
-    <h1>Kwa <em>Sukela</em></h1>
+    <h1><em>Zintsomi</em></h1>
     <p>Africa's Storytelling World · 2026</p>
   </div>
   <button id="skip-btn">Skip Intro</button>
@@ -431,7 +473,7 @@ nav{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.97);backdrop-
   <nav>
     <div class="nstrip"></div>
     <div class="nav-w">
-      <span class="logo" onclick="showWorld('home')">Kwa <em>Sukela</em></span>
+      <span class="logo" onclick="showWorld('home')"><em>Zintsomi</em></span>
       <div class="nav-pills">
         <button class="npill active" onclick="showWorld('home')">🏠 Home</button>
         <button class="npill" onclick="showWorld('games')">🎮 Games</button>
@@ -439,6 +481,7 @@ nav{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.97);backdrop-
         <button class="npill" onclick="showWorld('brain')">🧠 Teasers</button>
         <button class="npill" onclick="showWorld('tree')">🌳 Ancestor Tree</button>
         <button class="npill schools" onclick="showWorld('schools')">🎓 Schools</button>
+        <button class="npill" onclick="showWorld('courses')" style="border-color:#9B59B6;color:#9B59B6">📚 Courses</button>
         <button class="npill" onclick="showWorld('audio')">🎵 Audio</button>
       </div>
     </div>
@@ -448,16 +491,18 @@ nav{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.97);backdrop-
   <div class="world active" id="home-world">
     <div class="home-hero">
       <div class="home-hero-l">
-        <div class="home-hero-tag">South Africa's Storytelling Academy · 2026</div>
+        <div class="home-hero-tag">Zintsomi · Africa's Oral Heritage Platform · 2026</div>
         <h1>Where Every<br><strong>Story</strong><em>Belongs.</em></h1>
-        <p class="home-hero-sub">Six interactive worlds. One living community. Rooted in African tradition, built for every learner.</p>
+        <p class="home-hero-sub">Six interactive worlds. Free to explore. Rooted in African oral tradition — built for every learner, storyteller and community.</p>
         <div style="display:flex;gap:.7rem;flex-wrap:wrap">
           <button class="btn" onclick="showWorld('schools')">Start Learning</button>
           <button class="btn btn-out" style="border-color:rgba(255,255,255,.18);color:rgba(255,255,255,.55)" onclick="showWorld('games')">Explore Games</button>
+          <button class="btn btn-out" style="border-color:rgba(245,160,64,.35);color:#F5A040" onclick="showWorld('schools');setTimeout(function(){document.querySelector('.zintsomi-section').scrollIntoView({behavior:'smooth'})},400)">View 3-Year Plan</button>
         </div>
       </div>
-      <div class="home-hero-r" id="heroR">
-        <div class="hero-quote">
+      <div class="home-hero-r" id="heroR" style="position:relative;overflow:hidden;min-height:300px">
+        <canvas id="home-canvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+        <div class="hero-quote" style="position:relative;z-index:2">
           <blockquote>"The story does not begin with the storyteller. It begins the moment the listener leans in."</blockquote>
           <cite>— Dr. Nomsa Mdlalose "Dr. Sasa"</cite>
         </div>
@@ -469,7 +514,8 @@ nav{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.97);backdrop-
       <div class="world-card" onclick="showWorld('brain')"><div class="wc-icon">🧠</div><div class="wc-name">Brain Teasers</div><div class="wc-sub">Daily puzzles. Proverbs, IQ patterns, Maths, Science. Build your streak.</div><div class="wc-tag">Daily Challenge · 6 Types</div></div>
       <div class="world-card" onclick="showWorld('tree')"><div class="wc-icon">🌳</div><div class="wc-name">Ancestor Tree</div><div class="wc-sub">A living tree growing with every story, game and lesson contributed.</div><div class="wc-tag">Community · Living World</div></div>
       <div class="world-card" onclick="showWorld('schools')"><div class="wc-icon">🎓</div><div class="wc-name">Schools Hub</div><div class="wc-sub">Grade 12 study notes for Maths, Physical Sciences, English, isiZulu. CAPS 2025.</div><div class="wc-tag">Grade 12 Priority · Free</div></div>
-      <div class="world-card" onclick="showWorld('audio')"><div class="wc-icon">🎵</div><div class="wc-name">Audio Archive</div><div class="wc-sub">Umemolo songs, izinganekwane, lullabies, folklore. Dr Sasa's voice.</div><div class="wc-tag">Coming Soon</div></div>
+      <div class="world-card" onclick="showWorld('courses')" style="border-bottom:3px solid #9B59B6"><div class="wc-icon">📚</div><div class="wc-name">Dr Sasa's Courses</div><div class="wc-sub">4 full courses. Storytelling, Folktales, Business Narrative, Heritage. Learn at your own pace.</div><div class="wc-tag" style="color:#C39BD3">Certificate of Attendance · Self-Paced</div></div>
+      <div class="world-card" onclick="showWorld('audio')"><div class="wc-icon">🎵</div><div class="wc-name">Audio Archive</div><div class="wc-sub">Umemolo songs, izinganekwane, lullabies, folklore. Upload your own voice to Community Voices.</div><div class="wc-tag">Coming Soon · Contribute</div></div>
     </div>
     <div style="background:var(--ink2);padding:3rem 0">
       <div class="ctr">
@@ -581,7 +627,14 @@ nav{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.97);backdrop-
 
   <!-- INSTRUMENTS -->
   <div class="world" id="instruments-world">
-    <div class="inst-hero"><div class="ctr"><div class="sec-lbl" style="color:rgba(255,255,255,.25);justify-content:center">Music Studio</div><h2>African <em>Instrument Studio</em></h2><p>Play. Record. Loop. Share. Four instruments, one recording session, one community wall.</p></div></div>
+    <div class="inst-hero" style="padding:0;height:320px;position:relative;overflow:hidden">
+      <canvas id="inst-canvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+      <div style="position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:2rem">
+        <div class="sec-lbl" style="color:rgba(255,255,255,.28);justify-content:center">Music Studio</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,3.8rem);font-weight:700;color:#fff;letter-spacing:-.02em">African <em style="font-style:italic;color:#F5A040">Instrument Studio</em></h2>
+        <p style="font-size:.9rem;color:rgba(255,255,255,.55);max-width:480px;margin:.7rem auto 0;line-height:1.85">Play. Record. Loop. Share. Four instruments, one recording session, one community wall.</p>
+      </div>
+    </div>
     <div style="background:#0d1117">
     <div class="ctr">
       <div class="studio">
@@ -627,7 +680,15 @@ nav{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.97);backdrop-
 
   <!-- BRAIN TEASERS -->
   <div class="world" id="brain-world">
-    <div class="brain-hero"><div class="ctr"><div class="sec-lbl" style="color:rgba(255,255,255,.25);justify-content:center">Daily Challenge</div><h2>Brain <em>Teasers</em></h2><p>Six puzzle types. New challenge every day. Build your streak and train your mind.</p><div class="streak-bar"><div class="streak-fire">🔥</div><div class="streak-info"><strong id="streak-count">7</strong><span>Day Streak</span></div><div class="streak-dots" id="streak-dots"></div></div></div></div>
+    <div class="brain-hero" style="padding:0;height:340px;position:relative;overflow:hidden">
+      <canvas id="brain-canvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+      <div style="position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:2rem">
+        <div class="sec-lbl" style="color:rgba(255,255,255,.28);justify-content:center">Daily Challenge</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,3.8rem);font-weight:700;color:#fff">Brain <em style="color:#F5A040;font-style:italic">Teasers</em></h2>
+        <p style="font-size:.88rem;color:rgba(255,255,255,.52);max-width:440px;margin:.7rem auto 0;line-height:1.85">Six puzzle types. New challenge every day. Build your streak and train your mind.</p>
+        <div class="streak-bar"><div class="streak-fire">🔥</div><div class="streak-info"><strong id="streak-count">7</strong><span>Day Streak</span></div><div class="streak-dots" id="streak-dots"></div></div>
+      </div>
+    </div>
     <div class="ctr">
       <div class="puzzle-tabs">
         <button class="ptab active" onclick="setPuzzleType('proverb')">📖 Proverbs</button>
@@ -648,7 +709,7 @@ nav{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.97);backdrop-
       <div class="tree-ui">
         <h2>The <em>Ancestor Tree</em></h2>
         <p>Every story told, game played, puzzle solved — grows this tree.<br>Your leaf lives here. Forever.</p>
-        <div class="tree-tooltip">🌱 Hover over a glowing leaf to see who contributed. Every leaf is a real learner in the Kwa Sukela community.</div>
+        <div class="tree-tooltip">🌱 Hover over a glowing leaf to see who contributed. Every leaf is a real learner in the Zintsomi community.</div>
         <div class="tree-actions">
           <button class="btn btn-blu" onclick="growLeaf()">🌿 Add Your Leaf</button>
           <button class="btn btn-out" style="border-color:rgba(100,181,232,.28);color:#64B5E8" onclick="showWorld('schools')">Learn → Earn Leaves</button>
@@ -665,7 +726,15 @@ nav{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.97);backdrop-
 
   <!-- SCHOOLS -->
   <div class="world" id="schools-world">
-    <div class="schools-hero"><div class="ctr"><div class="sec-lbl" style="color:rgba(134,239,172,.45);justify-content:center">CAPS Aligned 2025</div><h2>Schools <em>Hub</em></h2><p>Study notes, key formulas, practice questions and Dr Sasa's exam tips. Free for every South African learner.</p><div class="grade-pills"><button class="grade-pill priority active" onclick="setGrade(12)">Grade 12 ★</button><button class="grade-pill" onclick="setGrade(11)">Grade 11</button><button class="grade-pill" onclick="setGrade(10)">Grade 10</button></div></div></div>
+    <div class="schools-hero" style="padding:0;height:340px;position:relative;overflow:hidden">
+      <canvas id="schools-canvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+      <div style="position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:2rem">
+        <div class="sec-lbl" style="color:rgba(134,239,172,.45);justify-content:center">CAPS Aligned 2025</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2.3rem,5vw,3.8rem);font-weight:700;color:#fff">Schools <em style="color:#86EFAC;font-style:italic">Hub</em></h2>
+        <p style="font-size:.88rem;color:rgba(255,255,255,.52);max-width:490px;margin:.7rem auto 1.4rem;line-height:1.85">Study notes, key formulas, practice questions and Dr Sasa's exam tips. Free for every South African learner.</p>
+        <div class="grade-pills"><button class="grade-pill priority active" onclick="setGrade(12)">Grade 12 ★</button><button class="grade-pill" onclick="setGrade(11)">Grade 11</button><button class="grade-pill" onclick="setGrade(10)">Grade 10</button></div>
+      </div>
+    </div>
     <div class="ctr" style="padding-top:2.2rem">
       <div class="subjects-nav">
         <button class="sub-tab maths active" onclick="setSubject('maths')"><span class="sub-icon">📐</span>Mathematics</button>
@@ -682,7 +751,7 @@ nav{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.97);backdrop-
       <div class="ctr">
         <div class="sec-lbl" style="color:rgba(255,255,255,.25)">Zintsomi Learning Platform</div>
         <h2 class="sec-title">Online <em>Courses</em> by Dr. Sasa</h2>
-        <p class="sec-sub" style="color:rgba(255,255,255,.42)">Accredited storytelling and heritage courses hosted on zintsomicourses.co.za. Enrol directly — login, payment and certificates all handled on the platform.</p>
+        <p class="sec-sub" style="color:rgba(255,255,255,.42)">Storytelling and heritage courses hosted on zintsomicourses.co.za. Students receive a <strong style="color:#F5A040">certificate of attendance</strong> upon completion. Enrol directly — login, payment and certificates all handled on the platform.</p>
         <div class="zcourses-grid">
           <a class="zcourse" href="https://zintsomicourses.co.za/courses-details/fundamentals-of-storytelling" target="_blank">
             <div class="zcourse-img zi1">📖</div>
@@ -716,6 +785,224 @@ nav{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.97);backdrop-
         <div style="text-align:center;margin-top:2rem"><a href="https://zintsomicourses.co.za/courses" target="_blank" class="btn btn-out" style="border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.6)">Browse All Courses on Zintsomi →</a></div>
       </div>
     </div>
+
+    <!-- SUBSCRIPTION TIERS -->
+    <div style="background:#F0F7F0;padding:4rem 0">
+      <div class="ctr">
+        <div class="sec-lbl">Membership</div>
+        <h2 class="sec-title">Choose Your <em>Plan</em></h2>
+        <p class="sec-sub">Start free. Grow at your own pace. Every tier supports the preservation of African oral heritage.</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:1.5rem">
+          <!-- FREE -->
+          <div style="background:#fff;border-radius:10px;padding:2rem;border:2px solid var(--bd);display:flex;flex-direction:column;gap:.8rem">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--i35)">Free Forever</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--ink)">R0<span style="font-size:1rem;font-weight:300;color:var(--i35)">/month</span></div>
+            <div style="font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--ink)">Explorer</div>
+            <ul style="list-style:none;font-size:.83rem;color:var(--i60);line-height:2;flex:1">
+              <li>✓ All 4 interactive games</li>
+              <li>✓ Music studio (play only)</li>
+              <li>✓ Daily brain teasers</li>
+              <li>✓ Sample study notes</li>
+              <li>✓ Community wall (view)</li>
+              <li>✓ Folktale introductions</li>
+              <li style="color:var(--i35)">✗ Full Schools Hub notes</li>
+              <li style="color:var(--i35)">✗ Audio archive</li>
+              <li style="color:var(--i35)">✗ Record & share music</li>
+            </ul>
+            <button class="btn btn-out" style="width:100%;justify-content:center">Get Started Free</button>
+          </div>
+          <!-- PREMIUM -->
+          <div style="background:var(--ink2);border-radius:10px;padding:2rem;border:2px solid var(--orange);display:flex;flex-direction:column;gap:.8rem;position:relative">
+            <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--orange);font-family:'Syne',sans-serif;font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;padding:.28rem .9rem;border-radius:20px;white-space:nowrap">Most Popular</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35)">Premium</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:#FFD700">R65<span style="font-size:1rem;font-weight:300;color:rgba(255,255,255,.38)">/month</span></div>
+            <div style="font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:#fff">Community Member</div>
+            <ul style="list-style:none;font-size:.83rem;color:rgba(255,255,255,.62);line-height:2;flex:1">
+              <li style="color:#FFD700">✓ Everything in Free</li>
+              <li>✓ Full Schools Hub (all grades)</li>
+              <li>✓ Complete audio archive</li>
+              <li>✓ Record & share music</li>
+              <li>✓ Upload to Community Voices</li>
+              <li>✓ Ancestor Tree leaf</li>
+              <li>✓ Monthly live storytelling event</li>
+              <li>✓ Certificate of attendance (courses)</li>
+              <li>✓ Priority support</li>
+            </ul>
+            <button class="btn" style="width:100%;justify-content:center;background:var(--orange)">Join Premium</button>
+          </div>
+          <!-- INSTITUTIONAL -->
+          <div style="background:#fff;border-radius:10px;padding:2rem;border:2px solid var(--green);display:flex;flex-direction:column;gap:.8rem">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green)">Schools & Libraries</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--ink)">Custom<span style="font-size:1rem;font-weight:300;color:var(--i35)"> pricing</span></div>
+            <div style="font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--ink)">Institutional</div>
+            <ul style="list-style:none;font-size:.83rem;color:var(--i60);line-height:2;flex:1">
+              <li style="color:var(--green)">✓ Everything in Premium</li>
+              <li>✓ Bulk learner licences</li>
+              <li>✓ Classroom dashboard</li>
+              <li>✓ Teacher admin tools</li>
+              <li>✓ CAPS curriculum integration</li>
+              <li>✓ Custom storytelling workshops</li>
+              <li>✓ School branding options</li>
+              <li>✓ NGO & library rates available</li>
+            </ul>
+            <button class="btn btn-grn" style="width:100%;justify-content:center" onclick="alert('Email us at hello@zintsomicourses.co.za for institutional pricing.')">Contact Us</button>
+          </div>
+        </div>
+        <p style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.07em;color:var(--i35);margin-top:1.2rem">📶 Low-bandwidth? All free content is available in audio-first, text-summary format — accessible on any connection.</p>
+      </div>
+    </div>
+
+    <!-- COMMUNITY VOICES -->
+    <div style="background:var(--ink2);padding:4rem 0">
+      <div class="ctr">
+        <div class="sec-lbl" style="color:rgba(255,255,255,.25)">Community Voices</div>
+        <h2 class="sec-title" style="color:#fff">Share Your <em>Voice</em></h2>
+        <p style="font-size:.9rem;color:rgba(255,255,255,.42);max-width:520px;margin:.5rem 0 2rem;line-height:1.85;font-weight:300">Upload your songs, riddles, lullabies, proverbs and oral stories. Build Africa's living archive — together.</p>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem">
+          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1.4rem;text-align:center;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(202,92,8,.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'">
+            <div style="font-size:2rem;margin-bottom:.6rem">🎵</div>
+            <div style="font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.3rem">Songs & Lullabies</div>
+            <div style="font-size:.72rem;color:rgba(255,255,255,.32);line-height:1.55">Umemolo, izihlabelelo, work songs, ceremonial</div>
+          </div>
+          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1.4rem;text-align:center;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(202,92,8,.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'">
+            <div style="font-size:2rem;margin-bottom:.6rem">📖</div>
+            <div style="font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.3rem">Stories & Folktales</div>
+            <div style="font-size:.72rem;color:rgba(255,255,255,.32);line-height:1.55">Izinganekwane in any African language</div>
+          </div>
+          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1.4rem;text-align:center;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(202,92,8,.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'">
+            <div style="font-size:2rem;margin-bottom:.6rem">🧩</div>
+            <div style="font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.3rem">Riddles & Proverbs</div>
+            <div style="font-size:.72rem;color:rgba(255,255,255,.32);line-height:1.55">Izaga, iziphicaphicwano, sayings from your community</div>
+          </div>
+          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1.4rem;text-align:center;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(202,92,8,.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'">
+            <div style="font-size:2rem;margin-bottom:.6rem">🎮</div>
+            <div style="font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.3rem">Children's Games</div>
+            <div style="font-size:.72rem;color:rgba(255,255,255,.32);line-height:1.55">Oral games, clapping songs, playground traditions</div>
+          </div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border:1px dashed rgba(202,92,8,.35);border-radius:8px;padding:2rem;text-align:center">
+          <p style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:rgba(255,255,255,.55);margin-bottom:1.2rem">Upload portal opening Year 1. Register your interest to be first in line.</p>
+          <div style="display:flex;gap:.7rem;max-width:420px;margin:0 auto">
+            <input id="cv-email" type="email" placeholder="your@email.com" style="flex:1;padding:.65rem 1rem;border-radius:4px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none">
+            <button class="btn" onclick="registerCV()" style="white-space:nowrap">Register Interest</button>
+          </div>
+          <div id="cv-confirm" style="display:none;font-family:'JetBrains Mono',monospace;font-size:.52rem;letter-spacing:.07em;color:#6EE78E;margin-top:.8rem">✓ Registered! We'll notify you when Community Voices launches.</div>
+        </div>
+        <div style="margin-top:2rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,.07)">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:.8rem">Supported Languages (Year 2+)</div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+            <span style="font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">isiZulu</span>
+            <span style="font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">isiXhosa</span>
+            <span style="font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">Sesotho</span>
+            <span style="font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">Setswana</span>
+            <span style="font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;padding:.28rem .75pm;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">Sepedi</span>
+            <span style="font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">Tshivenda</span>
+            <span style="font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">Xitsonga</span>
+            <span style="font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">SiSwati</span>
+            <span style="font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">Afrikaans</span>
+            <span style="font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">+ More</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3-YEAR ROADMAP -->
+    <div style="background:#fff;padding:4rem 0">
+      <div class="ctr">
+        <div class="sec-lbl">Vision</div>
+        <h2 class="sec-title">Our 3-Year <em>Roadmap</em></h2>
+        <p class="sec-sub">From foundation to Africa's premier oral heritage platform — step by step.</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:1.5rem">
+          <!-- YEAR 1 -->
+          <div style="border-radius:10px;overflow:hidden;border:2px solid var(--orange)">
+            <div style="background:var(--orange);padding:1.2rem 1.5rem">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:.3rem">2025 – 2026</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:#fff">Year 1</div>
+              <div style="font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;color:rgba(255,255,255,.75)">Foundation & Early Growth</div>
+            </div>
+            <div style="padding:1.4rem;background:#fff">
+              <ul style="list-style:none;font-size:.8rem;color:var(--i60);line-height:2.1">
+                <li>🎯 Launch free intro content (folktales, riddles, audio clips)</li>
+                <li>🎯 Community Voices submission portal</li>
+                <li>🎯 Low-bandwidth audio-first formats</li>
+                <li>🎯 1,000–3,000 free users</li>
+                <li>🎯 100–300 paid subscribers</li>
+                <li>🎯 2–3 school partnerships</li>
+                <li>🎯 Expand lullabies, proverbs, children's games</li>
+              </ul>
+              <div style="margin-top:1rem;padding:.8rem;background:rgba(202,92,8,.05);border-radius:5px;border-left:3px solid var(--orange)">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.07em;text-transform:uppercase;color:var(--orange)">Subscriber Target</div>
+                <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--ink)">100–300 paid · 3,000 free</div>
+              </div>
+            </div>
+          </div>
+          <!-- YEAR 2 -->
+          <div style="border-radius:10px;overflow:hidden;border:2px solid var(--blue)">
+            <div style="background:var(--blue);padding:1.2rem 1.5rem">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:.3rem">2026 – 2027</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:#fff">Year 2</div>
+              <div style="font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;color:rgba(255,255,255,.75)">Expansion & Partnerships</div>
+            </div>
+            <div style="padding:1.4rem;background:#fff">
+              <ul style="list-style:none;font-size:.8rem;color:var(--i60);line-height:2.1">
+                <li>🚀 University & school curriculum integration</li>
+                <li>🚀 Multilingual content: isiZulu, isiXhosa, Sesotho</li>
+                <li>🚀 Live storytelling forums & discussion spaces</li>
+                <li>🚀 Premium tier + institutional licences</li>
+                <li>🚀 10–15 school/university partnerships</li>
+                <li>🚀 Expand VR worlds with multilingual narration</li>
+                <li>🚀 10,000–15,000 free users</li>
+              </ul>
+              <div style="margin-top:1rem;padding:.8rem;background:rgba(26,110,168,.05);border-radius:5px;border-left:3px solid var(--blue)">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.07em;text-transform:uppercase;color:var(--blue)">Subscriber Target</div>
+                <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--ink)">1,500–2,000 paid · 15,000 free</div>
+              </div>
+            </div>
+          </div>
+          <!-- YEAR 3 -->
+          <div style="border-radius:10px;overflow:hidden;border:2px solid var(--green)">
+            <div style="background:var(--green);padding:1.2rem 1.5rem">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:.3rem">2027 – 2028</div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:#fff">Year 3</div>
+              <div style="font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;color:rgba(255,255,255,.75)">Full Oral Heritage Platform</div>
+            </div>
+            <div style="padding:1.4rem;background:#fff">
+              <ul style="list-style:none;font-size:.8rem;color:var(--i60);line-height:2.1">
+                <li>🌍 Searchable African oral heritage archive</li>
+                <li>🌍 Global reach — worldwide accessibility</li>
+                <li>🌍 AI-assisted storytelling in African languages</li>
+                <li>🌍 50+ school, university & NGO partnerships</li>
+                <li>🌍 Government & cultural institution collaborations</li>
+                <li>🌍 Licensing, events, educational partnerships revenue</li>
+                <li>🌍 50,000–70,000 free users worldwide</li>
+              </ul>
+              <div style="margin-top:1rem;padding:.8rem;background:rgba(30,132,73,.05);border-radius:5px;border-left:3px solid var(--green)">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:.48rem;letter-spacing:.07em;text-transform:uppercase;color:var(--green)">Subscriber Target</div>
+                <div style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--ink)">8,000–12,000 paid · 70,000 free</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- GROWTH TABLE -->
+        <div style="margin-top:2.5rem;overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:.82rem">
+            <thead>
+              <tr style="background:var(--ink2)">
+                <th style="padding:.8rem 1.2rem;text-align:left;font-family:'Syne',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5)">Year</th>
+                <th style="padding:.8rem 1.2rem;text-align:left;font-family:'Syne',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5)">Free Users</th>
+                <th style="padding:.8rem 1.2rem;text-align:left;font-family:'Syne',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5)">Paid Subscribers</th>
+                <th style="padding:.8rem 1.2rem;text-align:left;font-family:'Syne',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5)">Institutional Partners</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--bd)"><td style="padding:.9rem 1.2rem;font-family:'Syne',sans-serif;font-weight:700;color:var(--orange)">Year 1</td><td style="padding:.9rem 1.2rem;color:var(--i60)">1,000 – 3,000</td><td style="padding:.9rem 1.2rem;color:var(--i60)">100 – 300</td><td style="padding:.9rem 1.2rem;color:var(--i60)">2 – 3</td></tr>
+              <tr style="border-bottom:1px solid var(--bd);background:var(--paper)"><td style="padding:.9rem 1.2rem;font-family:'Syne',sans-serif;font-weight:700;color:var(--blue)">Year 2</td><td style="padding:.9rem 1.2rem;color:var(--i60)">10,000 – 15,000</td><td style="padding:.9rem 1.2rem;color:var(--i60)">1,500 – 2,000</td><td style="padding:.9rem 1.2rem;color:var(--i60)">10 – 15</td></tr>
+              <tr style="border-bottom:1px solid var(--bd)"><td style="padding:.9rem 1.2rem;font-family:'Syne',sans-serif;font-weight:700;color:var(--green)">Year 3</td><td style="padding:.9rem 1.2rem;color:var(--i60)">50,000 – 70,000</td><td style="padding:.9rem 1.2rem;color:var(--i60)">8,000 – 12,000</td><td style="padding:.9rem 1.2rem;color:var(--i60)">50+</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- NOTES OVERLAY -->
@@ -726,9 +1013,93 @@ nav{position:sticky;top:0;z-index:500;background:rgba(255,255,255,.97);backdrop-
     </div>
   </div>
 
+  <!-- COURSES -->
+  <div class="world" id="courses-world">
+    <!-- Hero canvas -->
+    <div style="height:300px;position:relative;overflow:hidden">
+      <canvas id="courses-canvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+      <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:.7rem;display:flex;align-items:center;gap:.6rem"><span style="width:22px;height:1px;background:#C39BD3;display:inline-block"></span>Self-Paced · Certificate of Attendance</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,3.8rem);font-weight:700;color:#fff;letter-spacing:-.02em">Dr Sasa's <em style="font-style:italic;color:#C39BD3">Courses</em></h2>
+        <p style="font-size:.9rem;color:rgba(255,255,255,.48);max-width:500px;margin:.7rem auto 0;line-height:1.85">Four complete storytelling and heritage courses. Work through lessons at your pace. Earn your certificate when you finish.</p>
+      </div>
+    </div>
+
+    <!-- Course selector -->
+    <div style="background:#0d0118;border-bottom:1px solid rgba(155,89,182,.2)">
+      <div class="ctr" style="padding-top:0;padding-bottom:0">
+        <div style="display:flex;gap:0;overflow-x:auto" id="course-tabs">
+          <button class="course-tab active" onclick="selectCourse(0)" data-idx="0">
+            <span style="font-size:1.1rem;display:block;margin-bottom:.3rem">📖</span>
+            <span style="font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;display:block">Fundamentals</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:.44rem;color:rgba(255,255,255,.28)">5 modules</span>
+          </button>
+          <button class="course-tab" onclick="selectCourse(1)" data-idx="1">
+            <span style="font-size:1.1rem;display:block;margin-bottom:.3rem">🌿</span>
+            <span style="font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;display:block">Folktale Studies</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:.44rem;color:rgba(255,255,255,.28)">5 modules</span>
+          </button>
+          <button class="course-tab" onclick="selectCourse(2)" data-idx="2">
+            <span style="font-size:1.1rem;display:block;margin-bottom:.3rem">💼</span>
+            <span style="font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;display:block">Story in Business</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:.44rem;color:rgba(255,255,255,.28)">5 modules</span>
+          </button>
+          <button class="course-tab" onclick="selectCourse(3)" data-idx="3">
+            <span style="font-size:1.1rem;display:block;margin-bottom:.3rem">🏛️</span>
+            <span style="font-family:'Syne',sans-serif;font-size:.6rem;font-weight:700;display:block">Frontlines Heritage</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:.44rem;color:rgba(255,255,255,.28)">5 modules</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course body -->
+    <div style="background:#0a0115;min-height:600px">
+      <div class="ctr" style="padding-top:2.5rem;padding-bottom:3rem">
+        <div style="display:grid;grid-template-columns:280px 1fr;gap:2rem;align-items:start" id="course-layout">
+          <!-- Module sidebar -->
+          <div style="background:rgba(255,255,255,.03);border:1px solid rgba(155,89,182,.15);border-radius:8px;overflow:hidden;position:sticky;top:76px">
+            <div style="background:rgba(155,89,182,.12);padding:1rem 1.2rem;border-bottom:1px solid rgba(155,89,182,.15)">
+              <div style="font-family:'Syne',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#C39BD3">Course Modules</div>
+            </div>
+            <div id="module-list" style="padding:.5rem 0"></div>
+            <!-- Progress bar -->
+            <div style="padding:1rem 1.2rem;border-top:1px solid rgba(155,89,182,.12)">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:.46rem;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:.5rem">Your Progress</div>
+              <div style="background:rgba(255,255,255,.08);border-radius:20px;height:6px;overflow:hidden">
+                <div id="progress-bar" style="height:100%;background:linear-gradient(90deg,#9B59B6,#C39BD3);border-radius:20px;transition:width .5s ease;width:0%"></div>
+              </div>
+              <div id="progress-label" style="font-family:'JetBrains Mono',monospace;font-size:.46rem;color:rgba(255,255,255,.35);margin-top:.4rem">0 of 5 complete</div>
+            </div>
+          </div>
+          <!-- Lesson content -->
+          <div id="lesson-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Certificate overlay -->
+    <div id="cert-overlay" style="display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.85);align-items:center;justify-content:center;padding:1rem">
+      <div style="background:#fff;border-radius:10px;width:100%;max-width:640px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5)">
+        <canvas id="cert-canvas" style="width:100%;display:block"></canvas>
+        <div style="padding:1.4rem;display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap">
+          <button class="btn" onclick="downloadCert()">⬇ Download Certificate</button>
+          <button class="btn btn-out" onclick="document.getElementById('cert-overlay').style.display='none'">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- AUDIO -->
   <div class="world" id="audio-world">
-    <div class="audio-hero"><div class="vinyl"></div><div class="ctr" style="position:relative;z-index:2"><div class="sec-lbl" style="color:rgba(255,215,0,.28);justify-content:center">Folklore & Song</div><h2>Audio <em>Archive</em></h2><p>Umemolo songs, izinganekwane, lullabies, ceremonial songs and Dr Sasa's lectures. Launching soon.</p></div></div>
+    <div class="audio-hero" style="padding:0;height:320px;position:relative;overflow:hidden">
+      <canvas id="audio-canvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+      <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:2rem;text-align:center">
+        <div class="sec-lbl" style="color:rgba(255,215,0,.32);justify-content:center">Folklore & Song</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,3.8rem);font-weight:700;color:#FFD700">Audio <em style="font-style:italic;color:#F5A040">Archive</em></h2>
+        <p style="font-size:.88rem;color:rgba(255,255,255,.45);max-width:440px;margin:.7rem auto 0;line-height:1.85">Umemolo songs, izinganekwane, lullabies, ceremonial songs and Dr Sasa's lectures. Launching soon.</p>
+      </div>
+    </div>
     <div style="background:#1a0d00"><div class="ctr">
       <div class="audio-grid">
         <div class="audio-card"><div class="ac-art ac-art-1"><span class="ac-vinyl-icon">💃</span><span class="ac-coming">Coming Soon</span></div><div class="ac-body"><div class="ac-name">Umemolo Songs</div><div class="ac-desc">Celebration songs at coming-of-age ceremonies.</div><button class="ac-notify">🔔 Notify me when live</button></div></div>
@@ -818,7 +1189,7 @@ function showWorld(id){
   document.querySelectorAll('.world').forEach(function(w){w.classList.remove('active')});
   document.querySelectorAll('.npill').forEach(function(p){p.classList.remove('active')});
   var w=document.getElementById(id+'-world');if(w)w.classList.add('active');
-  var map={home:0,games:1,instruments:2,brain:3,tree:4,schools:5,audio:6};
+  var map={home:0,games:1,instruments:2,brain:3,tree:4,schools:5,courses:6,audio:7};
   var pills=document.querySelectorAll('.npill');
   if(pills[map[id]])pills[map[id]].classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
@@ -832,6 +1203,7 @@ function initAll(){
   initStreakDots();
   setSubject('maths');
   setPuzzleType('proverb');
+  initAllCanvases();
 }
 
 // ════ FIREFLIES ════
@@ -1256,7 +1628,7 @@ function treeHover(e){
   var rect=treeCanvas.getBoundingClientRect(),mx=e.clientX-rect.left,my=e.clientY-rect.top;
   var pop=document.getElementById('leaf-popup'),near=null;
   treeLeaves.forEach(function(l){if(!near&&Math.hypot(l.x-mx,l.y-my)<l.sz*2.8)near=l});
-  if(near){pop.style.display='block';pop.style.left=(mx+12)+'px';pop.style.top=(my-44)+'px';pop.innerHTML='<strong>'+near.name+'</strong>Contributed to Kwa Sukela'}
+  if(near){pop.style.display='block';pop.style.left=(mx+12)+'px';pop.style.top=(my-44)+'px';pop.innerHTML='<strong>'+near.name+'</strong>Contributed to Zintsomi'}
   else pop.style.display='none';
 }
 function growLeaf(){
@@ -1398,6 +1770,888 @@ function toggleAns(btn){var a=btn.nextElementSibling;var sh=a.style.display==='b
 
 // ════ AUDIO NOTIFICATIONS ════
 document.querySelectorAll('.ac-notify').forEach(function(b){b.addEventListener('click',function(){this.textContent='✓ Will notify you!';this.style.color='#27AE60'})});
+
+// ════ COURSES ENGINE ════
+var courseProgress = [0,0,0,0]; // completed modules per course
+var activeCourse = 0;
+var activeModule = 0;
+
+var COURSES = [
+  // ── COURSE 0: FUNDAMENTALS OF STORYTELLING ──
+  { title:'Fundamentals of Storytelling', icon:'📖', color:'#9B59B6', tag:'Beginner · 5 Modules',
+    desc:'Master the foundational craft of storytelling — African narrative structures, voice, performance and the living oral tradition.',
+    modules:[
+      { title:'What is a Story?', duration:'25 min',
+        body:'<h3>The Living Nature of Story</h3><p>A story is not a fixed object. In the African oral tradition, a story is a <strong>living exchange</strong> — it changes with the teller, the audience, the season, the mood. This is not a flaw; it is the genius of oral literature.</p><p>Western literary tradition tends to fix stories in text. The oral tradition understood something text cannot capture: <em>a story breathes</em>. It responds. It remembers. It heals.</p><div class="lesson-callout"><div class="lc-label">Dr Sasa says</div><p>"Before you can tell a story, you must understand that you are not the owner of the story. You are its vessel for this moment, in this place, with these people."</p></div><h3>The Three Circles of Story</h3><p>Every story exists in three circles simultaneously:</p><p><strong>1. The Inner Circle</strong> — the teller\'s personal truth. What does this story mean to you? Why are you the one telling it today?</p><p><strong>2. The Community Circle</strong> — the collective memory. How does this story connect to shared history, values, and identity?</p><p><strong>3. The Universal Circle</strong> — the human truth. What does this story say about all people, everywhere?</p><p>A master storyteller holds all three circles open at once. The audience feels each layer even if they cannot name it.</p><div class="lesson-reflection"><div class="lr-label">Reflection Exercise</div><p>Think of one story from your childhood — told to you by a parent, grandparent or community elder. Which of the three circles did it speak from most strongly? Write three sentences about it.</p></div>',
+        quiz:{ q:'In the African oral tradition, what makes a story "living"?', opts:['It is written down carefully','It changes with teller, audience and context','It is very long and detailed','It uses formal language'], ans:1, fb:'Correct! Oral stories breathe and adapt — this is their power, not a weakness.' }
+      },
+      { title:'Voice, Body & Presence', duration:'30 min',
+        body:'<h3>Your Instrument</h3><p>Your voice is not just a delivery mechanism. It is the primary instrument of the storyteller — as personal as a fingerprint, as powerful as any written word.</p><p>In oral performance, <strong>paralanguage</strong> — the how of speaking, not the what — carries up to 70% of meaning. Pace, pitch, pause, breath, resonance: these are your tools.</p><h3>The Pause</h3><p>The most underused tool in storytelling is silence. A well-placed pause does four things:<br>1. Creates anticipation<br>2. Signals importance<br>3. Allows the listener to catch up emotionally<br>4. Gives you, the teller, a moment to feel what comes next</p><div class="lesson-callout"><div class="lc-label">Practice technique</div><p>"Before every key moment in your story, breathe. The audience will breathe with you. Now you are one."</p></div><h3>Body as Story</h3><p>Even in seated storytelling, the body speaks. Shoulder position signals confidence or vulnerability. Eye direction creates character. Hand gesture can place characters in space around you, and the audience will unconsciously look where you point — long after you have stopped pointing.</p><p>Traditional African storytelling used the full body as a stage — ululation, clapping, foot-stamping. These are not decoration. They are rhythm, and rhythm is the heartbeat of story.</p><div class="lesson-reflection"><div class="lr-label">Exercise</div><p>Record yourself telling a two-minute story with no gestures and no movement. Then record it again, using only your hands and shoulders. Notice what changes in your voice automatically when your body is involved.</p></div>',
+        quiz:{ q:'What percentage of meaning in oral performance comes from paralanguage (how, not what)?', opts:['About 20%','About 40%','Up to 70%','Exactly 50%'], ans:2, fb:'Up to 70% — tone, pace, pause and resonance carry far more than words alone.' }
+      },
+      { title:'Structure — The African Story Arc', duration:'35 min',
+        body:'<h3>Beyond Beginning, Middle, End</h3><p>Western narrative teaches a linear arc: setup → conflict → resolution. This works. But African oral narrative often follows a different, richer architecture — one that reflects a <strong>circular, communal worldview</strong>.</p><h3>The Spiral Structure</h3><p>Many izinganekwane (folktales) follow a spiral: events repeat in threes, each repetition going deeper, with more at stake. The first occurrence introduces; the second complicates; the third resolves — but always with a twist that illuminates the lesson.</p><p>This is not repetition for lack of imagination. It is <em>deliberate pedagogy</em>. The repetition allows listeners at different levels of understanding to absorb the lesson at their own depth.</p><div class="lesson-callout"><div class="lc-label">Structural Pattern</div><p>Opening formula → Establishing the world → First journey/challenge → Second journey (higher stakes) → Third journey (transformation) → Moral revelation → Closing formula</p></div><h3>The Rule of Three in African Storytelling</h3><p>Three animals. Three brothers. Three attempts. Three days. The number three creates rhythm, builds anticipation, and satisfies the listener\'s sense of pattern. When the third attempt succeeds (or fails completely), there is emotional completion.</p><div class="lesson-reflection"><div class="lr-label">Analysis Exercise</div><p>Choose any folktale you know. Map it onto the spiral structure above. Where does it repeat? What deepens with each repetition? What is revealed only on the third pass?</p></div>',
+        quiz:{ q:'What is the purpose of the "rule of three" repetition in African oral narratives?', opts:['To make the story longer','To create rhythm, build anticipation and allow meaning at different depths','To confuse the listener','Because three is lucky'], ans:1, fb:'Exactly — repetition in threes is deliberate pedagogy, not padding. Each pass goes deeper.' }
+      },
+      { title:'Audience & Call-and-Response', duration:'25 min',
+        body:'<h3>The Audience is Not Passive</h3><p>One of the most fundamental differences between oral storytelling and written literature is this: <strong>the audience is a co-creator</strong>. They are not consumers. They are participants.</p><p>The call-and-response tradition — "Kwasukasukela!" / "Sukela!" — is not merely a cute opening ritual. It is a <em>contract</em>. Both teller and listener agree to enter a shared imaginative space. The call initiates the agreement; the response seals it.</p><h3>Reading the Room</h3><p>A skilled oral storyteller reads the audience continuously and adjusts in real time. If energy drops — a moment of confusion, children getting restless, adults growing distracted — the storyteller has tools:</p><p>• Sudden silence (the pause)<br>• A direct question to a listener<br>• A shift in voice to a whisper (audiences lean in automatically)<br>• Physical movement — standing, moving closer<br>• An aside — a brief humorous comment that acknowledges the shared space</p><div class="lesson-callout"><div class="lc-label">Traditional Opening</div><p>Zulu: "Kwasukasukela..." → audience responds "Sukela!"<br>Xhosa: "Kwathi ke kaloku ngantsomi..." → "Ngantsomi!"<br>These formulas say: "We are leaving the ordinary world now. Are you with me?" The response says: "Yes. Lead us."</p></div><div class="lesson-reflection"><div class="lr-label">Live Exercise</div><p>Next time you tell any story — even informally — use a call-and-response opening of your own invention. Notice how the audience\'s posture and attention changes the moment they respond.</p></div>',
+        quiz:{ q:'What does the call-and-response opening in African storytelling actually represent?', opts:['A test of memory','A contract between teller and audience to enter shared imaginative space','A religious ritual','An entertainment warm-up'], ans:1, fb:'A contract — both parties agree to enter a shared space together. The response is commitment.' }
+      },
+      { title:'Your Story — Finding & Telling It', duration:'40 min',
+        body:'<h3>The Most Dangerous Story</h3><p>The most powerful story you can tell is your own — which is also the most frightening. Personal narrative requires vulnerability, precision, and courage. But it is the story that connects most deeply because it is the one only you can tell.</p><h3>Mining Your Own Story</h3><p>Your life is not a single story. It is an archive. The job is not to find <em>a</em> story — it is to recognise which story serves this moment, this audience, this purpose.</p><p>Questions to excavate your story archive:<br>• What is the earliest memory that still makes you feel something?<br>• What failure taught you something no success could have?<br>• Who are you becoming? What story does not yet exist about you — but should?</p><div class="lesson-callout"><div class="lc-label">Dr Sasa says</div><p>"Your community\'s story lives in your body. The ways you were taught to greet, to eat, to mourn, to celebrate — these are stories. You have been learning to tell them since birth. Now, tell them with intention."</p></div><h3>Putting It All Together</h3><p>You now have the foundations: understanding of story\'s living nature, your voice as instrument, African narrative structure, audience relationship, and personal story as source material.</p><p>The next step is practice — not perfection. Tell a story badly to one person. Then improve it. Tell it to five. Adjust. Ten. Adjust. This is how oral tradition has always worked: stories are <em>tested in community</em>.</p><div class="lesson-reflection"><div class="lr-label">Final Exercise</div><p>Prepare a five-minute personal story using the spiral structure. Include one call-and-response moment. Tell it to someone you trust. Ask them: what did they feel? What will they remember tomorrow?</p></div>',
+        quiz:{ q:'According to Dr Sasa, how have oral stories always been developed and refined?', opts:['Written down alone in private','Tested and improved in community over many tellings','Kept secret until perfect','Learned from books'], ans:1, fb:'Stories are tested in community — each telling improves them. This is the oral tradition.' }
+      }
+    ]
+  },
+  // ── COURSE 1: FOLKTALE STUDIES ──
+  { title:'Folktale Studies', icon:'🌿', color:'#1E8449', tag:'Beginner · 5 Modules',
+    desc:'Understand the cultural significance, evolving role and deep structure of African folktales — izinganekwane in their living context.',
+    modules:[
+      { title:'What Are Izinganekwane?', duration:'25 min',
+        body:'<h3>More Than Entertainment</h3><p>Izinganekwane (Zulu folktales) — and their equivalents across African languages — are often described as "entertainment for children." This is a profound misunderstanding. Folktales are <strong>the oldest educational technology in human history</strong>.</p><p>They encode moral codes, ecological knowledge, social rules, spiritual beliefs, and psychological wisdom in memorable narrative form. A child who hears a folktale about a greedy hare learns more about consequences than a lecture could teach.</p><div class="lesson-callout"><div class="lc-label">Definition</div><p>Inganekwane (singular): A traditional narrative, usually featuring animals or supernatural beings, transmitted orally across generations to encode community values and explain the world.</p></div><h3>The Four Functions</h3><p><strong>1. Entertain</strong> — engage the imagination, create joy<br><strong>2. Educate</strong> — transmit values, rules, consequences<br><strong>3. Explain</strong> — why the leopard has spots, why the sun sets, why death exists<br><strong>4. Unite</strong> — create shared identity, reinforce community bonds</p>',
+        quiz:{ q:'What is the primary historical purpose of African folktales?', opts:['Entertainment only','A complete educational and social technology for transmitting cultural knowledge','Religious ceremony','Political control'], ans:1, fb:'Folktales are complete educational technology — encoding values, ecology, law and psychology.' }
+      },
+      { title:'Characters & Archetypes', duration:'30 min',
+        body:'<h3>The Cast of African Folktales</h3><p>African folktales use a remarkably consistent cast of archetypal characters across thousands of miles and dozens of cultures. This consistency is not coincidence — it reflects shared human experience and shared ecological environment.</p><h3>The Trickster</h3><p>The hare, the spider (Anansi), the tortoise, the jackal. The trickster is the most complex figure in African folklore. They are neither hero nor villain. They survive by wit, often at others\' expense — but their victories are often pyrrhic, and they frequently overreach and fall.</p><p>The trickster asks: <em>Is cleverness enough? Is it ethical? Where does cunning become cruelty?</em> These are questions every community must continuously answer.</p><h3>The Monster / Isigebengu</h3><p>The isidawu, the tokoloshe, the great serpent. These figures represent forces that threaten community order — greed, deception, uncontrolled power. The community hero who defeats the monster demonstrates that collective values triumph over individual destructive force.</p><div class="lesson-callout"><div class="lc-label">Key insight</div><p>Characters in African folktales rarely have names. They are roles — The Eldest Son, The Greedy Chief, The Clever Hare. This is deliberate: the lesson belongs to the role, not the individual. Anyone can be the Greedy Chief. Anyone can be the Clever Hare.</p></div>',
+        quiz:{ q:'Why do African folktale characters often have no personal names?', opts:['The tellers forgot them','The lesson belongs to the archetypal role, not an individual','Names were taboo','Stories were too short'], ans:1, fb:'Exactly — nameless roles mean anyone can occupy them. The lesson is universal, not personal.' }
+      },
+      { title:'Language & Literary Devices', duration:'35 min',
+        body:'<h3>The Toolkit of the Oral Artist</h3><p>Oral literature has its own sophisticated set of literary devices — some shared with written literature, some unique to the oral form.</p><h3>Izifengqo — Figurative Language</h3><p>Similes and metaphors in oral tradition tend to draw from nature and community life: "brave as a buffalo," "patient as a river finding the sea." These comparisons are not clichés — they are <em>compressed community knowledge</em>. The audience knows the buffalo. The comparison carries enormous meaning quickly.</p><h3>Izaga — Proverbs</h3><p>Proverbs are the condensed wisdom of generations. A skilled storyteller weaves proverbs into narrative at key moments — not to explain the story, but to deepen it. The proverb and the narrative illuminate each other.</p><h3>Onomatopoeia & Sound</h3><p>African languages are extraordinarily rich in sound symbolism. The crack of a branch, the rush of water, the way a lion\'s paw falls — these can be conveyed through sound alone. In performance, these sounds create visceral reality that description cannot match.</p><h3>Repetition & Parallelism</h3><p>Repeating grammatical structures ("He walked and he walked and he walked") creates rhythm, emphasises importance, and aids memory. This is not primitive — it is sophisticated mnemonic technology.</p>',
+        quiz:{ q:'What is the function of proverbs (izaga) within a folktale narrative?', opts:['To pad the story out','To make it sound old-fashioned','To deepen meaning at key moments — narrative and proverb illuminate each other','To confuse the audience'], ans:2, fb:'Proverbs deepen meaning — they are compressed generational wisdom inserted at exactly the right moment.' }
+      },
+      { title:'Contemporary Folktale', duration:'30 min',
+        body:'<h3>Is the Folktale Dead?</h3><p>A common concern: as urbanisation, digital media and globalisation accelerate, do folktales lose their relevance? The evidence suggests the opposite — <strong>folktales are more necessary now than ever</strong>.</p><p>What changes is the context of telling, not the need. Where grandmothers once told stories around fires, contemporary storytellers tell them in schools, on stages, in podcasts, in films. The form adapts. The function remains.</p><h3>The Living Folktale</h3><p>Across Africa, contemporary artists are doing extraordinary work with folktale tradition:</p><p>• Theatre companies staging izinganekwane for urban audiences<br>• Animators creating folktale-inspired visual art<br>• Musicians embedding folktale structure in modern compositions<br>• Writers weaving oral tradition into literary fiction</p><div class="lesson-callout"><div class="lc-label">Key principle</div><p>A folktale is not a museum piece. It is a living form. Your responsibility as a storyteller is not to preserve it in amber, but to carry it forward — changed by your time, your context, your community\'s current questions.</p></div>',
+        quiz:{ q:'According to this module, what is the storyteller\'s responsibility to the folktale tradition?', opts:['Preserve it exactly as heard','Never change anything','Carry it forward — changed by your time and community\'s current questions','Stop telling old stories'], ans:2, fb:'Carry it forward, changed by context. Preservation in amber is not tradition — it is taxidermy.' }
+      },
+      { title:'Telling Your Own Folktale', duration:'45 min',
+        body:'<h3>You Are the Next Link</h3><p>Every folktale you know was told by someone who also had a first time. Every tradition began with someone who decided to tell a story they believed mattered. You are not an observer of this tradition — you are now a link in it.</p><h3>Creating an Original Folktale</h3><p>An original folktale in the African tradition needs:<br>• An opening formula (create your own or use traditional)<br>• An animal or supernatural character who embodies a human quality<br>• A challenge that tests that quality<br>• A rule-of-three journey structure<br>• A resolution that reveals the moral naturally — never stated, always felt<br>• A closing that returns the audience to ordinary life</p><div class="lesson-reflection"><div class="lr-label">Final Project</div><p>Write and then tell (ideally to a real audience) an original folktale of three to five minutes. It should: use a traditional African animal character, embed one proverb, follow the spiral structure, and end with a moral that your community currently needs to hear.</p></div>',
+        quiz:{ q:'In creating an original folktale in the African tradition, how should the moral be delivered?', opts:['Stated clearly at the end: "The lesson is..."','Never stated — always felt through the story itself','Written in the programme','Said three times for emphasis'], ans:1, fb:'Never stated, always felt. If you have to tell the audience the lesson, the story has not done its work.' }
+      }
+    ]
+  },
+  // ── COURSE 2: STORYTELLING IN BUSINESS ──
+  { title:'Storytelling in Business', icon:'💼', color:'#CA5C08', tag:'Intermediate · 5 Modules',
+    desc:'Apply African storytelling principles to business communication, branding and strategic leadership. An African lens on corporate narrative.',
+    modules:[
+      { title:'Why Story Runs Business', duration:'30 min',
+        body:'<h3>The Oldest Business Tool</h3><p>Before spreadsheets, before pitch decks, before market research — there was story. Every transaction in human history has been preceded and enabled by a story: who are you, what do you offer, why should I trust you?</p><p>Modern business forgot this. The result: <strong>presentations that inform but do not move, brands that exist but do not matter, leaders who manage but do not inspire</strong>.</p><h3>What Story Does That Data Cannot</h3><p>Data proves. Story moves. Data answers "what." Story answers "why." And in every business context — from a team meeting to an investor pitch to a customer interaction — people act on "why," not "what."</p><div class="lesson-callout"><div class="lc-label">Research finding</div><p>Stories are remembered up to 22x more than facts alone. A story with a single data point embedded within it is more persuasive than any data-only presentation.</p></div><h3>The African Business Narrative Advantage</h3><p>African oral tradition has 5,000+ years of perfecting persuasive narrative. Ubuntu philosophy, communal decision-making, elder consensus-building — these are not quaint traditions. They are sophisticated stakeholder management systems dressed in story.</p>',
+        quiz:{ q:'What is the primary difference between what data does and what story does in business?', opts:['Data is better for everything','Data proves; story moves. Data answers what; story answers why','Story is only for marketing','They do exactly the same thing'], ans:1, fb:'Data proves, story moves — people act on "why", and only story delivers "why" effectively.' }
+      },
+      { title:'The Brand as Story', duration:'35 min',
+        body:'<h3>Your Brand is a Story People Tell About You</h3><p>Most businesses think of their brand as a logo, a colour palette, a tagline. These are <em>symbols</em> of a brand, not the brand itself. Your actual brand is the story your customers, employees, and community tell about you when you are not in the room.</p><h3>The Ubuntu Brand</h3><p>Ubuntu — "I am because we are" — offers a profound alternative to Western brand theory, which centres on the company. Ubuntu-centred branding centres the community: <em>the brand exists because the community exists; its success is the community\'s success.</em></p><p>This is not just ethical — it is strategically superior for African markets. Consumers in communal cultures distrust brands that extract value from communities. They are fiercely loyal to brands that visibly give back, uplift, and belong.</p><div class="lesson-callout"><div class="lc-label">Brand Story Framework</div><p>Origin: Where did this begin and why does it matter?<br>Struggle: What did we have to overcome?<br>Values: What do we refuse to compromise?<br>Community: Who do we exist for beyond ourselves?<br>Vision: What world does our success help create?</p></div>',
+        quiz:{ q:'What is your "actual brand" according to this module?', opts:['Your logo and colours','The story others tell about you when you are not in the room','Your tagline','Your product quality'], ans:1, fb:'Your brand is the story others tell about you — you can influence it but never fully control it.' }
+      },
+      { title:'The Leader as Storyteller', duration:'30 min',
+        body:'<h3>Leadership is Narrative</h3><p>Every leader has a story they are telling — whether consciously or not. The great leaders in history were great storytellers: not because they invented facts, but because they <strong>made meaning out of circumstances</strong> and invited others into that meaning.</p><p>In the African leadership tradition, the chief or leader was expected to be a holder of community narrative — the keeper of origin stories, the narrator of current challenges, the visionary of possible futures. Leadership and storytelling were inseparable.</p><h3>Four Stories Every Leader Must Tell</h3><p><strong>1. The Origin Story</strong> — why we started, what we believed then<br><strong>2. The Values Story</strong> — a specific moment when we chose who we are over what was easy<br><strong>3. The Vision Story</strong> — a vivid, sensory picture of what success looks and feels like<br><strong>4. The Challenge Story</strong> — what we are facing now, honestly, and why we will get through it</p>',
+        quiz:{ q:'What did traditional African leadership and storytelling have in common?', opts:['Nothing — they were separate roles','Leaders told stories only at ceremonies','Leadership and storytelling were inseparable — leaders were keepers and tellers of community narrative','Leaders hired separate storytellers'], ans:2, fb:'Inseparable — African leaders were expected to be holders and tellers of community narrative.' }
+      },
+      { title:'Pitch, Present, Persuade', duration:'40 min',
+        body:'<h3>The African Pitch Structure</h3><p>Most pitch training teaches a Western framework: problem, solution, market, traction, ask. This works. But overlaid with African storytelling principles, it becomes something more powerful — a narrative that pulls rather than pushes.</p><h3>The Story-First Pitch</h3><p><strong>1. Open with a specific person</strong> — not "the market" but "Nomsa, a teacher in Soweto who..."<br><strong>2. Make the listener feel the problem</strong> — not statistics but a scene<br><strong>3. Introduce the solution as a gift to that person</strong> — not a product but an answer to a prayer<br><strong>4. Show the community that grows around it</strong> — the Ubuntu dimension<br><strong>5. Make the ask feel like an invitation to join something</strong> — not a transaction</p><div class="lesson-callout"><div class="lc-label">Key principle</div><p>"Never open a pitch with a slide. Open it with a sentence that makes the listener lean forward. The first ten seconds decide everything."</p></div><h3>Presenting to African Stakeholders</h3><p>When presenting to traditionally-oriented African stakeholders — community boards, traditional councils, government bodies — greet the room. Acknowledge elders. Situate yourself in relation to the community. Only then present your content. This is not delay; it is trust-building. Skip it at your peril.</p>',
+        quiz:{ q:'How should you open an investor or stakeholder pitch according to the story-first approach?', opts:['With a market size slide','With your team credentials','With a specific person who embodies the problem you solve','With a technical demo'], ans:2, fb:'A specific person — "Nomsa, a teacher in Soweto who..." makes the listener feel, not just understand.' }
+      },
+      { title:'Story for Internal Culture', duration:'35 min',
+        body:'<h3>Culture is the Stories an Organisation Tells Itself</h3><p>Ask any employee "what is this company\'s culture?" and they will tell you a story — usually about how someone was treated in a crisis, or what happened when someone broke the rules, or what a leader did when no one was watching.</p><p>You cannot mandate culture. You can only <em>curate the stories that define it</em>.</p><h3>The Story-Rich Organisation</h3><p>Organisations with strong cultures share stories constantly and deliberately:<br>• Onboarding stories: "This is who we are and how we came to be"<br>• Values stories: specific moments when values were demonstrated under pressure<br>• Failure stories: told honestly, without blame — "we learned this the hard way"<br>• Customer stories: specific people whose lives were changed</p><div class="lesson-reflection"><div class="lr-label">Workplace exercise</div><p>At your next team meeting, share one story about a time you saw your organisation\'s stated values lived in practice. Ask one colleague to share theirs. Notice what happens to the room\'s energy.</p></div>',
+        quiz:{ q:'How is organisational culture actually transmitted?', opts:['Through policy documents','Through training manuals','Through the stories an organisation tells about itself — especially crisis stories','Through KPIs and metrics'], ans:2, fb:'Culture lives in stories — especially what happened when things were hard. Policy documents are forgotten; stories are not.' }
+      }
+    ]
+  },
+  // ── COURSE 3: FROM THE FRONTLINES ──
+  { title:'From the Frontlines: Preserving Heritage', icon:'🏛️', color:'#1A6EA8', tag:'Beginner · 5 Modules',
+    desc:'Transform memory into movement. Merges history, creativity and enterprise to preserve South Africa\'s liberation heritage through storytelling and community action.',
+    modules:[
+      { title:'Living Heritage, Endangered Heritage', duration:'30 min',
+        body:'<h3>What is Living Heritage?</h3><p>UNESCO distinguishes between tangible heritage (buildings, artefacts, landscapes) and <strong>intangible cultural heritage (ICH)</strong> — living traditions, practices, knowledge and expressions passed from generation to generation.</p><p>In South Africa, living heritage includes: oral history and storytelling, performing arts, social practices and rituals, knowledge about nature and the universe, traditional craftsmanship.</p><h3>The Threat</h3><p>South Africa\'s liberation struggle heritage is uniquely threatened. The last generation with direct lived experience of the struggle — the activists, the detainees, the freedom fighters, the community organisers — is ageing. When they go, their stories go with them unless someone captures them now.</p><div class="lesson-callout"><div class="lc-label">Urgency</div><p>It is estimated that Africa loses the equivalent of a library every time an elder dies without having their stories recorded. The oral archive is disappearing in real time.</p></div><h3>Why This Matters for Democracy</h3><p>Societies that forget how their freedoms were won are vulnerable to losing them again. The preservation of struggle heritage is not nostalgia — it is <em>democratic maintenance</em>.</p>',
+        quiz:{ q:'What does UNESCO call traditions, practices and knowledge passed orally through generations?', opts:['Tangible cultural heritage','Digital heritage','Intangible cultural heritage (ICH)','Historical records'], ans:2, fb:'Intangible Cultural Heritage (ICH) — the living, breathing traditions that no building or artefact can hold.' }
+      },
+      { title:'The Struggle Story — Recording It', duration:'35 min',
+        body:'<h3>Oral History as Methodology</h3><p>Oral history is a rigorous academic discipline and a powerful community practice. It involves recording the memories and testimonies of living witnesses — not to replace written history, but to <em>add what written history omits</em>.</p><p>Written history tends to record the powerful: the signed documents, the public speeches, the named leaders. Oral history captures the unnamed: the community organiser, the ordinary person who sheltered an activist, the child who witnessed a march.</p><h3>How to Conduct an Oral History Interview</h3><p><strong>Prepare</strong> — research the period and context; prepare open questions not yes/no questions<br><strong>Create safety</strong> — explain how the recording will be used; get consent; create a comfortable environment<br><strong>Open gently</strong> — "Tell me where you were born and what life was like when you were growing up"<br><strong>Follow the thread</strong> — let the person lead; your best questions come from listening, not your script<br><strong>Return to specifics</strong> — "Can you take me back to that day? What did you see? What did you hear?"<br><strong>Close with meaning</strong> — "What do you want young people to know from your experience?"</p>',
+        quiz:{ q:'What does oral history capture that written history often omits?', opts:['Only famous leaders','The unnamed — community organisers, ordinary people, witnesses to events','Only negative events','Facts and statistics'], ans:1, fb:'The unnamed — written history records power; oral history records people. Both are necessary.' }
+      },
+      { title:'Memory, Trauma & Healing', duration:'40 min',
+        body:'<h3>Story as Medicine</h3><p>Many holders of struggle heritage carry <strong>unprocessed trauma</strong>. Detention. Torture. Exile. Loss. The request to share their story is not neutral — it may be the first time anyone has asked.</p><p>The oral historian and storyteller working in this space must understand: <em>collecting stories is a healing act and a potential harm.</em> Done carelessly, it re-traumatises. Done with skill and care, it transforms.</p><h3>Trauma-Informed Storytelling Practice</h3><p>• Always prioritise the person over the story<br>• Informed consent is not a form — it is an ongoing conversation<br>• Give the storyteller control: "You can stop at any time. You do not have to answer anything."<br>• Watch for signs of distress: look for the body, not just the words<br>• Have a plan for what happens if someone becomes overwhelmed<br>• Follow up — the interview is not the end of your relationship</p><div class="lesson-callout"><div class="lc-label">Dr Sasa says</div><p>"When someone gives you their story, they are trusting you with something irreplaceable. Hold it carefully. It is not data. It is not content. It is a life."</p></div>',
+        quiz:{ q:'What must oral historians understand about collecting struggle stories?', opts:['It is purely an academic exercise','Collecting stories is both a healing act and a potential harm — skill and care are essential','It doesn\'t affect the storyteller','Speed is most important'], ans:1, fb:'Both healing and potential harm — trauma-informed practice is not optional when working with struggle narratives.' }
+      },
+      { title:'Heritage as Enterprise', duration:'35 min',
+        body:'<h3>Sustainability Through Story</h3><p>The preservation of heritage cannot rely solely on goodwill, government funding or academic interest. To be sustainable, heritage work must also be economically viable. This does not mean selling out — it means <em>thinking creatively about value</em>.</p><h3>Heritage Enterprise Models</h3><p><strong>Tourism</strong> — oral history walking tours, heritage site storytelling experiences, curated community encounters<br><strong>Education</strong> — curriculum-linked programmes for schools, teacher training in oral heritage<br><strong>Media</strong> — documentaries, podcasts, graphic novels based on oral archive<br><strong>Events</strong> — annual storytelling festivals, commemorations, book fairs<br><strong>Digital</strong> — online archives, apps, interactive experiences (like this platform)</p><p>Each of these can generate revenue that funds further heritage collection and preservation.</p><div class="lesson-reflection"><div class="lr-label">Enterprise exercise</div><p>Identify one heritage story or practice from your own community that is currently undocumented. Describe two enterprise models that could both preserve it and generate enough income to be sustainable.</p></div>',
+        quiz:{ q:'Why must heritage preservation work also consider economic viability?', opts:['Heritage is only valuable if it makes money','To be sustainable long-term, heritage work cannot rely only on goodwill and grants','Economics and heritage never mix','It is not important'], ans:1, fb:'Sustainability requires economic thinking — goodwill and grants alone cannot fund permanent preservation.' }
+      },
+      { title:'Your Community, Your Archive', duration:'45 min',
+        body:'<h3>You Are the Archivist</h3><p>You do not need a university, a museum, or a government mandate to begin preserving your community\'s heritage. You need curiosity, a recording device, and the courage to ask: "Tell me about when..."</p><h3>Starting a Community Oral Archive</h3><p><strong>Step 1</strong> — Identify your community\'s living memory holders: elders, long-term residents, former activists, traditional knowledge keepers<br><strong>Step 2</strong> — Begin with one conversation. Record it with permission. Transcribe it.<br><strong>Step 3</strong> — Store securely (physical and digital copies; the person keeps one)<br><strong>Step 4</strong> — Share back with the community — a reading, an event, an exhibition<br><strong>Step 5</strong> — Let the archive grow organically. Other people will come forward once they see it is valued.</p><div class="lesson-callout"><div class="lc-label">Final word</div><p>"The archive does not begin in the institution. It begins in the conversation. It begins the moment you decide that this story matters enough to remember." — Dr Nomsa Mdlalose</p></div><div class="lesson-reflection"><div class="lr-label">Course Completion Action</div><p>Before you close this course: identify one person in your life who holds a story that should not be lost. Commit to recording that conversation within the next 30 days. That commitment is the beginning of your archive.</p></div>',
+        quiz:{ q:'What do you actually need to begin preserving your community\'s oral heritage?', opts:['A university degree and government funding','A professional recording studio','Curiosity, a recording device, and courage to ask elders to share','Nothing — it will preserve itself'], ans:2, fb:'Curiosity, a device, and courage. The archive begins in one conversation. Start there.' }
+      }
+    ]
+  }
+];
+
+var completedModules = [[],[],[],[]]; // which modules done per course
+
+function selectCourse(idx){
+  activeCourse = idx;
+  activeModule = 0;
+  document.querySelectorAll('.course-tab').forEach(function(t,i){ t.classList.toggle('active', i===idx); });
+  renderModuleList();
+  renderLesson();
+}
+
+function renderModuleList(){
+  var c = COURSES[activeCourse];
+  var list = document.getElementById('module-list');
+  if(!list) return;
+  list.innerHTML = c.modules.map(function(m,i){
+    var done = completedModules[activeCourse].includes(i);
+    var active = i === activeModule;
+    return '<div class="module-item'+(active?' active':'')+(done?' done':'')+'" onclick="goModule('+i+')">'
+      +'<span class="module-num">0'+(i+1)+'</span>'
+      +'<span class="module-name">'+m.title+'</span>'
+      +'<span class="module-tick">'+(done?'✅':active?'▶':'○')+'</span>'
+      +'</div>';
+  }).join('');
+  // Progress
+  var done = completedModules[activeCourse].length;
+  var total = c.modules.length;
+  var pct = Math.round(done/total*100);
+  var pb = document.getElementById('progress-bar');
+  var pl = document.getElementById('progress-label');
+  if(pb) pb.style.width = pct+'%';
+  if(pl) pl.textContent = done+' of '+total+' complete';
+}
+
+function goModule(idx){
+  activeModule = idx;
+  renderModuleList();
+  renderLesson();
+  var lc = document.getElementById('lesson-content');
+  if(lc) lc.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function renderLesson(){
+  var course = COURSES[activeCourse];
+  var mod = course.modules[activeModule];
+  var isDone = completedModules[activeCourse].includes(activeModule);
+  var totalMods = course.modules.length;
+  var lc = document.getElementById('lesson-content');
+  if(!lc) return;
+
+  var html = '<div class="lesson-header">'
+    +'<div class="lesson-course-tag">'+course.icon+' '+course.title+' · Module 0'+(activeModule+1)+'</div>'
+    +'<div class="lesson-title">'+mod.title+'</div>'
+    +'<div class="lesson-meta"><span>⏱ '+mod.duration+'</span><span>'+(isDone?'✅ Completed':'○ In progress')+'</span></div>'
+    +'</div>'
+    +'<div class="lesson-body">'+mod.body+'</div>';
+
+  // Quiz
+  html += '<div class="quiz-wrap" id="quiz-wrap">'
+    +'<div class="quiz-title">📝 Module Quiz</div>'
+    +'<div class="quiz-q">'+mod.quiz.q+'</div>'
+    +'<div class="quiz-opts" id="quiz-opts">'
+    +mod.quiz.opts.map(function(o,i){
+      return '<button class="quiz-opt'+(isDone?' disabled':'')+'" onclick="answerQuiz('+i+','+mod.quiz.ans+',\''+mod.quiz.fb.replace(/'/g,"\\'")+'\')" '+(isDone?'disabled':'')+'>'+o+'</button>';
+    }).join('')
+    +'</div>'
+    +'<div class="quiz-feedback" id="quiz-fb">'+(isDone?'<span style="color:#6EE78E">✅ Already completed</span>':'')+'</div>'
+    +'</div>';
+
+  // Nav
+  html += '<div class="lesson-nav">'
+    +(activeModule>0?'<button class="btn btn-out" style="border-color:rgba(155,89,182,.4);color:#C39BD3" onclick="goModule('+(activeModule-1)+')">← Previous</button>':'<span></span>')
+    +'<button class="complete-btn" id="complete-btn" onclick="markDone()" '+(isDone?'disabled':'')+'>'+( isDone?'✅ Completed':'Mark Complete ✓')+'</button>'
+    +(activeModule<totalMods-1?'<button class="btn" style="background:#9B59B6" onclick="goModule('+(activeModule+1)+')">Next Lesson →</button>':'<button class="btn" style="background:#9B59B6" onclick="checkCertificate()">Finish Course 🎓</button>')
+    +'</div>';
+
+  lc.innerHTML = html;
+  if(isDone){
+    var fb = document.getElementById('quiz-fb');
+    if(fb){ fb.className='quiz-feedback correct'; fb.style.display='block'; fb.innerHTML='✅ Module already completed'; }
+  }
+}
+
+function answerQuiz(chosen, correct, feedback){
+  var opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(function(o){ o.classList.add('disabled'); o.disabled=true; });
+  opts[chosen].classList.add(chosen===correct?'correct':'wrong');
+  if(chosen!==correct) opts[correct].classList.add('correct');
+  var fb = document.getElementById('quiz-fb');
+  fb.className = 'quiz-feedback '+(chosen===correct?'correct':'wrong');
+  fb.style.display = 'block';
+  fb.innerHTML = (chosen===correct?'✅ ':'❌ ')+feedback;
+}
+
+function markDone(){
+  if(!completedModules[activeCourse].includes(activeModule)){
+    completedModules[activeCourse].push(activeModule);
+  }
+  renderModuleList();
+  renderLesson();
+}
+
+function checkCertificate(){
+  var total = COURSES[activeCourse].modules.length;
+  var done = completedModules[activeCourse].length;
+  if(done < total){
+    var remaining = total - done;
+    alert('Almost there! Complete '+remaining+' more module'+(remaining>1?'s':'')+' to earn your certificate.');
+    return;
+  }
+  generateCertificate();
+}
+
+function generateCertificate(){
+  var overlay = document.getElementById('cert-overlay');
+  overlay.style.display = 'flex';
+  var canvas = document.getElementById('cert-canvas');
+  var W = 700, H = 500;
+  canvas.width = W; canvas.height = H;
+  var ctx = canvas.getContext('2d');
+  var course = COURSES[activeCourse];
+
+  // Background gradient
+  var bg = ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#0d0118'); bg.addColorStop(.5,'#1a0a2e'); bg.addColorStop(1,'#0a0520');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+
+  // Border
+  ctx.strokeStyle = 'rgba(155,89,182,.7)'; ctx.lineWidth = 3;
+  ctx.strokeRect(18,18,W-36,H-36);
+  ctx.strokeStyle = 'rgba(195,155,211,.25)'; ctx.lineWidth = 1;
+  ctx.strokeRect(26,26,W-52,H-52);
+
+  // Corner ornaments
+  [[30,30],[W-30,30],[30,H-30],[W-30,H-30]].forEach(function(pt){
+    ctx.fillStyle='rgba(155,89,182,.6)';
+    ctx.beginPath(); ctx.arc(pt[0],pt[1],6,0,Math.PI*2); ctx.fill();
+  });
+
+  // Ndebele stripe top
+  var stripeColors=['#C0392B','#E6B32A','#1B2A3A','#1E8449','#fff','#CA5C08','#2E8FCC'];
+  stripeColors.forEach(function(c,i){ ctx.fillStyle=c; ctx.fillRect(30+i*(W-60)/7,30,(W-60)/7,8); });
+
+  // Zintsomi brand
+  ctx.fillStyle='rgba(195,155,211,.6)';
+  ctx.font='bold 13px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('ZINTSOMI · ORAL HERITAGE PLATFORM',W/2,68);
+
+  // Certificate of Attendance
+  ctx.fillStyle='rgba(255,255,255,.25)';
+  ctx.font='italic 16px Georgia'; ctx.fillText('Certificate of Attendance',W/2,108);
+
+  // Main title
+  ctx.fillStyle='#C39BD3';
+  ctx.font='bold 38px Georgia'; ctx.fillText(course.title,W/2,175);
+
+  // Awarded to
+  ctx.fillStyle='rgba(255,255,255,.55)';
+  ctx.font='15px sans-serif'; ctx.fillText('This certifies that',W/2,220);
+  ctx.fillStyle='#FFD700';
+  ctx.font='italic bold 26px Georgia';
+  ctx.fillText('A Dedicated Learner',W/2,260);
+
+  // Body
+  ctx.fillStyle='rgba(255,255,255,.48)';
+  ctx.font='13px sans-serif';
+  ctx.fillText('has successfully completed all modules of this course',W/2,296);
+  ctx.fillText('offered through the Zintsomi Oral Heritage Platform',W/2,316);
+
+  // Date
+  var d = new Date();
+  ctx.fillStyle='rgba(255,255,255,.3)';
+  ctx.font='11px monospace';
+  ctx.fillText('Issued: '+d.toLocaleDateString('en-ZA',{year:'numeric',month:'long',day:'numeric'}),W/2,356);
+
+  // Signature line
+  ctx.strokeStyle='rgba(255,255,255,.2)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(W*.3,390); ctx.lineTo(W*.7,390); ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,.45)';
+  ctx.font='italic 13px Georgia'; ctx.fillText('Dr. Nomsa Mdlalose — Dr. Sasa',W/2,408);
+  ctx.font='10px monospace'; ctx.fillStyle='rgba(255,255,255,.2)';
+  ctx.fillText('Founder · Zintsomi',W/2,424);
+
+  // Bottom stripe
+  stripeColors.forEach(function(c,i){ ctx.fillStyle=c; ctx.fillRect(30+i*(W-60)/7,H-40,(W-60)/7,8); });
+}
+
+function downloadCert(){
+  var canvas = document.getElementById('cert-canvas');
+  var link = document.createElement('a');
+  link.download = 'Zintsomi_Certificate_'+COURSES[activeCourse].title.replace(/\s+/g,'_')+'.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// Init courses world
+function initCoursesWorld(){
+  selectCourse(0);
+}
+
+// ════ AFRICAN SUNSET CANVASES ════
+// Each world gets a unique, different zen African landscape
+
+// Shared sunset sky helper
+function drawSunsetSky(ctx, W, H, colors, sunX, sunY, sunR){
+  var sky = ctx.createLinearGradient(0, 0, 0, H);
+  colors.forEach(function(c){ sky.addColorStop(c[0], c[1]); });
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
+  // Sun glow
+  var sg = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, sunR * 3.5);
+  sg.addColorStop(0, 'rgba(255,248,160,.95)');
+  sg.addColorStop(.25, 'rgba(255,180,40,.65)');
+  sg.addColorStop(.6, 'rgba(255,80,0,.2)');
+  sg.addColorStop(1, 'rgba(255,80,0,0)');
+  ctx.fillStyle = sg; ctx.beginPath(); ctx.arc(sunX, sunY, sunR * 3.5, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = 'rgba(255,240,100,.96)'; ctx.beginPath(); ctx.arc(sunX, sunY, sunR, 0, Math.PI*2); ctx.fill();
+}
+
+// ── SCENE 1: HOME — Marula Royal Tree, lone giraffe, birds crossing ──
+var homeScene = { birds: [], init: false, t: 0 };
+function initHomeCanvas(){
+  var c = document.getElementById('home-canvas'); if(!c) return;
+  var W = c.width = c.offsetWidth, H = c.height = c.offsetHeight;
+  homeScene.birds = [];
+  for(var i = 0; i < 7; i++){
+    homeScene.birds.push({ x: -60 - i*110, y: H*.18 + Math.sin(i*1.3)*40, spd: .6+Math.random()*.5, flap: Math.random()*Math.PI*2, size: 5+Math.random()*4 });
+  }
+  homeScene.init = true;
+  homeLoop(c);
+}
+function homeLoop(c){
+  if(!c || !document.getElementById('home-canvas')) return;
+  var W = c.width = c.offsetWidth, H = c.height = c.offsetHeight;
+  var ctx = c.getContext('2d');
+  homeScene.t += .016;
+  var t = homeScene.t;
+  // Sky — warm amber dusk
+  drawSunsetSky(ctx, W, H, [
+    [0,'#1a0820'],[.18,'#6B1A00'],[.42,'#C04800'],[.62,'#E87000'],[.78,'#FFB020'],[.9,'#FFD060'],[1,'#FF8030']
+  ], W * .72, H * .52, 36);
+  // Horizon glow
+  var hg = ctx.createLinearGradient(0, H*.6, 0, H);
+  hg.addColorStop(0,'rgba(255,120,0,.15)'); hg.addColorStop(1,'rgba(20,8,0,1)');
+  ctx.fillStyle = hg; ctx.fillRect(0, H*.6, W, H*.4);
+  // Ground
+  ctx.fillStyle = '#1a0800'; ctx.fillRect(0, H*.78, W, H*.22);
+  // Ground texture strips
+  ctx.fillStyle = '#2a1200';
+  for(var i=0;i<8;i++){ ctx.fillRect(i*W/7, H*.78, 2, H*.22); }
+  // Marula tree (Royal Tree) — wide spreading canopy, multiple trunks
+  drawMarula(ctx, W*.18, H*.78, H*.38, '#0a0300');
+  // Smaller thorn bush right
+  drawThornbush(ctx, W*.82, H*.78, H*.18, '#0d0400');
+  drawThornbush(ctx, W*.9, H*.78, H*.12, '#0d0400');
+  // Giraffe silhouette
+  drawGiraffe(ctx, W*.55, H*.78, H*.28, '#0a0300');
+  // Birds crossing sun
+  homeScene.birds.forEach(function(b){
+    b.x += b.spd; b.flap += .12;
+    if(b.x > W + 80) b.x = -80;
+    drawBird(ctx, b.x, b.y, b.size, b.flap, 'rgba(0,0,0,.85)');
+  });
+  // Stars peeking top
+  ctx.fillStyle = 'rgba(255,255,255,.55)';
+  [[.08,.05],[.22,.08],[.38,.03],[.62,.07],[.85,.04],[.95,.09]].forEach(function(s){ ctx.fillRect(s[0]*W, s[1]*H, 1.5, 1.5); });
+  requestAnimationFrame(function(){ homeLoop(c); });
+}
+
+// ── SCENE 2: INSTRUMENTS — Drumfire camp, Marula silhouette, smoke rising ──
+var instScene = { smoke: [], t: 0 };
+function initInstCanvas(){
+  var c = document.getElementById('inst-canvas'); if(!c) return;
+  instScene.smoke = [];
+  for(var i=0;i<12;i++) instScene.smoke.push({ x: 0, y: 0, vx: (Math.random()-.5)*.4, vy: -.6-Math.random()*.5, alpha: .7+Math.random()*.3, r: 4+Math.random()*6, age: Math.random()*60 });
+  instLoop(c);
+}
+function instLoop(c){
+  if(!c || !document.getElementById('inst-canvas')) return;
+  var W = c.width = c.offsetWidth, H = c.height = c.offsetHeight;
+  var ctx = c.getContext('2d');
+  instScene.t += .016;
+  var t = instScene.t;
+  var fireX = W * .5, groundY = H * .75;
+  // Deep dusk sky — purple-red
+  drawSunsetSky(ctx, W, H, [
+    [0,'#0d0018'],[.2,'#3D0A40'],[.42,'#8B1A20'],[.6,'#C03800'],[.75,'#E06010'],[.88,'#FFB040'],[1,'#FF7020']
+  ], W*.62, H*.62, 30);
+  // Ground
+  ctx.fillStyle = '#120800'; ctx.fillRect(0, groundY, W, H - groundY);
+  // Campfire glow on ground
+  var fg = ctx.createRadialGradient(fireX, groundY, 0, fireX, groundY, 120);
+  fg.addColorStop(0,'rgba(255,140,0,.35)'); fg.addColorStop(.5,'rgba(255,60,0,.1)'); fg.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = fg; ctx.fillRect(0,0,W,H);
+  // Trees each side
+  drawMarula(ctx, W*.12, groundY, H*.32, '#0a0300');
+  drawMarula(ctx, W*.85, groundY, H*.26, '#0a0300');
+  drawThornbush(ctx, W*.68, groundY, H*.16, '#0a0300');
+  // Campfire
+  drawCampfire(ctx, fireX, groundY, t);
+  // Smoke particles
+  instScene.smoke.forEach(function(p){
+    p.age++; p.x = fireX + Math.sin(p.age * .05) * 8 + p.vx * p.age * .3;
+    p.y = groundY - 20 - p.age * .8;
+    if(p.age > 90){ p.age = 0; p.vx = (Math.random()-.5)*.4; }
+    var a = Math.max(0, .4 - p.age/90 * .4);
+    ctx.fillStyle = 'rgba(180,120,80,'+a+')';
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r + p.age*.05, 0, Math.PI*2); ctx.fill();
+  });
+  // Moon rising right
+  ctx.fillStyle = 'rgba(255,248,200,.82)';
+  ctx.beginPath(); ctx.arc(W*.88, H*.15, 18, 0, Math.PI*2); ctx.fill();
+  // Stars
+  ctx.fillStyle = 'rgba(255,255,255,.6)';
+  [[.1,.06],[.25,.12],[.45,.04],[.7,.08],[.9,.14],[.05,.18],[.35,.09]].forEach(function(s){ ctx.fillRect(s[0]*W, s[1]*H, 1.5, 1.5); });
+  requestAnimationFrame(function(){ instLoop(c); });
+}
+
+// ── SCENE 3: BRAIN — Thornbush silhouettes, rising full moon, owls ──
+var brainScene = { owls: [], t: 0 };
+function initBrainCanvas(){
+  var c = document.getElementById('brain-canvas'); if(!c) return;
+  brainScene.owls = [{ x: .25, blink: 0 }, { x: .72, blink: 40 }];
+  brainLoop(c);
+}
+function brainLoop(c){
+  if(!c || !document.getElementById('brain-canvas')) return;
+  var W = c.width = c.offsetWidth, H = c.height = c.offsetHeight;
+  var ctx = c.getContext('2d');
+  brainScene.t += .016;
+  var t = brainScene.t;
+  // Twilight — sun just set, indigo sky, orange horizon
+  drawSunsetSky(ctx, W, H, [
+    [0,'#020418'],[.22,'#0a0828'],[.45,'#1a0840'],[.62,'#5a0a20'],[.75,'#C03818'],[.85,'#E06808'],[.92,'#FFB030'],[1,'#FF8820']
+  ], W*.35, H*.88, 22);
+  // Ground
+  ctx.fillStyle = '#0a0500'; ctx.fillRect(0, H*.8, W, H*.2);
+  // Thornbushes — signature spiky African bush
+  [.05, .15, .78, .88, .95].forEach(function(x, i){
+    drawThornbush(ctx, x*W, H*.8, H*(.14+i%2*.06), '#060200');
+  });
+  // Tall thin thorn trees centre
+  drawTallThorn(ctx, W*.42, H*.8, H*.38);
+  drawTallThorn(ctx, W*.52, H*.8, H*.32);
+  drawTallThorn(ctx, W*.58, H*.8, H*.28);
+  // Big full moon
+  var moonG = ctx.createRadialGradient(W*.78, H*.2, 0, W*.78, H*.2, 45);
+  moonG.addColorStop(0,'rgba(255,252,220,1)'); moonG.addColorStop(.7,'rgba(255,240,160,.9)'); moonG.addColorStop(1,'rgba(255,220,100,0)');
+  ctx.fillStyle = moonG; ctx.beginPath(); ctx.arc(W*.78, H*.2, 45, 0, Math.PI*2); ctx.fill();
+  // Moon craters subtle
+  ctx.fillStyle = 'rgba(200,180,80,.15)';
+  [[-.3,-.2,8],[.1,.3,5],[-.1,.1,4]].forEach(function(cr){ ctx.beginPath(); ctx.arc(W*.78+cr[0]*30, H*.2+cr[1]*30, cr[2], 0, Math.PI*2); ctx.fill(); });
+  // Stars — lots of them, it's night
+  ctx.fillStyle = 'rgba(255,255,255,.7)';
+  for(var i=0;i<35;i++){
+    var sx = (Math.sin(i*137.5)*.5+.5)*W, sy = (Math.sin(i*97.3)*.5+.5)*H*.65;
+    var ss = i%5===0?2:1;
+    ctx.fillRect(sx, sy, ss, ss);
+  }
+  // Owls on branches
+  brainScene.owls.forEach(function(o){
+    o.blink++;
+    drawOwl(ctx, o.x*W, H*.52, o.blink % 60 < 3, t);
+  });
+  requestAnimationFrame(function(){ brainLoop(c); });
+}
+
+// ── SCENE 4: SCHOOLS — Waterhole at golden hour, elephant, reflection ──
+var schoolsScene = { ripples: [], t: 0 };
+function initSchoolsCanvas(){
+  var c = document.getElementById('schools-canvas'); if(!c) return;
+  schoolsScene.ripples = [];
+  for(var i=0;i<5;i++) schoolsScene.ripples.push({ r: i*18, alpha: .3-i*.05, x: 0 });
+  schoolsLoop(c);
+}
+function schoolsLoop(c){
+  if(!c || !document.getElementById('schools-canvas')) return;
+  var W = c.width = c.offsetWidth, H = c.height = c.offsetHeight;
+  var ctx = c.getContext('2d');
+  schoolsScene.t += .016;
+  var t = schoolsScene.t;
+  var waterY = H * .55, waterX = W * .48;
+  // Golden hour sky
+  drawSunsetSky(ctx, W, H, [
+    [0,'#0a1220'],[.15,'#1a2040'],[.35,'#6B3000'],[.52,'#C06000'],[.65,'#E09020'],[.78,'#FFD040'],[.88,'#FFE070'],[1,'#FF9030']
+  ], W*.5, waterY - 10, 38);
+  // Land
+  ctx.fillStyle = '#1a0c00'; ctx.fillRect(0, waterY, W*.22, H - waterY);
+  ctx.fillRect(W*.78, waterY, W*.22, H - waterY);
+  // Waterhole — reflective pool in centre
+  var wg = ctx.createLinearGradient(0, waterY, 0, H);
+  wg.addColorStop(0,'#8B5500'); wg.addColorStop(.3,'#C07820'); wg.addColorStop(.6,'#E09030'); wg.addColorStop(1,'#FF8020');
+  ctx.fillStyle = wg;
+  ctx.beginPath();
+  ctx.ellipse(waterX, waterY + (H-waterY)*.4, W*.35, (H-waterY)*.55, 0, 0, Math.PI*2);
+  ctx.fill();
+  // Water shimmer
+  ctx.strokeStyle = 'rgba(255,220,100,.2)';
+  ctx.lineWidth = 1;
+  for(var i=0;i<6;i++){
+    var wy = waterY + 20 + i*18;
+    ctx.beginPath(); ctx.moveTo(waterX-80+Math.sin(t+i)*12, wy); ctx.lineTo(waterX+80+Math.sin(t+i+1)*10, wy); ctx.stroke();
+  }
+  // Ripple from animal
+  schoolsScene.ripples.forEach(function(rp){
+    rp.r += .4; if(rp.r > 55){ rp.r = 2; }
+    var a = Math.max(0, .25 - rp.r/55 * .25);
+    ctx.strokeStyle = 'rgba(255,200,80,'+a+')'; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.ellipse(waterX + W*.08, waterY + (H-waterY)*.35, rp.r, rp.r*.4, 0, 0, Math.PI*2); ctx.stroke();
+  });
+  // Sun reflection on water
+  var sr = ctx.createRadialGradient(waterX, waterY+(H-waterY)*.25, 0, waterX, waterY+(H-waterY)*.25, 60);
+  sr.addColorStop(0,'rgba(255,240,100,.6)'); sr.addColorStop(1,'rgba(255,150,0,0)');
+  ctx.fillStyle = sr; ctx.fillRect(0,0,W,H);
+  // Elephant silhouette left
+  drawElephant(ctx, W*.12, waterY, H*.28, '#060200');
+  // Marula tree right bank
+  drawMarula(ctx, W*.88, waterY, H*.3, '#060200');
+  drawThornbush(ctx, W*.78, waterY, H*.14, '#060200');
+  // Reed grass waterhole edge
+  [-.25,-.18,-.1,.1,.18,.25].forEach(function(off){
+    ctx.strokeStyle = '#060200'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(waterX + off*W, waterY+5); ctx.lineTo(waterX + off*W + Math.sin(t+off*5)*3, waterY - H*.08); ctx.stroke();
+    // Reed head
+    ctx.fillStyle = '#0a0400'; ctx.beginPath(); ctx.ellipse(waterX + off*W + Math.sin(t+off*5)*3, waterY - H*.08, 3, 7, 0, 0, Math.PI*2); ctx.fill();
+  });
+  requestAnimationFrame(function(){ schoolsLoop(c); });
+}
+
+// ── SCENE 5: AUDIO — River at dusk, hippo eyes, lily pads, stars reflecting ──
+var audioScene = { stars: [], ripples: [], t: 0 };
+function initAudioCanvas(){
+  var c = document.getElementById('audio-canvas'); if(!c) return;
+  audioScene.stars = [];
+  for(var i=0;i<25;i++) audioScene.stars.push({ x: Math.random(), y: Math.random()*.55, s: 1+Math.random()*1.5, twinkle: Math.random()*Math.PI*2 });
+  audioScene.ripples = [{ x:.42, r:0 }, { x:.58, r:22 }];
+  audioLoop(c);
+}
+function audioLoop(c){
+  if(!c || !document.getElementById('audio-canvas')) return;
+  var W = c.width = c.offsetWidth, H = c.height = c.offsetHeight;
+  var ctx = c.getContext('2d');
+  audioScene.t += .014;
+  var t = audioScene.t;
+  var riverY = H * .48;
+  // Deep dusk — sun setting behind hills
+  drawSunsetSky(ctx, W, H, [
+    [0,'#020510'],[.2,'#060818'],[.38,'#1a0830'],[.55,'#6B2800'],[.68,'#C05010'],[.78,'#E07820'],[.88,'#FFB040'],[1,'#FF6010']
+  ], W*.5, riverY - 5, 28);
+  // Hills/banks silhouette
+  ctx.fillStyle = '#0a0500';
+  ctx.beginPath(); ctx.moveTo(0, riverY); ctx.lineTo(0, H*.62); ctx.quadraticCurveTo(W*.15, H*.52, W*.32, riverY); ctx.lineTo(W*.32, riverY); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(W, riverY); ctx.lineTo(W, H*.62); ctx.quadraticCurveTo(W*.85, H*.52, W*.68, riverY); ctx.lineTo(W*.68, riverY); ctx.fill();
+  // River
+  var rvg = ctx.createLinearGradient(0, riverY, 0, H);
+  rvg.addColorStop(0,'#3d1800'); rvg.addColorStop(.3,'#6B3000'); rvg.addColorStop(.6,'#8B4800'); rvg.addColorStop(1,'#2a0e00');
+  ctx.fillStyle = rvg; ctx.fillRect(0, riverY, W, H - riverY);
+  // Sun path on water — shimmering column
+  for(var i=0;i<8;i++){
+    var wy = riverY + 8 + i * (H - riverY) / 8;
+    var ww = 30 - i * 2;
+    ctx.fillStyle = 'rgba(255,'+(180-i*10)+','+(40-i*3)+','+(0.35-i*.03)+')';
+    ctx.beginPath(); ctx.ellipse(W*.5, wy, ww + Math.sin(t+i)*.8, 4, 0, 0, Math.PI*2); ctx.fill();
+  }
+  // River shimmer lines
+  ctx.strokeStyle = 'rgba(255,160,30,.12)'; ctx.lineWidth = 1;
+  for(var i=0;i<5;i++){
+    var wy2 = riverY + 15 + i*((H-riverY)/5);
+    ctx.beginPath(); ctx.moveTo(W*.28, wy2); ctx.bezierCurveTo(W*.4+Math.sin(t+i)*15, wy2, W*.6+Math.sin(t+i+1)*15, wy2, W*.72, wy2); ctx.stroke();
+  }
+  // Hippo eyes — just two lumps and eyes visible
+  var hx = W * .44, hy = riverY + 18;
+  ctx.fillStyle = '#0a0500';
+  ctx.beginPath(); ctx.ellipse(hx, hy, 22, 9, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(hx+50, hy, 22, 9, 0, 0, Math.PI*2); ctx.fill();
+  // Hippo eyes glow
+  ctx.fillStyle = 'rgba(255,200,50,.7)';
+  ctx.beginPath(); ctx.arc(hx-6, hy-3, 3, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(hx+6, hy-3, 3, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(hx+44, hy-3, 3, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(hx+56, hy-3, 3, 0, Math.PI*2); ctx.fill();
+  // Lily pads
+  [[.3,.65],[.62,.72],[.38,.8],[.7,.6]].forEach(function(lp){
+    ctx.fillStyle = '#0a1800';
+    ctx.beginPath(); ctx.ellipse(lp[0]*W, riverY+lp[1]*(H-riverY), 14, 8, Math.sin(lp[0]*5)*.4, 0, Math.PI*2); ctx.fill();
+  });
+  // Stars + reflections
+  audioScene.stars.forEach(function(s){
+    s.twinkle += .04;
+    var bright = .4 + Math.sin(s.twinkle) * .3;
+    ctx.fillStyle = 'rgba(255,255,255,'+bright+')';
+    ctx.beginPath(); ctx.arc(s.x*W, s.y*H, s.s, 0, Math.PI*2); ctx.fill();
+    // Reflection in river
+    var ry = riverY + (riverY - s.y*H) * .3;
+    if(ry < H){
+      ctx.fillStyle = 'rgba(255,255,255,'+(bright*.3)+')';
+      ctx.beginPath(); ctx.arc(s.x*W, ry, s.s*.6, 0, Math.PI*2); ctx.fill();
+    }
+  });
+  // Ripples
+  audioScene.ripples.forEach(function(rp){
+    rp.r += .3; if(rp.r > 40) rp.r = 0;
+    var a = Math.max(0, .18 - rp.r/40 * .18);
+    ctx.strokeStyle = 'rgba(255,180,50,'+a+')'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.ellipse(rp.x*W, riverY+20, rp.r, rp.r*.35, 0, 0, Math.PI*2); ctx.stroke();
+  });
+  // Bank vegetation
+  drawThornbush(ctx, W*.08, riverY, H*.16, '#060200');
+  drawThornbush(ctx, W*.92, riverY, H*.14, '#060200');
+  // Reed at water edge
+  [.25,.28,.31,.68,.71,.74].forEach(function(x){
+    ctx.strokeStyle = '#070300'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(x*W, riverY+4); ctx.lineTo(x*W+Math.sin(t+x*10)*2, riverY-H*.07); ctx.stroke();
+  });
+  requestAnimationFrame(function(){ audioLoop(c); });
+}
+
+// ── DRAWING HELPERS ──
+function drawMarula(ctx, x, groundY, h, col){
+  // Trunk — 2-3 trunks spreading
+  ctx.fillStyle = col; ctx.strokeStyle = col; ctx.lineWidth = 6;
+  ctx.beginPath(); ctx.moveTo(x, groundY); ctx.quadraticCurveTo(x-8, groundY-h*.4, x-12, groundY-h*.6); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x, groundY); ctx.quadraticCurveTo(x+6, groundY-h*.45, x+10, groundY-h*.62); ctx.stroke();
+  ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(x-12, groundY-h*.6); ctx.quadraticCurveTo(x-20, groundY-h*.75, x-28, groundY-h*.85); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x+10, groundY-h*.62); ctx.quadraticCurveTo(x+18, groundY-h*.78, x+22, groundY-h*.82); ctx.stroke();
+  // Wide flat canopy
+  ctx.fillStyle = col;
+  ctx.beginPath(); ctx.ellipse(x, groundY-h*.78, h*.48, h*.16, 0, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x-14, groundY-h*.7, h*.28, h*.1, -.3, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(x+16, groundY-h*.72, h*.26, h*.09, .3, 0, Math.PI*2); ctx.fill();
+}
+function drawThornbush(ctx, x, groundY, h, col){
+  ctx.fillStyle = col;
+  // Multiple overlapping round clumps
+  ctx.beginPath(); ctx.arc(x, groundY-h*.4, h*.32, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(x-h*.22, groundY-h*.28, h*.24, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(x+h*.2, groundY-h*.3, h*.22, 0, Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(x-h*.1, groundY-h*.55, h*.18, 0, Math.PI*2); ctx.fill();
+  // Spiky thorns on outer edge
+  ctx.strokeStyle = col; ctx.lineWidth = 1.2;
+  for(var i=0;i<12;i++){
+    var a = i/12*Math.PI*2, r = h*.32;
+    ctx.beginPath(); ctx.moveTo(x+Math.cos(a)*r, groundY-h*.4+Math.sin(a)*r);
+    ctx.lineTo(x+Math.cos(a)*(r+8), groundY-h*.4+Math.sin(a)*(r+8)); ctx.stroke();
+  }
+}
+function drawTallThorn(ctx, x, groundY, h){
+  // Tall acacia-like thorn tree — thin trunk, flat top
+  ctx.strokeStyle = '#050200'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(x, groundY); ctx.lineTo(x+3, groundY-h); ctx.stroke();
+  ctx.lineWidth = 1.5;
+  ctx.fillStyle = '#050200';
+  // Flat canopy
+  ctx.beginPath(); ctx.ellipse(x+3, groundY-h, h*.22, h*.055, 0, 0, Math.PI*2); ctx.fill();
+  // Side branches
+  [-.6,-.35,.35,.6].forEach(function(b){
+    ctx.beginPath(); ctx.moveTo(x+b*20, groundY-h*(1+b*.1)); ctx.lineTo(x+b*42, groundY-h*(1.05+b*.06)); ctx.stroke();
+  });
+}
+function drawGiraffe(ctx, x, groundY, h, col){
+  ctx.fillStyle = col;
+  // Legs
+  ctx.fillRect(x-16, groundY-h*.3, 5, h*.3);
+  ctx.fillRect(x-6, groundY-h*.28, 5, h*.28);
+  ctx.fillRect(x+4, groundY-h*.28, 5, h*.28);
+  ctx.fillRect(x+14, groundY-h*.3, 5, h*.3);
+  // Body
+  ctx.beginPath(); ctx.ellipse(x, groundY-h*.38, h*.22, h*.12, -.1, 0, Math.PI*2); ctx.fill();
+  // Long neck
+  ctx.beginPath();
+  ctx.moveTo(x-4, groundY-h*.48);
+  ctx.bezierCurveTo(x-2, groundY-h*.65, x+5, groundY-h*.78, x+8, groundY-h*.92);
+  ctx.lineTo(x+18, groundY-h*.9);
+  ctx.bezierCurveTo(x+16, groundY-h*.76, x+10, groundY-h*.62, x+8, groundY-h*.48);
+  ctx.closePath(); ctx.fill();
+  // Head
+  ctx.beginPath(); ctx.ellipse(x+14, groundY-h*.95, h*.07, h*.04, .4, 0, Math.PI*2); ctx.fill();
+  // Ossicones (horns)
+  ctx.lineWidth = 2; ctx.strokeStyle = col;
+  ctx.beginPath(); ctx.moveTo(x+12, groundY-h*.98); ctx.lineTo(x+10, groundY-h*1.04); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x+16, groundY-h*.97); ctx.lineTo(x+15, groundY-h*1.03); ctx.stroke();
+}
+function drawElephant(ctx, x, groundY, h, col){
+  ctx.fillStyle = col;
+  // Body
+  ctx.beginPath(); ctx.ellipse(x, groundY-h*.32, h*.28, h*.2, 0, 0, Math.PI*2); ctx.fill();
+  // Head
+  ctx.beginPath(); ctx.ellipse(x+h*.22, groundY-h*.45, h*.16, h*.14, .3, 0, Math.PI*2); ctx.fill();
+  // Trunk
+  ctx.beginPath();
+  ctx.moveTo(x+h*.32, groundY-h*.38);
+  ctx.bezierCurveTo(x+h*.42, groundY-h*.28, x+h*.44, groundY-h*.15, x+h*.38, groundY-h*.05);
+  ctx.lineWidth = h*.06; ctx.strokeStyle = col; ctx.stroke();
+  // Ear
+  ctx.beginPath(); ctx.ellipse(x+h*.15, groundY-h*.46, h*.09, h*.12, -.4, 0, Math.PI*2); ctx.fill();
+  // Legs
+  ctx.lineWidth = h*.09; ctx.strokeStyle = col;
+  [-h*.14, -h*.04, h*.06, h*.16].forEach(function(ox){
+    ctx.beginPath(); ctx.moveTo(x+ox, groundY-h*.16); ctx.lineTo(x+ox, groundY); ctx.stroke();
+  });
+  // Tusk
+  ctx.strokeStyle = 'rgba(255,255,220,.4)'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(x+h*.3, groundY-h*.38); ctx.quadraticCurveTo(x+h*.42, groundY-h*.32, x+h*.46, groundY-h*.22); ctx.stroke();
+}
+function drawBird(ctx, x, y, size, flap, col){
+  ctx.strokeStyle = col; ctx.lineWidth = 1.5;
+  var wing = Math.sin(flap) * size;
+  ctx.beginPath(); ctx.moveTo(x-size*1.5, y-wing); ctx.quadraticCurveTo(x, y, x+size*1.5, y-wing); ctx.stroke();
+}
+function drawOwl(ctx, x, y, blinking, t){
+  var col = '#050200';
+  ctx.fillStyle = col;
+  // Branch
+  ctx.strokeStyle = '#060200'; ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(x-40, y+28); ctx.lineTo(x+40, y+24); ctx.stroke();
+  // Body
+  ctx.beginPath(); ctx.ellipse(x, y, 10, 14, 0, 0, Math.PI*2); ctx.fill();
+  // Head
+  ctx.beginPath(); ctx.arc(x, y-16, 10, 0, Math.PI*2); ctx.fill();
+  // Ears
+  ctx.beginPath(); ctx.moveTo(x-8, y-24); ctx.lineTo(x-4, y-30); ctx.lineTo(x-1, y-24); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x+1, y-24); ctx.lineTo(x+4, y-30); ctx.lineTo(x+8, y-24); ctx.fill();
+  // Eyes
+  if(!blinking){
+    ctx.fillStyle = 'rgba(255,200,50,.8)';
+    ctx.beginPath(); ctx.arc(x-4, y-17, 3.5, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+4, y-17, 3.5, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = col;
+    ctx.beginPath(); ctx.arc(x-4, y-17, 1.5, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(x+4, y-17, 1.5, 0, Math.PI*2); ctx.fill();
+  } else {
+    ctx.strokeStyle = col; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(x-7, y-17); ctx.lineTo(x-1, y-17); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+1, y-17); ctx.lineTo(x+7, y-17); ctx.stroke();
+  }
+}
+function drawCampfire(ctx, x, groundY, t){
+  // Log base
+  ctx.strokeStyle = '#1a0800'; ctx.lineWidth = 5;
+  ctx.beginPath(); ctx.moveTo(x-22, groundY-2); ctx.lineTo(x+22, groundY-8); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x+22, groundY-2); ctx.lineTo(x-22, groundY-8); ctx.stroke();
+  // Flames — layered
+  var flames = [[0,40,'rgba(255,220,40,.9)'],[0,30,'rgba(255,140,20,.85)'],[0,20,'rgba(255,60,0,.8)'],[5,15,'rgba(200,20,0,.7)'],[0,10,'rgba(255,255,100,.6)']];
+  flames.forEach(function(f, i){
+    ctx.fillStyle = f[2];
+    ctx.beginPath();
+    ctx.moveTo(x - 16, groundY - 5);
+    ctx.quadraticCurveTo(x + f[0] + Math.sin(t*3+i)*4, groundY - f[1]*.5, x, groundY - f[1]);
+    ctx.quadraticCurveTo(x + f[0] - Math.sin(t*3+i)*4, groundY - f[1]*.5, x + 16, groundY - 5);
+    ctx.closePath(); ctx.fill();
+  });
+  // Ember sparks
+  for(var i=0;i<4;i++){
+    var sx = x + Math.sin(t*2.5+i*1.5)*14, sy = groundY - 35 - ((t*60+i*15)%50);
+    ctx.fillStyle = 'rgba(255,180,30,'+(0.7-((t*60+i*15)%50)/70)+')';
+    ctx.beginPath(); ctx.arc(sx, sy, 1.5, 0, Math.PI*2); ctx.fill();
+  }
+}
+
+// ── SCENE 6: COURSES — Baobab at twilight, bats emerging, first stars ──
+var coursesScene = { bats: [], t: 0 };
+function initCoursesCanvas(){
+  var c = document.getElementById('courses-canvas'); if(!c) return;
+  coursesScene.bats = [];
+  for(var i=0;i<9;i++) coursesScene.bats.push({ x:-40-i*70, y:0, vy:(Math.random()-.5)*.8, phase:Math.random()*Math.PI*2, spd:.5+Math.random()*.6 });
+  coursesLoop(c);
+}
+function coursesLoop(c){
+  if(!c||!document.getElementById('courses-canvas')) return;
+  var W=c.width=c.offsetWidth, H=c.height=c.offsetHeight;
+  var ctx=c.getContext('2d');
+  coursesScene.t+=.014;
+  var t=coursesScene.t;
+  // Deep purple twilight — day ending, knowledge time beginning
+  drawSunsetSky(ctx,W,H,[
+    [0,'#010108'],[.15,'#060218'],[.3,'#1a0535'],[.48,'#4a0a50'],[.62,'#8B1060'],[.72,'#C03028'],[.82,'#E06818'],[.9,'#FFB040'],[1,'#FF7010']
+  ],W*.42,H*.72,26);
+  // Ground
+  ctx.fillStyle='#080300'; ctx.fillRect(0,H*.78,W,H*.22);
+  // Baobab — iconic wide trunk, stubby branches like roots in air
+  drawBaobab(ctx,W*.5,H*.78,H*.52);
+  // Smaller baobab right
+  drawBaobab(ctx,W*.82,H*.78,H*.3);
+  // Stars emerging
+  ctx.fillStyle='rgba(255,255,255,.65)';
+  var starPos=[[.08,.06],[.18,.12],[.32,.04],[.55,.09],[.72,.05],[.88,.12],[.95,.08],[.12,.18],[.42,.14],[.78,.16]];
+  starPos.forEach(function(s,i){
+    var twink=.4+Math.sin(t*.9+i)*.28;
+    ctx.globalAlpha=twink;
+    ctx.beginPath(); ctx.arc(s[0]*W,s[1]*H,i%3===0?2:1.2,0,Math.PI*2); ctx.fill();
+  });
+  ctx.globalAlpha=1;
+  // Venus / bright star near horizon
+  var vg=ctx.createRadialGradient(W*.68,H*.28,0,W*.68,H*.28,12);
+  vg.addColorStop(0,'rgba(255,255,200,.9)'); vg.addColorStop(1,'rgba(255,255,200,0)');
+  ctx.fillStyle=vg; ctx.beginPath(); ctx.arc(W*.68,H*.28,12,0,Math.PI*2); ctx.fill();
+  // Bats emerging from baobab
+  coursesScene.bats.forEach(function(b){
+    b.x+=b.spd; b.phase+=.09; b.y=H*.45+Math.sin(b.phase)*35+b.vy*coursesScene.t*2;
+    if(b.x>W+60){ b.x=-60; b.y=H*.42+Math.random()*60; }
+    drawBat(ctx,b.x,b.y,6+Math.sin(b.phase*2)*2);
+  });
+  requestAnimationFrame(function(){ coursesLoop(c); });
+}
+function drawBaobab(ctx,x,groundY,h){
+  // Trunk — thick, barrel-shaped
+  ctx.fillStyle='#050200';
+  ctx.beginPath();
+  ctx.moveTo(x-h*.12,groundY);
+  ctx.bezierCurveTo(x-h*.14,groundY-h*.3,x-h*.13,groundY-h*.5,x-h*.08,groundY-h*.62);
+  ctx.lineTo(x+h*.08,groundY-h*.62);
+  ctx.bezierCurveTo(x+h*.13,groundY-h*.5,x+h*.14,groundY-h*.3,x+h*.12,groundY);
+  ctx.closePath(); ctx.fill();
+  // Stubby branches — baobab looks upside down
+  ctx.strokeStyle='#050200';
+  var branches=[[-h*.22,-h*.08,-h*.32,h*.06],[-h*.16,-h*.12,-h*.28,-h*.02],[h*.12,-h*.1,h*.30,h*.04],[h*.18,-h*.06,h*.34,-h*.02],[-h*.1,-h*.15,-h*.18,-h*.22],[h*.1,-h*.16,h*.2,-h*.2],[-h*.08,-h*.18,h*.06,-h*.25]];
+  branches.forEach(function(b){
+    ctx.lineWidth=h*.025; ctx.beginPath();
+    ctx.moveTo(x+b[0]*h*.15,groundY-h*.6+b[1]*h*.15);
+    ctx.quadraticCurveTo(x+(b[0]+b[2])/2*h*.12,groundY-h*.6+(b[1]+b[3])/2*h*.12,x+b[2]*h*.12,groundY-h*.6+b[3]*h*.12);
+    ctx.stroke();
+    // Tiny twig ends
+    ctx.lineWidth=h*.012;
+    ctx.beginPath(); ctx.moveTo(x+b[2]*h*.12,groundY-h*.6+b[3]*h*.12);
+    ctx.lineTo(x+b[2]*h*.12-h*.04,groundY-h*.6+b[3]*h*.12-h*.04); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x+b[2]*h*.12,groundY-h*.6+b[3]*h*.12);
+    ctx.lineTo(x+b[2]*h*.12+h*.03,groundY-h*.6+b[3]*h*.12-h*.05); ctx.stroke();
+  });
+}
+function drawBat(ctx,x,y,size){
+  ctx.fillStyle='rgba(5,2,0,.9)';
+  var flap=Math.sin(Date.now()/120)*size*.7;
+  ctx.beginPath();
+  ctx.moveTo(x,y);
+  ctx.bezierCurveTo(x-size,y-flap,x-size*2.2,y-flap*.5,x-size*2.5,y+size*.3);
+  ctx.lineTo(x-size*.8,y+size*.4);
+  ctx.lineTo(x,y+size*.2);
+  ctx.lineTo(x+size*.8,y+size*.4);
+  ctx.lineTo(x+size*2.5,y+size*.3);
+  ctx.bezierCurveTo(x+size*2.2,y-flap*.5,x+size,y-flap,x,y);
+  ctx.closePath(); ctx.fill();
+}
+
+// ── INIT ALL CANVASES when worlds activate ──
+var canvasInited = { home: false, inst: false, brain: false, schools: false, audio: false, courses: false };
+var origShowWorld = showWorld;
+showWorld = function(id){
+  origShowWorld(id);
+  setTimeout(function(){
+    if(id === 'home' && !canvasInited.home){ canvasInited.home = true; initHomeCanvas(); }
+    if(id === 'instruments' && !canvasInited.inst){ canvasInited.inst = true; initInstCanvas(); }
+    if(id === 'brain' && !canvasInited.brain){ canvasInited.brain = true; initBrainCanvas(); initStreakDots(); setPuzzleType('proverb'); }
+    if(id === 'schools' && !canvasInited.schools){ canvasInited.schools = true; initSchoolsCanvas(); setSubject('maths'); }
+    if(id === 'courses' && !canvasInited.courses){ canvasInited.courses = true; initCoursesCanvas(); initCoursesWorld(); }
+    if(id === 'audio' && !canvasInited.audio){ canvasInited.audio = true; initAudioCanvas(); }
+  }, 80);
+};
+
+// Init home canvas on first load
+function initAllCanvases(){
+  initHomeCanvas(); canvasInited.home = true;
+}
+
+// ════ COMMUNITY VOICES ════
+function registerCV(){
+  var em=document.getElementById('cv-email');
+  if(!em||!em.value||!em.value.includes('@')){alert('Please enter a valid email address.');return}
+  document.getElementById('cv-confirm').style.display='block';
+  em.value='';em.disabled=true;
+}
 
 // ════ RESIZE ════
 window.addEventListener('resize',function(){if(treeCanvas){treeCanvas.width=treeCanvas.offsetWidth;treeCanvas.height=treeCanvas.offsetHeight}});
