@@ -298,28 +298,30 @@ nav{
 }
 .nstrip{display:none} /* Replaced by glow border */
 .nav-w{
-  max-width:1200px;margin:0 auto;
-  padding:.7rem 1.4rem;
-  display:flex;justify-content:space-between;align-items:center;gap:1rem;
-  background:rgba(6,12,30,.75);
+  max-width:1400px;margin:0 auto;
+  padding:.55rem 1rem;
+  display:flex;align-items:center;gap:.6rem;
+  background:rgba(6,12,30,.82);
   backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   border:1px solid rgba(255,255,255,.08);
   border-radius:100px;
   box-shadow:0 8px 40px rgba(0,0,0,.5),0 0 0 1px rgba(245,118,26,.06);
 }
+.nav-logo-wrap{flex-shrink:0}
+.nav-auth-wrap{flex-shrink:0;display:flex;align-items:center;gap:.5rem;margin-left:auto}
 .logo{
-  font-family:var(--impact);font-weight:400;font-size:1.15rem;
+  font-family:var(--impact);font-weight:400;font-size:.95rem;
   color:#fff;text-decoration:none;cursor:pointer;
-  letter-spacing:.12em;text-transform:uppercase;
-  white-space:nowrap;
+  letter-spacing:.1em;text-transform:uppercase;
+  white-space:nowrap;flex-shrink:0;
 }
 .logo em{color:var(--fire);font-style:normal}
-.nav-pills{display:flex;gap:.2rem;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.nav-pills{display:flex;gap:.2rem;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
 .nav-pills::-webkit-scrollbar{display:none}
 .npill{
-  font-family:var(--display);font-size:.52rem;font-weight:700;
-  letter-spacing:.08em;text-transform:uppercase;
-  padding:.32rem .75rem;border-radius:100px;
+  font-family:var(--display);font-size:.48rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:.28rem .62rem;border-radius:100px;
   border:1px solid transparent;
   color:rgba(255,255,255,.38);cursor:pointer;
   transition:all .2s;background:none;white-space:nowrap;
@@ -336,6 +338,77 @@ nav{
 .npill.blog-pill:hover,.npill.blog-pill.active{background:var(--fire);color:#fff;box-shadow:0 0 16px rgba(245,118,26,.4)}
 .npill.schools:hover,.npill.schools.active{background:var(--green);color:#fff;box-shadow:0 0 16px rgba(30,132,73,.4)}
 
+
+/* ═══ BACK TO HOME BUTTON ═══ */
+.back-home-btn{
+  position:fixed;bottom:1.4rem;left:1.4rem;z-index:800;
+  display:none;align-items:center;gap:.5rem;
+  font-family:var(--display);font-size:.54rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  background:rgba(10,14,24,.92);color:rgba(255,255,255,.72);
+  border:1px solid rgba(255,255,255,.12);border-radius:100px;
+  padding:.55rem 1.1rem;cursor:pointer;
+  backdrop-filter:blur(16px);
+  box-shadow:0 4px 20px rgba(0,0,0,.4);
+  transition:all .2s;
+}
+.back-home-btn:hover{background:var(--fire);color:#fff;border-color:var(--fire);box-shadow:0 4px 20px rgba(245,118,26,.35)}
+.back-home-btn.visible{display:flex}
+
+
+/* ═══ SUDOKU ═══ */
+.sudoku-wrap{display:flex;flex-direction:column;align-items:center;gap:1.2rem;padding:1.5rem 0}
+.sudoku-header{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:520px;flex-wrap:wrap;gap:.6rem}
+.sudoku-level-btns{display:flex;gap:.4rem}
+.sudoku-lvl-btn{font-family:var(--display);font-size:.46rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:.28rem .7rem;border-radius:100px;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.35);cursor:pointer;background:none;transition:all .18s}
+.sudoku-lvl-btn.active,.sudoku-lvl-btn:hover{background:var(--fire);border-color:var(--fire);color:#fff}
+.sudoku-timer{font-family:var(--impact);font-size:1.1rem;letter-spacing:.1em;color:rgba(255,255,255,.5)}
+.sudoku-status{font-family:var(--mono);font-size:.46rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(245,118,26,.6)}
+.sudoku-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:0;border:2px solid rgba(245,118,26,.5);border-radius:4px;overflow:hidden;width:min(100%,468px)}
+.sudoku-cell{
+  width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+  font-family:var(--impact);font-size:clamp(.7rem,2vw,1rem);letter-spacing:.04em;
+  cursor:pointer;border:1px solid rgba(255,255,255,.07);
+  background:#0D1018;color:rgba(255,255,255,.85);
+  transition:background .15s,color .15s;position:relative;
+  user-select:none;-webkit-user-select:none;
+}
+.sudoku-cell.given{color:var(--fire);cursor:default;font-weight:bold}
+.sudoku-cell.selected{background:rgba(245,118,26,.18)!important;outline:2px solid var(--fire);outline-offset:-2px;z-index:2}
+.sudoku-cell.highlight{background:rgba(245,118,26,.06)}
+.sudoku-cell.error{color:#ff6b6b!important;background:rgba(255,60,60,.08)!important}
+.sudoku-cell.correct-flash{animation:sudokuFlash .4s ease}
+@keyframes sudokuFlash{0%,100%{background:#0D1018}50%{background:rgba(30,132,73,.25)}}
+.sudoku-cell.box-right{border-right:2px solid rgba(245,118,26,.3)}
+.sudoku-cell.box-bottom{border-bottom:2px solid rgba(245,118,26,.3)}
+.sudoku-numpad{display:grid;grid-template-columns:repeat(9,1fr);gap:.35rem;width:min(100%,468px)}
+.sudoku-num-btn{
+  aspect-ratio:1;border-radius:8px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);color:rgba(255,255,255,.7);
+  font-family:var(--impact);font-size:1rem;letter-spacing:.06em;
+  cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;
+}
+.sudoku-num-btn:hover{background:rgba(245,118,26,.15);border-color:rgba(245,118,26,.4);color:#fff}
+.sudoku-num-btn.erase{font-family:var(--display);font-size:.5rem;font-weight:700;letter-spacing:.04em}
+.sudoku-actions{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center}
+.sudoku-complete{text-align:center;padding:2rem;background:rgba(30,132,73,.08);border:1px solid rgba(30,132,73,.25);border-radius:12px;width:100%;max-width:520px}
+.sudoku-complete-title{font-family:var(--impact);font-size:2rem;letter-spacing:.1em;color:#6EE78E;margin-bottom:.5rem}
+.sudoku-complete-time{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;color:rgba(255,255,255,.45)}
+.sudoku-mistakes{font-family:var(--mono);font-size:.46rem;letter-spacing:.07em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+
+/* ═══ ZCOURSE CARDS ═══ */
+.zcourses-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem}
+.zcourse{display:flex;flex-direction:column;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;text-decoration:none;transition:border-color .2s,transform .2s;cursor:pointer}
+.zcourse:hover{border-color:rgba(245,118,26,.35);transform:translateY(-3px);text-decoration:none}
+.zcourse-img{height:90px;display:flex;align-items:center;justify-content:center;font-size:2rem;background:rgba(245,118,26,.08)}
+.zcourse-img.zi2{background:rgba(30,132,73,.1);color:var(--green)}
+.zcourse-img.zi3{background:rgba(245,118,26,.1);color:var(--fire)}
+.zcourse-img.zi4{background:rgba(100,100,200,.1);color:#9090e0}
+.zcourse-level{font-family:var(--mono);font-size:.42rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,118,26,.6);padding:.8rem 1rem .2rem}
+.zcourse-name{font-family:var(--display);font-size:.8rem;font-weight:700;color:#fff;padding:0 1rem .5rem;line-height:1.35}
+.zcourse-desc{font-size:.72rem;color:rgba(255,255,255,.4);padding:0 1rem;line-height:1.6;flex:1}
+.zcourse-footer{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1rem;border-top:1px solid rgba(255,255,255,.06);margin-top:.8rem}
+.zcourse-dr{font-family:var(--mono);font-size:.42rem;letter-spacing:.07em;color:rgba(255,255,255,.3)}
+.zcourse-cta{font-family:var(--display);font-size:.56rem;font-weight:700;color:var(--fire)}
 /* ═══ WORLDS ═══ */
 .world{display:none;animation:worldIn .55s cubic-bezier(.22,1,.36,1)}
 .world.active{display:block;background:linear-gradient(180deg,#111318 0%,#181B22 40%,#1C2028 100%);min-height:100vh}
@@ -792,6 +865,38 @@ nav{
 .inst-hero h2{font-family:var(--impact);font-size:clamp(3rem,6vw,5rem);letter-spacing:.08em;color:#fff}
 .inst-hero h2 .accent{color:var(--fire);font-style:normal}
 .inst-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;padding:2rem 2.5rem;background:var(--deep)}
+/* Studio modern overrides */
+.inst-btn{
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);
+  border-radius:10px;padding:1.1rem .8rem;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:.4rem;
+  transition:all .2s;color:rgba(255,255,255,.5);
+}
+.inst-btn:hover,.inst-btn.active{
+  background:rgba(245,118,26,.08);border-color:rgba(245,118,26,.35);
+  color:#fff;box-shadow:0 0 20px rgba(245,118,26,.12);
+}
+.inst-emoji{font-size:1.5rem;color:var(--fire)}
+.inst-name{font-family:var(--display);font-size:.62rem;font-weight:700;color:inherit;letter-spacing:.06em;text-transform:uppercase}
+.inst-origin{font-family:var(--mono);font-size:.4rem;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.22);text-align:center}
+.inst-selector{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;padding:1.4rem 2rem .8rem}
+.inst-play-title{font-family:var(--impact);font-size:1.4rem;letter-spacing:.1em;color:#fff;margin-bottom:.3rem;display:flex;align-items:center;gap:.5rem}
+.inst-play-sub{font-size:.78rem;color:rgba(255,255,255,.35);line-height:1.65;margin-bottom:1.2rem}
+.inst-play-area{padding:0 2rem 1.5rem}
+.studio{display:grid;grid-template-columns:1fr 280px;gap:1.5rem;padding:1.5rem 2rem 2rem;background:#0D1018;align-items:start}
+.recorder-panel{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:1.4rem;display:flex;flex-direction:column;gap:.8rem}
+.rec-title{font-family:var(--impact);font-size:1.1rem;letter-spacing:.1em;color:#fff;display:flex;align-items:center;gap:.5rem}
+.rec-btn-main{width:60px;height:60px;border-radius:50%;background:rgba(255,40,40,.08);border:2px solid rgba(255,60,60,.25);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;margin:.5rem auto;position:relative}
+.rec-btn-main::after{content:'';width:18px;height:18px;border-radius:50%;background:rgba(255,60,60,.7)}
+.rec-btn-main:hover{background:rgba(255,40,40,.18);border-color:rgba(255,60,60,.5)}
+.rec-btn-main.recording::after{background:#ff3333;box-shadow:0 0 0 4px rgba(255,0,0,.2);animation:recPulse 1s ease-in-out infinite}
+.rec-status{font-family:var(--mono);font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.25);text-align:center}
+.rec-timeline{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:6px;height:40px;overflow:hidden;display:flex;align-items:center;padding:0 .6rem}
+.rec-controls{display:flex;gap:.5rem}
+.rec-ctrl{flex:1;padding:.5rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:6px;color:rgba(255,255,255,.5);font-family:var(--display);font-size:.46rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.3rem}
+.rec-ctrl:hover{background:rgba(255,255,255,.08);color:#fff}
+.post-wall-btn{width:100%;padding:.65rem;background:rgba(245,118,26,.1);border:1px solid rgba(245,118,26,.3);border-radius:8px;color:var(--fire);font-family:var(--display);font-size:.52rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.4rem}
+.post-wall-btn:hover{background:rgba(245,118,26,.18);color:#fff}
 .inst-pad{
   background:var(--surface);border:1px solid rgba(255,255,255,.07);
   border-radius:var(--r-lg);padding:1.4rem 1rem 1.2rem;
@@ -830,15 +935,23 @@ nav{
 
 /* ═══ BRAIN TEASERS ═══ */
 .brain-hero{padding:0;height:360px;position:relative;overflow:hidden;display:flex;align-items:flex-end}
-.puzzle-tabs{display:flex;gap:.3rem;padding:1.2rem 2.5rem 0;background:var(--deep);overflow-x:auto;scrollbar-width:none}
+.puzzle-tabs{display:flex;gap:.4rem;padding:1.2rem 2rem 0;background:#0D1018;overflow-x:auto;scrollbar-width:none}
 .puzzle-tabs::-webkit-scrollbar{display:none}
 .p-tab{font-family:var(--display);font-size:.54rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem .9rem;border-radius:100px;border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.35);cursor:pointer;transition:all .2s;white-space:nowrap;background:none}
 .p-tab:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7)}
 .p-tab.active{background:var(--fire);color:#fff;border-color:var(--fire);box-shadow:0 0 16px rgba(245,118,26,.35)}
-.puzzle-stage{padding:2rem 2.5rem;background:var(--deep);min-height:240px}
-.p-puzzle{background:var(--surface);border:1px solid rgba(255,255,255,.07);border-radius:var(--r-lg);padding:1.5rem;margin-bottom:1rem}
+.puzzle-stage{padding:2rem 2rem;background:#0D1018;min-height:240px}
+.puzzle-q{font-family:var(--body);font-size:.95rem;color:rgba(255,255,255,.88);line-height:1.75;margin-bottom:1.4rem;font-weight:500}
+.puzzle-options{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.2rem}
+.puzzle-result{min-height:1.2rem;font-size:.85rem;line-height:1.6;padding:.7rem 1rem;border-radius:8px;display:none}
+.puzzle-result.correct{display:block;background:rgba(30,132,73,.12);border:1px solid rgba(30,132,73,.25);color:#6EE78E}
+.puzzle-result.wrong{display:block;background:rgba(192,57,43,.1);border:1px solid rgba(192,57,43,.2);color:rgba(255,120,100,.85)}
+.puzzle-nav{display:flex;align-items:center;justify-content:space-between;margin-top:1.4rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.06)}
+.puzzle-pts{font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,118,26,.5)}
+.drum-sequence{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0 1.2rem;padding:.8rem 1rem;background:rgba(255,255,255,.03);border-radius:8px;font-size:1.3rem}
+.p-puzzle{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:1.5rem;margin-bottom:1rem}
 .p-label{font-family:var(--mono);font-size:.46rem;letter-spacing:.16em;text-transform:uppercase;color:var(--fire);margin-bottom:.6rem}
-.p-q{font-size:.95rem;color:rgba(255,255,255,.82);line-height:1.65;margin-bottom:1rem;font-weight:500}
+.p-q{font-family:var(--body);font-size:.92rem;color:rgba(255,255,255,.85);line-height:1.72;margin-bottom:1rem;font-weight:500}
 .p-opts{display:flex;gap:.45rem;flex-wrap:wrap}
 .p-opt{font-family:var(--body);font-size:.78rem;padding:.45rem .9rem;border-radius:6px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:rgba(255,255,255,.65);cursor:pointer;transition:all .18s}
 .p-opt:hover{border-color:rgba(245,118,26,.5);color:#fff;background:rgba(245,118,26,.08)}
@@ -846,7 +959,7 @@ nav{
 .p-opt.wrong{background:rgba(192,57,43,.2);border-color:#c0392b;color:rgba(255,120,100,.8)}
 .p-opt.disabled{cursor:default;opacity:.5}
 .p-exp{font-size:.8rem;color:rgba(255,255,255,.5);margin-top:.8rem;padding:.7rem 1rem;background:rgba(255,255,255,.04);border-radius:6px;border-left:2px solid var(--fire);line-height:1.65}
-.score-bar{display:flex;gap:1rem;align-items:center;background:rgba(14,16,22,.9);padding:1rem 2.5rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.score-bar{display:flex;gap:1rem;align-items:center;background:#0D1018;padding:1rem 2rem;border-bottom:1px solid rgba(255,255,255,.07)}
 .score-val{font-family:var(--impact);font-size:1.6rem;letter-spacing:.08em;color:var(--fire)}
 .streak-dots{display:flex;gap:.25rem;align-items:center}
 .sd{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.1);transition:background .3s}
@@ -872,18 +985,47 @@ nav{
 .lp-detail{font-size:.68rem;color:rgba(255,255,255,.38);margin-top:.3rem;line-height:1.5}
 
 /* ═══ SCHOOLS ═══ */
-.schools-hero{padding:0;height:340px;position:relative;overflow:hidden;display:flex;align-items:flex-end}
-.subject-tabs{display:flex;gap:.3rem;padding:1.2rem 2.5rem 0;background:var(--deep);overflow-x:auto;scrollbar-width:none}
+/* ═══ SCHOOLS HUB HERO ═══ */
+.schools-hero{position:relative;overflow:hidden;min-height:480px;display:flex;flex-direction:column;background:#C84A0A}
+.sh-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 100% at 30% 60%,#E8460A 0%,#C03A06 35%,#8B1A02 65%,#3A0800 100%);z-index:0}
+.sh-streak{position:absolute;top:-10%;right:22%;width:140px;height:130%;background:linear-gradient(180deg,transparent 0%,rgba(255,180,60,.22) 30%,rgba(255,210,100,.38) 50%,rgba(255,180,60,.22) 70%,transparent 100%);filter:blur(28px);z-index:1;animation:shStreak 8s ease-in-out infinite alternate}
+@keyframes shStreak{0%{right:22%;opacity:.7}100%{right:26%;opacity:1}}
+.sh-grain{position:absolute;inset:0;z-index:2;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:200px}
+/* meta bar */
+.sh-meta{position:relative;z-index:5;display:flex;gap:0;padding:.9rem 2rem;border-bottom:1px solid rgba(255,255,255,.1)}
+.sh-meta-left,.sh-meta-center,.sh-meta-right{display:flex;flex-direction:column;gap:.1rem}
+.sh-meta-center{margin:0 auto}
+.sh-meta-right{text-align:right}
+.sh-meta-label{font-family:var(--mono);font-size:.4rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.sh-meta-val{font-family:var(--display);font-size:.62rem;font-weight:700;color:rgba(255,255,255,.9);letter-spacing:.02em}
+/* bleed type */
+.sh-bleed-wrap{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;justify-content:center;overflow:hidden;pointer-events:none;padding-top:2.5rem}
+.sh-bleed-top{font-family:var(--impact);font-size:clamp(5rem,18vw,13rem);letter-spacing:.04em;color:rgba(255,90,20,.55);line-height:.9;padding-left:1.5rem;white-space:nowrap;mix-blend-mode:overlay}
+.sh-bleed-bot{font-family:var(--impact);font-size:clamp(5rem,18vw,13rem);letter-spacing:.04em;color:rgba(255,220,100,.45);line-height:.9;padding-left:8rem;white-space:nowrap;mix-blend-mode:overlay}
+/* tagline */
+.sh-tagline{position:absolute;bottom:2.2rem;left:2rem;z-index:5;font-family:var(--impact);font-size:clamp(.9rem,2.5vw,1.3rem);letter-spacing:.08em;line-height:1.15;color:rgba(255,255,255,.65);text-transform:uppercase}
+/* grade pills area */
+.sh-grade-wrap{position:absolute;bottom:2rem;right:2rem;z-index:5;display:flex;flex-direction:column;align-items:flex-end;gap:.6rem}
+.sh-grade-label{font-family:var(--mono);font-size:.4rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+/* grade pill overrides for orange bg */
+.sh-grade-wrap .grade-pills{gap:.35rem}
+.sh-grade-wrap .grade-pill{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.6);background:rgba(0,0,0,.2);backdrop-filter:blur(6px)}
+.sh-grade-wrap .grade-pill.active,.sh-grade-wrap .grade-pill:hover{background:rgba(255,255,255,.95);border-color:#fff;color:#8B1A02;font-weight:700}
+.subject-tabs{display:flex;gap:.4rem;padding:1.2rem 2rem 0;background:#0D1018;overflow-x:auto;scrollbar-width:none}
 .subject-tabs::-webkit-scrollbar{display:none}
-.sub-tab{font-family:var(--display);font-size:.54rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.42rem .88rem;border-radius:100px;border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.35);cursor:pointer;transition:all .2s;white-space:nowrap;background:none}
+.sub-tab{font-family:var(--display);font-size:.52rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.42rem .88rem;border-radius:100px;border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.38);cursor:pointer;transition:all .2s;white-space:nowrap;background:none;display:flex;align-items:center;gap:.35rem}
+.sub-icon{font-size:.9rem;display:flex;align-items:center}
 .sub-tab:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7)}
-.sub-tab.active{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 0 14px rgba(30,132,73,.35)}
-.topic-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;padding:1.5rem 2.5rem;background:var(--deep)}
-.topic-card{background:var(--surface);border:1px solid rgba(255,255,255,.07);border-radius:var(--r-lg);padding:1.1rem;cursor:pointer;transition:all .22s}
-.topic-card:hover{border-color:rgba(30,132,73,.35);transform:translateY(-3px)}
-.tc-sub{font-family:var(--mono);font-size:.44rem;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:.4rem}
-.tc-title{font-family:var(--display);font-size:.82rem;font-weight:700;color:#fff;margin-bottom:.3rem}
-.tc-desc{font-size:.74rem;color:rgba(255,255,255,.3);line-height:1.55}
+.sub-tab.active{background:var(--fire);color:#fff;border-color:var(--fire);box-shadow:0 0 14px rgba(245,118,26,.3)}
+.topic-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem;padding:1.5rem 2rem 2rem;background:#0D1018}
+.topic-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:1.1rem 1.2rem;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;gap:.4rem}
+.topic-card:hover{border-color:rgba(245,118,26,.3);background:rgba(245,118,26,.04);transform:translateY(-2px)}
+.tc-icon{font-family:var(--impact);font-size:1.1rem;letter-spacing:.04em;color:var(--fire);line-height:1}
+.tc-name{font-family:var(--display);font-size:.76rem;font-weight:700;color:#fff;line-height:1.3}
+.tc-sub{font-size:.7rem;color:rgba(255,255,255,.38);line-height:1.5}
+.tc-badge{font-family:var(--mono);font-size:.4rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,118,26,.5);margin-top:.3rem}
+.tc-badge.maths{color:rgba(245,118,26,.55)}
+.tc-badge.science{color:rgba(176,136,232,.55)}
 .notes-overlay{display:none;position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.92);backdrop-filter:blur(8px);align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
 .notes-overlay.open{display:flex}
 .notes-modal{background:var(--ink);border-radius:var(--r-lg);width:100%;max-width:760px;border:1px solid rgba(255,255,255,.08);margin-bottom:2rem}
@@ -929,11 +1071,14 @@ nav{
 .module-item:hover{background:rgba(255,255,255,.05);padding-left:1.4rem}
 .module-item.done{background:rgba(30,132,73,.08)}
 .module-item.done::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--green)}
-.module-item.active-mod{background:rgba(245,118,26,.08)}
-.module-item.active-mod::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--fire)}
+.module-item.active{background:rgba(245,118,26,.08)}
+.module-item.active::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--fire)}
 .mi-icon{font-size:1.1rem;flex-shrink:0;position:relative}
 .mi-title{font-family:var(--body);font-size:.78rem;font-weight:500;color:rgba(255,255,255,.72);line-height:1.35}
 .mi-dur{font-family:var(--mono);font-size:.42rem;letter-spacing:.06em;color:rgba(255,255,255,.2);margin-top:.18rem}
+.module-tick{flex-shrink:0;font-size:1rem;color:rgba(255,255,255,.2)}
+.module-item.done .module-tick{color:var(--green)}
+.module-item.active .module-tick{color:var(--fire)}
 #lesson-content{background:#0C0E14;overflow-y:auto}
 .lesson-header{background:var(--ink);padding:1.5rem 2rem;border-bottom:1px solid rgba(255,255,255,.06)}
 .lesson-course-tag{font-family:var(--mono);font-size:.44rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fire);margin-bottom:.5rem}
@@ -967,7 +1112,7 @@ nav{
 .callout-p{margin-bottom:0;color:rgba(255,255,255,.65);font-weight:500}
 .quiz-wrap{background:var(--ink);border-top:1px solid rgba(255,255,255,.06);padding:1.5rem 2rem}
 .quiz-title{font-family:var(--mono);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--fire);margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem}
-.quiz-title::before{content:'📝';font-size:.9rem}
+
 .quiz-q{font-size:.9rem;color:rgba(255,255,255,.82);margin-bottom:.9rem;line-height:1.6;font-weight:500}
 .quiz-opts{display:flex;flex-direction:column;gap:.4rem;margin-bottom:.8rem}
 .quiz-opt{
@@ -2481,10 +2626,13 @@ body::after{
 </div>
 
 <div id="site">
+
+<button class="back-home-btn" id="back-home-btn" onclick="showWorld('home')"><i class="ph ph-arrow-left"></i> Home</button>
+
   <nav>
     <div class="nstrip"></div>
     <div class="nav-w">
-      <span class="logo" onclick="showWorld('home')">ZINTSOMI <em>·</em> SC</span>
+      <div class="nav-logo-wrap"><span class="logo" onclick="showWorld('home')">ZINTSOMI <em>·</em> SC</span></div>
       <div class="nav-pills">
         <button class="npill active" onclick="showWorld('home')"><i class="ph ph-house"></i> Home</button>
         <button class="npill" onclick="showWorld('vrvillage')" style="color:var(--acid);border-color:rgba(200,240,74,.3)" id="pill-vrvillage"><i class="ph ph-eyeglasses"></i> VR Village</button>
@@ -2499,9 +2647,9 @@ body::after{
         <button class="npill" onclick="showWorld('youtube')" style="color:#FF4444;border-color:rgba(255,68,68,.3)" id="pill-youtube"><i class="ph ph-youtube-logo"></i> YouTube</button>
         <button class="npill" onclick="showWorld('subscribe')" style="color:#B088E8;border-color:rgba(123,79,208,.3)" id="pill-subscribe"><i class="ph ph-star"></i> Subscribe</button>
       </div>
-      <div style="display:flex;align-items:center;gap:.7rem;flex-shrink:0">
-        <span id="auth-nav-name" style="font-family:var(--mono);font-size:.5rem;letter-spacing:.05em;color:rgba(255,255,255,.35);max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
-        <button id="auth-nav-btn" class="btn" style="padding:.38rem .9rem;font-size:.55rem" onclick="openAuthModal()">Log In</button>
+      <div class="nav-auth-wrap">
+        <span id="auth-nav-name" style="font-family:var(--mono);font-size:.46rem;letter-spacing:.05em;color:rgba(255,255,255,.35);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+        <button id="auth-nav-btn" class="btn" style="padding:.32rem .8rem;font-size:.5rem;white-space:nowrap" onclick="openAuthModal()">Log In</button>
       </div>
     </div>
   </nav>
@@ -2511,7 +2659,7 @@ body::after{
 
     <!-- Hero -->
     <div class="blog-hero">
-      <div class="blog-hero-avatar">🧡</div>
+      <div class="blog-hero-avatar"><i class="ph ph-user-circle"></i></div>
       <div class="blog-hero-name">Dr. <em>Sasa</em></div>
       <div class="blog-hero-bio">
         Storytelling educator · Author · Speaker<br>
@@ -2538,10 +2686,10 @@ body::after{
 
     <!-- Social Links -->
     <div class="blog-social-links">
-      <a class="bsl-link ig" href="#"><span>📸</span> Instagram</a>
+      <a class="bsl-link ig" href="#"><i class="ph ph-instagram-logo"></i> Instagram</a>
       <a class="bsl-link yt" href="#"><span>▶️</span> YouTube</a>
-      <a class="bsl-link tt" href="#"><span>🎵</span> TikTok</a>
-      <a class="bsl-link fb" href="#"><span>📘</span> Facebook</a>
+      <a class="bsl-link tt" href="#"><i class="ph ph-tiktok-logo"></i> TikTok</a>
+      <a class="bsl-link fb" href="#"><i class="ph ph-facebook-logo"></i> Facebook</a>
     </div>
 
     <!-- Blog Tabs -->
@@ -2582,25 +2730,25 @@ body::after{
         </div>
         <div class="story-bubble" onclick="openStory(0)">
           <div class="story-ring">
-            <div class="story-inner">🎙️</div>
+            <div class="story-inner"><i class="ph ph-microphone"></i></div>
           </div>
           <div class="story-name">Dr Sasa</div>
         </div>
         <div class="story-bubble" onclick="openStory(1)">
           <div class="story-ring seen">
-            <div class="story-inner">📖</div>
+            <div class="story-inner"><i class="ph ph-book-open"></i></div>
           </div>
           <div class="story-name">Module 1</div>
         </div>
         <div class="story-bubble" onclick="openStory(2)">
           <div class="story-ring">
-            <div class="story-inner">🌍</div>
+            <div class="story-inner"><i class="ph ph-globe-hemisphere-west"></i></div>
           </div>
           <div class="story-name">Ubuntu</div>
         </div>
         <div class="story-bubble" onclick="openStory(3)">
           <div class="story-ring">
-            <div class="story-inner">🥁</div>
+            <div class="story-inner"><i class="ph ph-speaker-high"></i></div>
           </div>
           <div class="story-name">Drum Talk</div>
         </div>
@@ -2615,21 +2763,21 @@ body::after{
       <!-- Dr Sasa compose (admin only — shown when logged in as Dr Sasa) -->
       <div class="blog-compose" id="blog-compose">
         <div class="bc-compose-head">
-          <div class="bc-compose-ava">🧡</div>
+          <div class="bc-compose-ava"><i class="ph ph-user"></i></div>
           <div style="flex:1">
             <div class="bc-compose-name">Dr. Nomsa "Sasa" Mdlalose</div>
             <div class="bc-compose-sub">✦ Zintsomi Author</div>
           </div>
-          <div class="bc-admin-badge">🔑 Admin</div>
+          <div class="bc-admin-badge"><i class="ph ph-key"></i> Admin</div>
         </div>
 
         <!-- Post type -->
         <div class="bc-type-row">
           <button class="bc-type-btn active" data-ptype="text" onclick="setBcType(this,'text')"><i class="ph ph-pencil-line"></i> Text</button>
-          <button class="bc-type-btn" data-ptype="photo" onclick="setBcType(this,'photo')">📷 Photo</button>
+          <button class="bc-type-btn" data-ptype="photo" onclick="setBcType(this,'photo')"><i class="ph ph-camera"></i> Photo</button>
           <button class="bc-type-btn" data-ptype="video" onclick="setBcType(this,'video')"><i class="ph ph-video-camera"></i> Video</button>
           <button class="bc-type-btn" data-ptype="reel" onclick="setBcType(this,'reel')"><i class="ph ph-device-mobile-camera"></i> Reel / Clip</button>
-          <button class="bc-type-btn" data-ptype="quote" onclick="setBcType(this,'quote')">💬 Quote</button>
+          <button class="bc-type-btn" data-ptype="quote" onclick="setBcType(this,'quote')"><i class="ph ph-quotes"></i> Quote</button>
         </div>
 
         <!-- Photo upload (shown when type=photo) -->
@@ -2644,7 +2792,7 @@ body::after{
         <!-- Upload button (photo/video) -->
         <div id="bc-upload-btn-row" style="display:none;margin-bottom:.85rem">
           <button onclick="bcTriggerUpload()" style="width:100%;background:rgba(245,118,26,.07);border:2px dashed rgba(245,118,26,.3);border-radius:var(--r);padding:1.2rem;color:rgba(255,255,255,.5);font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(245,118,26,.12)'" onmouseout="this.style.background='rgba(245,118,26,.07)'">
-            <span id="bc-upload-icon">📷</span> Click to browse or drag a file here
+            <span id="bc-upload-icon"><i class="ph ph-camera"></i></span> Click to browse or drag a file here
           </button>
         </div>
 
@@ -2665,9 +2813,9 @@ body::after{
           placeholder="Write your caption, story, lesson or thought…"></textarea>
 
         <div class="bc-tools">
-          <button class="bc-tool" id="bc-tool-photo" onclick="setBcType(document.querySelector('[data-ptype=photo]'),'photo')">📷 Add Photo</button>
-          <button class="bc-tool" id="bc-tool-video" onclick="setBcType(document.querySelector('[data-ptype=video]'),'video')">🎬 Add Video</button>
-          <button class="bc-tool" id="bc-tool-reel" onclick="setBcType(document.querySelector('[data-ptype=reel]'),'reel')">📱 Embed Clip</button>
+          <button class="bc-tool" id="bc-tool-photo" onclick="setBcType(document.querySelector('[data-ptype=photo]'),'photo')"><i class="ph ph-camera"></i></button>
+          <button class="bc-tool" id="bc-tool-video" onclick="setBcType(document.querySelector('[data-ptype=video]'),'video')"><i class="ph ph-video-camera"></i></button>
+          <button class="bc-tool" id="bc-tool-reel" onclick="setBcType(document.querySelector('[data-ptype=reel]'),'reel')"><i class="ph ph-film-strip"></i></button>
           <button class="bc-post-btn" onclick="publishPost()">Post →</button>
         </div>
       </div>
@@ -2684,7 +2832,7 @@ body::after{
         <!-- POST 1 — Quote card -->
         <div class="blog-post reveal" data-post-id="1">
           <div class="bp-head">
-            <div class="bp-avatar">🧡</div>
+            <div class="bp-avatar"><i class="ph ph-user"></i></div>
             <div class="bp-meta">
               <div class="bp-author">drsasa.zintsomi</div>
               <div class="bp-time">2 hours ago</div>
@@ -2699,11 +2847,11 @@ body::after{
           </div>
           <div class="bp-actions">
             <button class="bp-act" onclick="toggleLike(this,1)" title="Like">
-              <span class="act-icon">🤍</span>
+              <span class="act-icon"><i class="ph ph-heart"></i></span>
               <span class="act-count">247</span>
             </button>
             <button class="bp-act" onclick="toggleComments(1)" title="Comment">
-              <span class="act-icon">💬</span>
+              <span class="act-icon"><i class="ph ph-chat-circle"></i></span>
               <span class="act-count">34</span>
             </button>
             <button class="bp-act" onclick="sharePost(1)" title="Share">
@@ -2711,7 +2859,7 @@ body::after{
               <span class="act-count">Share</span>
             </button>
             <button class="bp-act bp-save" onclick="savePost(this,1)" title="Save">
-              <span class="act-icon">🔖</span>
+              <span class="act-icon"><i class="ph ph-bookmark"></i></span>
             </button>
           </div>
           <div class="bp-likes">247 likes</div>
@@ -2733,7 +2881,7 @@ body::after{
                   <span class="bc-text">This changed how I teach. Every lesson starts with a story now 🙌</span>
                   <div class="bc-meta">
                     <span class="bc-time">1h ago</span>
-                    <button class="bc-like-btn">♡ 12</button>
+                    <button class="bc-like-btn"><i class="ph ph-heart"></i> 12</button>
                     <button class="bc-reply-btn">Reply</button>
                   </div>
                 </div>
@@ -2745,7 +2893,7 @@ body::after{
                   <span class="bc-text">The co-creator concept is profound. Fire 🔥</span>
                   <div class="bc-meta">
                     <span class="bc-time">45m ago</span>
-                    <button class="bc-like-btn">♡ 8</button>
+                    <button class="bc-like-btn"><i class="ph ph-heart"></i> 8</button>
                     <button class="bc-reply-btn">Reply</button>
                   </div>
                 </div>
@@ -2753,7 +2901,7 @@ body::after{
             </div>
           </div>
                     <div class="bp-add-comment" id="comment-bar-1">
-            <div class="bac-ava" id="bac-ava-1">👤</div>
+            <div class="bac-ava" id="bac-ava-1"><i class="ph ph-user"></i></div>
             <input class="bac-input" id="bac-inp-1" placeholder="Log in to comment…"
               oninput="toggleCommentSend(this)" onfocus="bcCheckLogin(1)">
             <button class="bac-send" onclick="postComment(this,1)" id="bac-send-1">Post</button>>Post</button>
@@ -2763,7 +2911,7 @@ body::after{
         <!-- POST 2 — Social embed / clip -->
         <div class="blog-post reveal stagger-2" data-post-id="2">
           <div class="bp-head">
-            <div class="bp-avatar">🧡</div>
+            <div class="bp-avatar"><i class="ph ph-user"></i></div>
             <div class="bp-meta">
               <div class="bp-author">drsasa.zintsomi</div>
               <div class="bp-time">Yesterday</div>
@@ -2788,11 +2936,11 @@ body::after{
           </div>
           <div class="bp-actions">
             <button class="bp-act" onclick="toggleLike(this,2)">
-              <span class="act-icon">🤍</span>
+              <span class="act-icon"><i class="ph ph-heart"></i></span>
               <span class="act-count">589</span>
             </button>
             <button class="bp-act" onclick="toggleComments(2)">
-              <span class="act-icon">💬</span>
+              <span class="act-icon"><i class="ph ph-chat-circle"></i></span>
               <span class="act-count">72</span>
             </button>
             <button class="bp-act" onclick="sharePost(2)">
@@ -2800,7 +2948,7 @@ body::after{
               <span class="act-count">Share</span>
             </button>
             <button class="bp-act bp-save" onclick="savePost(this,2)">
-              <span class="act-icon">🔖</span>
+              <span class="act-icon"><i class="ph ph-bookmark"></i></span>
             </button>
           </div>
           <div class="bp-likes">589 likes</div>
@@ -2820,7 +2968,7 @@ body::after{
                   <span class="bc-text">I'm an attorney and this course transformed my closing arguments. Thank you Dr Sasa ✨</span>
                   <div class="bc-meta">
                     <span class="bc-time">2h ago</span>
-                    <button class="bc-like-btn">♡ 45</button>
+                    <button class="bc-like-btn"><i class="ph ph-heart"></i> 45</button>
                     <button class="bc-reply-btn">Reply</button>
                   </div>
                 </div>
@@ -2828,7 +2976,7 @@ body::after{
             </div>
           </div>
                     <div class="bp-add-comment" id="comment-bar-2">
-            <div class="bac-ava" id="bac-ava-2">👤</div>
+            <div class="bac-ava" id="bac-ava-2"><i class="ph ph-user"></i></div>
             <input class="bac-input" id="bac-inp-2" placeholder="Log in to comment…"
               oninput="toggleCommentSend(this)" onfocus="bcCheckLogin(2)">
             <button class="bac-send" onclick="postComment(this,2)" id="bac-send-2">Post</button>>Post</button>
@@ -2838,7 +2986,7 @@ body::after{
         <!-- POST 3 — Written story post -->
         <div class="blog-post reveal stagger-3" data-post-id="3">
           <div class="bp-head">
-            <div class="bp-avatar">🧡</div>
+            <div class="bp-avatar"><i class="ph ph-user"></i></div>
             <div class="bp-meta">
               <div class="bp-author">drsasa.zintsomi</div>
               <div class="bp-time">3 days ago</div>
@@ -2847,7 +2995,7 @@ body::after{
           </div>
           <div class="bp-media">
             <div class="bp-media-placeholder" style="aspect-ratio:4/3;background:linear-gradient(135deg,#0E1016,#14171E,#111814)">
-              <div class="ph-icon">📝</div>
+              <div class="ph-icon"><i class="ph ph-pencil-line"></i></div>
               <div style="font-family:var(--serif);font-size:1.1rem;color:rgba(255,255,255,.6);text-align:center;padding:0 2.5rem;line-height:1.6">
                 "The night my grandmother told me the story that changed everything"
               </div>
@@ -2858,11 +3006,11 @@ body::after{
           </div>
           <div class="bp-actions">
             <button class="bp-act" onclick="toggleLike(this,3)">
-              <span class="act-icon">🤍</span>
+              <span class="act-icon"><i class="ph ph-heart"></i></span>
               <span class="act-count">1.2K</span>
             </button>
             <button class="bp-act" onclick="toggleComments(3)">
-              <span class="act-icon">💬</span>
+              <span class="act-icon"><i class="ph ph-chat-circle"></i></span>
               <span class="act-count">143</span>
             </button>
             <button class="bp-act" onclick="sharePost(3)">
@@ -2870,7 +3018,7 @@ body::after{
               <span class="act-count">Share</span>
             </button>
             <button class="bp-act bp-save" onclick="savePost(this,3)">
-              <span class="act-icon">🔖</span>
+              <span class="act-icon"><i class="ph ph-bookmark"></i></span>
             </button>
           </div>
           <div class="bp-likes">1,247 likes</div>
@@ -2892,7 +3040,7 @@ body::after{
                   <span class="bc-text">I cried reading this. My ouma told stories the same way. Starting with silence 🕊️</span>
                   <div class="bc-meta">
                     <span class="bc-time">1d ago</span>
-                    <button class="bc-like-btn">♡ 89</button>
+                    <button class="bc-like-btn"><i class="ph ph-heart"></i> 89</button>
                     <button class="bc-reply-btn">Reply</button>
                   </div>
                 </div>
@@ -2904,7 +3052,7 @@ body::after{
                   <span class="bc-text">The silence IS the story. That's exactly what Module 3 taught me. 🙏</span>
                   <div class="bc-meta">
                     <span class="bc-time">22h ago</span>
-                    <button class="bc-like-btn">♡ 34</button>
+                    <button class="bc-like-btn"><i class="ph ph-heart"></i> 34</button>
                     <button class="bc-reply-btn">Reply</button>
                   </div>
                 </div>
@@ -2912,7 +3060,7 @@ body::after{
             </div>
           </div>
                     <div class="bp-add-comment" id="comment-bar-3">
-            <div class="bac-ava" id="bac-ava-3">👤</div>
+            <div class="bac-ava" id="bac-ava-3"><i class="ph ph-user"></i></div>
             <input class="bac-input" id="bac-inp-3" placeholder="Log in to comment…"
               oninput="toggleCommentSend(this)" onfocus="bcCheckLogin(3)">
             <button class="bac-send" onclick="postComment(this,3)" id="bac-send-3">Post</button>>Post</button>
@@ -2925,7 +3073,7 @@ body::after{
     <!-- REELS TAB -->
     <div id="blog-reels-tab" style="display:none">
       <div style="max-width:540px;margin:0 auto;padding:2rem 1rem;text-align:center">
-        <div style="font-size:2.5rem;margin-bottom:.8rem">🎬</div>
+        <div style="font-size:2rem;margin-bottom:.8rem;color:rgba(255,255,255,.25)"><i class="ph ph-film-strip"></i></div>
         <div style="font-family:var(--impact);font-size:1.4rem;color:#fff;letter-spacing:.1em;margin-bottom:.5rem">REELS COMING SOON</div>
         <div style="font-family:var(--body);font-size:.84rem;color:rgba(255,255,255,.35);line-height:1.7">
           Dr Sasa's video lessons, story clips and behind-the-scenes will live here.
@@ -2952,19 +3100,19 @@ body::after{
       <div class="bsm-title">Share this post</div>
       <div class="bsm-options">
         <div class="bsm-opt" onclick="share('link')">
-          <div class="bsm-icon">🔗</div>
+          <div class="bsm-icon"><i class="ph ph-link"></i></div>
           <div class="bsm-label">Copy Link</div>
         </div>
         <div class="bsm-opt" onclick="share('whatsapp')">
-          <div class="bsm-icon">💬</div>
+          <div class="bsm-icon"><i class="ph ph-chat-circle"></i></div>
           <div class="bsm-label">WhatsApp</div>
         </div>
         <div class="bsm-opt" onclick="share('instagram')">
-          <div class="bsm-icon">📸</div>
+          <div class="bsm-icon"><i class="ph ph-instagram-logo"></i></div>
           <div class="bsm-label">Instagram</div>
         </div>
         <div class="bsm-opt" onclick="share('facebook')">
-          <div class="bsm-icon">📘</div>
+          <div class="bsm-icon"><i class="ph ph-facebook-logo"></i></div>
           <div class="bsm-label">Facebook</div>
         </div>
         <div class="bsm-opt" onclick="share('twitter')">
@@ -2972,7 +3120,7 @@ body::after{
           <div class="bsm-label">X / Twitter</div>
         </div>
         <div class="bsm-opt" onclick="share('email')">
-          <div class="bsm-icon">📧</div>
+          <div class="bsm-icon"><i class="ph ph-envelope"></i></div>
           <div class="bsm-label">Email</div>
         </div>
       </div>
@@ -2998,7 +3146,7 @@ body::after{
           <div class="ytcs-item"><div class="ytcs-val">214K</div><div class="ytcs-key">Views</div></div>
         </div>
       </div>
-      <button class="yt-sub-btn" onclick="ytSubscribe(this)">🔔 Subscribe</button>
+      <button class="yt-sub-btn" onclick="ytSubscribe(this)"><i class="ph ph-bell"></i> Subscribe</button>
     </div>
 
     <div class="yt-filter-bar">
@@ -3039,7 +3187,7 @@ body::after{
 
     <div class="ctr" style="padding-bottom:3rem">
       <div class="nedfly-banner">
-        <div class="nedfly-icon">🚀</div>
+        <div class="nedfly-icon"><i class="ph ph-rocket"></i></div>
         <div class="nedfly-text">
           <div class="nedfly-title">Nedfly Integration — Coming Soon</div>
           <div class="nedfly-sub">Your course completions and watch history will sync with Nedfly for verified micro-credentials and digital badges.</div>
@@ -3133,11 +3281,11 @@ body::after{
           </div>
         </div>
         <div class="stripe-badges">
-          <div class="stripe-badge">🔒 SSL Secured</div>
-          <div class="stripe-badge">💳 Card &amp; EFT accepted</div>
+          <div class="stripe-badge"><i class="ph ph-lock-simple"></i> SSL Secured</div>
+          <div class="stripe-badge"><i class="ph ph-credit-card"></i> Card &amp; EFT accepted</div>
           <div class="stripe-badge">↩ Cancel anytime</div>
           <div class="stripe-badge">🇿🇦 Priced in Rands</div>
-          <div class="stripe-badge">📧 Invoice provided</div>
+          <div class="stripe-badge"><i class="ph ph-envelope"></i> Invoice provided</div>
         </div>
         <div class="plans-faq">
           <div class="sec-lbl" style="justify-content:center;margin:2.5rem 0 1.2rem"><span>Common Questions</span></div>
@@ -3147,7 +3295,7 @@ body::after{
           <div class="pfaq-item"><div class="pfaq-q" onclick="toggleFaq(this)">Discounts for schools or groups?</div><div class="pfaq-a">Yes — Mythopreneur includes up to 10 licences. For larger groups email <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7d15181111123d071413090e1210141e12080f0e180e531e1253071c">[email&#160;protected]</a></div></div>
         </div>
         <div class="nedfly-banner" style="margin-top:2.5rem">
-          <div class="nedfly-icon">🛸</div>
+          <div class="nedfly-icon"><i class="ph ph-flying-saucer"></i></div>
           <div class="nedfly-text">
             <div class="nedfly-title">Nedfly Credentials — Launching with Mythopreneur</div>
             <div class="nedfly-sub">Earn verified, portable digital credentials for every course — recognised by employers and institutions.</div>
@@ -3197,7 +3345,7 @@ body::after{
 
       <!-- VR badge -->
       <div style="position:absolute;top:1.2rem;right:1.2rem;z-index:10;display:flex;gap:.6rem;align-items:center">
-        <span class="acid-tag">🥽 VR Mode</span>
+        <span class="acid-tag"><i class="ph ph-eyeglasses"></i> VR Mode</span>
         <button id="vr-btn" onclick="enterVillageVR()" style="background:rgba(200,240,74,.15);border:1px solid var(--acid);color:var(--acid);font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;padding:.38rem .9rem;border-radius:6px;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(200,240,74,.25)'" onmouseout="this.style.background='rgba(200,240,74,.15)'">Enter VR</button>
       </div>
 
@@ -3229,7 +3377,7 @@ body::after{
         <div class="village-spot" id="spot-music" onclick="enterSpot('music')"
           style="left:72%;top:50%" title="Music Hut">
           <div class="vs-glow" style="background:radial-gradient(circle,rgba(212,98,26,.5),transparent 70%)"></div>
-          <div class="vs-icon">🥁</div>
+          <div class="vs-icon"><i class="ph ph-speaker-high"></i></div>
           <div class="vs-label">Music Hut</div>
         </div>
 
@@ -3245,7 +3393,7 @@ body::after{
         <div class="village-spot" id="spot-games" onclick="enterSpot('games-ground')"
           style="left:64%;top:32%" title="Games Ground">
           <div class="vs-glow" style="background:radial-gradient(circle,rgba(230,179,42,.4),transparent 70%)"></div>
-          <div class="vs-icon">🎮</div>
+          <div class="vs-icon"><i class="ph ph-game-controller"></i></div>
           <div class="vs-label">Games Ground</div>
         </div>
 
@@ -3253,7 +3401,7 @@ body::after{
         <div class="village-spot" id="spot-library" onclick="enterSpot('library')"
           style="left:46%;top:18%" title="Library Baobab">
           <div class="vs-glow" style="background:radial-gradient(circle,rgba(123,79,208,.4),transparent 70%)"></div>
-          <div class="vs-icon">📚</div>
+          <div class="vs-icon"><i class="ph ph-books"></i></div>
           <div class="vs-label">Library Baobab</div>
         </div>
 
@@ -3261,7 +3409,7 @@ body::after{
         <div class="village-spot" id="spot-audio" onclick="enterSpot('audio-clearing')"
           style="left:83%;top:42%" title="Audio Clearing">
           <div class="vs-glow" style="background:radial-gradient(circle,rgba(255,215,0,.35),transparent 70%)"></div>
-          <div class="vs-icon">🎵</div>
+          <div class="vs-icon"><i class="ph ph-music-notes"></i></div>
           <div class="vs-label">Audio Clearing</div>
         </div>
 
@@ -3431,13 +3579,13 @@ body::after{
         <h1>VR <em>Story</em><br>Village</h1>
         <p class="vr-hero-sub">Step inside an immersive African night. Choose a story, put on your VR glasses, and let Dr Sasa's world surround you. Compatible with Google Cardboard, Meta Quest and any WebXR headset.</p>
         <div class="vr-compat-strip">
-          <div class="vr-compat-badge">🟩 Google Cardboard</div>
-          <div class="vr-compat-badge">🟩 Meta Quest</div>
-          <div class="vr-compat-badge">🟩 Any WebXR Browser</div>
-          <div class="vr-compat-badge">🟩 Desktop 360° Mode</div>
+          <div class="vr-compat-badge"><span style="color:#6EE78E">●</span> Google Cardboard</div>
+          <div class="vr-compat-badge"><span style="color:#6EE78E">●</span> Meta Quest</div>
+          <div class="vr-compat-badge"><span style="color:#6EE78E">●</span> Any WebXR Browser</div>
+          <div class="vr-compat-badge"><span style="color:#6EE78E">●</span> Desktop 360° Mode</div>
         </div>
         <div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap">
-          <button class="btn" onclick="openVRStory(0)" style="font-size:.62rem;padding:.8rem 1.8rem">🥽 Enter VR Now</button>
+          <button class="btn" onclick="openVRStory(0)" style="font-size:.62rem;padding:.8rem 1.8rem"><i class="ph ph-eyeglasses"></i> Enter VR Now</button>
           <button class="btn btn-out" style="border-color:rgba(200,240,74,.3);color:var(--acid)" onclick="document.getElementById('vr-pods-section').scrollIntoView({behavior:'smooth'})">Browse Stories ↓</button>
         </div>
       </div>
@@ -3471,7 +3619,7 @@ body::after{
             </div>
           </div>
           <div class="vr-pod reveal stagger-2" onclick="openVRStory(1)">
-            <div class="vr-pod-scene" style="background:linear-gradient(135deg,#001208,#002510,#001208)"><span class="vr-pod-scene-icon">🌳</span></div>
+            <div class="vr-pod-scene" style="background:linear-gradient(135deg,#001208,#002510,#001208)"><span class="vr-pod-scene-icon"><i class="ph ph-tree"></i></span></div>
             <div class="vr-pod-body">
               <div class="vr-pod-lang">isiXhosa · English</div>
               <div class="vr-pod-title">Umthi Wezinyanya — The Ancestor Tree</div>
@@ -3481,7 +3629,7 @@ body::after{
             </div>
           </div>
           <div class="vr-pod reveal stagger-3" onclick="openVRStory(2)">
-            <div class="vr-pod-scene" style="background:linear-gradient(135deg,#08000f,#14002a,#08000f)"><span class="vr-pod-scene-icon">🌙</span></div>
+            <div class="vr-pod-scene" style="background:linear-gradient(135deg,#08000f,#14002a,#08000f)"><span class="vr-pod-scene-icon"><i class="ph ph-moon"></i></span></div>
             <div class="vr-pod-body">
               <div class="vr-pod-lang">Sesotho · English</div>
               <div class="vr-pod-title">Lullaby of the Moon Mothers</div>
@@ -3501,7 +3649,7 @@ body::after{
             </div>
           </div>
           <div class="vr-pod reveal stagger-5" onclick="openVRStory(4)">
-            <div class="vr-pod-scene" style="background:linear-gradient(135deg,#001020,#003060,#001020)"><span class="vr-pod-scene-icon">🐊</span></div>
+            <div class="vr-pod-scene" style="background:linear-gradient(135deg,#001020,#003060,#001020)"><span class="vr-pod-scene-icon"><i class="ph ph-waves"></i></span></div>
             <div class="vr-pod-body">
               <div class="vr-pod-lang">Tshivenda · English</div>
               <div class="vr-pod-title">Why the Crocodile Lives in Water</div>
@@ -3511,7 +3659,7 @@ body::after{
             </div>
           </div>
           <div class="vr-pod reveal stagger-6" onclick="openVRStory(5)">
-            <div class="vr-pod-scene" style="background:linear-gradient(135deg,#0a0010,#200050,#0a0010)"><span class="vr-pod-scene-icon">👑</span></div>
+            <div class="vr-pod-scene" style="background:linear-gradient(135deg,#0a0010,#200050,#0a0010)"><span class="vr-pod-scene-icon"><i class="ph ph-crown"></i></span></div>
             <div class="vr-pod-body">
               <div class="vr-pod-lang">Setswana · English</div>
               <div class="vr-pod-title">The Chief Who Forgot to Listen</div>
@@ -3521,7 +3669,7 @@ body::after{
             </div>
           </div>
           <div class="vr-pod reveal stagger-1" onclick="openVRStory(6)" style="border-color:rgba(245,118,26,.25)">
-            <div class="vr-pod-scene" style="background:linear-gradient(135deg,#0d0000,#2a0800,#0d0000)"><span class="vr-pod-scene-icon">🧡</span></div>
+            <div class="vr-pod-scene" style="background:linear-gradient(135deg,#0d0000,#2a0800,#0d0000)"><span class="vr-pod-scene-icon"><i class="ph ph-heart"></i></span></div>
             <div class="vr-pod-body">
               <div class="vr-pod-lang" style="color:var(--fire)">Dr Sasa · Exclusive</div>
               <div class="vr-pod-title">The Story That Built Zintsomi</div>
@@ -3531,7 +3679,7 @@ body::after{
             </div>
           </div>
           <div class="vr-pod reveal stagger-2" onclick="openVRStory(7)" style="border-color:rgba(123,79,208,.25)">
-            <div class="vr-pod-scene" style="background:linear-gradient(135deg,#04001a,#0d0030,#04001a)"><span class="vr-pod-scene-icon">🌍</span></div>
+            <div class="vr-pod-scene" style="background:linear-gradient(135deg,#04001a,#0d0030,#04001a)"><span class="vr-pod-scene-icon"><i class="ph ph-globe-hemisphere-west"></i></span></div>
             <div class="vr-pod-body">
               <div class="vr-pod-lang" style="color:#B088E8">Community · All Languages</div>
               <div class="vr-pod-title">Stories from the Community</div>
@@ -3545,10 +3693,10 @@ body::after{
         <div style="margin-top:3rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:var(--r-xl);padding:2rem 2.5rem">
           <div class="sec-lbl">How to Use VR Mode</div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.5rem;margin-top:1.2rem">
-            <div style="text-align:center"><div style="font-size:2rem;margin-bottom:.6rem">📱</div><div style="font-family:var(--display);font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.3rem">1. Open on Phone</div><div style="font-size:.74rem;color:rgba(255,255,255,.38);line-height:1.6">Open Zintsomi in any mobile browser (Chrome recommended)</div></div>
+            <div style="text-align:center"><div style="font-size:2rem;margin-bottom:.6rem"><i class="ph ph-device-mobile"></i></div><div style="font-family:var(--display);font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.3rem">1. Open on Phone</div><div style="font-size:.74rem;color:rgba(255,255,255,.38);line-height:1.6">Open Zintsomi in any mobile browser (Chrome recommended)</div></div>
             <div style="text-align:center"><div style="font-size:2rem;margin-bottom:.6rem">▶</div><div style="font-family:var(--display);font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.3rem">2. Press Play</div><div style="font-size:.74rem;color:rgba(255,255,255,.38);line-height:1.6">Tap any story pod and press the VR play button</div></div>
-            <div style="text-align:center"><div style="font-size:2rem;margin-bottom:.6rem">🥽</div><div style="font-family:var(--display);font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.3rem">3. Insert in Headset</div><div style="font-size:.74rem;color:rgba(255,255,255,.38);line-height:1.6">Place phone in Google Cardboard or compatible headset</div></div>
-            <div style="text-align:center"><div style="font-size:2rem;margin-bottom:.6rem">👂</div><div style="font-family:var(--display);font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.3rem">4. Listen & Explore</div><div style="font-size:.74rem;color:rgba(255,255,255,.38);line-height:1.6">Look around the 360° village as the story plays around you</div></div>
+            <div style="text-align:center"><div style="font-size:2rem;margin-bottom:.6rem"><i class="ph ph-eyeglasses"></i></div><div style="font-family:var(--display);font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.3rem">3. Insert in Headset</div><div style="font-size:.74rem;color:rgba(255,255,255,.38);line-height:1.6">Place phone in Google Cardboard or compatible headset</div></div>
+            <div style="text-align:center"><div style="font-size:2rem;margin-bottom:.6rem"><i class="ph ph-ear"></i></div><div style="font-family:var(--display);font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.3rem">4. Listen & Explore</div><div style="font-size:.74rem;color:rgba(255,255,255,.38);line-height:1.6">Look around the 360° village as the story plays around you</div></div>
           </div>
         </div>
       </div>
@@ -3587,6 +3735,9 @@ body::after{
       </div>
     </div>
   </div>
+
+  <!-- HOME WORLD -->
+  <div class="world active" id="home-world">
     <div class="home-hero">
       <!-- Huge background letterform watermark -->
       <div class="home-hero-bg-word" aria-hidden="true">STORY</div>
@@ -3688,7 +3839,7 @@ body::after{
             <div style="font-size:.75rem;color:rgba(255,255,255,.4);line-height:1.75">The village fire where every story is told. Upload an MP3, add a title, and your voice joins the circle. Free for all.</div>
           </div>
           <div class="reveal stagger-2" style="background:var(--glass);border:1px solid rgba(123,79,208,.2);border-radius:var(--r-xl);padding:1.5rem;backdrop-filter:blur(12px)">
-            <div style="font-size:2rem;margin-bottom:.7rem">🏘️</div>
+            <div style="font-size:2rem;margin-bottom:.7rem"><i class="ph ph-house-line"></i></div>
             <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.4rem">Community Wall</div>
             <div style="font-size:.75rem;color:rgba(255,255,255,.4);line-height:1.75">A live wall for subscribed members. Share your music, celebrate achievements, post your stories. It grows as the community grows.</div>
           </div>
@@ -3755,7 +3906,7 @@ body::after{
 
       </div>
     </div>
-  </div>
+  </div><!-- /home-world -->
 
   <!-- GAMES -->
   <div class="world" id="games-world">
@@ -3845,7 +3996,7 @@ body::after{
       <!-- Header -->
       <div style="display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2rem;background:rgba(0,0,0,.4);border-bottom:1px solid rgba(0,200,80,.1);flex-shrink:0">
         <div style="display:flex;align-items:center;gap:1rem">
-          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#0E3A18,#06200C);border:2px solid rgba(0,200,80,.3);display:flex;align-items:center;justify-content:center;font-size:1.3rem">🪢</div>
+          <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#0E3A18,#06200C);border:2px solid rgba(0,200,80,.3);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#6EE78E"><i class="ph ph-arrows-clockwise"></i></div>
           <div>
             <div style="font-family:var(--impact);font-size:1.3rem;letter-spacing:.14em;color:#6EE78E;text-shadow:0 0 20px rgba(0,200,80,.35)">KGATI</div>
             <div style="font-family:var(--mono);font-size:.42rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(0,200,80,.4)">Sotho &amp; Tswana Rope Game · South Africa</div>
@@ -3865,7 +4016,7 @@ body::after{
         <!-- Rope visual area -->
         <div id="kgati-overlay" style="width:100%;max-width:480px;height:110px;background:rgba(0,200,80,.04);border:1px solid rgba(0,200,80,.1);border-radius:16px;position:relative;overflow:hidden">
           <div class="kgati-rope"></div>
-          <div id="kgati-jumper" style="min-height:70px;display:flex;align-items:center;justify-content:center;position:relative;font-size:2.8rem">🧒</div>
+          <div id="kgati-jumper" style="min-height:70px;display:flex;align-items:center;justify-content:center;position:relative;font-size:2.4rem;color:#6EE78E"><i class="ph ph-person-simple-run"></i></div>
         </div>
         <!-- Pattern instruction -->
         <div style="background:rgba(0,200,80,.04);border:1px solid rgba(0,200,80,.1);border-radius:12px;padding:1rem 1.8rem;text-align:center;min-width:300px">
@@ -3951,7 +4102,7 @@ body::after{
             <button class="inst-btn" onclick="selectInst('uhadi',this)"><span class="inst-emoji"><i class="ph ph-music-note-simple"></i></span><span class="inst-name">Uhadi</span><span class="inst-origin">Xhosa · Musical Bow</span></button>
           </div>
           <div class="inst-play-area" id="inst-play-area">
-            <div class="inst-play-title">🥁 Djembe</div>
+            <div class="inst-play-title"><i class="ph ph-speaker-high"></i> Djembe</div>
             <p class="inst-play-sub">8 zones — bass, tone, slap. The heartbeat of West Africa. Click or tap to play.</p>
             <div class="djembe-pads">
               <div class="drum-pad dp1" onclick="playDrum(this,'bass')">Bass L</div>
@@ -3971,8 +4122,8 @@ body::after{
           <div class="rec-status" id="rec-status">READY</div>
           <div class="rec-timeline"><div class="rec-wave" id="rec-wave"></div></div>
           <div class="rec-controls">
-            <button class="rec-ctrl" id="play-ctrl" onclick="playback()">▶ Play</button>
-            <button class="rec-ctrl" id="loop-ctrl" onclick="toggleLoop()">↺ Loop</button>
+            <button class="rec-ctrl" id="play-ctrl" onclick="playback()"><i class="ph ph-play"></i> Play</button>
+            <button class="rec-ctrl" id="loop-ctrl" onclick="toggleLoop()"><i class="ph ph-repeat"></i> Loop</button>
             <button class="rec-ctrl" onclick="clearRec()"><i class="ph ph-x"></i> Clear</button>
           </div>
           <button class="post-wall-btn" onclick="postToWall()"><i class="ph ph-upload-simple"></i> Share Recording to Community Wall</button>
@@ -3994,16 +4145,19 @@ body::after{
         <div class="streak-bar"><div class="streak-fire"><i class="ph ph-fire"></i></div><div class="streak-info"><strong id="streak-count">7</strong><span>Day Streak</span></div><div class="streak-dots" id="streak-dots"></div></div>
       </div>
     </div>
+    <div style="background:#0D1018">
     <div class="ctr">
       <div class="puzzle-tabs">
-        <button class="ptab active" onclick="setPuzzleType('proverb')"><i class="ph ph-book-open"></i> Proverbs</button>
-        <button class="ptab" onclick="setPuzzleType('pattern')"><i class="ph ph-shapes"></i> Patterns</button>
-        <button class="ptab" onclick="setPuzzleType('logic')"><i class="ph ph-puzzle-piece"></i> Logic</button>
-        <button class="ptab" onclick="setPuzzleType('maths')"><i class="ph ph-calculator"></i> Maths</button>
-        <button class="ptab" onclick="setPuzzleType('science')"><i class="ph ph-flask"></i> Science</button>
-        <button class="ptab" onclick="setPuzzleType('drum')"><i class="ph ph-metronome"></i> Drum Memory</button>
+        <button class="p-tab active" onclick="setPuzzleType('proverb')"><i class="ph ph-book-open"></i> Proverbs</button>
+        <button class="p-tab" onclick="setPuzzleType('pattern')"><i class="ph ph-shapes"></i> Patterns</button>
+        <button class="p-tab" onclick="setPuzzleType('logic')"><i class="ph ph-puzzle-piece"></i> Logic</button>
+        <button class="p-tab" onclick="setPuzzleType('maths')"><i class="ph ph-calculator"></i> Maths</button>
+        <button class="p-tab" onclick="setPuzzleType('science')"><i class="ph ph-flask"></i> Science</button>
+        <button class="p-tab" onclick="setPuzzleType('drum')"><i class="ph ph-metronome"></i> Drum Memory</button>
+        <button class="p-tab" onclick="setPuzzleType('sudoku')"><i class="ph ph-grid-nine"></i> Sudoku</button>
       </div>
       <div class="puzzle-stage" id="puzzle-stage"></div>
+    </div>
     </div>
   </div>
 
@@ -4021,7 +4175,7 @@ body::after{
       <div class="tree-ui">
         <h2>The <span style="color:var(--ember)">Ancestor Tree</span></h2>
         <p>Every story told, game played, puzzle solved — grows this tree.<br>Your leaf lives here. Forever.</p>
-        <div class="tree-tooltip">🌱 Hover over a glowing leaf to see who contributed. Every leaf is a real learner in the Zintsomi community.</div>
+        <div class="tree-tooltip"><i class="ph ph-leaf"></i> Hover over a glowing leaf to see who contributed. Every leaf is a real learner in the Zintsomi community.</div>
         <div class="tree-actions">
           <button class="btn btn-blu" onclick="growLeaf()"><i class="ph ph-leaf"></i> Add Your Leaf</button>
           <button class="btn btn-out" style="border-color:rgba(100,181,232,.28);color:#64B5E8" onclick="showWorld('schools')">Learn → Earn Leaves</button>
@@ -4038,276 +4192,74 @@ body::after{
 
   <!-- SCHOOLS -->
   <div class="world" id="schools-world">
-    <div class="schools-hero" style="padding:0;height:340px;position:relative;overflow:hidden">
-      <canvas id="schools-canvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
-      <div style="position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:2rem">
-        <div class="sec-lbl" style="color:rgba(134,239,172,.45);justify-content:center">CAPS Aligned 2025</div>
-        <h2 style="font-family:var(--serif);font-size:clamp(2.3rem,5vw,3.8rem);font-weight:700;color:#fff">Schools <span style="color:#86EFAC;" style="color:var(--ember)">Hub</span></h2>
-        <p style="font-size:.88rem;color:rgba(255,255,255,.52);max-width:490px;margin:.7rem auto 1.4rem;line-height:1.85">Study notes, key formulas, practice questions and Dr Sasa's exam tips. Free for every South African learner.</p>
-        <div class="grade-pills"><button class="grade-pill priority active" onclick="setGrade(12)">Grade 12</button><button class="grade-pill" onclick="setGrade(11)">Grade 11</button><button class="grade-pill" onclick="setGrade(10)">Grade 10</button></div>
+    <div class="schools-hero">
+      <!-- warm gradient bg -->
+      <div class="sh-bg"></div>
+      <!-- vertical light streak -->
+      <div class="sh-streak"></div>
+      <!-- grain texture overlay -->
+      <div class="sh-grain"></div>
+
+      <!-- top meta bar -->
+      <div class="sh-meta">
+        <div class="sh-meta-left">
+          <div class="sh-meta-label">CAPS Aligned</div>
+          <div class="sh-meta-val">2025 Curriculum</div>
+        </div>
+        <div class="sh-meta-center">
+          <div class="sh-meta-label">Access</div>
+          <div class="sh-meta-val">100% Free · All Grades</div>
+        </div>
+        <div class="sh-meta-right">
+          <div class="sh-meta-label">Dr Sasa</div>
+          <div class="sh-meta-val">Zintsomi College</div>
+        </div>
       </div>
+
+      <!-- giant bleed type -->
+      <div class="sh-bleed-wrap">
+        <div class="sh-bleed-top">SCHOOLS</div>
+        <div class="sh-bleed-bot">HUB</div>
+      </div>
+
+      <!-- bottom-left tagline -->
+      <div class="sh-tagline">
+        <div>Study.</div>
+        <div>Learn.</div>
+        <div style="color:#fff">Grow.</div>
+      </div>
+
+      <!-- bottom-right grade pills -->
+      <div class="sh-grade-wrap">
+        <div class="sh-grade-label">Select your grade</div>
+        <div class="grade-pills">
+          <button class="grade-pill priority active" onclick="setGrade(12)">Grade 12</button>
+          <button class="grade-pill" onclick="setGrade(11)">Grade 11</button>
+          <button class="grade-pill" onclick="setGrade(10)">Grade 10</button>
+        </div>
+      </div>
+
     </div>
     <div class="ctr" style="padding-top:2.2rem">
-      <div class="subjects-nav">
-        <button class="sub-tab maths active" onclick="setSubject('maths')"><span class="sub-icon">📐</span>Mathematics</button>
-        <button class="sub-tab science" onclick="setSubject('science')"><span class="sub-icon">🔬</span>Physical Sciences</button>
-        <button class="sub-tab" onclick="setSubject('english')"><span class="sub-icon">📝</span>English HL</button>
-        <button class="sub-tab" onclick="setSubject('zulu')"><span class="sub-icon">🗣️</span>isiZulu</button>
-        <button class="sub-tab" onclick="setSubject('lifesci')"><span class="sub-icon">🧬</span>Life Sciences</button>
+      <div class="subjects-nav" style="display:flex;gap:.4rem;padding:1.2rem 2rem 0;background:#0D1018;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none">
+        <button class="sub-tab maths active" onclick="setSubject('maths')"><span class="sub-icon"><i class="ph ph-compass"></i></span>Mathematics</button>
+        <button class="sub-tab science" onclick="setSubject('science')"><span class="sub-icon"><i class="ph ph-flask"></i></span>Physical Sciences</button>
+        <button class="sub-tab" onclick="setSubject('english')"><span class="sub-icon"><i class="ph ph-book-open"></i></span>English HL</button>
+        <button class="sub-tab" onclick="setSubject('zulu')"><span class="sub-icon"><i class="ph ph-chat-circle-dots"></i></span>isiZulu</button>
+        <button class="sub-tab" onclick="setSubject('lifesci')"><span class="sub-icon"><i class="ph ph-dna"></i></span>Life Sciences</button>
       </div>
       <div class="topic-grid" id="topic-grid"></div>
     </div>
-
-    <!-- ZINTSOMI COURSES SECTION -->
-    <div class="zintsomi-section">
-      <div class="ctr">
-        <div class="sec-lbl" style="color:rgba(255,255,255,.25)">Zintsomi Learning Platform</div>
-        <h2 class="sec-title">Online <span style="color:var(--ember)">Courses</span> by Dr. Sasa</h2>
-        <p class="sec-sub" style="color:rgba(255,255,255,.42)">Storytelling and heritage courses hosted on zintsomicourses.co.za. Students receive a <strong style="color:#F5A040">certificate of attendance</strong> upon completion. Enrol directly — login, payment and certificates all handled on the platform.</p>
-        <div class="zcourses-grid">
-          <a class="zcourse" href="https://zintsomicourses.co.za/courses-details/folktale-studies" target="_blank">
-            <div class="zcourse-img zi2">🌿</div>
-            <div class="zcourse-level">Beginner</div>
-            <div class="zcourse-name">Folktale Studies</div>
-            <div class="zcourse-desc">The cultural significance and evolving role of folktales in African societies. Understand izinganekwane deeply — their structure, purpose and power in communities.</div>
-            <div class="zcourse-footer"><span class="zcourse-dr">Dr Sasa · Zintsomi</span><span class="zcourse-cta">Enrol Now →</span></div>
-          </a>
-          <a class="zcourse" href="https://zintsomicourses.co.za/courses-details/storytelling-in-business" target="_blank">
-            <div class="zcourse-img zi3">💼</div>
-            <div class="zcourse-level">Intermediate</div>
-            <div class="zcourse-name">Storytelling in Business</div>
-            <div class="zcourse-desc">Apply African storytelling — especially folktales — to business communication, branding and strategic leadership. An African lens on corporate narrative.</div>
-            <div class="zcourse-footer"><span class="zcourse-dr">Dr Sasa · Zintsomi</span><span class="zcourse-cta">Enrol Now →</span></div>
-          </a>
-          <a class="zcourse" href="https://zintsomicourses.co.za/courses-details/from-the-frontlines-preserving-south-africa-s-living-freedom-heritage" target="_blank">
-            <div class="zcourse-img zi4">🏛️</div>
-            <div class="zcourse-level">Beginner</div>
-            <div class="zcourse-name">From the Frontlines: Preserving South Africa's Living Freedom Heritage</div>
-            <div class="zcourse-desc">Transform memory into movement. Merges history, creativity and enterprise to preserve South Africa's liberation heritage through storytelling and community action.</div>
-            <div class="zcourse-footer"><span class="zcourse-dr">Dr Sasa · Zintsomi</span><span class="zcourse-cta">Enrol Now →</span></div>
-          </a>
-        </div>
-        <div style="text-align:center;margin-top:2rem"><a href="https://zintsomicourses.co.za/courses" target="_blank" class="btn btn-out" style="border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.6)">Browse All Courses on Zintsomi →</a></div>
+    <!-- FREE ACCESS BANNER -->
+    <div style="background:rgba(245,118,26,.06);border-top:1px solid rgba(245,118,26,.12);border-bottom:1px solid rgba(245,118,26,.12);padding:1.4rem 2rem;display:flex;align-items:center;justify-content:center;gap:1.2rem;flex-wrap:wrap;text-align:center">
+      <div style="font-size:1.1rem;color:var(--fire)"><i class="ph ph-check-circle"></i></div>
+      <div>
+        <div style="font-family:var(--display);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff">Schools Hub is 100% Free</div>
+        <div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.06em;color:rgba(255,255,255,.38);margin-top:.2rem">All study notes, formulas and practice questions — free for every South African learner</div>
       </div>
+      <button class="btn" style="background:var(--fire);flex-shrink:0;font-size:.52rem;padding:.5rem 1.2rem" onclick="showWorld('courses')"><i class="ph ph-books"></i> Explore Courses</button>
     </div>
 
-    <!-- SUBSCRIPTION TIERS -->
-    <div style="background:#F0F7F0;padding:4rem 0">
-      <div class="ctr">
-        <div class="sec-lbl">Membership</div>
-        <h2 class="sec-title">Choose Your <span style="color:var(--ember)">Plan</span></h2>
-        <p class="sec-sub">Start free. Grow at your own pace. Every tier supports the preservation of African oral heritage.</p>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:1.5rem">
-          <!-- FREE -->
-          <div style="background:#fff;border-radius:10px;padding:2rem;border:2px solid rgba(255,255,255,.07);display:flex;flex-direction:column;gap:.8rem">
-            <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35)">Free Forever</div>
-            <div style="font-family:var(--serif);font-size:2.2rem;font-weight:700;color:var(--ink)">R0<span style="font-size:1rem;font-weight:300;color:rgba(255,255,255,.35)">/month</span></div>
-            <div style="font-family:var(--display);font-size:.9rem;font-weight:700;color:var(--ink)">Explorer</div>
-            <ul style="list-style:none;font-size:.83rem;color:rgba(255,255,255,.6);line-height:2;flex:1">
-              <li><i class="ph ph-check"></i> All 4 interactive games</li>
-              <li><i class="ph ph-check"></i> Music studio (play only)</li>
-              <li><i class="ph ph-check"></i> Daily brain teasers</li>
-              <li><i class="ph ph-check"></i> Sample study notes</li>
-              <li><i class="ph ph-check"></i> Community wall (view)</li>
-              <li><i class="ph ph-check"></i> Folktale introductions</li>
-              <li style="color:rgba(255,255,255,.35)"><i class="ph ph-x"></i> Full Schools Hub notes</li>
-              <li style="color:rgba(255,255,255,.35)"><i class="ph ph-x"></i> Audio archive</li>
-              <li style="color:rgba(255,255,255,.35)">✗ Record & share music</li>
-            </ul>
-            <button class="btn btn-out" style="width:100%;justify-content:center">Get Started Free</button>
-          </div>
-          <!-- PREMIUM -->
-          <div style="background:rgba(11,18,30,.5);border-radius:10px;padding:2rem;border:2px solid var(--fire);display:flex;flex-direction:column;gap:.8rem;position:relative">
-            <div style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--fire);font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;padding:.28rem .9rem;border-radius:20px;white-space:nowrap">Most Popular</div>
-            <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35)">Premium</div>
-            <div style="font-family:var(--serif);font-size:2.2rem;font-weight:700;color:#FFD700">R65<span style="font-size:1rem;font-weight:300;color:rgba(255,255,255,.38)">/month</span></div>
-            <div style="font-family:var(--display);font-size:.9rem;font-weight:700;color:#fff">Community Member</div>
-            <ul style="list-style:none;font-size:.83rem;color:rgba(255,255,255,.62);line-height:2;flex:1">
-              <li style="color:#FFD700"><i class="ph ph-check"></i> Everything in Free</li>
-              <li><i class="ph ph-check"></i> Full Schools Hub (all grades)</li>
-              <li><i class="ph ph-check"></i> Complete audio archive</li>
-              <li>✓ Record & share music</li>
-              <li><i class="ph ph-check"></i> Upload to Community Voices</li>
-              <li><i class="ph ph-check"></i> Ancestor Tree leaf</li>
-              <li><i class="ph ph-check"></i> Monthly live storytelling event</li>
-              <li><i class="ph ph-check"></i> Certificate of attendance (courses)</li>
-              <li><i class="ph ph-check"></i> Priority support</li>
-            </ul>
-            <button class="btn" style="width:100%;justify-content:center;background:var(--fire)">Join Premium</button>
-          </div>
-          <!-- INSTITUTIONAL -->
-          <div style="background:#fff;border-radius:10px;padding:2rem;border:2px solid var(--green);display:flex;flex-direction:column;gap:.8rem">
-            <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:var(--green)">Schools & Libraries</div>
-            <div style="font-family:var(--serif);font-size:2.2rem;font-weight:700;color:var(--ink)">Custom<span style="font-size:1rem;font-weight:300;color:rgba(255,255,255,.35)"> pricing</span></div>
-            <div style="font-family:var(--display);font-size:.9rem;font-weight:700;color:var(--ink)">Institutional</div>
-            <ul style="list-style:none;font-size:.83rem;color:rgba(255,255,255,.6);line-height:2;flex:1">
-              <li style="color:var(--green)">✓ Everything in Premium</li>
-              <li>✓ Bulk learner licences</li>
-              <li>✓ Classroom dashboard</li>
-              <li>✓ Teacher admin tools</li>
-              <li>✓ CAPS curriculum integration</li>
-              <li>✓ Custom storytelling workshops</li>
-              <li>✓ School branding options</li>
-              <li>✓ NGO & library rates available</li>
-            </ul>
-            <button class="btn btn-grn" style="width:100%;justify-content:center" onclick="alert('Email us at hello@zintsomicourses.co.za for institutional pricing.')">Contact Us</button>
-          </div>
-        </div>
-        <p style="text-align:center;font-family:var(--mono);font-size:.5rem;letter-spacing:.07em;color:rgba(255,255,255,.35);margin-top:1.2rem">📶 Low-bandwidth? All free content is available in audio-first, text-summary format — accessible on any connection.</p>
-      </div>
-    </div>
-
-    <!-- COMMUNITY VOICES -->
-    <div style="background:rgba(11,18,30,.5);padding:4rem 0">
-      <div class="ctr">
-        <div class="sec-lbl" style="color:rgba(255,255,255,.25)">Community Voices</div>
-        <h2 class="sec-title" style="color:#fff">Share Your <span style="color:var(--ember)">Voice</span></h2>
-        <p style="font-size:.9rem;color:rgba(255,255,255,.42);max-width:520px;margin:.5rem 0 2rem;line-height:1.85;font-weight:300">Upload your songs, riddles, lullabies, proverbs and oral stories. Build Africa's living archive — together.</p>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem">
-          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1.4rem;text-align:center;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(202,92,8,.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'">
-            <div style="font-size:2rem;margin-bottom:.6rem">🎵</div>
-            <div style="font-family:var(--display);font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.3rem">Songs & Lullabies</div>
-            <div style="font-size:.72rem;color:rgba(255,255,255,.32);line-height:1.55">Umemolo, izihlabelelo, work songs, ceremonial</div>
-          </div>
-          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1.4rem;text-align:center;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(202,92,8,.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'">
-            <div style="font-size:2rem;margin-bottom:.6rem">📖</div>
-            <div style="font-family:var(--display);font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.3rem">Stories & Folktales</div>
-            <div style="font-size:.72rem;color:rgba(255,255,255,.32);line-height:1.55">Izinganekwane in any African language</div>
-          </div>
-          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1.4rem;text-align:center;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(202,92,8,.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'">
-            <div style="font-size:2rem;margin-bottom:.6rem">🧩</div>
-            <div style="font-family:var(--display);font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.3rem">Riddles & Proverbs</div>
-            <div style="font-size:.72rem;color:rgba(255,255,255,.32);line-height:1.55">Izaga, iziphicaphicwano, sayings from your community</div>
-          </div>
-          <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:1.4rem;text-align:center;cursor:pointer;transition:border-color .2s" onmouseover="this.style.borderColor='rgba(202,92,8,.5)'" onmouseout="this.style.borderColor='rgba(255,255,255,.08)'">
-            <div style="font-size:2rem;margin-bottom:.6rem">🎮</div>
-            <div style="font-family:var(--display);font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.3rem">Children's Games</div>
-            <div style="font-size:.72rem;color:rgba(255,255,255,.32);line-height:1.55">Oral games, clapping songs, playground traditions</div>
-          </div>
-        </div>
-        <div style="background:rgba(255,255,255,.04);border:1px dashed rgba(202,92,8,.35);border-radius:8px;padding:2rem;text-align:center">
-          <p style="font-family:var(--serif);font-size:1.15rem;font-style:normal;color:rgba(255,255,255,.55);margin-bottom:1.2rem">Upload portal opening Year 1. Register your interest to be first in line.</p>
-          <div style="display:flex;gap:.7rem;max-width:420px;margin:0 auto">
-            <input id="cv-email" type="email" placeholder="your@email.com" style="flex:1;padding:.65rem 1rem;border-radius:4px;border:1.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:#fff;font-family:var(--body);font-size:.88rem;outline:none">
-            <button class="btn" onclick="registerCV()" style="white-space:nowrap">Register Interest</button>
-          </div>
-          <div id="cv-confirm" style="display:none;font-family:var(--mono);font-size:.52rem;letter-spacing:.07em;color:#6EE78E;margin-top:.8rem">✓ Registered! We'll notify you when Community Voices launches.</div>
-        </div>
-        <div style="margin-top:2rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,.07)">
-          <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:.8rem">Supported Languages (Year 2+)</div>
-          <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-            <span style="font-family:var(--display);font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">isiZulu</span>
-            <span style="font-family:var(--display);font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">isiXhosa</span>
-            <span style="font-family:var(--display);font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">Sesotho</span>
-            <span style="font-family:var(--display);font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">Setswana</span>
-            <span style="font-family:var(--display);font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">Sepedi</span>
-            <span style="font-family:var(--display);font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">Tshivenda</span>
-            <span style="font-family:var(--display);font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">Xitsonga</span>
-            <span style="font-family:var(--display);font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">SiSwati</span>
-            <span style="font-family:var(--display);font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">Afrikaans</span>
-            <span style="font-family:var(--display);font-size:.62rem;font-weight:700;padding:.28rem .75rem;border-radius:20px;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.55)">+ More</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3-YEAR ROADMAP -->
-    <div style="background:#fff;padding:4rem 0">
-      <div class="ctr">
-        <div class="sec-lbl">Vision</div>
-        <h2 class="sec-title">Our 3-Year <span style="color:var(--ember)">Roadmap</span></h2>
-        <p class="sec-sub">From foundation to Africa's premier Storytelling College — step by step.</p>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:1.5rem">
-          <!-- YEAR 1 -->
-          <div style="border-radius:10px;overflow:hidden;border:2px solid var(--fire)">
-            <div style="background:var(--fire);padding:1.2rem 1.5rem">
-              <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:.3rem">2025 – 2026</div>
-              <div style="font-family:var(--serif);font-size:1.5rem;font-weight:700;color:#fff">Year 1</div>
-              <div style="font-family:var(--display);font-size:.72rem;font-weight:700;color:rgba(255,255,255,.75)">Foundation & Early Growth</div>
-            </div>
-            <div style="padding:1.4rem;background:#fff">
-              <ul style="list-style:none;font-size:.8rem;color:rgba(255,255,255,.6);line-height:2.1">
-                <li>🎯 Launch free intro content (folktales, riddles, audio clips)</li>
-                <li>🎯 Community Voices submission portal</li>
-                <li>🎯 Low-bandwidth audio-first formats</li>
-                <li>🎯 1,000–3,000 free users</li>
-                <li>🎯 100–300 paid subscribers</li>
-                <li>🎯 2–3 school partnerships</li>
-                <li>🎯 Expand lullabies, proverbs, children's games</li>
-              </ul>
-              <div style="margin-top:1rem;padding:.8rem;background:rgba(202,92,8,.05);border-radius:5px;border-left:3px solid var(--fire)">
-                <div style="font-family:var(--mono);font-size:.48rem;letter-spacing:.07em;text-transform:uppercase;color:var(--fire)">Subscriber Target</div>
-                <div style="font-family:var(--serif);font-size:1.1rem;font-weight:700;color:var(--ink)">100–300 paid · 3,000 free</div>
-              </div>
-            </div>
-          </div>
-          <!-- YEAR 2 -->
-          <div style="border-radius:10px;overflow:hidden;border:2px solid var(--blue)">
-            <div style="background:var(--blue);padding:1.2rem 1.5rem">
-              <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:.3rem">2026 – 2027</div>
-              <div style="font-family:var(--serif);font-size:1.5rem;font-weight:700;color:#fff">Year 2</div>
-              <div style="font-family:var(--display);font-size:.72rem;font-weight:700;color:rgba(255,255,255,.75)">Expansion & Partnerships</div>
-            </div>
-            <div style="padding:1.4rem;background:#fff">
-              <ul style="list-style:none;font-size:.8rem;color:rgba(255,255,255,.6);line-height:2.1">
-                <li>🚀 University & school curriculum integration</li>
-                <li>🚀 Multilingual content: isiZulu, isiXhosa, Sesotho</li>
-                <li>🚀 Live storytelling forums & discussion spaces</li>
-                <li>🚀 Premium tier + institutional licences</li>
-                <li>🚀 10–15 school/university partnerships</li>
-                <li>🚀 Expand VR worlds with multilingual narration</li>
-                <li>🚀 10,000–15,000 free users</li>
-              </ul>
-              <div style="margin-top:1rem;padding:.8rem;background:rgba(26,110,168,.05);border-radius:5px;border-left:3px solid var(--blue)">
-                <div style="font-family:var(--mono);font-size:.48rem;letter-spacing:.07em;text-transform:uppercase;color:var(--blue)">Subscriber Target</div>
-                <div style="font-family:var(--serif);font-size:1.1rem;font-weight:700;color:var(--ink)">1,500–2,000 paid · 15,000 free</div>
-              </div>
-            </div>
-          </div>
-          <!-- YEAR 3 -->
-          <div style="border-radius:10px;overflow:hidden;border:2px solid var(--green)">
-            <div style="background:var(--green);padding:1.2rem 1.5rem">
-              <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:.3rem">2027 – 2028</div>
-              <div style="font-family:var(--serif);font-size:1.5rem;font-weight:700;color:#fff">Year 3</div>
-              <div style="font-family:var(--display);font-size:.72rem;font-weight:700;color:rgba(255,255,255,.75)">Full Storytelling College</div>
-            </div>
-            <div style="padding:1.4rem;background:#fff">
-              <ul style="list-style:none;font-size:.8rem;color:rgba(255,255,255,.6);line-height:2.1">
-                <li>🌍 Searchable African oral heritage archive</li>
-                <li>🌍 Global reach — worldwide accessibility</li>
-                <li>🌍 AI-assisted storytelling in African languages</li>
-                <li>🌍 50+ school, university & NGO partnerships</li>
-                <li>🌍 Government & cultural institution collaborations</li>
-                <li>🌍 Licensing, events, educational partnerships revenue</li>
-                <li>🌍 50,000–70,000 free users worldwide</li>
-              </ul>
-              <div style="margin-top:1rem;padding:.8rem;background:rgba(30,132,73,.05);border-radius:5px;border-left:3px solid var(--green)">
-                <div style="font-family:var(--mono);font-size:.48rem;letter-spacing:.07em;text-transform:uppercase;color:var(--green)">Subscriber Target</div>
-                <div style="font-family:var(--serif);font-size:1.1rem;font-weight:700;color:var(--ink)">8,000–12,000 paid · 70,000 free</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- GROWTH TABLE -->
-        <div style="margin-top:2.5rem;overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse;font-size:.82rem">
-            <thead>
-              <tr style="background:rgba(11,18,30,.5)">
-                <th style="padding:.8rem 1.2rem;text-align:left;font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5)">Year</th>
-                <th style="padding:.8rem 1.2rem;text-align:left;font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5)">Free Users</th>
-                <th style="padding:.8rem 1.2rem;text-align:left;font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5)">Paid Subscribers</th>
-                <th style="padding:.8rem 1.2rem;text-align:left;font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5)">Institutional Partners</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style="border-bottom:1px solid rgba(255,255,255,.07)"><td style="padding:.9rem 1.2rem;font-family:var(--display);font-weight:700;color:var(--fire)">Year 1</td><td style="padding:.9rem 1.2rem;color:rgba(255,255,255,.6)">1,000 – 3,000</td><td style="padding:.9rem 1.2rem;color:rgba(255,255,255,.6)">100 – 300</td><td style="padding:.9rem 1.2rem;color:rgba(255,255,255,.6)">2 – 3</td></tr>
-              <tr style="border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02)"><td style="padding:.9rem 1.2rem;font-family:var(--display);font-weight:700;color:var(--blue)">Year 2</td><td style="padding:.9rem 1.2rem;color:rgba(255,255,255,.6)">10,000 – 15,000</td><td style="padding:.9rem 1.2rem;color:rgba(255,255,255,.6)">1,500 – 2,000</td><td style="padding:.9rem 1.2rem;color:rgba(255,255,255,.6)">10 – 15</td></tr>
-              <tr style="border-bottom:1px solid rgba(255,255,255,.07)"><td style="padding:.9rem 1.2rem;font-family:var(--display);font-weight:700;color:var(--green)">Year 3</td><td style="padding:.9rem 1.2rem;color:rgba(255,255,255,.6)">50,000 – 70,000</td><td style="padding:.9rem 1.2rem;color:rgba(255,255,255,.6)">8,000 – 12,000</td><td style="padding:.9rem 1.2rem;color:rgba(255,255,255,.6)">50+</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- NOTES OVERLAY -->
@@ -4390,7 +4342,7 @@ body::after{
       <div class="audio-grid">
         <div class="audio-card"><div class="ac-art ac-art-1"><span class="ac-vinyl-icon">💃</span><span class="ac-coming">Coming Soon</span></div><div class="ac-body"><div class="ac-name">Umemolo Songs</div><div class="ac-desc">Celebration songs at coming-of-age ceremonies.</div><button class="ac-notify">🔔 Notify me when live</button></div></div>
         <div class="audio-card"><div class="ac-art ac-art-2"><span class="ac-vinyl-icon">📖</span><span class="ac-coming">Coming Soon</span></div><div class="ac-body"><div class="ac-name">Izinganekwane</div><div class="ac-desc">Folktales told in oral tradition — Dr Sasa's voice.</div><button class="ac-notify">🔔 Notify me when live</button></div></div>
-        <div class="audio-card"><div class="ac-art ac-art-3"><span class="ac-vinyl-icon">🌙</span><span class="ac-coming">Coming Soon</span></div><div class="ac-body"><div class="ac-name">Lullabies</div><div class="ac-desc">Izihlabelelo — gentle songs carrying children to sleep.</div><button class="ac-notify">🔔 Notify me when live</button></div></div>
+        <div class="audio-card"><div class="ac-art ac-art-3"><span class="ac-vinyl-icon"><i class="ph ph-moon"></i></span><span class="ac-coming">Coming Soon</span></div><div class="ac-body"><div class="ac-name">Lullabies</div><div class="ac-desc">Izihlabelelo — gentle songs carrying children to sleep.</div><button class="ac-notify">🔔 Notify me when live</button></div></div>
         <div class="audio-card"><div class="ac-art ac-art-4"><span class="ac-vinyl-icon">⚒️</span><span class="ac-coming">Coming Soon</span></div><div class="ac-body"><div class="ac-name">Work Songs</div><div class="ac-desc">Songs that turned labour into music and community.</div><button class="ac-notify">🔔 Notify me when live</button></div></div>
         <div class="audio-card"><div class="ac-art ac-art-5"><span class="ac-vinyl-icon">🌿</span><span class="ac-coming">Coming Soon</span></div><div class="ac-body"><div class="ac-name">Ceremonial Songs</div><div class="ac-desc">Sacred songs for weddings, funerals and initiations.</div><button class="ac-notify">🔔 Notify me when live</button></div></div>
         <div class="audio-card"><div class="ac-art ac-art-6"><span class="ac-vinyl-icon">🎓</span><span class="ac-coming">Coming Soon</span></div><div class="ac-body"><div class="ac-name">Dr Sasa Lectures</div><div class="ac-desc">Audio versions of Dr Sasa's cultural talks and storytelling lectures.</div><button class="ac-notify">🔔 Notify me when live</button></div></div>
@@ -4834,8 +4786,10 @@ function showWorld(id){
   document.querySelectorAll('.world').forEach(function(w){w.classList.remove('active')});
   document.querySelectorAll('.npill').forEach(function(p){p.classList.remove('active')});
   var w=document.getElementById(id+'-world');if(w)w.classList.add('active');
-  var map={home:0,village:1,vrvillage:2,games:3,instruments:4,brain:5,tree:6,schools:7,courses:8,audio:9,blog:10,youtube:11,subscribe:12};
-  // village uses its own world div
+  // Show/hide back button
+  var backBtn=document.getElementById('back-home-btn');
+  if(backBtn){if(id==='home'){backBtn.classList.remove('visible')}else{backBtn.classList.add('visible')}}
+  // village special case
   if(id==='village'){
     document.querySelectorAll('.world').forEach(function(w){w.classList.remove('active')});
     document.querySelectorAll('.npill').forEach(function(p){p.classList.remove('active')});
@@ -4844,7 +4798,6 @@ function showWorld(id){
     window.scrollTo({top:0,behavior:'smooth'});
     return;
   }
-  var pills=document.querySelectorAll('.npill');
   var allPills=document.querySelectorAll('.npill');
   allPills.forEach(function(p){ if(p.getAttribute('onclick')==="showWorld('"+id+"')") p.classList.add('active'); });
   window.scrollTo({top:0,behavior:'smooth'});
@@ -4883,7 +4836,7 @@ function initFireflies(){
 
 // ════ DIKETO ════
 var dSeq=[],dPlayer=[],dState='idle',dScore=0,dBest=0,dLevel=1;
-var dEmojis=['🪨','🟠','🔵','🟢','🟡'];
+var dEmojis=['◉','◆','●','◈','◇'];
 function startDiketo(){dSeq=[];dPlayer=[];dState='showing';dScore=0;dLevel=1;document.getElementById('d-score').textContent=0;document.getElementById('d-level').textContent=1;buildDiketoRound()}
 function buildDiketoRound(){
   var len=2+dLevel;while(dSeq.length<len)dSeq.push(Math.floor(Math.random()*5));
@@ -5187,7 +5140,7 @@ function selectInst(inst,btn){
   var uFreqs=[82,110,146],uNames=['Low','Mid','High'];
   var uColors=['#E6B32A','#CA5C08','#2E8FCC'];
   if(inst==='djembe'){
-    area.innerHTML='<div class="inst-play-title">🥁 Djembe</div><p class="inst-play-sub">8 zones — bass, tone, slap. The heartbeat of West Africa.</p><div class="djembe-pads"><div class="drum-pad dp1" onclick="playDrum(this,\'bass\')">Bass L</div><div class="drum-pad dp2" onclick="playDrum(this,\'tone\')">Tone L</div><div class="drum-pad dp3" onclick="playDrum(this,\'slap\')">Slap L</div><div class="drum-pad dp4" onclick="playDrum(this,\'open\')">Open</div><div class="drum-pad dp5" onclick="playDrum(this,\'slap\')">Slap R</div><div class="drum-pad dp6" onclick="playDrum(this,\'tone\')">Tone R</div><div class="drum-pad dp7" onclick="playDrum(this,\'bass\')">Bass R</div><div class="drum-pad dp8" onclick="playDrum(this,\'mute\')">Mute</div></div>';
+    area.innerHTML='<div class="inst-play-title"><i class="ph ph-speaker-high"></i> Djembe</div><p class="inst-play-sub">8 zones — bass, tone, slap. The heartbeat of West Africa.</p><div class="djembe-pads"><div class="drum-pad dp1" onclick="playDrum(this,\'bass\')">Bass L</div><div class="drum-pad dp2" onclick="playDrum(this,\'tone\')">Tone L</div><div class="drum-pad dp3" onclick="playDrum(this,\'slap\')">Slap L</div><div class="drum-pad dp4" onclick="playDrum(this,\'open\')">Open</div><div class="drum-pad dp5" onclick="playDrum(this,\'slap\')">Slap R</div><div class="drum-pad dp6" onclick="playDrum(this,\'tone\')">Tone R</div><div class="drum-pad dp7" onclick="playDrum(this,\'bass\')">Bass R</div><div class="drum-pad dp8" onclick="playDrum(this,\'mute\')">Mute</div></div>';
   } else if(inst==='marimba'){
     var keys='';mFreqs.forEach(function(f,i){var h=100+i*5;var bg=i%2===0?'linear-gradient(180deg,#8B6914,#5A4008)':'linear-gradient(180deg,#5A4008,#3A2800)';keys+='<div class="marimba-key" style="height:'+h+'px;background:'+bg+'" onclick="playMarimba(this,'+f+')"><span class="mkey-label">'+mNames[i]+'</span></div>'});
     area.innerHTML='<div class="inst-play-title">🎹 Marimba</div><p class="inst-play-sub">The wooden-keyed instrument of Southern Africa. 12 keys — each note resonating with warmth and rhythm.</p><div class="marimba-keys">'+keys+'</div>';
@@ -5207,9 +5160,9 @@ function initStreakDots(){
 }
 function setPuzzleType(t){
   puzzleType=t;puzzleIdx=0;
-  document.querySelectorAll('.ptab').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.p-tab').forEach(function(p){p.classList.remove('active')});
   var types=['proverb','pattern','logic','maths','science','drum'];
-  var tabs=document.querySelectorAll('.ptab');
+  var tabs=document.querySelectorAll('.p-tab');
   var idx=types.indexOf(t);if(tabs[idx])tabs[idx].classList.add('active');
   renderPuzzle();
 }
@@ -5250,8 +5203,210 @@ var PZ={
   ]
 };
 
+
+// ════ SUDOKU ENGINE ════
+var SDK = {
+  board: [],        // current board (0=empty)
+  solution: [],     // full solution
+  given: [],        // which cells are pre-filled
+  selected: -1,     // selected cell index
+  level: 'easy',
+  mistakes: 0,
+  maxMistakes: 3,
+  timer: 0,
+  timerInterval: null,
+  complete: false,
+
+  // 81-cell flat arrays — [row*9+col]
+  puzzles: {
+    easy: [
+      { g:[5,3,0,0,7,0,0,0,0, 6,0,0,1,9,5,0,0,0, 0,9,8,0,0,0,0,6,0, 8,0,0,0,6,0,0,0,3, 4,0,0,8,0,3,0,0,1, 7,0,0,0,2,0,0,0,6, 0,6,0,0,0,0,2,8,0, 0,0,0,4,1,9,0,0,5, 0,0,0,0,8,0,0,7,9],
+             s:[5,3,4,6,7,8,9,1,2, 6,7,2,1,9,5,3,4,8, 1,9,8,3,4,2,5,6,7, 8,5,9,7,6,1,4,2,3, 4,2,6,8,5,3,7,9,1, 7,1,3,9,2,4,8,5,6, 9,6,1,5,3,7,2,8,4, 2,8,7,4,1,9,6,3,5, 3,4,5,2,8,6,1,7,9] },
+      { g:[0,0,0,2,6,0,7,0,1, 6,8,0,0,7,0,0,9,0, 1,9,0,0,0,4,5,0,0, 8,2,0,1,0,0,0,4,0, 0,0,4,6,0,2,9,0,0, 0,5,0,0,0,3,0,2,8, 0,0,9,3,0,0,0,7,4, 0,4,0,0,5,0,0,3,6, 7,0,3,0,1,8,0,0,0],
+             s:[4,3,5,2,6,9,7,8,1, 6,8,2,5,7,1,4,9,3, 1,9,7,8,3,4,5,6,2, 8,2,6,1,9,5,3,4,7, 3,7,4,6,8,2,9,1,5, 9,5,1,7,4,3,6,2,8, 5,1,9,3,2,6,8,7,4, 2,4,8,9,5,7,1,3,6, 7,6,3,4,1,8,2,5,9] }
+    ],
+    medium: [
+      { g:[0,0,0,0,0,0,0,0,0, 0,0,0,0,0,3,0,8,5, 0,0,1,0,2,0,0,0,0, 0,0,0,5,0,7,0,0,0, 0,0,4,0,0,0,1,0,0, 0,9,0,0,0,0,0,0,0, 5,0,0,0,0,0,0,7,3, 0,0,2,0,1,0,0,0,0, 0,0,0,0,4,0,0,0,9],
+             s:[9,8,7,6,5,4,3,2,1, 2,4,6,1,7,3,9,8,5, 3,5,1,9,2,8,7,4,6, 1,2,8,5,3,7,6,9,4, 6,3,4,8,9,2,1,5,7, 7,9,5,4,6,1,8,3,2, 5,1,9,2,8,6,4,7,3, 4,7,2,3,1,9,5,6,8, 8,6,3,7,4,5,2,1,9] },
+      { g:[0,2,0,6,0,8,0,0,0, 5,8,0,0,0,9,7,0,0, 0,0,0,0,4,0,0,0,0, 3,7,0,0,0,0,5,0,0, 6,0,0,0,0,0,0,0,4, 0,0,8,0,0,0,0,1,3, 0,0,0,0,2,0,0,0,0, 0,0,9,8,0,0,0,3,6, 0,0,0,3,0,6,0,9,0],
+             s:[1,2,3,6,7,8,9,4,5, 5,8,4,2,3,9,7,6,1, 9,6,7,1,4,5,3,2,8, 3,7,2,4,6,1,5,8,9, 6,9,1,5,8,3,2,7,4, 4,5,8,7,9,2,6,1,3, 8,3,6,9,2,4,1,5,7, 2,1,9,8,5,7,4,3,6, 7,4,5,3,1,6,8,9,2] }
+    ],
+    hard: [
+      { g:[8,0,0,0,0,0,0,0,0, 0,0,3,6,0,0,0,0,0, 0,7,0,0,9,0,2,0,0, 0,5,0,0,0,7,0,0,0, 0,0,0,0,4,5,7,0,0, 0,0,0,1,0,0,0,3,0, 0,0,1,0,0,0,0,6,8, 0,0,8,5,0,0,0,1,0, 0,9,0,0,0,0,4,0,0],
+             s:[8,1,2,7,5,3,6,4,9, 9,4,3,6,8,2,1,7,5, 6,7,5,4,9,1,2,8,3, 1,5,4,2,3,7,8,9,6, 3,6,9,8,4,5,7,2,1, 2,8,7,1,6,9,5,3,4, 5,2,1,9,7,4,3,6,8, 4,3,8,5,2,6,9,1,7, 7,9,6,3,1,8,4,5,2] },
+      { g:[0,0,0,0,0,0,0,0,1, 4,0,0,0,0,0,0,0,0, 0,2,0,0,0,0,0,0,0, 0,0,0,0,5,0,4,0,7, 0,0,8,0,0,0,3,0,0, 0,0,1,0,9,0,0,0,0, 3,0,0,4,0,0,2,0,0, 0,5,0,1,0,0,0,0,0, 0,0,0,8,0,6,0,0,0],
+             s:[6,9,3,7,8,4,5,2,1, 4,8,7,5,1,2,9,3,6, 1,2,5,9,6,3,8,7,4, 9,3,2,6,5,1,4,8,7, 5,6,8,2,4,7,3,1,9, 7,4,1,3,9,8,6,5,2, 3,1,6,4,7,9,2,5,8, 8,5,9,1,2,3,7,4,6, 2,7,4,8,3,6,1,9,5] }
+    ]
+  },
+
+  startNew: function(level) {
+    this.level = level || this.level;
+    this.mistakes = 0;
+    this.complete = false;
+    this.selected = -1;
+    clearInterval(this.timerInterval);
+    this.timer = 0;
+
+    var pool = this.puzzles[this.level];
+    var puzzle = pool[Math.floor(Math.random() * pool.length)];
+    this.board = puzzle.g.slice();
+    this.solution = puzzle.s.slice();
+    this.given = puzzle.g.map(function(v){ return v !== 0; });
+
+    this.timerInterval = setInterval(function(){
+      SDK.timer++;
+      var el = document.getElementById('sdk-timer');
+      if(el) el.textContent = SDK.formatTime(SDK.timer);
+    }, 1000);
+
+    this.render();
+  },
+
+  formatTime: function(s) {
+    var m = Math.floor(s/60);
+    var sec = s%60;
+    return (m<10?'0':'')+m+':'+(sec<10?'0':'')+sec;
+  },
+
+  selectCell: function(idx) {
+    if(this.given[idx] || this.complete) return;
+    this.selected = idx;
+    this.render();
+  },
+
+  inputNum: function(n) {
+    if(this.selected < 0 || this.complete) return;
+    if(this.given[this.selected]) return;
+
+    if(n === 0) {
+      this.board[this.selected] = 0;
+      this.render();
+      return;
+    }
+
+    this.board[this.selected] = n;
+
+    if(n !== this.solution[this.selected]) {
+      this.mistakes++;
+      this.render();
+      if(this.mistakes >= this.maxMistakes) {
+        clearInterval(this.timerInterval);
+        var el = document.getElementById('sdk-status');
+        if(el) { el.textContent = 'GAME OVER — 3 mistakes!'; el.style.color='#ff6b6b'; }
+      }
+      return;
+    }
+
+    // Check complete
+    var done = this.board.every(function(v, i){ return v === SDK.solution[i]; });
+    if(done) {
+      this.complete = true;
+      clearInterval(this.timerInterval);
+    }
+    this.render();
+  },
+
+  hint: function() {
+    // Fill in a random empty cell
+    var empties = [];
+    for(var i=0;i<81;i++){ if(!this.given[i] && this.board[i]===0) empties.push(i); }
+    if(!empties.length) return;
+    var idx = empties[Math.floor(Math.random()*empties.length)];
+    this.board[idx] = this.solution[idx];
+    this.given[idx] = true;
+    this.render();
+  },
+
+  render: function() {
+    var stage = document.getElementById('puzzle-stage');
+    if(!stage) return;
+
+    var sel = this.selected;
+    var selRow = sel >= 0 ? Math.floor(sel/9) : -1;
+    var selCol = sel >= 0 ? sel%9 : -1;
+    var selVal = sel >= 0 ? this.board[sel] : 0;
+
+    // Header
+    var levelLabel = {easy:'Easy',medium:'Medium',hard:'Hard'}[this.level];
+    var mistakeHtml = '';
+    for(var m=0;m<this.maxMistakes;m++){
+      mistakeHtml += '<span style="color:'+(m<this.mistakes?'#ff6b6b':'rgba(255,255,255,.15)')+'"><i class="ph ph-x-circle"></i></span>';
+    }
+
+    var html = '<div class="sudoku-wrap">';
+
+    // Complete screen
+    if(this.complete) {
+      html += '<div class="sudoku-complete">'
+        + '<div class="sudoku-complete-title"><i class="ph ph-check-circle"></i> Solved!</div>'
+        + '<div class="sudoku-complete-time">Time: ' + this.formatTime(this.timer) + ' · Level: ' + levelLabel + ' · Mistakes: ' + this.mistakes + '</div>'
+        + '<div style="margin-top:1.2rem;display:flex;gap:.6rem;justify-content:center">'
+        + '<button class="btn" onclick="SDK.startNew();"><i class="ph ph-arrow-clockwise"></i> Play Again</button>'
+        + '<button class="btn btn-out" onclick="SDK.startNew(\'hard\')" style="font-size:.52rem"><i class="ph ph-arrow-up"></i> Try Hard</button>'
+        + '</div></div></div>';
+      stage.innerHTML = html;
+      return;
+    }
+
+    html += '<div class="sudoku-header">'
+      + '<div class="sudoku-level-btns">'
+      + '<button class="sudoku-lvl-btn'+(this.level==='easy'?' active':'')+'" onclick="SDK.startNew(\'easy\')">Easy</button>'
+      + '<button class="sudoku-lvl-btn'+(this.level==='medium'?' active':'')+'" onclick="SDK.startNew(\'medium\')">Medium</button>'
+      + '<button class="sudoku-lvl-btn'+(this.level==='hard'?' active':'')+'" onclick="SDK.startNew(\'hard\')">Hard</button>'
+      + '</div>'
+      + '<div style="display:flex;align-items:center;gap:1rem">'
+      + '<div class="sudoku-mistakes" style="display:flex;gap:.3rem;align-items:center;font-size:.9rem">'+mistakeHtml+'</div>'
+      + '<div class="sudoku-timer" id="sdk-timer">' + this.formatTime(this.timer) + '</div>'
+      + '</div>'
+      + '</div>';
+
+    // Status
+    var statusText = this.mistakes >= this.maxMistakes ? 'GAME OVER — 3 mistakes!' : (levelLabel + ' · ' + (81 - this.board.filter(function(v){return v>0}).length) + ' cells remaining');
+    var statusColor = this.mistakes >= this.maxMistakes ? '#ff6b6b' : 'rgba(245,118,26,.6)';
+    html += '<div class="sudoku-status" id="sdk-status" style="color:'+statusColor+'">'+statusText+'</div>';
+
+    // Grid
+    html += '<div class="sudoku-grid">';
+    for(var i=0;i<81;i++){
+      var row=Math.floor(i/9), col=i%9;
+      var val=this.board[i];
+      var cls='sudoku-cell';
+      if(this.given[i]) cls+=' given';
+      else if(i===sel) cls+=' selected';
+      else if(row===selRow||col===selCol||(Math.floor(row/3)===Math.floor(selRow/3)&&Math.floor(col/3)===Math.floor(selCol/3))) cls+=' highlight';
+      if(!this.given[i]&&val>0&&val!==this.solution[i]) cls+=' error';
+      if(col===2||col===5) cls+=' box-right';
+      if(row===2||row===5) cls+=' box-bottom';
+      var display = val > 0 ? val : '';
+      html += '<div class="'+cls+'" onclick="SDK.selectCell('+i+')">'+display+'</div>';
+    }
+    html += '</div>';
+
+    // Numpad
+    html += '<div class="sudoku-numpad">';
+    for(var n=1;n<=9;n++){
+      html += '<button class="sudoku-num-btn" onclick="SDK.inputNum('+n+')">'+n+'</button>';
+    }
+    html += '</div>';
+
+    // Actions
+    html += '<div class="sudoku-actions">'
+      + '<button class="btn btn-out" onclick="SDK.inputNum(0)" style="font-size:.52rem"><i class="ph ph-eraser"></i> Erase</button>'
+      + '<button class="btn btn-out" onclick="SDK.hint()" style="font-size:.52rem"><i class="ph ph-lightbulb"></i> Hint</button>'
+      + '<button class="btn btn-out" onclick="SDK.startNew()" style="font-size:.52rem"><i class="ph ph-arrow-clockwise"></i> New Puzzle</button>'
+      + '</div>';
+
+    html += '</div>';
+    stage.innerHTML = html;
+
+    // Re-select the timer element for live updates
+    // (already has id sdk-timer above)
+  }
+};
+
 function renderPuzzle(){
   var stage=document.getElementById('puzzle-stage');
+  if(puzzleType==='sudoku'){SDK.startNew();return}
   if(puzzleType==='drum'){renderDrum();return}
   var arr=PZ[puzzleType];if(!arr){stage.innerHTML='<p style="color:rgba(255,255,255,.6);font-style:normal;padding:2rem">More puzzles coming soon...</p>';return}
   var p=arr[puzzleIdx%arr.length];
@@ -5384,22 +5539,22 @@ function setSubject(s){
 }
 var TOPICS={
   maths:[
-    {ic:'∑',n:'Sequences & Series',s:'Arithmetic, geometric, sigma notation',b:'Paper 1',cl:'maths'},
-    {ic:"f'",n:'Differential Calculus',s:'Limits, rules, optimisation, rates of change',b:'Paper 1 — High Value',cl:'maths'},
-    {ic:'f(x)',n:'Functions & Inverses',s:'Parabola, hyperbola, exponential, logarithm',b:'Paper 1',cl:'maths'},
-    {ic:'%',n:'Finance & Growth',s:'Compound interest, annuities, depreciation',b:'Paper 1',cl:'maths'},
-    {ic:'P()',n:'Probability',s:'Counting, Venn diagrams, tree diagrams',b:'Paper 1',cl:'maths'},
-    {ic:'sin',n:'Trigonometry',s:'Compound angles, general solutions, 3D',b:'Paper 2',cl:'maths'},
-    {ic:'⊙',n:'Euclidean Geometry',s:'Circle theorems, proportionality theorem',b:'Paper 2 — High Value',cl:'maths'},
-    {ic:'xy',n:'Analytical Geometry',s:'Lines, circles, perpendicular distance',b:'Paper 2',cl:'maths'},
-    {ic:'r',n:'Statistics & Regression',s:'Scatter plots, correlation, regression line',b:'Paper 2',cl:'maths'}
+    {ic:'∑',n:'Sequences & Series',s:'Arithmetic, geometric, sigma notation',b:'Paper 1',cl:'fire'},
+    {ic:"f'",n:'Differential Calculus',s:'Limits, rules, optimisation, rates of change',b:'Paper 1 — High Value',cl:'fire'},
+    {ic:'f(x)',n:'Functions & Inverses',s:'Parabola, hyperbola, exponential, logarithm',b:'Paper 1',cl:'fire'},
+    {ic:'%',n:'Finance & Growth',s:'Compound interest, annuities, depreciation',b:'Paper 1',cl:'fire'},
+    {ic:'P()',n:'Probability',s:'Counting, Venn diagrams, tree diagrams',b:'Paper 1',cl:'fire'},
+    {ic:'sin',n:'Trigonometry',s:'Compound angles, general solutions, 3D',b:'Paper 2',cl:'fire'},
+    {ic:'⊙',n:'Euclidean Geometry',s:'Circle theorems, proportionality theorem',b:'Paper 2 — High Value',cl:'fire'},
+    {ic:'xy',n:'Analytical Geometry',s:'Lines, circles, perpendicular distance',b:'Paper 2',cl:'fire'},
+    {ic:'r',n:'Statistics & Regression',s:'Scatter plots, correlation, regression line',b:'Paper 2',cl:'fire'}
   ],
   science:[
     {ic:'p',n:'Momentum & Impulse',s:"Newton's laws, collisions, impulse-momentum",b:'Physics P1',cl:'science'},
     {ic:'↑↓',n:'Vertical Projectile Motion',s:'Free-fall, v-t graphs, air resistance',b:'Physics P1',cl:'science'},
     {ic:'W',n:'Work, Energy & Power',s:'Work-energy theorem, conservation',b:'Physics P1 — Key',cl:'science'},
     {ic:'~',n:'Electrodynamics',s:'Generators, motors, AC vs DC, transformers',b:'Physics P1',cl:'science'},
-    {ic:'🌊',n:'Doppler Effect',s:'Moving sources, frequency shift',b:'Physics P1',cl:'science'},
+    {ic:'≈',n:'Doppler Effect',s:'Moving sources, frequency shift',b:'Physics P1',cl:'science'},
     {ic:'⚗',n:'Organic Chemistry',s:'Alkanes, alkenes, alcohols, carboxylic acids',b:'Chemistry P2 — Key',cl:'science'},
     {ic:'⇌',n:'Chemical Equilibrium',s:"Le Chatelier's principle, Kc calculations",b:'Chemistry P2',cl:'science'},
     {ic:'pH',n:'Acids & Bases',s:'pH, titrations, buffer solutions',b:'Chemistry P2',cl:'science'},
@@ -5407,40 +5562,40 @@ var TOPICS={
   ],
   english:[
     {ic:'✍',n:'Essay Writing',s:'Argumentative, discursive, narrative, descriptive',b:'Paper 3 — 100 marks',cl:''},
-    {ic:'📖',n:'Comprehension',s:'Tone, inference, vocabulary, reading strategies',b:'Paper 1',cl:''},
-    {ic:'📚',n:'Literature — Set Works',s:'Themes, characters, language devices analysis',b:'Paper 2',cl:''},
-    {ic:'🗣',n:'Oral Presentation',s:'Structure, delivery, language use, confidence',b:'Continuous',cl:''},
+    {ic:'↗',n:'Comprehension',s:'Tone, inference, vocabulary, reading strategies',b:'Paper 1',cl:''},
+    {ic:'↗',n:'Literature — Set Works',s:'Themes, characters, language devices analysis',b:'Paper 2',cl:''},
+    {ic:'↗',n:'Oral Presentation',s:'Structure, delivery, language use, confidence',b:'Continuous',cl:''},
     {ic:'✏',n:'Language & Editing',s:'Grammar, punctuation, sentence structure',b:'Paper 1',cl:''}
   ],
   zulu:[
-    {ic:'📜',n:'Izinganekwane (Folktales)',s:'Analysis, oral performance, structure',b:'Iphepha 2 — Key',cl:''},
-    {ic:'🎙',n:'Iziqongo (Poetry)',s:'Devices, themes, tone, performance',b:'Iphepha 2',cl:''},
+    {ic:'↗',n:'Izinganekwane (Folktales)',s:'Analysis, oral performance, structure',b:'Iphepha 2 — Key',cl:''},
+    {ic:'↗',n:'Iziqongo (Poetry)',s:'Devices, themes, tone, performance',b:'Iphepha 2',cl:''},
     {ic:'✍',n:'Indaba & Inkondlo',s:'Narrative essay and poetry writing',b:'Iphepha 3',cl:''},
-    {ic:'📝',n:'Ulimi — Grammar',s:'Izincwadi, izinkondlo, izimo zezindaba',b:'Iphepha 1',cl:''},
-    {ic:'👂',n:'Ukuphipha (Oral)',s:'Listening, speaking, reading aloud',b:'Continuous',cl:''}
+    {ic:'↗',n:'Ulimi — Grammar',s:'Izincwadi, izinkondlo, izimo zezindaba',b:'Iphepha 1',cl:''},
+    {ic:'↗',n:'Ukuphipha (Oral)',s:'Listening, speaking, reading aloud',b:'Continuous',cl:''}
   ],
   lifesci:[
-    {ic:'🧬',n:'DNA, RNA & Protein Synthesis',s:'Transcription, translation, mutations',b:'Paper 1 — Key',cl:'science'},
-    {ic:'🧫',n:'Genetics & Inheritance',s:"Mendel's laws, codominance, sex-linked traits",b:'Paper 1 — Key',cl:'science'},
-    {ic:'🦎',n:'Evolution',s:'Natural selection, speciation, evidence',b:'Paper 1',cl:'science'},
-    {ic:'💊',n:'Human Endocrine System',s:'Hormones, feedback loops, diabetes',b:'Paper 1',cl:'science'},
-    {ic:'🌿',n:'Ecosystems & Biodiversity',s:'Food webs, nutrient cycles, conservation',b:'Paper 2',cl:'science'}
+    {ic:'dna',n:'DNA, RNA & Protein Synthesis',s:'Transcription, translation, mutations',b:'Paper 1 — Key',cl:'science'},
+    {ic:'gen',n:'Genetics & Inheritance',s:"Mendel's laws, codominance, sex-linked traits",b:'Paper 1 — Key',cl:'science'},
+    {ic:'evo',n:'Evolution',s:'Natural selection, speciation, evidence',b:'Paper 1',cl:'science'},
+    {ic:'⚕',n:'Human Endocrine System',s:'Hormones, feedback loops, diabetes',b:'Paper 1',cl:'science'},
+    {ic:'eco',n:'Ecosystems & Biodiversity',s:'Food webs, nutrient cycles, conservation',b:'Paper 2',cl:'science'}
   ]
 };
 function renderTopics(s){
   var g=document.getElementById('topic-grid');if(!g)return;
   var arr=TOPICS[s]||[];
   g.innerHTML=arr.map(function(t){
-    var col=s==='maths'?'var(--blue)':s==='science'?'#7B4FD0':'var(--green)';
-    return '<div class="topic-card '+t.cl+'" onclick="openNotes(\''+t.n+'\',\''+s+'\')"><div class="tc-icon" style="color:'+col+'">'+t.ic+'</div><div class="tc-name">'+t.n+'</div><div class="tc-sub">'+t.s+'</div><div class="tc-badge '+t.cl+'">'+t.b+'</div></div>';
+    var col='var(--fire)';
+    return '<div class="topic-card '+t.cl+'" onclick="openNotes(\''+t.n+'\',\''+s+'\')"><div class="tc-icon">'+t.ic+'</div><div class="tc-name">'+t.n+'</div><div class="tc-sub">'+t.s+'</div><div class="tc-badge '+t.cl+'">'+t.b+'</div></div>';
   }).join('');
 }
 
 var NOTES={
   'Differential Calculus':{
     secs:[
-      {t:'KEY CONCEPTS',cl:'maths',body:'<p><strong>Calculus</strong> deals with rates of change. The derivative f\'(x) tells you the <strong>gradient of the tangent</strong> at any point and the <strong>rate of change</strong> of f(x).</p><div class="formula-box"><div class="f-lbl">First Principles Definition</div><div class="f-eq">f\'(x) = lim[h→0] [f(x+h) - f(x)] / h</div></div><div class="formula-box"><div class="f-lbl">Power Rule (Use this every time)</div><div class="f-eq">If f(x) = axⁿ then f\'(x) = an·xⁿ⁻¹<br>If f(x) = constant then f\'(x) = 0</div></div>'},
-      {t:'APPLICATIONS',cl:'maths',body:'<p><strong>1.</strong> Gradient of tangent → find f\'(x), substitute x-value<br><strong>2.</strong> Equation of tangent → use y - y₁ = m(x - x₁)<br><strong>3.</strong> Stationary points → set f\'(x) = 0, solve for x</p><div class="formula-box"><div class="f-lbl">Nature of Stationary Points</div><div class="f-eq">f\'\'(x) &lt; 0 → Local MAXIMUM<br>f\'\'(x) &gt; 0 → Local MINIMUM<br>f\'\'(x) = 0 → Point of inflection</div></div><p><strong>Optimisation:</strong> Write equation for what you maximise/minimise, differentiate, set = 0.</p>'},
+      {t:'KEY CONCEPTS',cl:'fire',body:'<p><strong>Calculus</strong> deals with rates of change. The derivative f\'(x) tells you the <strong>gradient of the tangent</strong> at any point and the <strong>rate of change</strong> of f(x).</p><div class="formula-box"><div class="f-lbl">First Principles Definition</div><div class="f-eq">f\'(x) = lim[h→0] [f(x+h) - f(x)] / h</div></div><div class="formula-box"><div class="f-lbl">Power Rule (Use this every time)</div><div class="f-eq">If f(x) = axⁿ then f\'(x) = an·xⁿ⁻¹<br>If f(x) = constant then f\'(x) = 0</div></div>'},
+      {t:'APPLICATIONS',cl:'fire',body:'<p><strong>1.</strong> Gradient of tangent → find f\'(x), substitute x-value<br><strong>2.</strong> Equation of tangent → use y - y₁ = m(x - x₁)<br><strong>3.</strong> Stationary points → set f\'(x) = 0, solve for x</p><div class="formula-box"><div class="f-lbl">Nature of Stationary Points</div><div class="f-eq">f\'\'(x) &lt; 0 → Local MAXIMUM<br>f\'\'(x) &gt; 0 → Local MINIMUM<br>f\'\'(x) = 0 → Point of inflection</div></div><p><strong>Optimisation:</strong> Write equation for what you maximise/minimise, differentiate, set = 0.</p>'},
       {t:'PRACTICE QUESTIONS',cl:'',body:'<div class="practice-q"><div class="pq-num">Q1</div><div class="pq-q">Find f\'(x) if f(x) = 3x⁴ - 2x³ + 5x - 7</div><button class="pq-toggle" onclick="toggleAns(this)">Show Answer</button><div class="pq-ans">f\'(x) = 12x³ - 6x² + 5. Apply power rule to each term. Constants vanish.</div></div><div class="practice-q"><div class="pq-num">Q2</div><div class="pq-q">Find the equation of the tangent to f(x) = x³ - 3x at x = 2</div><button class="pq-toggle" onclick="toggleAns(this)">Show Answer</button><div class="pq-ans">f(2) = 8-6 = 2. Point: (2,2). f\'(x) = 3x²-3, f\'(2) = 9. Tangent: y - 2 = 9(x - 2) → y = 9x - 16</div></div>'}
     ],
     tip:{tx:'Always show EVERY step. Even wrong answers earn method marks. Write f\'(x) = ... clearly before substituting. Examiners award marks for correct process, not just the final answer.'}
@@ -5505,7 +5660,7 @@ var TOTAL_COURSES = 8;
 
 var COURSES = [
   // ── COURSE 1: STORYTELLING IN BUSINESS ──
-  { title:'Storytelling in Business', icon:'💼', color:'#CA5C08', tag:'Short Course · 3 Modules',
+  { title:'Storytelling in Business', icon:'<i class="ph ph-briefcase"></i>', color:'#CA5C08', tag:'Short Course · 3 Modules',
     desc:'Empower yourself with the skills to apply cultural storytelling — particularly folktales, anecdotes and personal stories — to business communication, branding, and strategic engagement.',
     modules:[
       { title:'Stories That Work for Business', duration:'1 Hour',
@@ -5517,13 +5672,13 @@ var COURSES = [
         quiz:{ q:'What does "The Donkey That Wanted to Be a Zebra" represent in a business context?', opts:['The importance of hard work','Authenticity and transformation','Market competition','Financial growth'], ans:1, fb:'Authenticity and transformation — the folktale warns against abandoning who you are to become something you\'re not.' }
       },
       { title:'Learner Workbook — AI Copilot & Brand Story Audit', duration:'1 Hour',
-        body:'<h3>📘 Learner Workbook: Storytelling in Business</h3><p><em>Using African Folktales for Strategic Brand Communication</em></p><h3>How to Use This Workbook</h3><p>This workbook is your personal space for applying the course content to your own brand, business, or idea. Each section mirrors the modules covered in this course — but now you are the subject.</p><h3>Learning Outcomes Review</h3><p>By the end of this course, you will be able to:<br>a. Understand the cultural and emotional power of storytelling in business<br>b. Decode symbolism in folktales and apply it to brand messaging<br>c. Analyze brand case studies that use storytelling effectively<br>d. Adapt traditional stories for marketing, CSR, and internal culture<br>e. Create compelling brand narratives<br>f. Use multimedia tools to deliver stories across platforms<br>g. Present stories live with clarity and impact</p><h3>🤖 AI Copilot Tips</h3><p>Use an AI assistant to help you define and refine:<br><strong>Brand core values</strong> — ask: "What values does my brand embody? Help me find the story in them."<br><strong>Narrative tone and voice</strong> — ask: "What is the difference between a brand that sounds wise and one that sounds warm? Help me find mine."<br><strong>Story outlines for marketing</strong> — ask: "Help me write a 3-sentence brand story using the folktale of The Donkey That Wanted to Be a Zebra."<br><strong>Loyalty campaign narratives</strong> — ask: "Create a story-driven concept for a customer loyalty campaign using Ubuntu as the central value."<br><strong>CSR report storytelling</strong> — ask: "Help me turn our CSR statistics into a human story about real impact."<br><strong>Visual and multimedia assets</strong> — ask: "Suggest 3 visual concepts for a brand story campaign rooted in African oral tradition."</p><h3>Brand Story Audit</h3><p>Pick a brand you admire. Complete the audit below:</p><p><strong>Brand Name:</strong> _______________________<br><strong>Story Theme:</strong> _______________________<br><strong>Emotional Tone:</strong> _______________________<br><strong>Folktale Parallel:</strong> Which folktale does this brand\'s story remind you of, and why?<br><strong>What would make this story stronger?</strong> _______________________</p><div class="lesson-reflection"><div class="lr-label">Final Assignment</div><p>Write your own Brand Story — 200 to 300 words. Use one folktale, one personal anecdote, and one clear value statement. Then deliver it aloud — to a colleague, a camera, or a mirror. Time yourself. Aim for 2 minutes of clarity, confidence, and strategic intent.</p></div>',
+        body:'<h3><i class="ph ph-notebook"></i> Learner Workbook: Storytelling in Business</h3><p><em>Using African Folktales for Strategic Brand Communication</em></p><h3>How to Use This Workbook</h3><p>This workbook is your personal space for applying the course content to your own brand, business, or idea. Each section mirrors the modules covered in this course — but now you are the subject.</p><h3>Learning Outcomes Review</h3><p>By the end of this course, you will be able to:<br>a. Understand the cultural and emotional power of storytelling in business<br>b. Decode symbolism in folktales and apply it to brand messaging<br>c. Analyze brand case studies that use storytelling effectively<br>d. Adapt traditional stories for marketing, CSR, and internal culture<br>e. Create compelling brand narratives<br>f. Use multimedia tools to deliver stories across platforms<br>g. Present stories live with clarity and impact</p><h3><i class="ph ph-robot"></i> AI Copilot Tips</h3><p>Use an AI assistant to help you define and refine:<br><strong>Brand core values</strong> — ask: "What values does my brand embody? Help me find the story in them."<br><strong>Narrative tone and voice</strong> — ask: "What is the difference between a brand that sounds wise and one that sounds warm? Help me find mine."<br><strong>Story outlines for marketing</strong> — ask: "Help me write a 3-sentence brand story using the folktale of The Donkey That Wanted to Be a Zebra."<br><strong>Loyalty campaign narratives</strong> — ask: "Create a story-driven concept for a customer loyalty campaign using Ubuntu as the central value."<br><strong>CSR report storytelling</strong> — ask: "Help me turn our CSR statistics into a human story about real impact."<br><strong>Visual and multimedia assets</strong> — ask: "Suggest 3 visual concepts for a brand story campaign rooted in African oral tradition."</p><h3>Brand Story Audit</h3><p>Pick a brand you admire. Complete the audit below:</p><p><strong>Brand Name:</strong> _______________________<br><strong>Story Theme:</strong> _______________________<br><strong>Emotional Tone:</strong> _______________________<br><strong>Folktale Parallel:</strong> Which folktale does this brand\'s story remind you of, and why?<br><strong>What would make this story stronger?</strong> _______________________</p><div class="lesson-reflection"><div class="lr-label">Final Assignment</div><p>Write your own Brand Story — 200 to 300 words. Use one folktale, one personal anecdote, and one clear value statement. Then deliver it aloud — to a colleague, a camera, or a mirror. Time yourself. Aim for 2 minutes of clarity, confidence, and strategic intent.</p></div>',
         quiz:{ q:'What is the purpose of the Brand Story Audit?', opts:['To criticise other brands','To apply the course\'s storytelling framework to a real brand — analysing its story, tone, and folktale parallels','To write advertising copy','To create a logo'], ans:1, fb:'The Brand Story Audit applies your new skills to a real brand — decoding its story, emotional tone, and the folktale that runs beneath it.' }
       }
     ]
   },
   // ── COURSE 2: STORYTELLING IN THE CLASSROOM ──
-  { title:'Storytelling in the Classroom', icon:'🏫', color:'#1E8449', tag:'4 Modules · Educators',
+  { title:'Storytelling in the Classroom', icon:'<i class="ph ph-chalkboard-teacher"></i>', color:'#1E8449', tag:'4 Modules · Educators',
     desc:'The classroom is storytelling\'s native land. This course reimagines critical thinking, mathematics, language skills, and latent thinking through narrative learning.',
     modules:[
       { title:'Thinking Through Stories', duration:'1 Hour',
@@ -5567,7 +5722,7 @@ var COURSES = [
     ]
   },
   // ── COURSE 4: CONFLICT RESOLUTION ──
-  { title:'Storytelling for Conflict Resolution', icon:'🕊️', color:'#8E44AD', tag:'4 Weeks · Community',
+  { title:'Storytelling for Conflict Resolution', icon:'<i class="ph ph-dove"></i>', color:'#8E44AD', tag:'4 Weeks · Community',
     desc:'To empower individuals with the art and practice of storytelling as a transformative tool in resolving interpersonal, institutional, and cultural conflicts.',
     modules:[
       { title:'The Art of Storytelling in Conflict', duration:'1 Hour',
@@ -5593,7 +5748,7 @@ var COURSES = [
     ]
   },
   // ── COURSE 5: SPEAK ISIZULU THROUGH STORYTELLING ──
-  { title:'Speak isiZulu Through Storytelling', icon:'🌍', color:'#27AE60', tag:'16 Weeks · Beginners',
+  { title:'Speak isiZulu Through Storytelling', icon:'<i class="ph ph-globe-hemisphere-west"></i>', color:'#27AE60', tag:'16 Weeks · Beginners',
     desc:'Language is culture in motion. This course uses storytelling — a living archive of culture — as the primary method of learning isiZulu for beginners.',
     modules:[
       { title:'Introduction — Language Through Story', duration:'1 Hour',
@@ -5635,7 +5790,7 @@ var COURSES = [
     ]
   },
   // ── COURSE 6: STORYTELLING IN THE LEGAL FIELD ──
-  { title:'Storytelling in the Legal Field', icon:'⚖️', color:'#2C3E50', tag:'4 Weeks · Professionals',
+  { title:'Storytelling in the Legal Field', icon:'<i class="ph ph-scales"></i>', color:'#2C3E50', tag:'4 Weeks · Professionals',
     desc:'Where Law Meets Narrative: Bridging Logic, Emotion, and Justice. Equip legal students and professionals with storytelling techniques that enhance legal reasoning, advocacy and ethical communication.',
     modules:[
       { title:'Foundations of Storytelling in Law', duration:'1 Hour',
@@ -5657,7 +5812,7 @@ var COURSES = [
     ]
   },
   // ── COURSE 7: MYTHOPRENEUR ──
-  { title:'Storytelling Consultancy: The Mythopreneur', icon:'🔥', color:'#E74C3C', tag:'4 Modules · Advanced',
+  { title:'Storytelling Consultancy: The Mythopreneur', icon:'<i class="ph ph-fire"></i>', color:'#E74C3C', tag:'4 Modules · Advanced',
     desc:'A bold journey for storytellers who want to turn their craft into consultancy, curriculum, or commercial venture. Practical. Profound. Packed.',
     modules:[
       { title:'What is a Mythopreneur?', duration:'1 Hour',
@@ -5701,7 +5856,7 @@ function renderModuleList(){
     return '<div class="module-item'+(active?' active':'')+(done?' done':'')+'" onclick="goModule('+i+')">'
       +'<span class="module-num">0'+(i+1)+'</span>'
       +'<span class="module-name">'+m.title+'</span>'
-      +'<span class="module-tick">'+(done?'✅':active?'▶':'○')+'</span>'
+      +'<span class="module-tick">'+(done?'<i class="ph ph-check-circle"></i>':active?'<i class="ph ph-play-circle"></i>':'<i class="ph ph-circle"></i>')+'</span>'
       +'</div>';
   }).join('');
   // Progress
@@ -5730,36 +5885,49 @@ function renderLesson(){
   var lc = document.getElementById('lesson-content');
   if(!lc) return;
 
+  // Subscription gate: module 1 is free, rest require premium
+  if(activeModule > 0 && !isPremium()){
+    lc.innerHTML = '<div style="text-align:center;padding:4rem 2rem;background:rgba(123,79,208,.06);border:1px solid rgba(123,79,208,.2);border-radius:12px;margin-top:1rem">'
+      +'<div style="font-size:2.5rem;margin-bottom:1rem;color:#B088E8"><i class="ph ph-lock-key"></i></div>'
+      +'<div style="font-family:var(--impact);font-size:1.6rem;color:#fff;letter-spacing:.06em;margin-bottom:.6rem">PREMIUM MODULE</div>'
+      +'<p style="font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.8;max-width:380px;margin:0 auto 1.8rem">Module 1 of every course is free. Subscribe to unlock all modules, earn your Certificate of Attendance, and access every course in full.</p>'
+      +'<div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap">'
+      +'<button class="btn" onclick="showWorld(\'subscribe\')" style="background:#7B4FD0;border-color:#7B4FD0"><i class="ph ph-star"></i> Subscribe &mdash; R65/month</button>'
+      +'<button class="btn btn-out" onclick="document.getElementById(\'auth-modal\').style.display=\'flex\'" style="border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.6)"><i class="ph ph-sign-in"></i> Log In</button>'
+      +'</div></div>';
+    return;
+  }
+
   var html = '<div class="lesson-header">'
-    +'<div class="lesson-course-tag">'+course.icon+' '+course.title+' · Module 0'+(activeModule+1)+'</div>'
+    +'<div class="lesson-course-tag">'+course.icon+' '+course.title+' &middot; Module 0'+(activeModule+1)+'</div>'
     +'<div class="lesson-title">'+mod.title+'</div>'
-    +'<div class="lesson-meta"><span>⏱ '+mod.duration+'</span><span>'+(isDone?'✅ Completed':'○ In progress')+'</span></div>'
-    +'</div>'
+    +'<div class="lesson-meta">'
+    +'<span><i class="ph ph-clock"></i> '+mod.duration+'</span>'
+    +'<span>'+(isDone?'<i class="ph ph-check-circle" style="color:#6EE78E"></i> Completed':'<i class="ph ph-circle"></i> In progress')+'</span>'
+    +'</div></div>'
     +'<div class="lesson-body">'+mod.body+'</div>';
 
-  // Quiz
   html += '<div class="quiz-wrap" id="quiz-wrap">'
-    +'<div class="quiz-title">📝 Module Quiz</div>'
+    +'<div class="quiz-title"><i class="ph ph-question" style="margin-right:.4rem"></i>Module Quiz</div>'
     +'<div class="quiz-q">'+mod.quiz.q+'</div>'
     +'<div class="quiz-opts" id="quiz-opts">'
     +mod.quiz.opts.map(function(o,i){
       return '<button class="quiz-opt'+(isDone?' disabled':'')+'" onclick="answerQuiz('+i+','+mod.quiz.ans+',\''+mod.quiz.fb.replace(/'/g,"\\'")+'\')" '+(isDone?'disabled':'')+'>'+o+'</button>';
     }).join('')
     +'</div>'
-    +'<div class="quiz-feedback" id="quiz-fb">'+(isDone?'<span style="color:#6EE78E">✅ Already completed</span>':'')+'</div>'
+    +'<div class="quiz-feedback" id="quiz-fb">'+(isDone?'<span style="color:#6EE78E"><i class="ph ph-check"></i> Already completed</span>':'')+'</div>'
     +'</div>';
 
-  // Nav
   html += '<div class="lesson-nav">'
-    +(activeModule>0?'<button class="btn btn-out" style="border-color:rgba(123,79,208,.4);color:#B088E8" onclick="goModule('+(activeModule-1)+')">← Previous</button>':'<span></span>')
-    +'<button class="complete-btn" id="complete-btn" onclick="markDone()" '+(isDone?'disabled':'')+'>'+( isDone?'✅ Completed':'Mark Complete ✓')+'</button>'
-    +(activeModule<totalMods-1?'<button class="btn" style="background:#7B4FD0" onclick="goModule('+(activeModule+1)+')">Next Lesson →</button>':'<button class="btn" style="background:#7B4FD0" onclick="checkCertificate()">Finish Course 🎓</button>')
+    +(activeModule>0?'<button class="btn btn-out" style="border-color:rgba(123,79,208,.4);color:#B088E8" onclick="goModule('+(activeModule-1)+')"><i class="ph ph-arrow-left"></i> Previous</button>':'<span></span>')
+    +'<button class="complete-btn" id="complete-btn" onclick="markDone()" '+(isDone?'disabled':'')+'>'+( isDone?'<i class="ph ph-check"></i> Completed':'<i class="ph ph-check-square"></i> Mark Complete')+'</button>'
+    +(activeModule<totalMods-1?'<button class="btn" style="background:#7B4FD0" onclick="goModule('+(activeModule+1)+')">Next Lesson <i class="ph ph-arrow-right"></i></button>':'<button class="btn" style="background:#7B4FD0" onclick="checkCertificate()"><i class="ph ph-certificate"></i> Finish Course</button>')
     +'</div>';
 
   lc.innerHTML = html;
   if(isDone){
     var fb = document.getElementById('quiz-fb');
-    if(fb){ fb.className='quiz-feedback correct'; fb.style.display='block'; fb.innerHTML='✅ Module already completed'; }
+    if(fb){ fb.className='quiz-feedback correct'; fb.style.display='block'; fb.innerHTML='<i class="ph ph-check" style="color:#6EE78E"></i> Module already completed'; }
   }
 }
 
@@ -5775,7 +5943,7 @@ function answerQuiz(chosen, correct, feedback){
   fb.style.background=chosen===correct?'rgba(30,132,73,.15)':'rgba(192,57,43,.12)';
   fb.style.border='1px solid '+(chosen===correct?'rgba(30,132,73,.3)':'rgba(192,57,43,.25)');
   fb.style.marginTop='.8rem';
-  fb.innerHTML = (chosen===correct?'<span style="color:#6EE78E;font-weight:700">✓ Correct! </span>':'<span style="color:#E74C3C;font-weight:700">✗ Not quite — </span>')+feedback;
+  fb.innerHTML = (chosen===correct?'<span style="color:#6EE78E;font-weight:700"><i class="ph ph-check"></i> Correct! </span>':'<span style="color:#E74C3C;font-weight:700"><i class="ph ph-x"></i> Not quite — </span>')+feedback;
 }
 
 function markDone(){
@@ -5792,7 +5960,7 @@ function checkCertificate(){
   var done = completedModules[activeCourse].length;
   if(done < total){
     var remaining = total - done;
-    alert('Almost there! Complete '+remaining+' more module'+(remaining>1?'s':'')+' to earn your certificate.');
+    alert('Almost there! Complete '+remaining+' more module'+(remaining>1?'s':'')+' to earn your certificate of attendance.');
     return;
   }
   generateCertificate();
@@ -5895,7 +6063,7 @@ function buildCourseTabs(){
 // Init courses world
 function initCoursesWorld(){
   buildCourseTabs();
-  selectCourse(0);
+  selectCourse(activeCourse); // renders module list + lesson for current or default course
 }
 
 // ════ AFRICAN SUNSET CANVASES ════
@@ -6188,66 +6356,8 @@ function brainLoop(c){
 }
 
 // ── SCENE 4: SCHOOLS — Waterhole at golden hour, elephant, reflection ──
-var schoolsScene = { ripples: [], t: 0 };
-function initSchoolsCanvas(){
-  var c = document.getElementById('schools-canvas'); if(!c) return;
-  schoolsScene.ripples = [];
-  for(var i=0;i<5;i++) schoolsScene.ripples.push({ r: i*18, alpha: .3-i*.05, x: 0 });
-  schoolsLoop(c);
-}
-function schoolsLoop(c){
-  if(!c || !document.getElementById('schools-canvas')) return;
-  var W = c.width = c.offsetWidth, H = c.height = c.offsetHeight;
-  var ctx = c.getContext('2d');
-  schoolsScene.t += .016;
-  var t = schoolsScene.t;
-  var waterY = H * .55, waterX = W * .48;
-  // Golden hour sky
-  drawSunsetSky(ctx, W, H, [
-    [0,'#0a1220'],[.15,'#1a2040'],[.35,'#6B3000'],[.52,'#C06000'],[.65,'#E09020'],[.78,'#FFD040'],[.88,'#FFE070'],[1,'#FF9030']
-  ], W*.5, waterY - 10, 38);
-  // Land
-  ctx.fillStyle = '#1a0c00'; ctx.fillRect(0, waterY, W*.22, H - waterY);
-  ctx.fillRect(W*.78, waterY, W*.22, H - waterY);
-  // Waterhole — reflective pool in centre
-  var wg = ctx.createLinearGradient(0, waterY, 0, H);
-  wg.addColorStop(0,'#8B5500'); wg.addColorStop(.3,'#C07820'); wg.addColorStop(.6,'#E09030'); wg.addColorStop(1,'#FF8020');
-  ctx.fillStyle = wg;
-  ctx.beginPath();
-  ctx.ellipse(waterX, waterY + (H-waterY)*.4, W*.35, (H-waterY)*.55, 0, 0, Math.PI*2);
-  ctx.fill();
-  // Water shimmer
-  ctx.strokeStyle = 'rgba(255,220,100,.2)';
-  ctx.lineWidth = 1;
-  for(var i=0;i<6;i++){
-    var wy = waterY + 20 + i*18;
-    ctx.beginPath(); ctx.moveTo(waterX-80+Math.sin(t+i)*12, wy); ctx.lineTo(waterX+80+Math.sin(t+i+1)*10, wy); ctx.stroke();
-  }
-  // Ripple from animal
-  schoolsScene.ripples.forEach(function(rp){
-    rp.r += .4; if(rp.r > 55){ rp.r = 2; }
-    var a = Math.max(0, .25 - rp.r/55 * .25);
-    ctx.strokeStyle = 'rgba(255,200,80,'+a+')'; ctx.lineWidth = 1.2;
-    ctx.beginPath(); ctx.ellipse(waterX + W*.08, waterY + (H-waterY)*.35, rp.r, rp.r*.4, 0, 0, Math.PI*2); ctx.stroke();
-  });
-  // Sun reflection on water
-  var sr = ctx.createRadialGradient(waterX, waterY+(H-waterY)*.25, 0, waterX, waterY+(H-waterY)*.25, 60);
-  sr.addColorStop(0,'rgba(255,240,100,.6)'); sr.addColorStop(1,'rgba(255,150,0,0)');
-  ctx.fillStyle = sr; ctx.fillRect(0,0,W,H);
-  // Elephant silhouette left
-  drawElephant(ctx, W*.12, waterY, H*.28, '#060200');
-  // Marula tree right bank
-  drawMarula(ctx, W*.88, waterY, H*.3, '#060200');
-  drawThornbush(ctx, W*.78, waterY, H*.14, '#060200');
-  // Reed grass waterhole edge
-  [-.25,-.18,-.1,.1,.18,.25].forEach(function(off){
-    ctx.strokeStyle = '#060200'; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(waterX + off*W, waterY+5); ctx.lineTo(waterX + off*W + Math.sin(t+off*5)*3, waterY - H*.08); ctx.stroke();
-    // Reed head
-    ctx.fillStyle = '#0a0400'; ctx.beginPath(); ctx.ellipse(waterX + off*W + Math.sin(t+off*5)*3, waterY - H*.08, 3, 7, 0, 0, Math.PI*2); ctx.fill();
-  });
-  requestAnimationFrame(function(){ schoolsLoop(c); });
-}
+var schoolsScene = {}; // canvas removed
+function initSchoolsCanvas(){} // canvas removed
 
 // ── SCENE 5: AUDIO — River at dusk, hippo eyes, lily pads, stars reflecting ──
 var audioScene = { stars: [], ripples: [], t: 0 };
@@ -6573,8 +6683,8 @@ var villageAnimId = null;
 var currentSpotWorld = '';
 
 var SPOT_DATA = {
-  'fire':          { icon:'🔥', title:'The Storytelling Fire',    desc:"The heart of the village. Gather around the fire to explore storytelling courses, hear Dr Sasa's wisdom, and share your own stories with the community.", world:'courses' },
-  'school':        { icon:'🏫', title:'The School Hut',           desc:'Where young minds are sharpened. Enter the Schools Hub for Grade 12 study notes, curriculum resources, and academic tools — all free.', world:'schools' },
+  'fire':          { icon:'<i class="ph ph-fire"></i>', title:'The Storytelling Fire',    desc:"The heart of the village. Gather around the fire to explore storytelling courses, hear Dr Sasa's wisdom, and share your own stories with the community.", world:'courses' },
+  'school':        { icon:'<i class="ph ph-chalkboard-teacher"></i>', title:'The School Hut',           desc:'Where young minds are sharpened. Enter the Schools Hub for Grade 12 study notes, curriculum resources, and academic tools — all free.', world:'schools' },
   'music':         { icon:'🥁', title:'The Music Hut',            desc:'Hear the drums calling. Play the Djembe, Marimba, Hosho and Uhadi. Record your session and share it with the whole village.', world:'instruments' },
   'ancestor':      { icon:'🌳', title:'The Ancestor Tree',        desc:'Your leaf lives here. Every story told, every game played, every lesson completed adds a branch to this living community tree.', world:'tree' },
   'games-ground':  { icon:'🎮', title:'The Games Ground',         desc:'The open ground where traditional African games are played. Challenge the AI at Diketo, Kgati, Ncuva. Honour the games of your ancestors.', world:'games' },
@@ -6979,7 +7089,7 @@ function initScrollReveal(){
 }
 document.addEventListener('DOMContentLoaded', function(){ setTimeout(initScrollReveal, 200); });
 
-var canvasInited = { home: false, inst: false, brain: false, schools: false, audio: false, courses: false };
+var canvasInited = { inst: false, brain: false, schools: false, audio: false, courses: false };
 var origShowWorld = showWorld;
 showWorld = function(id){
   // Stop village animation when leaving
@@ -6988,24 +7098,12 @@ showWorld = function(id){
     villageAnimId = null;
     villageInitialized = false;
   }
-  // Village has its own world div - handle separately
-  if(id === 'village'){
-    document.querySelectorAll('.world').forEach(function(w){w.classList.remove('active')});
-    document.querySelectorAll('.npill').forEach(function(p){p.classList.remove('active')});
-    var vw = document.getElementById('village-world');
-    if(vw) vw.classList.add('active');
-    setTimeout(function(){ if(typeof window.initVillageCanvas==="function") window.initVillageCanvas(); }, 80);
-    setTimeout(initScrollReveal, 150);
-    window.scrollTo({top:0,behavior:'smooth'});
-    return;
-  }
   origShowWorld(id);
   setTimeout(function(){
-    if(id === 'home' && !canvasInited.home){ canvasInited.home = true; initHomeCanvas(); }
     if(id === 'instruments' && !canvasInited.inst){ canvasInited.inst = true; initInstCanvas(); }
-    if(id === 'brain' && !canvasInited.brain){ canvasInited.brain = true; initBrainCanvas(); initStreakDots(); setPuzzleType('proverb'); }
-    if(id === 'schools' && !canvasInited.schools){ canvasInited.schools = true; initSchoolsCanvas(); setSubject('maths'); }
-    if(id === 'courses' && !canvasInited.courses){ canvasInited.courses = true; initCoursesCanvas(); initCoursesWorld(); }
+    if(id === 'brain'){ if(!canvasInited.brain){ canvasInited.brain = true; initBrainCanvas(); } setPuzzleType(puzzleType||'proverb'); initStreakDots(); }
+    if(id === 'schools'){ setSubject(curSubject||'maths'); }
+    if(id === 'courses'){ if(!canvasInited.courses){ canvasInited.courses = true; initCoursesCanvas(); } initCoursesWorld(); }
     if(id === 'audio' && !canvasInited.audio){ canvasInited.audio = true; initAudioCanvas(); }
     if(id === 'vrvillage'){ initVRHeroCanvas(); }
     setTimeout(initScrollReveal, 100);
@@ -7015,7 +7113,6 @@ showWorld = function(id){
 // Init home canvas on first load — defer so DOM has painted and offsetWidth is available
 function initAllCanvases(){
   setTimeout(function(){
-    initHomeCanvas(); canvasInited.home = true;
   }, 120);
 }
 // Expose village init globally (belt + suspenders)
@@ -7222,7 +7319,7 @@ function postComment(btn, postId) {
     + '<span class="bc-name">' + escWall(commentName) + '</span> '
     + '<span class="bc-text">' + escWall(input.value) + '</span>'
     + '<div class="bc-meta"><span class="bc-time">Just now</span>'
-    + '<button class="bc-like-btn">♡ 0</button>'
+    + '<button class="bc-like-btn"><i class="ph ph-heart"></i> 0</button>'
     + '</div></div>';
   thread.classList.add('open');
   thread.appendChild(item);
@@ -7275,15 +7372,15 @@ function publishPost() {
 
   post.innerHTML =
     '<div class="bp-head">'
-    + '<div class="bp-avatar" style="background:linear-gradient(135deg,var(--fire),var(--ember))">🧡</div>'
+    + '<div class="bp-avatar" style="background:linear-gradient(135deg,var(--fire),var(--ember))"><i class="ph ph-heart"></i></div>'
     + '<div class="bp-meta"><div class="bp-author">drsasa.zintsomi <span style="font-family:var(--mono);font-size:.38rem;color:var(--fire);letter-spacing:.06em">✦ author</span></div>'
     + '<div class="bp-time">Just now</div></div>'
     + '<div class="bp-more" style="cursor:default;opacity:.4">···</div></div>'
     + mediaBlock
     + (text ? '<div class="bp-caption"><strong>drsasa.zintsomi</strong> ' + escWall(text) + '</div>' : '')
     + '<div class="bp-actions">'
-    + '<button class="bp-act" onclick="toggleLike(this,'+id+')"><span class="act-icon">🤍</span><span class="act-count">0</span></button>'
-    + '<button class="bp-act" onclick="toggleComments('+id+')"><span class="act-icon">💬</span><span class="act-count">0</span></button>'
+    + '<button class="bp-act" onclick="toggleLike(this,'+id+')"><span class="act-icon"><i class="ph ph-heart"></i></span><span class="act-count">0</span></button>'
+    + '<button class="bp-act" onclick="toggleComments('+id+')"><span class="act-icon"><i class="ph ph-chat-circle"></i></span><span class="act-count">0</span></button>'
     + '<button class="bp-act" onclick="sharePost('+id+')"><span class="act-icon"><i class="ph ph-upload-simple"></i></span><span class="act-count">Share</span></button>'
     + '</div><div class="bp-likes">0 likes</div>'
     + '<div class="bp-comment-thread" id="comments-'+id+'"></div>'
@@ -7369,7 +7466,7 @@ function switchBlogTab(tab, btn) {
 //   VR VILLAGE — STORY ENGINE
 // ═══════════════════════════════════════════
 var VR_STORIES = [
-  { icon:'🔥', title:'The Night the Ancestors Spoke', lang:'isiZulu · English', dur:'12:00',
+  { icon:'<i class="ph ph-fire"></i>', title:'The Night the Ancestors Spoke', lang:'isiZulu · English', dur:'12:00',
     bg:'#0a0300', color:'rgba(255,120,20,.6)',
     text:'<strong>She did not begin with words.</strong> She began with the fire. Grandmother Nomvula sat down, looked into the flames, and waited. All seven grandchildren leaned in. The night air smelled of acacia and rain. She breathed deeply.<br><br>"There was a night," she said at last, "when the earth shook and the sky turned the colour of burnt ochre. The men went out to look, but it was the women who understood. The ancestors were not calling us to run. They were calling us to remember." <br><br>Her voice dropped to a whisper. The fire crackled. And in that moment, every child in the circle forgot everything else in the world.' },
   { icon:'🌳', title:'Umthi Wezinyanya — The Ancestor Tree', lang:'isiXhosa · English', dur:'9:00',
@@ -7390,7 +7487,7 @@ var VR_STORIES = [
   { icon:'🧡', title:'The Story That Built Zintsomi', lang:'Dr Sasa · Exclusive', dur:'18:00',
     bg:'#0d0000', color:'rgba(245,118,26,.6)',
     text:'<strong>It started with a question I could not stop asking:</strong> why do children who grow up surrounded by the richest oral traditions in the world graduate from school not knowing a single proverb, a single folktale, a single lullaby from their own culture?<br><br>I am Dr. Nomsa Sasa Mdlalose. I was a lawyer. I am a storyteller. I was trained to argue facts. But I learned from my grandmother that the most powerful arguments are the ones dressed as stories.<br><br>Zintsomi means "stories" in isiZulu. This college exists so that no African child ever again grows up feeling their culture lives somewhere else, in someone else\'s textbooks, in someone else\'s language. It lives here. In you. Right now.' },
-  { icon:'🌍', title:'Stories from the Community', lang:'All Languages', dur:'Growing…',
+  { icon:'<i class="ph ph-globe-hemisphere-west"></i>', title:'Stories from the Community', lang:'All Languages', dur:'Growing…',
     bg:'#04001a', color:'rgba(123,79,208,.4)',
     text:'<strong>This pod belongs to you.</strong> These are stories submitted by the Zintsomi community — learners, elders, parents, teachers — from across South Africa and the continent.<br><br>Every voice here chose to record something and say: "This story matters. This story is worth keeping." We agree.<br><br>When you subscribe, you can submit your own story to this pod. A two-minute recording. A lullaby your mother sang. A riddle from your childhood. A proverb your grandfather always used. Whatever you carry, this is where it lives. <em>Subscribe to add your voice →</em>' }
 ];
