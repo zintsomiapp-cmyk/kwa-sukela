@@ -287,7 +287,7 @@ body::after{
   transition:color .2s,border-color .2s;
 }
 #skip-btn:hover{color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.60)}
-#site{opacity:0;transition:opacity .9s ease;background:transparent}
+#site{opacity:1;transition:opacity .9s ease;background:transparent}
 #site.show{opacity:1}
 
 /* ═══ NAV — FLOATING PILL ═══ */
@@ -415,7 +415,7 @@ nav{
 
 /* ═══ ZCOURSE CARDS ═══ */
 .zcourses-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.5rem}
-.zcourse{display:flex;flex-direction:column;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;text-decoration:none;transition:border-color .2s,transform .2s;cursor:pointer}
+.zcourse{display:flex;flex-direction:column;background:rgba(20,24,36,1);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;text-decoration:none;transition:border-color .2s,transform .2s;cursor:pointer}
 .zcourse:hover{border-color:rgba(245,118,26,.35);transform:translateY(-3px);text-decoration:none}
 .zcourse-img{height:90px;display:flex;align-items:center;justify-content:center;font-size:2rem;background:rgba(245,118,26,.08)}
 .zcourse-img.zi2{background:rgba(30,132,73,.1);color:var(--green)}
@@ -436,10 +436,17 @@ nav{
   color:rgba(255,255,255,.7);cursor:pointer;transition:all .18s;margin-bottom:1rem;
 }
 .world-top-back:hover{background:rgba(245,118,26,.15);border-color:rgba(245,118,26,.4);color:#fff}
+
+/* ═══ ISIZULU WORD GRID ═══ */
+.zulu-grid{display:flex;flex-direction:column;gap:.5rem}
+.zw{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;padding:.6rem .8rem;background:rgba(255,255,255,.04);border-radius:6px;border-left:3px solid var(--fire)}
+.ze{font-family:var(--impact);font-size:.95rem;letter-spacing:.03em;color:var(--fire)}
+.zt{font-size:.9rem;color:rgba(255,255,255,.82);display:flex;align-items:center}
+
 /* ═══ WORLDS ═══ */
 .world{display:none;animation:worldIn .55s cubic-bezier(.22,1,.36,1)}
-.world.active{display:block;background:linear-gradient(180deg,#111318 0%,#181B22 40%,#1C2028 100%);min-height:100vh}
-@keyframes worldIn{0%{opacity:0;transform:translateY(20px) scale(.99)}60%{opacity:1}100%{opacity:1;transform:none;scale:1}}
+.world.active{display:block;min-height:100vh}
+60%{opacity:1}100%{opacity:1;transform:none;scale:1}}
 .ctr{max-width:1280px;margin:0 auto;padding:0 2.5rem}
 .sec{padding:5rem 0}
 
@@ -790,7 +797,7 @@ nav{
 
 @keyframes ncuvaFloat{0%,100%{transform:translateY(0) scale(1);opacity:.3}50%{transform:translateY(-18px) scale(1.1);opacity:.7}}
 
-/* ═══ VANNAH GAMES ═══ */
+/* ═══ SAVANNAH GAMES ═══ */
 .savannah-hero{position:relative;height:340px;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
 .sv-sky{position:absolute;inset:0;background:linear-gradient(180deg,#030810 0%,#0D1830 18%,#4B1A00 52%,#C24000 72%,#F07800 88%,#FF9000 100%)}
 .sv-sun{position:absolute;bottom:90px;left:50%;transform:translateX(-50%);width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,#FFF9C4,#FFD700 40%,#FF8800 70%,transparent 100%);box-shadow:0 0 60px 28px rgba(255,150,0,.55),0 0 110px 56px rgba(255,70,0,.22);animation:sunpulse 3.5s ease-in-out infinite}
@@ -1032,17 +1039,17 @@ nav{
 .sh-grade-wrap .grade-pill.active,.sh-grade-wrap .grade-pill:hover{background:rgba(255,255,255,.95);border-color:#fff;color:#8B1A02;font-weight:700}
 .subject-tabs{display:flex;gap:.4rem;padding:1.2rem 2rem 0;background:#0D1018;overflow-x:auto;scrollbar-width:none}
 .subject-tabs::-webkit-scrollbar{display:none}
-.sub-tab{font-family:var(--display);font-size:.52rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.42rem .88rem;border-radius:100px;border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.38);cursor:pointer;transition:all .2s;white-space:nowrap;background:none;display:flex;align-items:center;gap:.35rem}
+.sub-tab{font-family:var(--display);font-size:.52rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.42rem .88rem;border-radius:100px;border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.85);cursor:pointer;transition:all .2s;white-space:nowrap;background:rgba(20,24,36,1);display:flex;align-items:center;gap:.35rem}
 .sub-icon{font-size:1rem;display:flex;align-items:center}
 .sub-tab:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7)}
 .sub-tab.active{background:var(--fire);color:#fff;border-color:var(--fire);box-shadow:0 0 14px rgba(245,118,26,.3)}
-.topic-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem;padding:1.5rem 2rem 2rem;background:#12151F}
+.topic-grid{display:grid!important;grid-template-columns:repeat(2,1fr);gap:.7rem;padding:1.5rem 2rem 2rem;background:#12151F;min-height:100px}
 .topic-card{background:rgba(20,24,36,1);border:1px solid rgba(255,255,255,.16);border-radius:10px;padding:1.1rem 1.2rem;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;gap:.4rem}
 .topic-card:hover{border-color:rgba(245,118,26,.3);background:rgba(245,118,26,.04);transform:translateY(-2px)}
 .tc-icon{font-family:var(--impact);font-size:1.1rem;letter-spacing:.04em;color:var(--fire);line-height:1}
 .tc-name{font-family:var(--display);font-size:.76rem;font-weight:700;color:#fff;line-height:1.3}
-.tc-sub{font-size:.7rem;color:rgba(255,255,255,.38);line-height:1.5}
-.tc-badge{font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,118,26,.5);margin-top:.3rem}
+.tc-sub{font-size:.82rem;color:rgba(255,255,255,.72);line-height:1.5}
+.tc-badge{font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fire);margin-top:.3rem}
 .tc-badge.maths{color:rgba(245,118,26,.55)}
 .tc-badge.science{color:rgba(176,136,232,.55)}
 .notes-overlay{display:none;position:fixed;inset:0;z-index:700;background:rgba(0,0,0,.92);backdrop-filter:blur(8px);align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
@@ -1072,8 +1079,8 @@ nav{
 .course-tab-bar::-webkit-scrollbar{display:none}
 .course-tab{
   flex:0 0 auto;min-width:100px;padding:.82rem .85rem;
-  background:none;border:none;border-bottom:2px solid transparent;
-  color:rgba(255,255,255,.60);cursor:pointer;
+  background:rgba(20,24,36,1);border:none;border-bottom:2px solid transparent;
+  color:rgba(255,255,255,.85);cursor:pointer;
   transition:all .22s;text-align:center;
   font-family:var(--display);font-size:.5rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
 }
@@ -1098,7 +1105,7 @@ nav{
 .module-tick{flex-shrink:0;font-size:1rem;color:rgba(255,255,255,.60)}
 .module-item.done .module-tick{color:var(--green)}
 .module-item.active .module-tick{color:var(--fire)}
-#lesson-content{background:#0C0E14;overflow-y:auto}
+#lesson-content{background:#12151F;overflow-y:auto}
 .lesson-header{background:var(--ink);padding:1.5rem 2rem;border-bottom:1px solid rgba(255,255,255,.06)}
 .lesson-course-tag{font-family:var(--mono);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fire);margin-bottom:.5rem}
 .lesson-title{font-family:var(--impact);font-size:1.6rem;letter-spacing:.08em;color:#fff;margin-bottom:.4rem}
@@ -1268,7 +1275,7 @@ nav{
 .worlds-grid .world-card:nth-child(8){--card-glow:rgba(245,118,26,.06)}
 
 /* ═══════════════════════════════════════════════════════════
-   DR 'S BLOG — INSTAGRAM-STYLE VERTICAL FEED
+   DR SASA'S BLOG — INSTAGRAM-STYLE VERTICAL FEED
    ════════════════════════════════════════════════════════ */
 
 /* ── BLOG HERO ── */
@@ -1636,7 +1643,7 @@ nav{
 .bac-send.active{opacity:1;pointer-events:all}
 .bac-send:hover{color:var(--ember)}
 
-/* ── DR  COMPOSE (admin only) ── */
+/* ── DR SASA COMPOSE (admin only) ── */
 .blog-compose{
   max-width:600px;margin:0 auto 2rem;
   background:linear-gradient(135deg,rgba(245,118,26,.07),rgba(8,13,24,.95));
@@ -2001,7 +2008,7 @@ body::after{
 }
 @media(max-width:760px){ .plans-grid { grid-template-columns: 1fr; } }
 .plan-card {
-  background: rgba(255,255,255,.04);
+  background:rgba(20,24,36,1);
   border: 1px solid rgba(255,255,255,.08);
   border-radius: 20px;
   padding: 2rem 1.8rem;
@@ -2338,7 +2345,7 @@ body::after{
   cursor: pointer;
   transition: opacity .3s;
 }
-.bp-yt-thumb:hover { opacity: 0 !important; }
+.bp-yt-thumb:hover { opacity: 1; }
 .bp-yt-play {
   width: 58px; height: 58px; border-radius: 50%;
   background: rgba(255,0,0,.9);
@@ -2673,7 +2680,7 @@ body::after{
     </div>
   </nav>
 
-  <!-- ═══ DR  BLOG WORLD ═══ -->
+  <!-- ═══ DR SASA BLOG WORLD ═══ -->
   <div class="world" id="blog-world">
 
     <!-- Hero -->
@@ -3269,7 +3276,7 @@ body::after{
             <div class="plan-desc">For learners and teachers ready to go deeper. Full course access plus tools to record, share, and earn your certificate.</div>
             <div class="plan-features">
               <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Everything in Explorer</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> All Storytelling courses.</div>
+              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> All Storytelling Courses</div>
               <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Certificate of Completion</div>
               <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Schools Hub — full notes + quizzes</div>
               <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Recording Studio + export</div>
@@ -3779,7 +3786,7 @@ body::after{
         <div class="home-hero-topbar-l">Zintsomi Storytelling College &nbsp;·&nbsp; Est. 2024</div>
         <div class="home-hero-topbar-r">
           <span><strong>Specialised in</strong>African Storytelling &amp; Education</span>
-          <span><strong>Based in</strong></span>
+          <span><strong>Based in</strong>South Africa</span>
         </div>
       </div>
 
@@ -3813,7 +3820,7 @@ body::after{
       <div class="ctr" style="display:flex;justify-content:space-around;align-items:center;gap:1rem;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:.6rem">
           <i class="ph ph-books" style="font-size:1.3rem;color:#fff"></i>
-          <span style="font-family:var(--mono);font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.85)">Storytelling courses.</span>
+          <span style="font-family:var(--mono);font-size:.56rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.85)">Storytelling Courses</span>
         </div>
         <div style="width:1px;height:28px;background:rgba(255,255,255,.2)"></div>
         <div style="display:flex;align-items:center;gap:.6rem">
@@ -3833,7 +3840,7 @@ body::after{
       </div>
     </div>
 
-    <!-- DR 'S CORNER — YouTube preview on landing page -->
+    <!-- DR SASA'S CORNER — YouTube preview on landing page -->
     <div style="background:rgba(8,5,0,.6);border-top:3px solid var(--fire);border-bottom:1px solid rgba(245,118,26,.15);padding:2rem 0">
       <div class="ctr">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.4rem">
@@ -3859,7 +3866,7 @@ body::after{
       <div class="world-card reveal stagger-3" onclick="showWorld('brain')"><div class="wc-bg-glyph"><i class="ph ph-brain"></i></div><div class="wc-icon"><i class="ph ph-brain"></i></div><div class="wc-name">Brain Teasers</div><div class="wc-sub">Daily puzzles. Proverbs, IQ patterns, Maths, Science. Build your streak.</div><div class="wc-tag">Daily Challenge · Build Your Streak</div></div>
       <div class="world-card reveal stagger-4" onclick="showWorld('tree')"><div class="wc-bg-glyph"><i class="ph ph-tree"></i></div><div class="wc-icon"><i class="ph ph-tree"></i></div><div class="wc-name">Ancestor Tree</div><div class="wc-sub">A living tree growing with every story, game and lesson contributed.</div><div class="wc-tag">Community · Living World</div></div>
       <div class="world-card reveal stagger-5" onclick="showWorld('schools')"><div class="wc-bg-glyph"><i class="ph ph-graduation-cap"></i></div><div class="wc-icon"><i class="ph ph-graduation-cap"></i></div><div class="wc-name">Schools Hub</div><div class="wc-sub">Grade 10–12 study support. Notes are original and supplementary — for full CAPS-aligned textbooks visit siyavula.com (open, free).</div><div class="wc-tag">Grade 12 Priority · Free</div></div>
-      <div class="world-card reveal stagger-6" onclick="showWorld('courses')" style="border-bottom:3px solid var(--courses)"><div class="wc-bg-glyph"><i class="ph ph-books"></i></div><div class="wc-icon"><i class="ph ph-books"></i></div><div class="wc-name">Storytelling courses.</div><div class="wc-sub">7 full storytelling courses. Learn at your own pace. Certificate of attendance on completion.</div><div class="wc-tag" style="color:#B088E8">Certificate of Attendance · Self-Paced</div></div>
+      <div class="world-card reveal stagger-6" onclick="showWorld('courses')" style="border-bottom:3px solid var(--courses)"><div class="wc-bg-glyph"><i class="ph ph-books"></i></div><div class="wc-icon"><i class="ph ph-books"></i></div><div class="wc-name">Storytelling Courses</div><div class="wc-sub">7 full storytelling courses. Learn at your own pace. Certificate of attendance on completion.</div><div class="wc-tag" style="color:#B088E8">Certificate of Attendance · Self-Paced</div></div>
       <div class="world-card reveal stagger-6" onclick="showWorld('audio')"><div class="wc-bg-glyph"><i class="ph ph-music-note"></i></div><div class="wc-icon"><i class="ph ph-music-note"></i></div><div class="wc-name">Audio Archive</div><div class="wc-sub">Umemolo songs, izinganekwane, lullabies, folklore. Upload your own voice to Community Voices.</div><div class="wc-tag">Coming Soon · Contribute</div></div>
       <div class="world-card reveal stagger-1" onclick="showWorld('vrvillage')" style="border-bottom:3px solid var(--acid)"><div class="wc-bg-glyph"><i class="ph ph-eyeglasses"></i></div><div class="wc-icon"><i class="ph ph-eyeglasses"></i></div><div class="wc-name">VR Story Village</div><div class="wc-sub">8 immersive story pods. Wear your VR glasses and step inside an African night filled with ancestral stories.</div><div class="wc-tag" style="color:var(--acid)">Google Cardboard · WebXR · Free</div></div>
     </div>
@@ -3940,7 +3947,7 @@ body::after{
 
           <div class="game-tile" onclick="openGame('diketo')">
             <div class="game-tile-hero gt-diketo"><div style="text-align:center;color:#FFD700;font-size:2.2rem">🪨🪨🪨<br><span style="font-size:1rem;opacity:.5;display:block;margin-top:.3rem">tap the rhythm</span></div></div>
-            <div class="game-tile-body"><div class="gt-tag">Rhythm</div><div class="gt-name">Diketo</div><div class="gt-origin">🇿🇦 Sotho tradition · </div><p class="gt-desc">Watch the pattern flash. Tap it back in exact order. Faster every round. Deeply addictive.</p><div class="gt-stats"><div class="gt-stat"><strong>20</strong> Levels</div><div class="gt-stat"><strong>↑</strong> Speed</div><div class="gt-stat"><strong>★</strong> Scoring</div></div></div>
+            <div class="game-tile-body"><div class="gt-tag">Rhythm</div><div class="gt-name">Diketo</div><div class="gt-origin">🇿🇦 Sotho tradition · South Africa</div><p class="gt-desc">Watch the pattern flash. Tap it back in exact order. Faster every round. Deeply addictive.</p><div class="gt-stats"><div class="gt-stat"><strong>20</strong> Levels</div><div class="gt-stat"><strong>↑</strong> Speed</div><div class="gt-stat"><strong>★</strong> Scoring</div></div></div>
           </div>
           <div class="game-tile" onclick="openGame('kgati')">
             <div class="game-tile-hero gt-kgati"><div style="text-align:center;color:#fff;font-size:2.5rem;padding:1rem">🪢<br><span style="font-size:1rem;opacity:.5;display:block;margin-top:.4rem">read pattern · jump in time</span></div></div>
@@ -3967,7 +3974,7 @@ body::after{
           <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#8B5E3C,#5C3010);border:2px solid rgba(255,180,0,.35);display:flex;align-items:center;justify-content:center;font-size:1.3rem">🪨</div>
           <div>
             <div style="font-family:var(--impact);font-size:1.3rem;letter-spacing:.14em;color:#FFD700;text-shadow:0 0 20px rgba(255,180,0,.4)">DIKETO</div>
-            <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,180,0,.45)">Sotho Rhythm Challenge · </div>
+            <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,180,0,.45)">Sotho Rhythm Challenge · South Africa</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:1.4rem">
@@ -4014,7 +4021,7 @@ body::after{
           <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#0E3A18,#06200C);border:2px solid rgba(0,200,80,.3);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#6EE78E"><i class="ph ph-arrows-clockwise"></i></div>
           <div>
             <div style="font-family:var(--impact);font-size:1.3rem;letter-spacing:.14em;color:#6EE78E;text-shadow:0 0 20px rgba(0,200,80,.35)">KGATI</div>
-            <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(0,200,80,.4)">Sotho &amp; Tswana Rope Game · </div>
+            <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(0,200,80,.4)">Sotho &amp; Tswana Rope Game · South Africa</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:1.4rem">
@@ -4067,7 +4074,7 @@ body::after{
           <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#2E0E5C,#180830);border:2px solid rgba(160,80,255,.35);display:flex;align-items:center;justify-content:center;font-size:1.2rem">✦</div>
           <div>
             <div style="font-family:var(--impact);font-size:1.3rem;letter-spacing:.14em;color:#C084FC;text-shadow:0 0 20px rgba(160,80,255,.4)">NCUVA</div>
-            <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(160,80,255,.4)">Venda Memory Game · Limpopo, </div>
+            <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(160,80,255,.4)">Venda Memory Game · Limpopo, South Africa</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:1.4rem">
@@ -4255,7 +4262,7 @@ body::after{
       </div>
 
     </div>
-    <div class="ctr" style="padding-top:2.2rem">
+    <div class="ctr" style="padding-top:2.2rem;background:#12151F;min-height:400px">
       <div class="subjects-nav" style="display:flex;gap:.4rem;padding:1.2rem 2rem 0;background:#14171E;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none">
         <button class="sub-tab maths active" onclick="setSubject('maths')"><span class="sub-icon"><i class="ph ph-compass"></i></span>Mathematics</button>
         <button class="sub-tab science" onclick="setSubject('science')"><span class="sub-icon"><i class="ph ph-flask"></i></span>Physical Sciences</button>
@@ -4270,7 +4277,7 @@ body::after{
       <div style="font-size:1.1rem;color:var(--fire)"><i class="ph ph-check-circle"></i></div>
       <div>
         <div style="font-family:var(--display);font-size:.92rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff">Schools Hub is 100% Free</div>
-        <div style="font-family:var(--mono);font-size:.54rem;letter-spacing:.06em;color:rgba(255,255,255,.38);margin-top:.2rem">All study notes, formulas and practice questions — free for every n learner</div>
+        <div style="font-family:var(--mono);font-size:.54rem;letter-spacing:.06em;color:rgba(255,255,255,.38);margin-top:.2rem">All study notes, formulas and practice questions — free for every South African learner</div>
       </div>
       <button class="btn" style="background:var(--fire);flex-shrink:0;font-size:.52rem;padding:.5rem 1.2rem" onclick="showWorld('courses')"><i class="ph ph-books"></i> Explore Courses</button>
     </div>
@@ -4380,7 +4387,8 @@ body::after{
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>var curSubject='maths';
+
 // ════ SUPABASE ════
 const SUPA_URL = 'https://natjezquifgddzzawhgo.supabase.co';
 const SUPA_KEY = 'sb_publishable_cF6cT_pyFJiO4kfsg_a5Ow_Pd-qx7Ix';
@@ -4862,7 +4870,12 @@ function showWorld(id){
   }, 30);
   if(id==='tree')initTree();
   if(id==='brain'){initStreakDots();setPuzzleType('proverb')}
-  if(id==='schools'){setSubject('maths')}
+  if(id==='schools'){
+    setSubject(curSubject||'maths');
+    forceContentVisible();
+  } else {
+    setTimeout(forceContentVisible, 60);
+  }
 }
 
 function initAll(){
@@ -5678,9 +5691,9 @@ var NOTES={
   },
   'Essay Writing':{
     secs:[
-      {t:'ESY TYPES',cl:'',body:'<p><strong>Argumentative:</strong> One clear stance, defend with evidence. Persuasive voice. No "on the other hand."<br><strong>Discursive:</strong> Balanced both sides. Analytical voice. Conclude with informed view.<br><strong>Narrative:</strong> Story with vivid detail, dialogue, rising action, climax, resolution.<br><strong>Descriptive:</strong> Create scene/mood. Five senses. Show, don\'t tell.</p><div class="formula-box"><div class="f-lbl">Universal Essay Structure</div><div class="f-eq">Intro: Hook + context + thesis (3-5 sentences)<br>Body 1: Topic sentence + evidence + explanation<br>Body 2: Topic sentence + evidence + explanation<br>Body 3: Topic sentence + evidence + explanation<br>Conclusion: Restate thesis + clincher statement</div></div>'},
+      {t:'ESSAY TYPES',cl:'',body:'<p><strong>Argumentative:</strong> One clear stance, defend with evidence. Persuasive voice. No "on the other hand."<br><strong>Discursive:</strong> Balanced both sides. Analytical voice. Conclude with informed view.<br><strong>Narrative:</strong> Story with vivid detail, dialogue, rising action, climax, resolution.<br><strong>Descriptive:</strong> Create scene/mood. Five senses. Show, don\'t tell.</p><div class="formula-box"><div class="f-lbl">Universal Essay Structure</div><div class="f-eq">Intro: Hook + context + thesis (3-5 sentences)<br>Body 1: Topic sentence + evidence + explanation<br>Body 2: Topic sentence + evidence + explanation<br>Body 3: Topic sentence + evidence + explanation<br>Conclusion: Restate thesis + clincher statement</div></div>'},
       {t:'LANGUAGE MARKS',cl:'',body:'<p>Markers score <strong>content</strong> and <strong>language</strong> separately. Strong language with weak content still earns good language marks.</p><p><strong>Upgrade your vocabulary:</strong><br>good → compelling, poignant, astute<br>said → asserted, remarked, declared, whispered<br>big → substantial, considerable, monumental</p><p><strong>Mix sentence lengths:</strong> Short sentences hit hard. Longer, more elaborate sentences provide depth, context and demonstrate sophistication to the examiner marking your work.</p>'},
-      {t:'PRACTICE',cl:'',body:'<div class="practice-q"><div class="pq-num">Q1</div><div class="pq-q">Plan (point form): "Social media does more harm than good for  youth." Argumentative essay.</div><button class="pq-toggle" onclick="toggleAns(this)">Show Answer</button><div class="pq-ans">Intro: Position — agree. Hook:  teen mental health stat.<br>P1: Mental health — anxiety, comparison culture<br>P2: Misinformation spreads — election/health dangers<br>P3: Academic distraction — screen time, poor performance<br>Conc: Benefits cannot offset mental health crisis</div></div>'}
+      {t:'PRACTICE',cl:'',body:'<div class="practice-q"><div class="pq-num">Q1</div><div class="pq-q">Plan (point form): "Social media does more harm than good for SA youth." Argumentative essay.</div><button class="pq-toggle" onclick="toggleAns(this)">Show Answer</button><div class="pq-ans">Intro: Position — agree. Hook: SA teen mental health stat.<br>P1: Mental health — anxiety, comparison culture<br>P2: Misinformation spreads — election/health dangers<br>P3: Academic distraction — screen time, poor performance<br>Conc: Benefits cannot offset mental health crisis</div></div>'}
     ],
     tip:{tx:'Your first sentence is everything. I\'ve marked hundreds of essays — the introduction tells me the final mark immediately. Spend 3 minutes on your opening line. Start with a surprising fact, a question, or a vivid image. Never start with "In this essay I will discuss..."'}
   },
@@ -5776,8 +5789,8 @@ var COURSES = [
         quiz:{ q:'What does collaborative writing teach that solo writing cannot?', opts:['Faster typing','Listening, negotiation, and synthesis of multiple voices','Grammar correction','How to use a dictionary'], ans:1, fb:'Collaboration teaches listening, negotiation, and synthesis — skills no solo writing exercise can replicate.' }
       },
       { title:'Publishing: Manuscript to Distribution', duration:'1 Hour',
-        body:'<h3>The Publishing Journey</h3><p>Understanding the publishing process from manuscript to distribution. The journey from finished story to published book involves: editing and revision, illustration and layout, ISBN registration, printing or digital formatting, distribution and marketing.</p><h3>Digital Publishing Options</h3><p>Tools like Amazon KDP (Kindle Direct Publishing) allow authors to self-publish globally with no upfront cost. eBook formatting, print-on-demand, and digital distribution have democratised publishing — a children\'s author in  can now reach a reader in Tokyo.</p><h3>Guest Speaker Series</h3><p>Local authors, digital publishers, and illustrators share their journeys — including the rejections, the breakthroughs, and the lessons that shaped their practice.</p><div class="lesson-callout"><div class="lc-label">Publishing Masterclass</div><p>Demo of formatting for eBooks and print layout tools for different platforms like Amazon. Students leave with a practical roadmap to publication.</p></div>',
-        quiz:{ q:'What has democratised children\'s publishing globally?', opts:['Traditional publishing houses only','Expensive printing equipment','Digital publishing tools like Amazon KDP — allowing global reach with no upfront cost','University qualifications'], ans:2, fb:'Digital publishing tools like Amazon KDP have democratised publishing — a n author can now reach a global reader.' }
+        body:'<h3>The Publishing Journey</h3><p>Understanding the publishing process from manuscript to distribution. The journey from finished story to published book involves: editing and revision, illustration and layout, ISBN registration, printing or digital formatting, distribution and marketing.</p><h3>Digital Publishing Options</h3><p>Tools like Amazon KDP (Kindle Direct Publishing) allow authors to self-publish globally with no upfront cost. eBook formatting, print-on-demand, and digital distribution have democratised publishing — a children\'s author in South Africa can now reach a reader in Tokyo.</p><h3>Guest Speaker Series</h3><p>Local authors, digital publishers, and illustrators share their journeys — including the rejections, the breakthroughs, and the lessons that shaped their practice.</p><div class="lesson-callout"><div class="lc-label">Publishing Masterclass</div><p>Demo of formatting for eBooks and print layout tools for different platforms like Amazon. Students leave with a practical roadmap to publication.</p></div>',
+        quiz:{ q:'What has democratised children\'s publishing globally?', opts:['Traditional publishing houses only','Expensive printing equipment','Digital publishing tools like Amazon KDP — allowing global reach with no upfront cost','University qualifications'], ans:2, fb:'Digital publishing tools like Amazon KDP have democratised publishing — a South African author can now reach a global reader.' }
       }
     ]
   },
@@ -6899,25 +6912,20 @@ var currentSpotWorld = '';
 var SPOT_DATA = {
   
   
-  'Core isiZulu Vocabulary (200 Words)':{
+  '200 Essential Words':{
     secs:[
-      {t:'GREETINGS & BASICS',cl:'fire',body:'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem .8rem;font-size:.88rem;line-height:2"><span style="color:var(--fire);font-weight:700">Hello (1 person)</span><span>Sawubona</span><span style="color:var(--fire);font-weight:700">Hello (group)</span><span>Sanibonani</span><span style="color:var(--fire);font-weight:700">How are you?</span><span>Unjani?</span><span style="color:var(--fire);font-weight:700">I am fine</span><span>Ngikhona</span><span style="color:var(--fire);font-weight:700">Thank you</span><span>Ngiyabonga</span><span style="color:var(--fire);font-weight:700">Thank you very much</span><span>Ngiyabonga kakhulu</span><span style="color:var(--fire);font-weight:700">Please</span><span>Ngicela</span><span style="color:var(--fire);font-weight:700">Yes</span><span>Yebo</span><span style="color:var(--fire);font-weight:700">No</span><span>Cha</span><span style="color:var(--fire);font-weight:700">Goodbye</span><span>Hamba kahle / Sala kahle</span><span style="color:var(--fire);font-weight:700">Good morning</span><span>Sawubona (ekuseni)</span><span style="color:var(--fire);font-weight:700">Good night</span><span>Lala kahle</span><span style="color:var(--fire);font-weight:700">Excuse me</span><span>Uxolo</span><span style="color:var(--fire);font-weight:700">Sorry</span><span>Ngiyaxolisa</span><span style="color:var(--fire);font-weight:700">My name is...</span><span>Igama lami ngu...</span><span style="color:var(--fire);font-weight:700">What is your name?</span><span>Ngubani igama lakho?</span><span style="color:var(--fire);font-weight:700">I do not understand</span><span>Angizwa kahle</span><span style="color:var(--fire);font-weight:700">Please repeat</span><span>Phinda futhi ngicela</span><span style="color:var(--fire);font-weight:700">I am learning isiZulu</span><span>Ngifunda isiZulu</span><span style="color:var(--fire);font-weight:700">Speak slowly please</span><span>Khuluma kancane ngicela</span></div>'},
-      {t:'PEOPLE & FAMILY',cl:'fire',body:'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem .8rem;font-size:.88rem;line-height:2"><span style="color:var(--fire);font-weight:700">Person</span><span>Umuntu</span><span style="color:var(--fire);font-weight:700">People</span><span>Abantu</span><span style="color:var(--fire);font-weight:700">Man</span><span>Indoda</span><span style="color:var(--fire);font-weight:700">Woman</span><span>Umfazi</span><span style="color:var(--fire);font-weight:700">Child</span><span>Ingane</span><span style="color:var(--fire);font-weight:700">Children</span><span>Izingane</span><span style="color:var(--fire);font-weight:700">Father</span><span>Ubaba</span><span style="color:var(--fire);font-weight:700">Mother</span><span>Umama</span><span style="color:var(--fire);font-weight:700">Brother</span><span>Umfowethu</span><span style="color:var(--fire);font-weight:700">Sister</span><span>Usisi</span><span style="color:var(--fire);font-weight:700">Grandfather</span><span>Ubabamkhulu</span><span style="color:var(--fire);font-weight:700">Grandmother</span><span>Ugogo</span><span style="color:var(--fire);font-weight:700">Friend</span><span>Umngane</span><span style="color:var(--fire);font-weight:700">Teacher</span><span>Uthisha</span><span style="color:var(--fire);font-weight:700">Student</span><span>Umfundi</span><span style="color:var(--fire);font-weight:700">King</span><span>Inkosi</span><span style="color:var(--fire);font-weight:700">Elder</span><span>Umdala</span></div>'},
-      {t:'EVERYDAY ACTIONS',cl:'fire',body:'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem .8rem;font-size:.88rem;line-height:2"><span style="color:var(--fire);font-weight:700">I want</span><span>Ngifuna</span><span style="color:var(--fire);font-weight:700">I see</span><span>Ngibona</span><span style="color:var(--fire);font-weight:700">I hear</span><span>Ngizwa</span><span style="color:var(--fire);font-weight:700">I eat</span><span>Ngidla</span><span style="color:var(--fire);font-weight:700">I drink</span><span>Ngiphuza</span><span style="color:var(--fire);font-weight:700">I sleep</span><span>Ngiyalala</span><span style="color:var(--fire);font-weight:700">I walk</span><span>Ngihamba</span><span style="color:var(--fire);font-weight:700">I run</span><span>Ngigijima</span><span style="color:var(--fire);font-weight:700">I work</span><span>Ngiyasebenza</span><span style="color:var(--fire);font-weight:700">I learn</span><span>Ngifunda</span><span style="color:var(--fire);font-weight:700">I read</span><span>Ngifunda incwadi</span><span style="color:var(--fire);font-weight:700">I write</span><span>Ngibhala</span><span style="color:var(--fire);font-weight:700">I speak</span><span>Ngikhuluma</span><span style="color:var(--fire);font-weight:700">I understand</span><span>Ngiyazwa</span><span style="color:var(--fire);font-weight:700">I love</span><span>Ngiyathanda</span><span style="color:var(--fire);font-weight:700">I help</span><span>Ngisiza</span><span style="color:var(--fire);font-weight:700">I come</span><span>Ngiza</span><span style="color:var(--fire);font-weight:700">I go</span><span>Ngiya</span><span style="color:var(--fire);font-weight:700">I buy</span><span>Ngithenga</span><span style="color:var(--fire);font-weight:700">I cook</span><span>Ngipheka</span></div>'},
-      {t:'PLACES & THINGS',cl:'fire',body:'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem .8rem;font-size:.88rem;line-height:2"><span style="color:var(--fire);font-weight:700">House / Home</span><span>Ikhaya / Indlu</span><span style="color:var(--fire);font-weight:700">School</span><span>Isikole</span><span style="color:var(--fire);font-weight:700">Hospital</span><span>Isibhedlela</span><span style="color:var(--fire);font-weight:700">Shop / Store</span><span>Isitolo</span><span style="color:var(--fire);font-weight:700">Road / Street</span><span>Umgwaqo</span><span style="color:var(--fire);font-weight:700">Water</span><span>Amanzi</span><span style="color:var(--fire);font-weight:700">Food</span><span>Ukudla</span><span style="color:var(--fire);font-weight:700">Money</span><span>Imali</span><span style="color:var(--fire);font-weight:700">Book</span><span>Incwadi</span><span style="color:var(--fire);font-weight:700">Phone</span><span>Ucingo / Iselula</span><span style="color:var(--fire);font-weight:700">Car</span><span>Imoto</span><span style="color:var(--fire);font-weight:700">Bus</span><span>Ibhasi</span><span style="color:var(--fire);font-weight:700">Train</span><span>Isitimela</span><span style="color:var(--fire);font-weight:700">Sun</span><span>Ilanga</span><span style="color:var(--fire);font-weight:700">Rain</span><span>Imvula</span><span style="color:var(--fire);font-weight:700">Tree</span><span>Umuthi</span><span style="color:var(--fire);font-weight:700">River</span><span>Umfula</span><span style="color:var(--fire);font-weight:700">Mountain</span><span>Intaba</span><span style="color:var(--fire);font-weight:700">Village</span><span>Umuziana / Idolobhana</span><span style="color:var(--fire);font-weight:700">City</span><span>Idolobha</span></div>'},
-      {t:'NUMBERS & TIME',cl:'fire',body:'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem .8rem;font-size:.88rem;line-height:2"><span style="color:var(--fire);font-weight:700">1</span><span>Kunye</span><span style="color:var(--fire);font-weight:700">2</span><span>Kubili</span><span style="color:var(--fire);font-weight:700">3</span><span>Kuthathu</span><span style="color:var(--fire);font-weight:700">4</span><span>Kune</span><span style="color:var(--fire);font-weight:700">5</span><span>Kuhlanu</span><span style="color:var(--fire);font-weight:700">6</span><span>Isithupha</span><span style="color:var(--fire);font-weight:700">7</span><span>Isikhombisa</span><span style="color:var(--fire);font-weight:700">8</span><span>Isishiyagalombili</span><span style="color:var(--fire);font-weight:700">9</span><span>Isishiyagalolunye</span><span style="color:var(--fire);font-weight:700">10</span><span>Ishumi</span><span style="color:var(--fire);font-weight:700">Today</span><span>Namhlanje</span><span style="color:var(--fire);font-weight:700">Yesterday</span><span>Izolo</span><span style="color:var(--fire);font-weight:700">Tomorrow</span><span>Kusasa</span><span style="color:var(--fire);font-weight:700">Now</span><span>Manje</span><span style="color:var(--fire);font-weight:700">Morning</span><span>Ekuseni</span><span style="color:var(--fire);font-weight:700">Afternoon</span><span>Emini</span><span style="color:var(--fire);font-weight:700">Evening</span><span>Ntambama</span><span style="color:var(--fire);font-weight:700">Night</span><span>Ebusuku</span><span style="color:var(--fire);font-weight:700">Monday</span><span>UMsombuluko</span><span style="color:var(--fire);font-weight:700">Friday</span><span>ULwesihlanu</span><span style="color:var(--fire);font-weight:700">Weekend</span><span>Impelasonto</span></div>'},
-      {t:'FEELINGS & COLOURS',cl:'fire',body:'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.4rem .8rem;font-size:.88rem;line-height:2"><span style="color:var(--fire);font-weight:700">Happy</span><span>Jabulile</span><span style="color:var(--fire);font-weight:700">Sad</span><span>Lusizi</span><span style="color:var(--fire);font-weight:700">Angry</span><span>Thukuthele</span><span style="color:var(--fire);font-weight:700">Tired</span><span>Khathele</span><span style="color:var(--fire);font-weight:700">Hungry</span><span>Lambile</span><span style="color:var(--fire);font-weight:700">Thirsty</span><span>Omnile</span><span style="color:var(--fire);font-weight:700">Sick</span><span>Gula</span><span style="color:var(--fire);font-weight:700">Strong</span><span>Namandla</span><span style="color:var(--fire);font-weight:700">Beautiful</span><span>Muhle</span><span style="color:var(--fire);font-weight:700">Big</span><span>Khulu</span><span style="color:var(--fire);font-weight:700">Small</span><span>Ncane</span><span style="color:var(--fire);font-weight:700">Red</span><span>Bomvu</span><span style="color:var(--fire);font-weight:700">White</span><span>Mhlophe</span><span style="color:var(--fire);font-weight:700">Black</span><span>Mnyama</span><span style="color:var(--fire);font-weight:700">Yellow</span><span>Phuzi</span><span style="color:var(--fire);font-weight:700">Green</span><span>Luhlaza</span><span style="color:var(--fire);font-weight:700">Hot</span><span>Shisa</span><span style="color:var(--fire);font-weight:700">Cold</span><span>Banda</span><span style="color:var(--fire);font-weight:700">Good</span><span>Hle / Lungile</span><span style="color:var(--fire);font-weight:700">Bad</span><span>Bi</span></div>'}
+      {t:'UKUBINGELELA — GREETINGS',cl:'fire',body:'<div class="zulu-grid"><div class="zw"><span class="ze">Sawubona</span><span class="zt">Hello (to one person)</span></div><div class="zw"><span class="ze">Sanibonani</span><span class="zt">Hello (to a group)</span></div><div class="zw"><span class="ze">Unjani?</span><span class="zt">How are you? (one person)</span></div><div class="zw"><span class="ze">Ninjani?</span><span class="zt">How are you? (group)</span></div><div class="zw"><span class="ze">Ngikhona, ngiyabonga</span><span class="zt">I am fine, thank you</span></div><div class="zw"><span class="ze">Ngiyabonga kakhulu</span><span class="zt">Thank you very much</span></div><div class="zw"><span class="ze">Ngicela</span><span class="zt">Please</span></div><div class="zw"><span class="ze">Uxolo</span><span class="zt">Sorry / Excuse me</span></div><div class="zw"><span class="ze">Yebo</span><span class="zt">Yes</span></div><div class="zw"><span class="ze">Cha</span><span class="zt">No</span></div><div class="zw"><span class="ze">Hamba kahle</span><span class="zt">Go well (said to person leaving)</span></div><div class="zw"><span class="ze">Sala kahle</span><span class="zt">Stay well (said by person leaving)</span></div><div class="zw"><span class="ze">Lala kahle</span><span class="zt">Good night / Sleep well</span></div><div class="zw"><span class="ze">Ngiyaxolisa</span><span class="zt">I apologise</span></div><div class="zw"><span class="ze">Igama lami ngu...</span><span class="zt">My name is...</span></div><div class="zw"><span class="ze">Ngubani igama lakho?</span><span class="zt">What is your name?</span></div><div class="zw"><span class="ze">Ngifunda isiZulu</span><span class="zt">I am learning isiZulu</span></div><div class="zw"><span class="ze">Angizwa kahle</span><span class="zt">I do not understand</span></div><div class="zw"><span class="ze">Phinda futhi</span><span class="zt">Please repeat</span></div><div class="zw"><span class="ze">Khuluma kancane</span><span class="zt">Speak slowly</span></div></div>'},
+      {t:'ABANTU NOZALO — PEOPLE & FAMILY',cl:'fire',body:'<div class="zulu-grid"><div class="zw"><span class="ze">Umuntu</span><span class="zt">A person</span></div><div class="zw"><span class="ze">Abantu</span><span class="zt">People</span></div><div class="zw"><span class="ze">Indoda</span><span class="zt">A man</span></div><div class="zw"><span class="ze">Umfazi / Umama</span><span class="zt">A woman / Mother</span></div><div class="zw"><span class="ze">Ingane</span><span class="zt">A child</span></div><div class="zw"><span class="ze">Izingane</span><span class="zt">Children</span></div><div class="zw"><span class="ze">Ubaba</span><span class="zt">Father</span></div><div class="zw"><span class="ze">Umama</span><span class="zt">Mother</span></div><div class="zw"><span class="ze">Umfowethu</span><span class="zt">My brother (male speaking)</span></div><div class="zw"><span class="ze">Udadewethu</span><span class="zt">My sister</span></div><div class="zw"><span class="ze">Ubabamkhulu</span><span class="zt">Grandfather</span></div><div class="zw"><span class="ze">Ugogo</span><span class="zt">Grandmother</span></div><div class="zw"><span class="ze">Umngane</span><span class="zt">A friend</span></div><div class="zw"><span class="ze">Abangane</span><span class="zt">Friends</span></div><div class="zw"><span class="ze">Umyeni</span><span class="zt">Husband</span></div><div class="zw"><span class="ze">Umlobokazi</span><span class="zt">Wife / Bride</span></div><div class="zw"><span class="ze">Indodana</span><span class="zt">Son</span></div><div class="zw"><span class="ze">Indodakazi</span><span class="zt">Daughter</span></div><div class="zw"><span class="ze">Umzala</span><span class="zt">Cousin</span></div><div class="zw"><span class="ze">Umakoti</span><span class="zt">Daughter-in-law</span></div></div>'},
+      {t:'IZENZO ZANSUKU ZONKE — EVERYDAY ACTIONS',cl:'fire',body:'<div class="zulu-grid"><div class="zw"><span class="ze">Ngidla</span><span class="zt">I am eating</span></div><div class="zw"><span class="ze">Ngiphuza</span><span class="zt">I am drinking</span></div><div class="zw"><span class="ze">Ngiyalala</span><span class="zt">I am sleeping</span></div><div class="zw"><span class="ze">Ngiyavuka</span><span class="zt">I am waking up</span></div><div class="zw"><span class="ze">Ngihamba</span><span class="zt">I am walking / I am going</span></div><div class="zw"><span class="ze">Ngigijima</span><span class="zt">I am running</span></div><div class="zw"><span class="ze">Ngiyasebenza</span><span class="zt">I am working</span></div><div class="zw"><span class="ze">Ngifunda</span><span class="zt">I am learning / studying</span></div><div class="zw"><span class="ze">Ngifunda incwadi</span><span class="zt">I am reading a book</span></div><div class="zw"><span class="ze">Ngibhala</span><span class="zt">I am writing</span></div><div class="zw"><span class="ze">Ngikhuluma</span><span class="zt">I am speaking</span></div><div class="zw"><span class="ze">Ngizwa</span><span class="zt">I hear / I understand</span></div><div class="zw"><span class="ze">Ngibona</span><span class="zt">I see</span></div><div class="zw"><span class="ze">Ngifuna</span><span class="zt">I want</span></div><div class="zw"><span class="ze">Ngiyathanda</span><span class="zt">I love / I like</span></div><div class="zw"><span class="ze">Ngisiza</span><span class="zt">I am helping</span></div><div class="zw"><span class="ze">Ngipheka</span><span class="zt">I am cooking</span></div><div class="zw"><span class="ze">Ngithenga</span><span class="zt">I am buying</span></div><div class="zw"><span class="ze">Ngizela</span><span class="zt">I am coming from</span></div><div class="zw"><span class="ze">Ngiya e...</span><span class="zt">I am going to...</span></div></div>'},
+      {t:'IZINDAWO NEZINTO — PLACES & THINGS',cl:'fire',body:'<div class="zulu-grid"><div class="zw"><span class="ze">Ikhaya</span><span class="zt">Home</span></div><div class="zw"><span class="ze">Indlu</span><span class="zt">A house / room</span></div><div class="zw"><span class="ze">Isikole</span><span class="zt">School</span></div><div class="zw"><span class="ze">Idolobha</span><span class="zt">City / Town</span></div><div class="zw"><span class="ze">Umgwaqo</span><span class="zt">Road / Street</span></div><div class="zw"><span class="ze">Isitolo</span><span class="zt">Shop / Store</span></div><div class="zw"><span class="ze">Isibhedlela</span><span class="zt">Hospital</span></div><div class="zw"><span class="ze">Ibhange</span><span class="zt">Bank</span></div><div class="zw"><span class="ze">Amanzi</span><span class="zt">Water</span></div><div class="zw"><span class="ze">Ukudla</span><span class="zt">Food</span></div><div class="zw"><span class="ze">Imali</span><span class="zt">Money</span></div><div class="zw"><span class="ze">Incwadi</span><span class="zt">Book / Letter</span></div><div class="zw"><span class="ze">Ucingo / Iselula</span><span class="zt">Phone / Mobile phone</span></div><div class="zw"><span class="ze">Imoto</span><span class="zt">Car</span></div><div class="zw"><span class="ze">Ibhasi</span><span class="zt">Bus</span></div><div class="zw"><span class="ze">Isitimela</span><span class="zt">Train</span></div><div class="zw"><span class="ze">Ilanga</span><span class="zt">Sun / Day</span></div><div class="zw"><span class="ze">Imvula</span><span class="zt">Rain</span></div><div class="zw"><span class="ze">Umfula</span><span class="zt">River</span></div><div class="zw"><span class="ze">Intaba</span><span class="zt">Mountain</span></div></div>'},
+      {t:'IZINOMBOLO NESIKHATHI — NUMBERS & TIME',cl:'fire',body:'<div class="zulu-grid"><div class="zw"><span class="ze">Kunye (1)</span><span class="zt">One</span></div><div class="zw"><span class="ze">Kubili (2)</span><span class="zt">Two</span></div><div class="zw"><span class="ze">Kuthathu (3)</span><span class="zt">Three</span></div><div class="zw"><span class="ze">Kune (4)</span><span class="zt">Four</span></div><div class="zw"><span class="ze">Kuhlanu (5)</span><span class="zt">Five</span></div><div class="zw"><span class="ze">Isithupha (6)</span><span class="zt">Six</span></div><div class="zw"><span class="ze">Isikhombisa (7)</span><span class="zt">Seven</span></div><div class="zw"><span class="ze">Isishiyagalombili (8)</span><span class="zt">Eight</span></div><div class="zw"><span class="ze">Isishiyagalolunye (9)</span><span class="zt">Nine</span></div><div class="zw"><span class="ze">Ishumi (10)</span><span class="zt">Ten</span></div><div class="zw"><span class="ze">Amashumi amabili (20)</span><span class="zt">Twenty</span></div><div class="zw"><span class="ze">Ikhulu (100)</span><span class="zt">One hundred</span></div><div class="zw"><span class="ze">Namhlanje</span><span class="zt">Today</span></div><div class="zw"><span class="ze">Izolo</span><span class="zt">Yesterday</span></div><div class="zw"><span class="ze">Kusasa</span><span class="zt">Tomorrow</span></div><div class="zw"><span class="ze">Manje</span><span class="zt">Now</span></div><div class="zw"><span class="ze">Ekuseni</span><span class="zt">Morning</span></div><div class="zw"><span class="ze">Emini</span><span class="zt">Midday / Afternoon</span></div><div class="zw"><span class="ze">Ntambama</span><span class="zt">Late afternoon / Evening</span></div><div class="zw"><span class="ze">Ebusuku</span><span class="zt">At night</span></div></div>'},
+      {t:'IMIZWA NEMIBALA — FEELINGS & COLOURS',cl:'fire',body:'<div class="zulu-grid"><div class="zw"><span class="ze">Ngikhathele</span><span class="zt">I am tired</span></div><div class="zw"><span class="ze">Ngilambile</span><span class="zt">I am hungry</span></div><div class="zw"><span class="ze">Ngomile</span><span class="zt">I am thirsty</span></div><div class="zw"><span class="ze">Ngijabulile</span><span class="zt">I am happy</span></div><div class="zw"><span class="ze">Ngilusizi</span><span class="zt">I am sad</span></div><div class="zw"><span class="ze">Ngiyagula</span><span class="zt">I am sick</span></div><div class="zw"><span class="ze">Ngiyesaba</span><span class="zt">I am scared</span></div><div class="zw"><span class="ze">Ngizwile</span><span class="zt">I am hurt / I heard</span></div><div class="zw"><span class="ze">Muhle</span><span class="zt">Beautiful / Nice</span></div><div class="zw"><span class="ze">Mubi</span><span class="zt">Ugly / Bad</span></div><div class="zw"><span class="ze">Khulu</span><span class="zt">Big / Great</span></div><div class="zw"><span class="ze">Ncane</span><span class="zt">Small / Little</span></div><div class="zw"><span class="ze">Bomvu</span><span class="zt">Red</span></div><div class="zw"><span class="ze">Mhlophe</span><span class="zt">White</span></div><div class="zw"><span class="ze">Mnyama</span><span class="zt">Black / Dark</span></div><div class="zw"><span class="ze">Luhlaza okotshani</span><span class="zt">Green (like grass)</span></div><div class="zw"><span class="ze">Luhlaza okwesibhakabhaka</span><span class="zt">Blue (like sky)</span></div><div class="zw"><span class="ze">Phuzi</span><span class="zt">Yellow</span></div><div class="zw"><span class="ze">Shuba</span><span class="zt">Hot</span></div><div class="zw"><span class="ze">Banda</span><span class="zt">Cold</span></div></div>'},
+      {t:'IZAGA NEZISHO — PROVERBS & COMMON PHRASES',cl:'fire',body:'<div class="zulu-grid"><div class="zw"><span class="ze">Umuntu ngumuntu ngabantu</span><span class="zt">A person is a person through other people (Ubuntu)</span></div><div class="zw"><span class="ze">Isandla sihlamba esinye</span><span class="zt">One hand washes the other</span></div><div class="zw"><span class="ze">Indlela ibuzwa kwabaphambili</span><span class="zt">The way is asked from those who went ahead</span></div><div class="zw"><span class="ze">Woza! / Wozani!</span><span class="zt">Come! / Come (group)!</span></div><div class="zw"><span class="ze">Yiza lapha</span><span class="zt">Come here</span></div><div class="zw"><span class="ze">Hamba!</span><span class="zt">Go! / Leave!</span></div><div class="zw"><span class="ze">Sihlala phi?</span><span class="zt">Where do we stay?</span></div><div class="zw"><span class="ze">Uhlala kuphi?</span><span class="zt">Where do you stay?</span></div><div class="zw"><span class="ze">Nginakho</span><span class="zt">I have it</span></div><div class="zw"><span class="ze">Anginakho</span><span class="zt">I do not have it</span></div><div class="zw"><span class="ze">Angazi</span><span class="zt">I do not know</span></div><div class="zw"><span class="ze">Ngiyazi</span><span class="zt">I know</span></div><div class="zw"><span class="ze">Kulungile</span><span class="zt">It is fine / OK</span></div><div class="zw"><span class="ze">Akekho</span><span class="zt">He / She is not here</span></div><div class="zw"><span class="ze">Ukhona</span><span class="zt">He / She is here</span></div><div class="zw"><span class="ze">Kwasukasukela</span><span class="zt">Once upon a time (story opener)</span></div><div class="zw"><span class="ze">Kwaphela</span><span class="zt">The end (story closer)</span></div><div class="zw"><span class="ze">Ngicela usizo</span><span class="zt">Please help me</span></div><div class="zw"><span class="ze">Ngijabula ukukwazi</span><span class="zt">Nice to meet you</span></div><div class="zw"><span class="ze">Sizohlangana futhi</span><span class="zt">We will meet again</span></div></div>'}
     ],
-    tip:{tx:'isiZulu is a tonal Bantu language — the same word can mean different things depending on how you say it. The best way to learn is to say each word OUT LOUD, not just read it. Use these 200 words in real sentences every day. Start with greetings — say Sawubona to someone every morning.'}
+    tip:{tx:'isiZulu is spoken by over 12 million people in South Africa. The best way to learn is OUT LOUD — say every word and phrase after you read it. Start with Sawubona and Ngiyabonga every single day. Notice that isiZulu describes feelings with "Ngi-" (I am) + the feeling word. This pattern repeats everywhere.'}
   },
-'Sequences & Series':{
-    secs:[
-      {t:'KEY CONCEPTS',cl:'fire',body:'<p><strong>Arithmetic Sequences</strong> have a constant difference (d) between terms.</p><div class="formula-box"><div class="f-lbl">Arithmetic</div><div class="f-eq">Tₙ = a + (n−1)d<br>Sₙ = n/2 × (2a + (n−1)d) &nbsp;or&nbsp; Sₙ = n/2 × (a + l)</div></div><p><strong>Geometric Sequences</strong> have a constant ratio (r) between terms.</p><div class="formula-box"><div class="f-lbl">Geometric</div><div class="f-eq">Tₙ = a · rⁿ⁻¹<br>Sₙ = a(rⁿ − 1)/(r − 1) if r ≠ 1<br>S∞ = a/(1 − r) if |r| &lt; 1 (convergent)</div></div>'},
-      {t:'SIGMA NOTATION',cl:'fire',body:'<div class="formula-box"><div class="f-lbl">Sigma Notation</div><div class="f-eq">∑ means "sum of". The number below ∑ is the start value, above is the end value.</div></div><p>Example: ∑(k=1 to 5) of 2k = 2+4+6+8+10 = 30</p><p><strong>Key tip:</strong> Always identify whether it&#39;s arithmetic or geometric FIRST by checking if there&#39;s a common difference or common ratio.</p>'},
-      {t:'PRACTICE QUESTIONS',cl:'',body:'<div class="practice-q"><div class="pq-num">Q1</div><div class="pq-q">The 3rd term of an arithmetic sequence is 7 and the 7th term is 19. Find a and d, then find T₁₅.</div><button class="pq-toggle" onclick="toggleAns(this)">Show Answer</button><div class="pq-ans">d = (19−7)/(7−3) = 3. a = 7 − 2(3) = 1. T₁₅ = 1 + 14(3) = 43.</div></div><div class="practice-q"><div class="pq-num">Q2</div><div class="pq-q">A geometric series has a = 4 and r = 1/2. Calculate S∞.</div><button class="pq-toggle" onclick="toggleAns(this)">Show Answer</button><div class="pq-ans">S∞ = a/(1−r) = 4/(1−½) = 4/½ = 8. Since |r| = ½ &lt; 1 it converges.</div></div>'}
-    ],
-    tip:{tx:'Sequences & Series is worth 25 marks in Paper 1. Always write out the formula, substitute, and simplify step by step. Never skip steps — examiners award method marks even for partially correct working.'}
-  },
+
+
   'Probability':{
     secs:[
       {t:'KEY CONCEPTS',cl:'fire',body:'<p><strong>Probability</strong> is the likelihood of an event occurring, expressed between 0 and 1.</p><div class="formula-box"><div class="f-lbl">Basic Rules</div><div class="f-eq">P(A) = n(A)/n(S)<br>P(A or B) = P(A) + P(B) − P(A and B)<br>P(not A) = 1 − P(A)</div></div><p><strong>Mutually exclusive:</strong> events that cannot happen at the same time → P(A and B) = 0<br><strong>Independent:</strong> one event does not affect the other → P(A and B) = P(A) × P(B)</p>'},
@@ -6936,7 +6944,7 @@ var SPOT_DATA = {
   },
   'Easy Writing':{
     secs:[
-      {t:'TYPES OF ESYS',cl:'fire',body:'<p>There are 4 main essay types in English HL Paper 3. Know all of them.</p><div class="formula-box"><div class="f-lbl">Argumentative Essay</div><div class="f-eq">Takes a clear stance FOR or AGAINST a topic. Use evidence, counter-argument, and refutation. Structure: Introduction (thesis) → 3 body paragraphs → Conclusion.</div></div><div class="formula-box"><div class="f-lbl">Discursive Essay</div><div class="f-eq">Explores BOTH sides of a topic without taking a strong personal stance. Balanced, objective tone. Same structure but conclude with a measured opinion.</div></div><div class="formula-box"><div class="f-lbl">Narrative Essay</div><div class="f-eq">Tells a story — fiction or real. Must have: setting, characters, conflict, climax, resolution. Show don&#39;t tell. Use vivid, sensory language.</div></div><div class="formula-box"><div class="f-lbl">Descriptive Essay</div><div class="f-eq">Paints a picture with words. Focus on one subject using all 5 senses. No plot — just atmosphere and detail.</div></div>'},
+      {t:'TYPES OF ESSAYS',cl:'fire',body:'<p>There are 4 main essay types in English HL Paper 3. Know all of them.</p><div class="formula-box"><div class="f-lbl">Argumentative Essay</div><div class="f-eq">Takes a clear stance FOR or AGAINST a topic. Use evidence, counter-argument, and refutation. Structure: Introduction (thesis) → 3 body paragraphs → Conclusion.</div></div><div class="formula-box"><div class="f-lbl">Discursive Essay</div><div class="f-eq">Explores BOTH sides of a topic without taking a strong personal stance. Balanced, objective tone. Same structure but conclude with a measured opinion.</div></div><div class="formula-box"><div class="f-lbl">Narrative Essay</div><div class="f-eq">Tells a story — fiction or real. Must have: setting, characters, conflict, climax, resolution. Show don&#39;t tell. Use vivid, sensory language.</div></div><div class="formula-box"><div class="f-lbl">Descriptive Essay</div><div class="f-eq">Paints a picture with words. Focus on one subject using all 5 senses. No plot — just atmosphere and detail.</div></div>'},
       {t:'STRUCTURE & MARKS',cl:'fire',body:'<p>Paper 3 is worth <strong>100 marks</strong> and counts heavily. Essays are 350–400 words for shorter tasks, 450–600 for long essays.</p><div class="formula-box"><div class="f-lbl">Mark Allocation</div><div class="f-eq">Content & Planning: 25 marks<br>Language, Style & Register: 25 marks<br>Structure & Format: Total 50 marks per essay</div></div><p><strong>Introduction:</strong> Hook → background → thesis statement<br><strong>Body paragraphs:</strong> Topic sentence → evidence → explanation → link back<br><strong>Conclusion:</strong> Restate thesis → summarise → powerful closing line</p>'},
       {t:'PRACTICE QUESTIONS',cl:'',body:'<div class="practice-q"><div class="pq-num">Q1</div><div class="pq-q">Write an argumentative essay on: "Social media does more harm than good." Plan your essay in 5 minutes before writing.</div><button class="pq-toggle" onclick="toggleAns(this)">Show Answer</button><div class="pq-ans">Thesis: Social media causes harm through cyberbullying, misinformation, and mental health damage. Counter: It connects communities. Refutation: Benefits are outweighed by measurable harms. Plan: Intro → Cyberbullying (evidence) → Misinformation (evidence) → Mental health (evidence) → Counter + refutation → Conclusion.</div></div><div class="practice-q"><div class="pq-num">Q2</div><div class="pq-q">Identify the essay type: "Describe the moment you realised what home really means."</div><button class="pq-toggle" onclick="toggleAns(this)">Show Answer</button><div class="pq-ans">Narrative essay — it asks for a personal story about a specific moment. Use first person, a clear story arc, and emotional language.</div></div>'}
     ],
@@ -7434,10 +7442,10 @@ function toggleFaq(el) {
 }
 
 
-// ════ DR  YOUTUBE VIDEOS ════
-// To add a video: find _VIDEOS below and add the YouTube video ID
+// ════ DR SASA YOUTUBE VIDEOS ════
+// To add a video: find SASA_VIDEOS below and add the YouTube video ID
 // Get the ID from the URL: youtube.com/watch?v=VIDEOID_HERE
-var _VIDEOS = [
+var SASA_VIDEOS = [
   // Example — uncomment and replace with real IDs:
   // { id: 'dQw4w9WgXcQ', title: 'My Story Title', desc: 'Short description here' },
 ];
@@ -7445,9 +7453,9 @@ var _VIDEOS = [
 function renderHomeSasaYT(){
   var grid = document.getElementById('home-sasa-yt');
   if(!grid) return;
-  var vids = _VIDEOS.filter(function(v){ return v.id; });
+  var vids = SASA_VIDEOS.filter(function(v){ return v.id; });
   if(!vids.length){
-    grid.innerHTML = '<div style="padding:1.5rem 0;font-family:var(--mono);font-size:.54rem;letter-spacing:.07em;color:rgba(255,255,255,.3);text-align:center;border:1px dashed rgba(245,118,26,.2);border-radius:10px">Dr Sasa&#39;s videos will appear here — add YouTube video IDs to _VIDEOS in the code</div>';
+    grid.innerHTML = '<div style="padding:1.5rem 0;font-family:var(--mono);font-size:.54rem;letter-spacing:.07em;color:rgba(255,255,255,.3);text-align:center;border:1px dashed rgba(245,118,26,.2);border-radius:10px">Dr Sasa&#39;s videos will appear here — add YouTube video IDs to SASA_VIDEOS in the code</div>';
     return;
   }
   grid.innerHTML = vids.slice(0,3).map(function(v){
@@ -7465,9 +7473,9 @@ function renderHomeSasaYT(){
 function renderSasaYT(){
   var grid = document.getElementById('sasa-yt-grid');
   if(!grid) return;
-  var vids = _VIDEOS.filter(function(v){ return v.id; });
+  var vids = SASA_VIDEOS.filter(function(v){ return v.id; });
   if(!vids.length){
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;border:1px dashed rgba(255,255,255,.1);border-radius:12px"><div style="font-family:var(--impact);font-size:1.2rem;letter-spacing:.06em;color:rgba(255,255,255,.3);margin-bottom:.5rem">NO VIDEOS YET</div><div style="font-family:var(--mono);font-size:.54rem;letter-spacing:.07em;color:rgba(255,255,255,.2)">Add YouTube video IDs to _VIDEOS in the code</div></div>';
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;border:1px dashed rgba(255,255,255,.1);border-radius:12px"><div style="font-family:var(--impact);font-size:1.2rem;letter-spacing:.06em;color:rgba(255,255,255,.3);margin-bottom:.5rem">NO VIDEOS YET</div><div style="font-family:var(--mono);font-size:.54rem;letter-spacing:.07em;color:rgba(255,255,255,.2)">Add YouTube video IDs to SASA_VIDEOS in the code</div></div>';
     return;
   }
   grid.innerHTML = vids.filter(function(v){ return v.id; }).map(function(v){
@@ -7490,15 +7498,69 @@ function playSasaVideo(card, videoId){
 }
 
 // ══════════ SCROLL REVEAL ══════════
-function initScrollReveal(){
-  var els = document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
-  if(!window.IntersectionObserver) { els.forEach(function(el){ el.classList.add('visible'); }); return; }
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('visible'); });
-  }, {threshold:0.1, rootMargin:'0px 0px -30px 0px'});
-  els.forEach(function(el){ io.observe(el); });
+
+// ═══ GLOBAL VISIBILITY SAFETY NET ═══
+// Runs on every page load AND every world switch
+// Ensures nothing is ever hidden due to opacity:0 / transform bugs
+function forceContentVisible(){
+  // Force topic grid populated
+  var tg = document.getElementById('topic-grid');
+  if(tg && tg.children.length === 0 && typeof renderTopics === 'function'){
+    renderTopics(typeof curSubject !== 'undefined' && curSubject ? curSubject : 'maths');
+  }
+  // Force course tabs populated
+  if(document.getElementById('course-tabs') && 
+     document.getElementById('course-tabs').children.length === 0 &&
+     typeof buildCourseTabs === 'function'){
+    buildCourseTabs();
+    if(typeof selectCourse === 'function') selectCourse(0);
+  }
+
+  var selectors = [
+    '.world.active .world-card',
+    '.world.active .game-tile', 
+    '.world.active .topic-card',
+    '#topic-grid .topic-card',
+    '.sub-tab',
+    '.world.active .inst-btn',
+    '.world.active .inst-pad',
+    '.world.active .p-tab',
+    '.world.active .p-puzzle',
+    '.world.active .audio-card',
+    '.world.active .story-track',
+    '.world.active .zcourse',
+    '.world.active .course-tab',
+    '.world.active .reveal',
+    '.world.active .reveal-left',
+    '.world.active .reveal-right',
+    '#lesson-content',
+    '#module-list',
+    '.course-tab',
+    '.plan-card',
+    '.wall-post',
+    '.bp-post',
+  ];
+  selectors.forEach(function(sel){
+    document.querySelectorAll(sel).forEach(function(el){
+      el.style.opacity = '1';
+      el.style.transform = el.style.transform === 'none' ? 'none' : 'none';
+      el.classList.add('visible');
+    });
+  });
 }
-document.addEventListener('DOMContentLoaded', function(){ setTimeout(initScrollReveal, 200); });
+// Run on load
+window.addEventListener('load', function(){ setTimeout(forceContentVisible, 100); });
+
+function initScrollReveal(){
+  // Force all reveal elements visible immediately — no IntersectionObserver
+  // IntersectionObserver fails when worlds are display:none (they always are)
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(function(el){
+    el.classList.add('visible');
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+  });
+}
+document.addEventListener('DOMContentLoaded', function(){ initScrollReveal(); });
 
 var canvasInited = { inst: false, brain: false, schools: false, audio: false, courses: false };
 var origShowWorld = showWorld;
@@ -7513,7 +7575,6 @@ showWorld = function(id){
   setTimeout(function(){
     if(id === 'instruments' && !canvasInited.inst){ canvasInited.inst = true; initInstCanvas(); }
     if(id === 'brain'){ if(!canvasInited.brain){ canvasInited.brain = true; initBrainCanvas(); } setPuzzleType(puzzleType||'proverb'); initStreakDots(); }
-    if(id === 'schools'){ setSubject(curSubject||'maths'); }
     if(id === 'courses'){ if(!canvasInited.courses){ canvasInited.courses = true; initCoursesCanvas(); } initCoursesWorld(); }
     if(id === 'audio' && !canvasInited.audio){ canvasInited.audio = true; initAudioCanvas(); }
     if(id === 'vrvillage'){ initVRHeroCanvas(); }
@@ -7542,7 +7603,7 @@ window.addEventListener('resize',function(){if(treeCanvas){treeCanvas.width=tree
 
 
 // ═══════════════════════════════════════════════════════
-//   DR  BLOG — INSTAGRAM-STYLE INTERACTIONS
+//   DR SASA BLOG — INSTAGRAM-STYLE INTERACTIONS
 // ═══════════════════════════════════════════════════════
 
 function switchBlogTab(tab, btn) {
@@ -7554,14 +7615,14 @@ function switchBlogTab(tab, btn) {
 }
 
 // ════════════════════════════════════════
-//   DR  BLOG — ADMIN + USER SYSTEM
+//   DR SASA BLOG — ADMIN + USER SYSTEM
 // ════════════════════════════════════════
 
 // The one and only admin email — only this person sees the compose panel
-var DR__EMAIL = 'drsasa@zintsomi.co.za';
+var DR_SASA_EMAIL = 'drsasa@zintsomi.co.za';
 
 function isDrSasa() {
-  return currentUser && currentUser.email && currentUser.email.toLowerCase() === DR__EMAIL.toLowerCase();
+  return currentUser && currentUser.email && currentUser.email.toLowerCase() === DR_SASA_EMAIL.toLowerCase();
 }
 
 function updateBlogUI() {
@@ -7810,7 +7871,7 @@ function publishPost() {
   if (postCount) postCount.textContent = parseInt(postCount.textContent||0)+1;
 }
 
-// ── SHARE, VE, OPTIONS ──
+// ── SHARE, SAVE, OPTIONS ──
 var _sharePostId = null;
 function sharePost(postId) {
   _sharePostId = postId;
@@ -7900,7 +7961,7 @@ var VR_STORIES = [
     text:'<strong>It started with a question I could not stop asking:</strong> why do children who grow up surrounded by the richest oral traditions in the world graduate from school not knowing a single proverb, a single folktale, a single lullaby from their own culture?<br><br>I am Dr. Nomsa Sasa Mdlalose. I was a lawyer. I am a storyteller. I was trained to argue facts. But I learned from my grandmother that the most powerful arguments are the ones dressed as stories.<br><br>Zintsomi means "stories" in isiZulu. This college exists so that no African child ever again grows up feeling their culture lives somewhere else, in someone else\'s textbooks, in someone else\'s language. It lives here. In you. Right now.' },
   { icon:'<i class="ph ph-globe-hemisphere-west"></i>', title:'Stories from the Community', lang:'All Languages', dur:'Growing…',
     bg:'#04001a', color:'rgba(123,79,208,.4)',
-    text:'<strong>This pod belongs to you.</strong> These are stories submitted by the Zintsomi community — learners, elders, parents, teachers — from across  and the continent.<br><br>Every voice here chose to record something and say: "This story matters. This story is worth keeping." We agree.<br><br>When you subscribe, you can submit your own story to this pod. A two-minute recording. A lullaby your mother sang. A riddle from your childhood. A proverb your grandfather always used. Whatever you carry, this is where it lives. <em>Subscribe to add your voice →</em>' }
+    text:'<strong>This pod belongs to you.</strong> These are stories submitted by the Zintsomi community — learners, elders, parents, teachers — from across South Africa and the continent.<br><br>Every voice here chose to record something and say: "This story matters. This story is worth keeping." We agree.<br><br>When you subscribe, you can submit your own story to this pod. A two-minute recording. A lullaby your mother sang. A riddle from your childhood. A proverb your grandfather always used. Whatever you carry, this is where it lives. <em>Subscribe to add your voice →</em>' }
 ];
 
 var vrAudioPlaying = false;
