@@ -239,10 +239,10 @@ body::after{
   position:relative;z-index:2;text-align:center;
   opacity:0;transform:translateY(28px);
   transition:opacity 1.4s cubic-bezier(.16,1,.3,1),transform 1.4s cubic-bezier(.16,1,.3,1);
-  /* Dark backing panel so text is ALWAYS readable over the canvas */
-  background:radial-gradient(ellipse 85% 90% at 50% 50%, rgba(4,8,20,.72) 0%, rgba(4,8,20,.45) 60%, transparent 100%);
-  padding:2.5rem 3rem 2rem;
-  border-radius:24px;
+  background:radial-gradient(ellipse 100% 90% at 50% 50%, rgba(4,8,20,.65) 0%, rgba(4,8,20,.35) 70%, transparent 100%);
+  padding:2rem 4vw 1.5rem;
+  width:96vw;
+  max-width:96vw;
 }
 #intro-logo.show{opacity:1;transform:none}
 #intro-logo h1{
@@ -563,8 +563,8 @@ nav{
 .home-hero-headline .line3{
   display:block;
   font-family:var(--impact);
-  font-size:clamp(5.5rem,11.5vw,13rem);
-  line-height:.88;
+  font-size:clamp(4.5rem,18vw,19rem);
+  line-height:.85;
   letter-spacing:.02em;
   color:#FFFFFF;
   text-transform:uppercase;
@@ -1225,7 +1225,7 @@ nav{
 @media(max-width:960px){
   nav{top:.5rem;padding:0 1rem}
   .home-hero-content{grid-template-columns:1fr;padding:6rem 2rem 3rem}
-  .home-hero-headline .line1,.home-hero-headline .line2,.home-hero-headline .line3{font-size:clamp(3.5rem,9vw,7rem)}
+  
   .home-hero-info{border-left:none;padding-left:0;border-top:1px solid rgba(255,255,255,.1);padding-top:1.5rem}
   .home-hero-topbar{padding:1rem 2rem}
   .home-hero-topbar-r{display:none}
@@ -1244,8 +1244,8 @@ nav{
 }
 @media(max-width:580px){
   .home-hero-content{padding:5rem 1.5rem 2.5rem}
-  .home-hero-headline .line1,.home-hero-headline .line2{font-size:clamp(3rem,14vw,5.5rem)}
-  .home-hero-headline .line3{font-size:clamp(1.4rem,5vw,2.5rem)}
+  
+  
   .home-hero-bg-word{font-size:55vw}
   .worlds-grid{grid-template-columns:1fr;padding:1rem}
   .ctr{padding:0 1.2rem}
@@ -2626,7 +2626,214 @@ body::after{
   display: flex; align-items: center; gap: .8rem;
   font-family: var(--body); font-size: .8rem; color: rgba(255,255,255,.42);
 }
+
+/* ── VR CINEMATIC UPGRADE ── */
+#vr-story-modal{
+  background:rgba(0,0,0,.95);
+}
+.vr-modal-inner{
+  width:100%;max-width:1100px;border-radius:var(--r-xl);
+  background:#000;border:1px solid rgba(200,240,74,.15);
+  overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.9);
+  display:flex;flex-direction:column;
+  animation:vrModalIn .4s cubic-bezier(.16,1,.3,1);
+  max-height:94vh;
+}
+#vr-scene-wrap{position:relative;width:100%;height:440px;overflow:hidden;background:#000;flex-shrink:0}
+#vr-main-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+#vr-stereo-divider{position:absolute;left:50%;top:0;bottom:0;width:3px;background:#000;display:none;z-index:10;transform:translateX(-50%)}
+.vr-hud{position:absolute;bottom:0;left:0;right:0;z-index:5;padding:1.2rem 1.8rem;background:linear-gradient(transparent,rgba(0,0,0,.93) 60%);display:flex;align-items:flex-end;justify-content:space-between;gap:1rem}
+.vr-hud-left{}
+.vr-hud-title{font-family:var(--serif);font-size:1.5rem;font-weight:700;color:#fff;line-height:1.1;text-shadow:0 2px 20px rgba(0,0,0,.9)}
+.vr-hud-lang{font-family:var(--mono);font-size:.48rem;letter-spacing:.18em;text-transform:uppercase;color:var(--acid);margin-top:.25rem}
+.vr-hud-controls{display:flex;gap:.5rem;flex-shrink:0;align-items:center}
+.vr-hud-btn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:.9rem;cursor:pointer;display:grid;place-items:center;transition:all .2s;backdrop-filter:blur(8px)}
+.vr-hud-btn:hover{background:var(--acid);border-color:var(--acid);color:#000}
+.vr-mode-bar{position:absolute;top:.8rem;right:.8rem;z-index:10;display:flex;gap:.4rem}
+.vr-mode-pill{font-family:var(--mono);font-size:.42rem;letter-spacing:.1em;text-transform:uppercase;padding:.28rem .75rem;border-radius:100px;cursor:pointer;transition:all .2s;border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.5);background:rgba(0,0,0,.7);backdrop-filter:blur(8px)}
+.vr-mode-pill.active{background:var(--acid);color:#000;border-color:var(--acid)}
+.vr-mode-pill:hover{border-color:var(--acid);color:var(--acid)}
+.vr-nav-compass{position:absolute;top:.85rem;left:50%;transform:translateX(-50%);z-index:6;pointer-events:none;font-family:var(--mono);font-size:.46rem;letter-spacing:.2em;color:rgba(200,240,74,.65);text-transform:uppercase;display:flex;align-items:center;gap:.5rem}
+.vr-compass-dot{width:5px;height:5px;border-radius:50%;background:var(--acid)}
+.vr-story-panel{padding:1.2rem 1.8rem 1.6rem;background:linear-gradient(#000,#030A00);overflow-y:auto;flex:1;min-height:0}
+.vr-story-tabs{display:flex;gap:.35rem;margin-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.07);padding-bottom:.7rem}
+.vr-stab{font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.38);background:none;border:none;cursor:pointer;padding:.28rem .6rem;border-radius:4px;transition:all .2s}
+.vr-stab.active{color:var(--acid);background:rgba(200,240,74,.1)}
+.vr-stab:hover{color:#fff}
+.vr-tab-pane{display:none}
+.vr-tab-pane.active{display:block}
+.vr-audio-bar-wrap{display:flex;align-items:center;gap:.9rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:.7rem 1rem;margin-bottom:.7rem}
+.vr-play-btn-big{width:38px;height:38px;border-radius:50%;background:var(--acid);border:none;color:#050A00;font-size:.95rem;cursor:pointer;display:grid;place-items:center;flex-shrink:0;transition:all .2s}
+.vr-play-btn-big:hover{transform:scale(1.1);background:#fff}
+.vr-audio-track{flex:1;cursor:pointer}
+.vr-audio-track-bar{height:4px;background:rgba(255,255,255,.15);border-radius:100px;overflow:hidden;margin-bottom:.4rem}
+.vr-audio-track-fill{height:100%;background:linear-gradient(90deg,var(--acid),var(--ember));border-radius:100px;width:0%;transition:width .5s linear}
+.vr-audio-track-label{font-family:var(--mono);font-size:.46rem;letter-spacing:.08em;color:rgba(255,255,255,.38);display:flex;justify-content:space-between}
+.vr-story-text-body{font-family:var(--serif);font-size:.96rem;color:rgba(255,255,255,.72);line-height:2.05}
+.vr-story-text-body strong{color:var(--ember);font-style:italic}
+/* BOOK SHELF */
+.vr-bookshelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:.8rem;padding:.4rem 0}
+.vr-book{aspect-ratio:.65/1;border-radius:4px 8px 8px 4px;position:relative;cursor:pointer;transition:transform .22s cubic-bezier(.16,1,.3,1),box-shadow .22s;box-shadow:2px 4px 16px rgba(0,0,0,.6);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:.6rem}
+.vr-book:hover{transform:translateY(-7px) rotate(-2deg);box-shadow:4px 14px 36px rgba(0,0,0,.75)}
+.vr-book::before{content:'';position:absolute;left:0;top:0;bottom:0;width:7px;background:rgba(0,0,0,.3);border-right:1px solid rgba(255,255,255,.1)}
+.vr-book-title{font-family:var(--mono);font-size:.36rem;letter-spacing:.06em;text-transform:uppercase;text-align:center;color:rgba(255,255,255,.9);padding:0 .5rem;line-height:1.5;position:relative;z-index:1;text-shadow:0 1px 4px rgba(0,0,0,.8)}
+.vr-book-author{font-size:.3rem;color:rgba(255,255,255,.55);margin-top:.2rem;position:relative;z-index:1;text-align:center}
+.vr-book-new-badge{position:absolute;top:.35rem;right:.35rem;background:var(--fire);color:#fff;font-size:.28rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.12rem .35rem;border-radius:4px;z-index:2}
+/* Scene label */
+.vr-scene-label{position:absolute;top:.85rem;left:1rem;z-index:6;font-family:var(--mono);font-size:.44rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,240,74,.55);display:flex;align-items:center;gap:.4rem}
+.vr-scene-live-dot{width:6px;height:6px;border-radius:50%;background:var(--acid);animation:pulse 1.8s ease-in-out infinite}
 .vr-headset-prompt strong { color: var(--acid); }
+
+
+/* ═══ FIRST-IN-AFRICA VR FEATURES ═══ */
+
+/* Gyroscope indicator */
+.vr-gyro-badge{
+  position:absolute;top:.85rem;left:1rem;z-index:8;
+  display:flex;align-items:center;gap:.35rem;
+  font-family:var(--mono);font-size:.42rem;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(200,240,74,.7);background:rgba(0,0,0,.6);
+  border:1px solid rgba(200,240,74,.2);border-radius:100px;
+  padding:.25rem .65rem;backdrop-filter:blur(8px);
+  transition:opacity .3s;
+}
+.vr-gyro-badge.active{color:var(--acid);border-color:rgba(200,240,74,.5);
+  box-shadow:0 0 12px rgba(200,240,74,.15)}
+.vr-gyro-dot{width:5px;height:5px;border-radius:50%;background:var(--acid);
+  animation:pulse 1.2s ease-in-out infinite}
+
+/* Izibongo generator */
+.vr-izibongo-wrap{
+  background:linear-gradient(135deg,rgba(230,179,42,.08),rgba(245,118,26,.06));
+  border:1px solid rgba(230,179,42,.25);border-radius:14px;padding:1.2rem 1.4rem;
+}
+.vr-izibongo-title{
+  font-family:var(--impact);font-size:1.1rem;letter-spacing:.08em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:.3rem;
+}
+.vr-izibongo-sub{
+  font-size:.75rem;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:1rem;
+}
+.vr-name-input{
+  width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);
+  border-radius:8px;padding:.65rem 1rem;color:#fff;font-family:var(--serif);
+  font-size:.95rem;margin-bottom:.7rem;outline:none;box-sizing:border-box;
+}
+.vr-name-input:focus{border-color:var(--gold);background:rgba(230,179,42,.08)}
+.vr-name-input::placeholder{color:rgba(255,255,255,.25)}
+.vr-generate-btn{
+  width:100%;background:linear-gradient(135deg,var(--gold),var(--fire));
+  border:none;color:#fff;font-family:var(--display);font-size:.65rem;
+  font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:.75rem 1.5rem;border-radius:8px;cursor:pointer;transition:all .25s;
+}
+.vr-generate-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(230,179,42,.3)}
+.vr-generate-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.vr-poem-output{
+  background:rgba(0,0,0,.4);border:1px solid rgba(230,179,42,.2);
+  border-radius:12px;padding:1.2rem;margin-top:.8rem;
+  font-family:var(--serif);font-size:1rem;color:rgba(255,255,255,.85);
+  line-height:2;font-style:italic;min-height:80px;display:none;
+}
+.vr-poem-output.show{display:block}
+.vr-poem-language{
+  font-family:var(--mono);font-size:.44rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:.6rem;display:block;
+}
+.vr-poem-speak-btn{
+  margin-top:.8rem;background:rgba(230,179,42,.12);border:1px solid rgba(230,179,42,.3);
+  color:var(--gold);font-family:var(--display);font-size:.52rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;
+  border-radius:6px;cursor:pointer;width:100%;transition:all .2s;
+}
+.vr-poem-speak-btn:hover{background:var(--gold);color:#000}
+
+/* Community voices */
+.vr-community-wrap{}
+.vr-community-record-btn{
+  width:100%;background:rgba(245,118,26,.1);border:2px solid rgba(245,118,26,.3);
+  color:var(--fire);font-family:var(--display);font-size:.65rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;padding:.75rem;
+  border-radius:10px;cursor:pointer;transition:all .25s;margin-bottom:.8rem;
+}
+.vr-community-record-btn.recording{
+  background:rgba(255,60,60,.15);border-color:rgba(255,60,60,.5);
+  color:#ff6060;animation:pulse 1s ease-in-out infinite;
+}
+.vr-community-record-btn:hover{background:rgba(245,118,26,.2)}
+.vr-voice-card{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;padding:.75rem 1rem;margin-bottom:.5rem;
+  display:flex;align-items:center;gap:.8rem;cursor:pointer;transition:all .2s;
+}
+.vr-voice-card:hover{border-color:rgba(245,118,26,.3);background:rgba(245,118,26,.06)}
+.vr-voice-avatar{
+  width:36px;height:36px;border-radius:50%;background:var(--fire);
+  display:grid;place-items:center;font-size:.9rem;flex-shrink:0;
+}
+.vr-voice-meta{flex:1}
+.vr-voice-name{font-family:var(--display);font-size:.65rem;font-weight:700;
+  letter-spacing:.05em;color:#fff}
+.vr-voice-lang{font-family:var(--mono);font-size:.44rem;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:.15rem}
+.vr-voice-play{font-size:1.1rem;color:var(--acid);flex-shrink:0}
+
+/* Spatial audio indicator */
+.vr-spatial-badge{
+  display:inline-flex;align-items:center;gap:.3rem;
+  font-family:var(--mono);font-size:.42rem;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(100,181,232,.7);
+  background:rgba(100,181,232,.08);border:1px solid rgba(100,181,232,.2);
+  border-radius:100px;padding:.22rem .65rem;margin-left:.5rem;
+}
+
+/* Book reader overlay */
+#vr-book-reader{
+  position:absolute;inset:0;z-index:20;
+  background:rgba(0,0,0,.95);display:none;
+  flex-direction:column;align-items:center;justify-content:center;
+  padding:2rem;
+}
+#vr-book-reader.open{display:flex}
+.vr-book-reader-inner{
+  width:100%;max-width:600px;background:linear-gradient(135deg,#0A0300,#1A0A00);
+  border:1px solid rgba(230,179,42,.3);border-radius:20px;
+  padding:2rem;max-height:80vh;overflow-y:auto;
+  box-shadow:0 0 80px rgba(230,179,42,.1);
+}
+.vr-book-reader-title{
+  font-family:var(--serif);font-size:1.5rem;font-weight:700;
+  color:var(--gold);margin-bottom:.3rem;font-style:italic;
+}
+.vr-book-reader-author{
+  font-family:var(--mono);font-size:.48rem;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:1.2rem;
+}
+.vr-book-page-text{
+  font-family:var(--serif);font-size:.98rem;color:rgba(255,255,255,.78);
+  line-height:2.05;
+}
+.vr-page-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:1.4rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,.08);
+}
+.vr-page-btn{
+  background:rgba(230,179,42,.1);border:1px solid rgba(230,179,42,.25);
+  color:var(--gold);font-family:var(--display);font-size:.55rem;
+  letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;
+  border-radius:6px;cursor:pointer;transition:all .2s;
+}
+.vr-page-btn:hover{background:var(--gold);color:#000}
+.vr-page-btn:disabled{opacity:.3;cursor:not-allowed}
+.vr-page-counter{font-family:var(--mono);font-size:.5rem;
+  color:rgba(255,255,255,.3);letter-spacing:.1em}
+.vr-book-close{
+  position:absolute;top:1rem;right:1rem;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.5);width:36px;height:36px;border-radius:50%;
+  cursor:pointer;font-size:.9rem;display:grid;place-items:center;
+}
+.vr-book-close:hover{background:rgba(255,80,80,.2);color:#ff8888}
 
 </style>
 </head>
@@ -2638,7 +2845,7 @@ body::after{
 <div id="intro">
   <canvas id="intro-canvas"></canvas>
   <div id="intro-logo">
-    <h1 style="font-weight:900;letter-spacing:.04em;line-height:1"><span style="color:var(--fire);font-weight:900;font-size:1.15em;letter-spacing:.06em">ZINTSOMI</span><br>STORYTELLING<br><span style="color:rgba(255,255,255,.6);font-weight:400;font-size:.55em;letter-spacing:.08em">COLLEGE</span></h1>
+    <h1 style="font-weight:900;line-height:.88;letter-spacing:.03em;width:100%"><span style="display:block;color:var(--fire);font-weight:900;font-size:clamp(3.5rem,18vw,18rem);letter-spacing:.08em;line-height:.9;white-space:nowrap">ZINTSOMI</span><span style="display:block;font-size:clamp(1.5rem,10.5vw,11rem);letter-spacing:.08em;color:#fff;line-height:.9;white-space:nowrap">STORYTELLING</span><span style="display:block;color:rgba(255,255,255,.55);font-weight:300;font-size:clamp(.75rem,3vw,3rem);letter-spacing:.28em;margin-top:.4em;white-space:nowrap">COLLEGE</span></h1>
     <p>Africa's Storytelling World · 2026</p>
   </div>
   <button id="skip-btn">Skip Intro</button>
@@ -2973,7 +3180,7 @@ body::after{
           <div class="bp-likes">589 likes</div>
           <div class="bp-caption">
             <strong>drsasa.zintsomi</strong>
-            In the legal field, facts alone don't win. The narrative does. Full course now live →
+            In the legal field, facts alone don\'t win. The narrative does. Full course now live →
             <span class="hashtag">#LegalStorytelling</span>
             <span class="hashtag">#ZintsomiLaw</span>
           </div>
@@ -3178,9 +3385,9 @@ body::after{
     </div>
 
     <div class="yt-grid" id="yt-grid">
-      <div class="yt-card" data-cat="storytelling" onclick="openYT('dQw4w9WgXcQ','The Art of African Storytelling — Module 1','How Dr. Nomsa Sasa Mdlalose built the Zintsomi method from the ground up.')">
+      <div class="yt-card" data-cat="storytelling" onclick="openYT('aCNnn5FtX6E','Preparing for a Live Storytelling Show','Behind the scenes at Zintsomi Storytelling Centre, Midrand — Dr Sasa prepares for an evening of live African storytelling.')">
         <div class="yt-thumb"><div class="yt-thumb-placeholder"><div style="position:absolute;inset:0;background:linear-gradient(135deg,#0d0820,#2a1060)"></div><div class="yt-play-btn" style="position:relative;z-index:2">▶</div></div><div class="yt-duration">18:42</div><div class="yt-new-badge">NEW</div></div>
-        <div class="yt-card-body"><div class="yt-card-title">The Art of African Storytelling — Module 1</div><div class="yt-card-meta"><div class="yt-card-views">24K views · 3 days ago</div><div class="yt-card-cat">Storytelling</div></div></div>
+        <div class="yt-card-body"><div class="yt-card-title">Preparing for a Live Storytelling Show</div><div class="yt-card-meta"><div class="yt-card-views">24K views · 3 days ago</div><div class="yt-card-cat">Storytelling</div></div></div>
       </div>
       <div class="yt-card" data-cat="law" onclick="openYT('dQw4w9WgXcQ','Why Every Lawyer Needs Story — Legal Narrative','The closing argument is not a summary. It is a story.')">
         <div class="yt-thumb"><div class="yt-thumb-placeholder"><div style="position:absolute;inset:0;background:linear-gradient(135deg,#080a1a,#1a2060)"></div><div class="yt-play-btn" style="position:relative;z-index:2">▶</div></div><div class="yt-duration">22:15</div></div>
@@ -3737,37 +3944,229 @@ body::after{
   </div><!-- /vrvillage-world -->
 
   <!-- VR STORY MODAL -->
+  <!-- ═══ VR STORY MODAL — CINEMATIC IMMERSIVE ═══ -->
   <div id="vr-story-modal">
     <div class="vr-modal-inner">
-      <div class="vr-modal-scene">
-        <canvas id="vr-modal-canvas"></canvas>
-        <div class="vr-modal-story-scene">
-          <div class="vr-modal-icon-big" id="vr-modal-icon"><i class="ph ph-fire"></i></div>
-          <div class="vr-modal-title-scene" id="vr-modal-title-scene">Story Title</div>
+
+      <!-- ── SCENE CANVAS AREA ── -->
+      <div id="vr-scene-wrap">
+        <canvas id="vr-main-canvas"></canvas>
+        <div id="vr-stereo-divider"></div>
+
+        <!-- Mode selector -->
+        <div class="vr-mode-bar">
+          <button class="vr-mode-pill active" id="mode-cinema" onclick="setVRMode('cinema')">🎬 Cinema</button>
+          <button class="vr-mode-pill" id="mode-vr" onclick="setVRMode('vr')">🥽 VR Split</button>
+          <button class="vr-mode-pill" id="mode-book" onclick="setVRMode('book')">📖 Book Shelf</button>
         </div>
-      </div>
-      <div class="vr-modal-body">
-        <div class="vr-audio-player">
-          <button class="vr-audio-play" id="vr-audio-play-btn" onclick="toggleVRAudio()">▶</button>
-          <div class="vr-audio-progress">
-            <div class="vr-audio-label" id="vr-audio-label">Story narration — immersive audio</div>
-            <div class="vr-audio-bar"><div class="vr-audio-fill" id="vr-audio-fill"></div></div>
+
+        <!-- Scene label -->
+        <div class="vr-scene-label">
+          <span class="vr-scene-live-dot"></span>
+          <span id="vr-scene-label-txt">Zintsomi VR Village</span>
+        </div>
+
+        <!-- Compass -->
+        <div class="vr-nav-compass">
+          <span class="vr-compass-dot"></span>
+          <span id="vr-compass-txt">African Night</span>
+          <span class="vr-compass-dot"></span>
+        </div>
+
+        <!-- HUD overlay -->
+        <div class="vr-hud">
+          <div class="vr-hud-left">
+            <div class="vr-hud-title" id="vr-hud-title">Choose a Story</div>
+            <div class="vr-hud-lang" id="vr-hud-lang">Zintsomi · Africa</div>
           </div>
-          <div style="font-family:var(--mono);font-size:.52rem;color:rgba(255,255,255,.28)" id="vr-time">0:00</div>
-        </div>
-        <div class="vr-modal-story-text" id="vr-story-body">Loading story…</div>
-        <div class="vr-modal-actions">
-          <button class="btn" onclick="launchVRFullscreen()" style="background:var(--acid);color:#050A00;border-color:var(--acid)">🥽 Full VR Mode</button>
-          <button class="btn btn-out" onclick="shareVRStory()"><i class="ph ph-upload-simple"></i> Share This Story</button>
-          <button class="vr-modal-close-btn" onclick="closeVRStory()"><i class="ph ph-x"></i> Close</button>
-        </div>
-        <div class="vr-headset-prompt">
-          <span style="font-size:1.4rem"><i class="ph ph-eyeglasses"></i></span>
-          <span><strong>VR Headset?</strong> Click "Full VR Mode" to split the screen for stereoscopic view. Works with Google Cardboard, Meta Quest Browser, and any WebXR-compatible headset.</span>
+          <div class="vr-hud-controls">
+            <button class="vr-hud-btn" onclick="prevVRStory()" title="Previous story">⟨</button>
+            <button class="vr-hud-btn" onclick="vrPlayPause()" id="vr-hud-play" title="Play / Pause">▶</button>
+            <button class="vr-hud-btn" onclick="nextVRStory()" title="Next story">⟩</button>
+            <button class="vr-hud-btn" onclick="closeVRStory()" title="Close" style="margin-left:.3rem;border-color:rgba(255,80,80,.3);color:rgba(255,120,120,.7)">✕</button>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
+
+
+        <!-- Gyroscope indicator -->
+        <div class="vr-gyro-badge" id="vr-gyro-badge">
+          <span class="vr-gyro-dot"></span>
+          <span id="vr-gyro-label">Tilt to look around</span>
+        </div>
+
+        <!-- VR BOOK READER — LIVING PAGES -->
+        <div id="vr-book-reader">
+          <div class="vr-book-reader-inner" id="vr-book-reader-inner">
+            <div class="vr-book-reader-title" id="vr-book-reader-title">Book Title</div>
+            <div class="vr-book-reader-author" id="vr-book-reader-author">Dr Sasa</div>
+            <div class="vr-book-page-text" id="vr-book-page-text">Loading…</div>
+            <div class="vr-page-nav">
+              <button class="vr-page-btn" id="vr-page-prev" onclick="vrBookPage(-1)">← Previous</button>
+              <span class="vr-page-counter" id="vr-page-counter">Page 1 of 1</span>
+              <button class="vr-page-btn" id="vr-page-next" onclick="vrBookPage(1)">Next →</button>
+            </div>
+          </div>
+          <button class="vr-book-close" onclick="closeVRBookReader()">✕</button>
+        </div>
+
+      <!-- ── STORY PANEL ── -->
+      <div class="vr-story-panel">
+
+        <!-- Tabs: Story | Books | Instructions -->
+        <div class="vr-story-tabs">
+          <button class="vr-stab active" onclick="switchVRTab('story',this)">📖 Story</button>
+          <button class="vr-stab" onclick="switchVRTab('audio',this)">🎵 Audio</button>
+          <button class="vr-stab" onclick="switchVRTab('books',this)">📚 Books</button>
+          <button class="vr-stab" onclick="switchVRTab('howto',this)">🥽 How to Use VR</button>
+          <button class="vr-stab" onclick="switchVRTab('izibongo',this)">🪄 Izibongo AI</button>
+          <button class="vr-stab" onclick="switchVRTab('community',this)">🌍 Community Voices</button>
+        </div>
+
+        <!-- STORY TAB -->
+        <div class="vr-tab-pane active" id="vr-tab-story">
+          <div class="vr-story-text-body" id="vr-story-body">Loading story…</div>
+        </div>
+
+        <!-- AUDIO TAB -->
+        <div class="vr-tab-pane" id="vr-tab-audio">
+          <div class="vr-audio-bar-wrap">
+            <button class="vr-play-btn-big" id="vr-audio-play-btn" onclick="toggleVRAudio()">▶</button>
+            <div class="vr-audio-track">
+              <div class="vr-audio-track-bar">
+                <div class="vr-audio-track-fill" id="vr-audio-fill"></div>
+              </div>
+              <div class="vr-audio-track-label">
+                <span id="vr-audio-label">Story narration · immersive audio</span>
+                <span id="vr-time">0:00</span>
+              </div>
+            </div>
+          </div>
+          <p style="font-size:.8rem;color:rgba(255,255,255,.35);line-height:1.8;margin-top:.5rem">
+            Audio narration by Dr Sasa comes with Premium membership. 
+            Free members can read the full story text. 
+            <button onclick="showWorld('subscribe')" style="background:var(--fire);border:none;color:#fff;font-family:var(--display);font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;padding:.3rem .8rem;border-radius:4px;cursor:pointer;margin-left:.3rem">Upgrade →</button>
+          </p>
+        </div>
+
+        <!-- BOOKS TAB — Dr Sasa's titles in VR -->
+        <div class="vr-tab-pane" id="vr-tab-books">
+          <p style="font-family:var(--mono);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,240,74,.6);margin-bottom:1rem">
+            📚 Dr Sasa's Library — touch a book to read
+          </p>
+          <div class="vr-bookshelf" id="vr-bookshelf">
+            <!-- Books injected by JS -->
+          </div>
+        </div>
+
+        <!-- HOW TO USE VR -->
+        <div class="vr-tab-pane" id="vr-tab-howto">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+            <div style="background:rgba(200,240,74,.06);border:1px solid rgba(200,240,74,.15);border-radius:12px;padding:1rem">
+              <div style="font-size:1.5rem;margin-bottom:.5rem">📱</div>
+              <div style="font-family:var(--display);font-size:.7rem;font-weight:700;color:var(--acid);margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Phone + Cardboard</div>
+              <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.7">1. Open on your phone<br>2. Choose a story<br>3. Tap 🥽 VR Split mode<br>4. Insert phone into Google Cardboard<br>5. Look around — tilt to explore</div>
+            </div>
+            <div style="background:rgba(245,118,26,.06);border:1px solid rgba(245,118,26,.15);border-radius:12px;padding:1rem">
+              <div style="font-size:1.5rem;margin-bottom:.5rem">🥽</div>
+              <div style="font-family:var(--display);font-size:.7rem;font-weight:700;color:var(--fire);margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Meta Quest / WebXR</div>
+              <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.7">1. Open site in Quest Browser<br>2. Choose a story<br>3. Tap 🥽 VR Split<br>4. Enter immersive mode<br>5. Use controllers to turn pages</div>
+            </div>
+            <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1rem">
+              <div style="font-size:1.5rem;margin-bottom:.5rem">💻</div>
+              <div style="font-family:var(--display);font-size:.7rem;font-weight:700;color:#fff;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Desktop / Laptop</div>
+              <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.7">1. Click 🎬 Cinema mode<br>2. Fullscreen for best effect<br>3. Drag the scene to rotate<br>4. Read the story alongside</div>
+            </div>
+            <div style="background:rgba(100,181,232,.05);border:1px solid rgba(100,181,232,.15);border-radius:12px;padding:1rem">
+              <div style="font-size:1.5rem;margin-bottom:.5rem">🌍</div>
+              <div style="font-family:var(--display);font-size:.7rem;font-weight:700;color:var(--blue-soft);margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Affordable Options</div>
+              <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.7">Google Cardboard from<br><strong style="color:var(--acid)">R59 — R250</strong> at most tech stores<br>Works with any Android<br>or iPhone 7+</div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- IZIBONGO AI TAB — FIRST IN AFRICA -->
+        <div class="vr-tab-pane" id="vr-tab-izibongo">
+          <div class="vr-izibongo-wrap">
+            <div class="vr-izibongo-title">🪄 Izibongo ya Gama Lakho</div>
+            <div class="vr-izibongo-sub">
+              Type your name. The AI composes your personal <em>izibongo</em> — a praise poem in isiZulu — 
+              in the tradition of the ancestors. <strong style="color:var(--gold)">First in Africa.</strong>
+            </div>
+            <input class="vr-name-input" id="vr-name-input" 
+              placeholder="Faka igama lakho — Enter your name..." 
+              maxlength="40" autocomplete="off"/>
+            <input class="vr-name-input" id="vr-clan-input"
+              placeholder="Isibongo sakho (surname / clan name) — optional"
+              maxlength="40" autocomplete="off" style="margin-bottom:.4rem"/>
+            <button class="vr-generate-btn" id="vr-generate-btn" onclick="generateIzibongo()">
+              ✦ Generate My Praise Poem ✦
+            </button>
+            <div class="vr-poem-output" id="vr-poem-output">
+              <span class="vr-poem-language">isiZulu Praise Poetry — Izibongo</span>
+              <div id="vr-poem-text"></div>
+              <button class="vr-poem-speak-btn" onclick="speakIzibongo()">
+                🔊 Hear it spoken aloud
+              </button>
+            </div>
+          </div>
+          <p style="font-size:.72rem;color:rgba(255,255,255,.25);line-height:1.7;margin-top:.8rem;text-align:center">
+            Izibongo is the ancient isiZulu art of praise poetry — recited at births, ceremonies, and moments of honour. 
+            This feature uses AI trained in isiZulu oral tradition to compose yours.
+          </p>
+        </div>
+
+        <!-- COMMUNITY VOICES TAB -->
+        <div class="vr-tab-pane" id="vr-tab-community">
+          <div class="vr-community-wrap">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+              <div>
+                <div style="font-family:var(--display);font-size:.8rem;font-weight:700;color:#fff;letter-spacing:.06em;text-transform:uppercase">Community Story Pods</div>
+                <div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:.2rem">Voices from across Africa</div>
+              </div>
+              <button class="vr-community-record-btn" id="vr-record-btn" onclick="toggleCommunityRecording()" style="width:auto;padding:.5rem 1rem;margin:0">
+                🎙 Record Your Story
+              </button>
+            </div>
+            <div id="vr-community-feeds">
+              <!-- Seed community voices -->
+              <div class="vr-voice-card" onclick="playCommunityVoice(0)">
+                <div class="vr-voice-avatar">🌍</div>
+                <div class="vr-voice-meta">
+                  <div class="vr-voice-name">Nandi from Durban</div>
+                  <div class="vr-voice-lang">isiZulu · 2:14</div>
+                </div>
+                <div class="vr-voice-play">▶</div>
+              </div>
+              <div class="vr-voice-card" onclick="playCommunityVoice(1)">
+                <div class="vr-voice-avatar">🌿</div>
+                <div class="vr-voice-meta">
+                  <div class="vr-voice-name">Sipho from Johannesburg</div>
+                  <div class="vr-voice-lang">isiZulu · English · 3:42</div>
+                </div>
+                <div class="vr-voice-play">▶</div>
+              </div>
+              <div class="vr-voice-card" onclick="playCommunityVoice(2)">
+                <div class="vr-voice-avatar">🔥</div>
+                <div class="vr-voice-meta">
+                  <div class="vr-voice-name">Thabo from Soweto</div>
+                  <div class="vr-voice-lang">Sesotho · 1:58</div>
+                </div>
+                <div class="vr-voice-play">▶</div>
+              </div>
+              <div style="text-align:center;margin-top:1rem">
+                <div style="font-size:.75rem;color:rgba(255,255,255,.25);line-height:1.7">
+                  Your recorded story joins this pod permanently.<br>Every voice here chose to say: <em style="color:rgba(255,255,255,.4)">"This story matters."</em>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /vr-story-panel -->
+    </div><!-- /vr-modal-inner -->
+  </div><!-- /vr-story-modal -->
 
   <!-- HOME WORLD -->
   <div class="world active" id="home-world">
@@ -3788,8 +4187,8 @@ body::after{
 
         <!-- Giant headline spanning full width -->
         <div class="home-hero-headline reveal stagger-1">
-          <span class="line2" style="font-size:clamp(5rem,18vw,14rem);line-height:.88">Storytelling</span>
-          <span class="line3" style="font-size:clamp(2.5rem,8vw,7rem)">Courses.</span>
+          <span class="line2">Storytelling</span>
+          <span class="line3">Courses.</span>
         </div>
 
         <!-- Bottom left: tagline -->
@@ -5972,6 +6371,15 @@ var COURSES = [
         body:'<h3>Group Storytelling and Co-Writing</h3><p>Writing does not have to be solitary. Collaborative writing — where multiple voices contribute to a single narrative — teaches writers to listen, negotiate, and synthesise. The result is often richer than any single writer could produce alone.</p><h3>The Mini-Pitch Festival</h3><p>Students present story ideas to a mock panel of editors. This exercise builds confidence, teaches concision (you have 90 seconds — make them matter), and introduces the professional reality of pitching creative work.</p><div class="lesson-reflection"><div class="lr-label">Group Assignment</div><p>In groups of 3–4, write a collaborative story of 500–800 words. Each person writes one section. The challenge: make it feel like one voice. Debrief afterwards — what required compromise? What surprised you?</p></div>',
         quiz:{ q:'What does collaborative writing teach that solo writing cannot?', opts:['Faster typing','Listening, negotiation, and synthesis of multiple voices','Grammar correction','How to use a dictionary'], ans:1, fb:'Collaboration teaches listening, negotiation, and synthesis — skills no solo writing exercise can replicate.' }
       },
+,
+      { title:'Sensory Description & Experiential Writing', duration:'1 Hour',
+        body:'<h3>Sensory Description</h3><p>Great stories immerse the reader in sensation. This module trains storytellers to write through sound, smell, taste, texture, and sight — turning abstract scenes into lived experience.</p><h3>Experiential Writing</h3><p>Exercises focus on memory and the senses: describe a market, a grandmother\'s kitchen, a river crossing. The goal is to make the reader <em>feel</em> they are there, not just see it.</p><div class="lesson-callout"><div class="lc-label">Writing Exercise</div><p>Choose one sensory memory from your childhood. Write 200 words using only sensory detail — no explaining what things mean, only what they feel, smell, sound, look and taste like.</p></div>',
+        quiz:{ q:'What is the primary goal of sensory writing?', opts:['To describe settings accurately','To make the reader feel present in the scene','To list all five senses','To impress with vocabulary'], ans:1, fb:'Sensory writing pulls the reader into the scene — not to describe, but to make them feel they are living it.' }
+      },
+      { title:'Long-Form Reading & Creative Divergence', duration:'1 Hour',
+        body:'<h3>Long-Form Reading</h3><p>Storytellers must be readers. This module assigns long-form reading — novels, novellas, and extended short story collections — with a specific focus on character reflection and narrative surprise.</p><h3>Creative Divergence</h3><p>After reading, learners create new stories <em>diverging</em> from the original — different setting, different outcome, different voice. This is not retelling: it is story generation triggered by great work.</p><div class="lesson-reflection"><div class="lr-label">Assignment</div><p>Read a short story by an African author of your choice. Then write a new story that begins where theirs ends — or that reimagines the same character in a completely different world.</p></div>',
+        quiz:{ q:'What is "creative divergence" in this context?', opts:['Summarising what you read','Creating a new story inspired by — but departing from — a source text','Criticising an author\'s choices','Translating a story into another language'], ans:1, fb:'Creative divergence uses great writing as a springboard, not a template. You read deeply, then leap away with your own voice.' }
+      },
       { title:'Publishing: Manuscript to Distribution', duration:'1 Hour',
         body:'<h3>The Publishing Journey</h3><p>Understanding the publishing process from manuscript to distribution. The journey from finished story to published book involves: editing and revision, illustration and layout, ISBN registration, printing or digital formatting, distribution and marketing.</p><h3>Digital Publishing Options</h3><p>Tools like Amazon KDP (Kindle Direct Publishing) allow authors to self-publish globally with no upfront cost. eBook formatting, print-on-demand, and digital distribution have democratised publishing — a children\'s author in South Africa can now reach a reader in Tokyo.</p><h3>Guest Speaker Series</h3><p>Local authors, digital publishers, and illustrators share their journeys — including the rejections, the breakthroughs, and the lessons that shaped their practice.</p><div class="lesson-callout"><div class="lc-label">Publishing Masterclass</div><p>Demo of formatting for eBooks and print layout tools for different platforms like Amazon. Students leave with a practical roadmap to publication.</p></div>',
         quiz:{ q:'What has democratised children\'s publishing globally?', opts:['Traditional publishing houses only','Expensive printing equipment','Digital publishing tools like Amazon KDP — allowing global reach with no upfront cost','University qualifications'], ans:2, fb:'Digital publishing tools like Amazon KDP have democratised publishing — a South African author can now reach a global reader.' }
@@ -5982,7 +6390,7 @@ var COURSES = [
   { title:'Storytelling for Conflict Resolution', icon:'<i class="ph ph-dove"></i>', color:'#8E44AD', tag:'Short Course · 4 Weeks',
     desc:'To empower individuals with the art and practice of storytelling as a transformative tool in resolving interpersonal, institutional, and cultural conflicts.',
     modules:[
-      { title:'The Art of Storytelling in Conflict', duration:'1 Hour',
+      { title:'The Art of Conflict-Resolution Storytelling', duration:'1 Hour',
         body:'<h3>Course Aim</h3><p>To empower individuals with the art and practice of storytelling as a transformative tool in resolving interpersonal, institutional, and cultural conflicts.</p><h3>Mission</h3><p>To foster empathy, collaboration, and sustainable peace through narrative-based conflict resolution across communities and sectors.</p><h3>Vision</h3><p>A society where stories mend misunderstandings, build bridges, and promote reconciliation grounded in human values and shared experience.</p><h3>Why Storytelling Heals</h3><p>Conflict hardens positions. Story softens them. When we hear the story behind someone\'s behaviour — not just the behaviour itself — our capacity for empathy expands. The anatomy of a healing story: <strong>Setting</strong> (context that explains), <strong>Conflict</strong> (honestly named), <strong>Climax</strong> (the moment of highest tension), <strong>Resolution</strong> (a way forward that honours all parties).</p><p>Voice and emotional modulation are critical in conflict storytelling — tone conveys intent, and intent is what conflicted parties are always listening for.</p><div class="lesson-callout"><div class="lc-label">Case Study</div><p>"The Grandmother and Her Granddaughters" — a story used to facilitate perception shifts in intergenerational conflict. The grandmother\'s story and the granddaughter\'s story are both true. The resolution lives in the space between them.</p></div>',
         quiz:{ q:'How does storytelling help in conflict situations?', opts:['It proves who is right','It distracts from the conflict','Story softens hardened positions by revealing the human experience behind behaviour','It replaces legal processes'], ans:2, fb:'Story softens positions — when we hear the story behind behaviour, our capacity for empathy expands.' }
       },
@@ -6087,7 +6495,75 @@ var COURSES = [
       }
     ]
   }
-];
+,
+
+  // ── FOUNDATIONS OF STORYTELLING — 15 Core Modules ──
+  { title:'Foundations of Storytelling', icon:'<i class="ph ph-book-open-text"></i>', color:'#E6B32A', tag:'15 Modules · The Core Journey',
+    desc:'The complete foundational storytelling course — from the origins of oral tradition to professional performance. Fifteen modules covering everything a storyteller needs to know, do, and become.',
+    modules:[
+      { title:'Module 1: Introduction to Storytelling', duration:'1 Hour',
+        body:'<h3>Introduction to Storytelling</h3><p>Explore storytelling as a cultural, educational, and entrepreneurial tool. This module introduces the art of storytelling and its power to preserve identity, inspire change, and create sustainable creative ventures.</p><h3>What is Storytelling?</h3><p>Storytelling is how we remember, imagine, and connect — but it is also how we build. Learners explore the essence of storytelling, its cultural and educational significance, and its potential as a vehicle for entrepreneurship. Through global traditions and personal reflection, learners discover how stories can become creative enterprises, social impact projects, and digital content with real-world value.</p><div class="lesson-callout"><div class="lc-label">Key Insight</div><p>Storytelling is not just performance or tradition — it is a foundation for creative enterprise. Whether through publishing, performance, or platform-building, storytelling becomes a tool for economic empowerment.</p></div>',
+        quiz:{ q:'According to this module, what is storytelling BEYOND performance?', opts:['A hobby for creative people','A tool for economic empowerment and creative enterprise','Only a cultural practice','A way to memorise history'], ans:1, fb:'Storytelling is a vehicle for entrepreneurship, social impact, and digital content creation — not just performance or tradition.' }
+      },
+      { title:'Module 2: Fundamentals of Storytelling', duration:'1 Hour',
+        body:'<h3>The Fundamentals of Storytelling</h3><p>Storytelling is more than just words — it is an immersive experience that engages the audience through voice, movement, rhythm, characterisation, and audience engagement. This module explores the essential techniques that bring stories to life.</p><h3>Oral vs Written Storytelling</h3><p>Oral storytelling is immediate, embodied, and co-created with the audience. Written storytelling is permanent, crafted, and solitary. The best storytellers understand both — and know when each serves the story.</p><h3>Key Structural Elements</h3><p>Every compelling story has: a beginning that draws us in, a middle that tests the character, and an end that satisfies. Beyond structure: character, conflict, setting, theme, and purpose.</p><div class="lesson-reflection"><div class="lr-label">Practice Activity</div><p>Tell a 2-minute story from your life to a partner. Then your partner reflects back: What was the beginning? What was the conflict? How did it resolve? Discuss together.</p></div>',
+        quiz:{ q:'What is the key difference between oral and written storytelling?', opts:['Oral is always better','Oral is immediate and co-created with the audience; written is crafted and permanent','Written stories are more important','There is no difference'], ans:1, fb:'Oral storytelling is live, embodied, and audience-responsive. Written storytelling is crafted for permanence. Both have unique power.' }
+      },
+      { title:'Module 3: The Psychology & Power of Stories', duration:'1 Hour',
+        body:'<h3>The Psychology & Power of Stories</h3><p>Storytelling is more than entertainment — it is a fundamental part of human cognition, communication, and culture. As Jonathan Gottschall states: <em>"We are, as a species, addicted to story. Even when the body goes to sleep, the mind stays up all night, telling itself stories."</em></p><h3>How Stories Shape Us</h3><p>Stories influence how we think, feel, and interact with the world. They activate the brain\'s reward systems, build empathy, preserve memory, shape identity, foster community, and can even change political behaviour and cultural norms.</p><h3>Key Functions of Storytelling</h3><p>• <strong>Memory:</strong> stories are how humans store and retrieve lived experience<br>• <strong>Empathy:</strong> inhabiting another\'s perspective through narrative<br>• <strong>Identity:</strong> we understand ourselves through the stories we tell<br>• <strong>Social cohesion:</strong> shared stories unite communities<br>• <strong>Activism:</strong> stories shift public consciousness</p>',
+        quiz:{ q:'Jonathan Gottschall describes humans as "addicted to story." What does this mean?', opts:['People watch too much TV','Storytelling is fundamental to human cognition — our minds seek narrative even in sleep','Stories are dangerous','Only writers need stories'], ans:1, fb:'Gottschall argues storytelling is a biological need — our brains process experience through narrative structure constantly, even during dreaming.' }
+      },
+      { title:'Module 4: The Structure of a Story', duration:'1 Hour',
+        body:'<h3>The Structure of a Story</h3><p>Storytelling follows a structured framework that guides the audience through a journey of emotions, conflicts, and resolutions. Understanding this structure helps storytellers craft compelling narratives that captivate and engage.</p><h3>Freytag\'s Pyramid</h3><div class="formula-box"><div class="f-lbl">Freytag\'s Pyramid</div><div class="f-eq">1. Exposition — Introduce setting and characters<br>2. Rising Action — Build tension and conflict<br>3. Climax — Peak of emotional intensity<br>4. Falling Action — Consequences unfold<br>5. Resolution — Closure and reflection</div></div><h3>Essential Story Characteristics</h3><p>• Beginning, middle, ending<br>• Climax and conflict<br>• Setting and characters<br>• Interconnected events<br>• Linear vs. circular plot<br>• Protagonist vs. antagonist<br>• Philosophical depth and purpose</p>',
+        quiz:{ q:'In Freytag\'s Pyramid, what happens at the CLIMAX?', opts:['Characters are introduced','The setting is described','The peak of emotional intensity — the story\'s turning point','The resolution is revealed'], ans:2, fb:'The climax is the peak of tension and emotional intensity — the moment everything the story has been building toward arrives.' }
+      },
+      { title:'Module 5: Storytelling Techniques', duration:'1 Hour',
+        body:'<h3>Storytelling Techniques</h3><p>Storytelling relies on various techniques to captivate an audience. While every storyteller develops their own style, mastering these fundamentals enhances delivery and engagement.</p><h3>Voice & Projection</h3><p>A storyteller\'s voice is their most powerful tool.<br>• <strong>Projection</strong> — breath control and diaphragm support maintain volume without strain<br>• <strong>Articulation</strong> — clear pronunciation prevents misinterpretation; practice tongue twisters<br>• <strong>Voice Variation</strong> — changing pitch, tempo, and intonation adds dynamism</p><h3>Body & Presence</h3><p>• <strong>Facial Expressions</strong> — your face should reflect the mood of the narrative<br>• <strong>Body Movement</strong> — gestures and positioning anchor the story in space<br>• <strong>Eye Contact</strong> — creates direct connection with individual audience members</p>',
+        quiz:{ q:'What does "voice variation" mean in storytelling technique?', opts:['Speaking louder throughout','Changing pitch, tempo, and intonation to add dynamism and convey emotion','Using different accents','Speaking very quietly'], ans:1, fb:'Voice variation — changing pitch, speed, and tone — keeps audiences engaged and conveys emotion far more powerfully than a monotone delivery.' }
+      },
+      { title:'Module 6: Connecting with Your Audience', duration:'1 Hour',
+        body:'<h3>Connecting with Your Audience</h3><p>Storytelling is a shared experience — and the audience is never just a spectator. Master the art of audience engagement through rhythm, repetition, eye contact, and sound.</p><h3>Techniques for Connection</h3><p>• <strong>Eye contact</strong> — look at individuals, not a point on the wall<br>• <strong>Rhythm and repetition</strong> — repeated phrases create participation and memory<br>• <strong>Idiophones</strong> — sound words (clapping, clicking) that invite the audience in<br>• <strong>Call and response</strong> — the audience becomes co-creators of the story<br>• <strong>Emotional adaptability</strong> — read the room and adjust pace and energy</p><div class="lesson-callout"><div class="lc-label">Dr Sasa says</div><p>In isiZulu oral tradition, the audience is never passive. Guests are invited to respond, to call back, to become part of the telling. That is what makes a story live.</p></div>',
+        quiz:{ q:'What makes an audience a "co-creator" in oral storytelling?', opts:['They write parts of the story','They are asked to respond, call back, and participate — becoming part of the telling','They sit silently and listen','They give notes after the performance'], ans:1, fb:'In oral tradition, the audience responds, calls back, and participates — the story is not performed AT them but WITH them.' }
+      },
+      { title:'Module 7: Building a Storyteller\'s Repertoire', duration:'1 Hour',
+        body:'<h3>Building a Storyteller\'s Repertoire</h3><p>A storyteller\'s repertoire is their collection of stories, carefully selected and adapted to suit different audiences, themes, and occasions. A strong repertoire requires story selection, genre understanding, and adaptation technique.</p><h3>Genres to Know</h3><p>• Folktales and fables (izinganekwane)<br>• Personal anecdotes<br>• Urban legends and contemporary stories<br>• Historical narratives<br>• Healing stories and parables<br>• Business and brand stories</p><h3>Adapting Traditional Stories</h3><p>Traditional narratives carry deep wisdom — but they must be adapted for contemporary relevance without losing their cultural authenticity. The skill is knowing what to keep and what to contextualise.</p>',
+        quiz:{ q:'When adapting a traditional folktale for a modern audience, what is the key skill?', opts:['Removing all cultural references','Knowing what to keep (wisdom, values) and what to contextualise (setting, language)','Always translating it into English','Making it shorter'], ans:1, fb:'Adaptation is not erasure. The cultural wisdom stays intact; the setting, language, and context shift to meet the contemporary audience where they are.' }
+      },
+      { title:'Module 8: Learning & Practising Stories', duration:'1 Hour',
+        body:'<h3>The Process of Learning & Practising Stories</h3><p>Mastering storytelling is a journey that requires patience, practice, and passion. Like learning to walk, it may seem challenging at first — but with consistent effort, it becomes second nature.</p><h3>Memorisation vs Natural Recall</h3><p><strong>Memorisation</strong> produces rigid performance — you are reciting, not telling. <strong>Natural recall</strong> produces living performance — you know the story so deeply that the words arise fresh each time.</p><h3>Practical Steps</h3><p>1. Choose a story that resonates with you personally<br>2. Map the story — its beats, not its words<br>3. Tell it aloud, alone, until you feel it<br>4. Tell it to one person<br>5. Tell it to a small group<br>6. Refine through repetition and audience response</p>',
+        quiz:{ q:'What is the difference between memorisation and natural recall in storytelling?', opts:['There is no difference','Memorisation is rigid recitation; natural recall is living performance where words arise fresh','Memorisation is better for professionals','Natural recall means you forget the story'], ans:1, fb:'Memorisation produces rigid performance. Natural recall means you know the story at the level of its beats and emotions — so you can tell it freshly, differently, every time.' }
+      },
+      { title:'Module 9: Oral Genres in Storytelling', duration:'1 Hour',
+        body:'<h3>Incorporating Oral Genres in Storytelling</h3><p>Oral storytelling is dynamic and immersive, often enhanced by songs, chants, games, and musical instruments. These elements engage audiences emotionally, making stories more memorable and interactive.</p><h3>Oral Genre Types</h3><p>• <strong>Songs (izingoma)</strong> — rhythm and melody embed meaning in memory<br>• <strong>Chants and calls</strong> — repetitive structures that invite participation<br>• <strong>Games and riddles</strong> — interactive elements that make the audience active<br>• <strong>Musical instruments</strong> — drum, hosho, mbira set the emotional atmosphere<br>• <strong>Proverbs (izaga)</strong> — concentrated wisdom woven into the story\'s turning points</p>',
+        quiz:{ q:'Why are songs and chants powerful tools in oral storytelling?', opts:['They fill time','Rhythm and melody embed meaning in memory and invite audience participation','They are easier to remember than words','Audiences expect them'], ans:1, fb:'Rhythm and melody activate different parts of the brain — information embedded in song is retained far longer than prose. And chants invite participation, making the story communal.' }
+      },
+      { title:'Module 10: Storytelling in Professional Contexts', duration:'1 Hour',
+        body:'<h3>Storytelling in Professional Contexts</h3><p>Storytelling is more than performance — it is a strategic tool for transformation in education, business, therapy, and branding.</p><h3>Applications Across Sectors</h3><p>• <strong>Education</strong> — storytelling enhances learning, retention, and engagement<br>• <strong>Business</strong> — stories build brand identity, employee culture, and customer loyalty<br>• <strong>Therapy and healing</strong> — narrative therapy uses story to process trauma<br>• <strong>Leadership</strong> — great leaders are storytellers who inspire through vision<br>• <strong>Marketing</strong> — the most effective advertising tells a human story</p><div class="lesson-callout"><div class="lc-label">Key Insight</div><p>A business without a story is just a transaction. A leader without a story is just a manager. Story is the difference between information and meaning.</p></div>',
+        quiz:{ q:'What does the module mean by "a business without a story is just a transaction"?', opts:['Businesses should not be serious','Stories make businesses memorable and create emotional connection — without them, you are just exchanging money for goods','All businesses need an advertising budget','Stories replace good products'], ans:1, fb:'Story transforms a business from a service provider into a relationship. Customers don\'t just buy products — they buy the meaning and identity the brand\'s story creates.' }
+      },
+      { title:'Module 11: Careers in Storytelling', duration:'1 Hour',
+        body:'<h3>Careers in Storytelling</h3><p>Storytelling is not just an art — it is a career path that offers diverse opportunities in performance, writing, coaching, consulting, entrepreneurship, and branding.</p><h3>Career Pathways</h3><p>• <strong>Live Performer</strong> — storytelling at schools, events, festivals, corporate<br>• <strong>Author & Publisher</strong> — books, e-books, children\'s publishing<br>• <strong>Educator & Trainer</strong> — teaching storytelling methodology<br>• <strong>Brand Storyteller</strong> — marketing, communications, content strategy<br>• <strong>Story Coach</strong> — helping others find and tell their stories<br>• <strong>Digital Content Creator</strong> — podcasts, YouTube, social media<br>• <strong>Mythopreneur</strong> — storytelling consultancy across sectors</p><h3>Building Your Career</h3><p>Develop craft → gain experience → build a personal brand → define your niche → leverage digital tools → grow your audience.</p>',
+        quiz:{ q:'What is a "Mythopreneur"?', opts:['A mythology teacher','Someone who only tells myths','A storytelling consultant who turns narrative craft into business across sectors','A person who tells stories at funerals'], ans:2, fb:'A Mythopreneur turns storytelling into enterprise — using narrative tools to solve problems, build brands, resolve conflict, and deepen human connection across industries.' }
+      },
+      { title:'Module 12: Cultural Perspectives in Storytelling', duration:'1 Hour',
+        body:'<h3>Cultural Perspectives in Storytelling</h3><p>Storytelling is deeply rooted in culture, history, and tradition — serving as a bridge between generations and shaping collective identity.</p><h3>Global Traditions</h3><p>• <strong>African oral tradition</strong> — izinganekwane, izibongo, the storytelling fire circle<br>• <strong>Native American</strong> — stories as law, spirituality, and ecological knowledge<br>• <strong>Japanese</strong> — the art of <em>kamishibai</em> (picture storytelling) and Noh theatre<br>• <strong>Hawaiian</strong> — hula as embodied story<br>• <strong>Western</strong> — the novel tradition, film narrative, and podcast</p><h3>How History Shapes Story</h3><p>War, migration, and colonialism leave deep marks on narrative form. The stories a culture tells about trauma reveal its resilience — and its wounds. Reading stories across cultures builds intercultural fluency.</p>',
+        quiz:{ q:'What does "intercultural fluency" mean in the context of storytelling?', opts:['Speaking many languages','The ability to understand, respect, and adapt stories across different cultural traditions','Studying folklore academically','Only telling stories from your own culture'], ans:1, fb:'Intercultural fluency means understanding the values, assumptions, and emotional registers that different cultures embed in their stories — and being able to work across those traditions with respect.' }
+      },
+      { title:'Module 13: Public Performance & Stage Fright', duration:'1 Hour',
+        body:'<h3>Public Performance & Overcoming Stage Fright</h3><p>Storytelling is a public art, and performing in front of an audience can be intimidating. Many storytellers face stage fright, self-doubt, and fear of judgment. With the right strategies, anyone can overcome these barriers and deliver compelling performances.</p><h3>Understanding Stage Fright</h3><p>Stage fright is not weakness — it is energy. The same physiological response that creates panic can be channelled into presence and power.</p><h3>Strategies for Confidence</h3><p>• <strong>Preparation</strong> — know your story so well that anxiety has nothing to grip<br>• <strong>Breathwork</strong> — slow breath before you begin resets the nervous system<br>• <strong>Eye contact</strong> — find one friendly face and begin there<br>• <strong>Reframe nervousness</strong> — "I am excited" rather than "I am afraid"<br>• <strong>Start small</strong> — practise to one person before one hundred</p>',
+        quiz:{ q:'How should a storyteller reframe stage fright?', opts:['Ignore it completely','Tell the audience they are nervous','See nervousness as energy that can be channelled into presence and power','Always practise alone'], ans:2, fb:'Stage fright and excitement are physiologically identical. The reframe is cognitive: "I am not afraid — I am ready." That shift changes performance completely.' }
+      },
+      { title:'Module 14: Final Storytelling Showcase', duration:'1 Hour',
+        body:'<h3>Final Storytelling Showcase</h3><p>This module is the culmination of the storytelling journey. Learners present a full storytelling performance, receive peer feedback, and reflect on their personal growth as storytellers.</p><h3>The Showcase Format</h3><p>• Each learner delivers a complete storytelling performance (8–12 minutes)<br>• Incorporating: voice modulation, gestures, audience engagement, and authentic connection<br>• Peers provide structured feedback using the course framework<br>• A written reflection on personal growth closes the course</p><div class="lesson-callout"><div class="lc-label">A Final Word from Dr Sasa</div><p>This is not an exam. It is a rite of passage. The story you tell today carries everything you have learned — your voice, your culture, your courage. Tell it as if the ancestors are listening. Because they are.</p></div>',
+        quiz:{ q:'What is the purpose of the Final Storytelling Showcase?', opts:['To grade students and award marks only','To test memorisation','To celebrate growth, demonstrate technique, and receive feedback — a rite of passage','To compete against other storytellers'], ans:2, fb:'The showcase is a rite of passage — the moment where learning becomes performance, and the storyteller steps fully into their craft in front of their community.' }
+      },
+      { title:'Module 15: Advanced Storytelling Techniques', duration:'1 Hour',
+        body:'<h3>Advanced Storytelling Techniques</h3><p>At this stage, a storyteller has mastered the craft, developed a unique style, and built a vast repertoire. Advanced storytellers captivate audiences effortlessly, incorporating humour, rhythm, and emotional depth into their delivery.</p><h3>Advanced Techniques</h3><p>• <strong>Rhythm and pacing mastery</strong> — using silence, speed, and pause to shape emotional journeys<br>• <strong>Interactivity</strong> — building call-and-response structures that shift with each audience<br>• <strong>Format experimentation</strong> — multimedia storytelling, visual performance, hybrid formats<br>• <strong>Authenticity at scale</strong> — performing to thousands while feeling like a one-on-one conversation<br>• <strong>Mentoring</strong> — the advanced storyteller lifts others into their craft</p>',
+        quiz:{ q:'What separates an advanced storyteller from an intermediate one?', opts:['They speak louder','They have memorised more stories','They can adapt technique intuitively — matching rhythm, format, and emotion to each unique audience and moment','They perform for bigger crowds only'], ans:2, fb:'Advanced storytelling is fluid, adaptive, and authentic. The craft has become second nature — so the storyteller is fully present to the audience, not thinking about technique.' }
+      }
+    ],
+    tip:{tx:'These 15 modules are the complete foundation. Work through them in order — each builds on the last. By Module 15 you will not just be a storyteller. You will be a storyteller who understands why and how stories change the world.'}
+  }];
 
 
 var completedModules = [[],[],[],[],[],[],[]]; // 7 courses
@@ -7638,8 +8114,7 @@ function toggleFaq(el) {
 // To add a video: find SASA_VIDEOS below and add the YouTube video ID
 // Get the ID from the URL: youtube.com/watch?v=VIDEOID_HERE
 var SASA_VIDEOS = [
-  // Example — uncomment and replace with real IDs:
-  // { id: 'dQw4w9WgXcQ', title: 'My Story Title', desc: 'Short description here' },
+  { id: 'aCNnn5FtX6E', title: 'Preparing for a Live Storytelling Show', desc: 'Behind the scenes at Zintsomi Storytelling Centre, Midrand — Dr Sasa prepares for a live African storytelling evening.' },
 ];
 
 function renderHomeSasaYT(){
@@ -8127,90 +8602,49 @@ function openVRStory(idx) {
   var modal = document.getElementById('vr-story-modal');
   modal.style.display = 'flex';
   requestAnimationFrame(function(){ modal.classList.add('open'); });
-  document.getElementById('vr-modal-icon').textContent = s.icon;
-  document.getElementById('vr-modal-title-scene').textContent = s.title;
-  document.getElementById('vr-story-body').innerHTML = s.text;
-  document.getElementById('vr-audio-label').textContent = s.lang + ' — ' + s.dur;
-  document.getElementById('vr-audio-fill').style.width = '0%';
-  document.getElementById('vr-time').textContent = '0:00';
-  document.getElementById('vr-audio-play-btn').textContent = '▶';
-  vrAudioPlaying = false;
-  vrAudioProgress = 0;
-  clearInterval(vrAudioInterval);
-  // Animate modal canvas
-  var c = document.getElementById('vr-modal-canvas');
-  if (c) {
-    c.width = c.offsetWidth || 900;
-    c.height = c.offsetHeight || 380;
-    var ctx = c.getContext('2d');
-    vrModalCanvas = c; vrModalCtx = ctx;
+
+  // HUD
+  var hudTitle = document.getElementById('vr-hud-title');
+  var hudLang  = document.getElementById('vr-hud-lang');
+  if(hudTitle) hudTitle.textContent = s.title;
+  if(hudLang)  hudLang.textContent  = s.lang + ' · ' + s.dur;
+
+  // Story text
+  var body = document.getElementById('vr-story-body');
+  if(body) body.innerHTML = s.text;
+
+  // Audio label
+  var lbl = document.getElementById('vr-audio-label');
+  if(lbl) lbl.textContent = s.lang + ' · ' + s.dur;
+
+  // Compass
+  var comp = document.getElementById('vr-compass-txt');
+  if(comp) comp.textContent = s.title.split(' — ')[0].substring(0,22);
+
+  // Canvas animation
+  var canvas = document.getElementById('vr-main-canvas');
+  if(canvas) {
     cancelAnimationFrame(vrModalAnim);
-    animVRModal(ctx, c, s);
+    cancelAnimationFrame(vrAnimId2);
+    var ctx = canvas.getContext('2d');
+    animVRModalUpgraded(ctx, canvas, s);
   }
-}
 
-function animVRModal(ctx, c, s) {
-  var t = 0;
-  var stars = [];
-  for (var i = 0; i < 120; i++) {
-    stars.push({ x: Math.random(), y: Math.random() * .6, r: Math.random() * 1.5 + .5, sp: Math.random() * .0003 + .0001 });
-  }
-  function frame() {
-    t += 0.016;
-    var W = c.width, H = c.height;
-    ctx.clearRect(0, 0, W, H);
-    // Sky gradient
-    var grd = ctx.createLinearGradient(0, 0, 0, H);
-    grd.addColorStop(0, '#01020A');
-    grd.addColorStop(.5, s.bg);
-    grd.addColorStop(1, '#020104');
-    ctx.fillStyle = grd;
-    ctx.fillRect(0, 0, W, H);
-    // Stars
-    stars.forEach(function(st) {
-      st.x -= st.sp;
-      if (st.x < 0) st.x = 1;
-      var alpha = .3 + .4 * Math.abs(Math.sin(t * 2 + st.r));
-      ctx.fillStyle = 'rgba(255,255,255,' + alpha + ')';
-      ctx.beginPath();
-      ctx.arc(st.x * W, st.y * H, st.r, 0, Math.PI * 2);
-      ctx.fill();
-    });
-    // Glow orb
-    var gx = W * .5, gy = H * .5;
-    var gl = ctx.createRadialGradient(gx, gy, 0, gx, gy, 160);
-    var col = s.color || 'rgba(245,118,26,.4)';
-    gl.addColorStop(0, col);
-    gl.addColorStop(1, 'transparent');
-    ctx.fillStyle = gl;
-    ctx.beginPath();
-    ctx.arc(gx, gy, 160, 0, Math.PI * 2);
-    ctx.fill();
-    vrModalAnim = requestAnimationFrame(frame);
-  }
-  frame();
-}
+  // Reset mode
+  setVRMode('cinema');
+  switchVRTab('story', document.querySelector('.vr-stab'));
 
-function toggleVRAudio() {
-  vrAudioPlaying = !vrAudioPlaying;
-  document.getElementById('vr-audio-play-btn').textContent = vrAudioPlaying ? '⏸' : '▶';
-  if (vrAudioPlaying) {
-    var totalSecs = 720; // 12 min default
-    vrAudioInterval = setInterval(function() {
-      vrAudioProgress = Math.min(vrAudioProgress + 1 / totalSecs, 1);
-      document.getElementById('vr-audio-fill').style.width = (vrAudioProgress * 100) + '%';
-      var secs = Math.round(vrAudioProgress * totalSecs);
-      var m = Math.floor(secs / 60), s2 = secs % 60;
-      document.getElementById('vr-time').textContent = m + ':' + (s2 < 10 ? '0' : '') + s2;
-      if (vrAudioProgress >= 1) {
-        clearInterval(vrAudioInterval);
-        document.getElementById('vr-audio-play-btn').textContent = '▶';
-        vrAudioPlaying = false;
-      }
-    }, 1000);
-  } else {
-    clearInterval(vrAudioInterval);
-  }
+  // Reset audio
+  vrAudioPlaying = false;
+  var playBtn = document.getElementById('vr-audio-play-btn');
+  if(playBtn) playBtn.textContent = '▶';
+  var hudPlay = document.getElementById('vr-hud-play');
+  if(hudPlay) hudPlay.textContent = '▶';
+  var fill = document.getElementById('vr-audio-fill');
+  if(fill) fill.style.width = '0%';
+  clearInterval(vrAudioInterval);
+
+  document.body.style.overflow = 'hidden';
 }
 
 function closeVRStory() {
@@ -8222,11 +8656,229 @@ function closeVRStory() {
   cancelAnimationFrame(vrModalAnim);
 }
 
+/* ═══ VR CINEMATIC ENGINE ═══ */
+var vrMode = 'cinema'; // 'cinema' | 'vr' | 'book'
+var vrMouse = { down:false, lastX:0, yaw:0 };
+var vrAnimId2 = null;
+
+// Dr Sasa's books
+var DR_SASA_BOOKS = [
+  { title:"Kwasukasukela", author:"Dr Sasa", color:"#4A1500", textColor:"#FFD080", desc:"The complete guide to isiZulu oral storytelling tradition — from fire circle to classroom.", isNew:true },
+  { title:"Ubuntu in the Classroom", author:"Dr Sasa", color:"#001A10", textColor:"#6EE78E", desc:"How to use storytelling as a teaching methodology across all subjects." },
+  { title:"Inganekwane", author:"Dr Sasa", color:"#0A0018", textColor:"#B07BFF", desc:"A collection of 40 African folktales retold for modern readers in both isiZulu and English." },
+  { title:"The Storyteller's Voice", author:"Dr Sasa", color:"#1A0005", textColor:"#FF8080", desc:"Performance techniques for oral storytellers — breath, pace, presence and power." },
+  { title:"Izaga: Proverbs", author:"Dr Sasa", color:"#14100A", textColor:"#E6B32A", desc:"200 African proverbs with their origins, meanings and storytelling applications." },
+  { title:"Schools & Stories", author:"Dr Sasa", color:"#001018", textColor:"#64B5E8", desc:"Curriculum-aligned storytelling activities for Grades 4–12 across all subjects." },
+];
+
+function setVRMode(mode) {
+  vrMode = mode;
+  document.querySelectorAll('.vr-mode-pill').forEach(function(p){ p.classList.remove('active'); });
+  var btn = document.getElementById('mode-'+mode);
+  if(btn) btn.classList.add('active');
+  var div = document.getElementById('vr-stereo-divider');
+  if(div) div.style.display = mode === 'vr' ? 'block' : 'none';
+  var label = document.getElementById('vr-scene-label-txt');
+  if(label) label.textContent = mode === 'vr' ? 'VR Split Mode · Insert into headset' : mode === 'book' ? 'Book Shelf' : 'Zintsomi VR Village';
+  if(mode === 'book') renderVRBookShelf();
+}
+
+function switchVRTab(tab, btn) {
+  document.querySelectorAll('.vr-stab').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelectorAll('.vr-tab-pane').forEach(function(p){ p.classList.remove('active'); });
+  if(btn) btn.classList.add('active');
+  var pane = document.getElementById('vr-tab-'+tab);
+  if(pane) pane.classList.add('active');
+}
+
+function renderVRBookShelf() {
+  var shelf = document.getElementById('vr-bookshelf');
+  if(!shelf) return;
+  shelf.innerHTML = DR_SASA_BOOKS.map(function(b, i) {
+    return '<div class="vr-book" style="background:'+b.color+'" onclick="openVRBook('+i+')" title="'+b.title+'">'
+      + (b.isNew ? '<div class="vr-book-new-badge">NEW</div>' : '')
+      + '<div class="vr-book-title" style="color:'+b.textColor+'">'+b.title+'</div>'
+      + '<div class="vr-book-author">'+b.author+'</div>'
+      + '</div>';
+  }).join('');
+}
+
+function openVRBook(i) {
+  var b = DR_SASA_BOOKS[i];
+  var body = document.getElementById('vr-story-body');
+  if(body) {
+    body.innerHTML = '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.4rem;margin-bottom:1rem">'
+      + '<div style="font-family:var(--serif);font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:.3rem">'+b.title+'</div>'
+      + '<div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:'+b.textColor+';margin-bottom:.8rem">By '+b.author+'</div>'
+      + '<p style="font-size:.9rem;color:rgba(255,255,255,.6);line-height:1.9">'+b.desc+'</p>'
+      + '<p style="font-size:.8rem;color:rgba(255,255,255,.35);margin-top:1rem;line-height:1.7">Full digital editions of Dr Sasa\'s books are available to <strong style="color:var(--acid)">Premium members</strong>. Upgrade to read every page inside the VR environment.</p>'
+      + '<button onclick="showWorld(\'subscribe\')" style="background:var(--fire);border:none;color:#fff;font-family:var(--display);font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;padding:.5rem 1.2rem;border-radius:6px;cursor:pointer;margin-top:.8rem">Get Premium Access →</button>'
+      + '</div>';
+    switchVRTab('story', document.querySelector('.vr-stab'));
+  }
+}
+
+function vrPlayPause() {
+  var btn = document.getElementById('vr-hud-play');
+  if(btn) {
+    var playing = btn.textContent === '⏸';
+    btn.textContent = playing ? '▶' : '⏸';
+    // Sync with audio tab
+    toggleVRAudio();
+  }
+}
+
+function prevVRStory() {
+  var idx = vrCurrentStory - 1;
+  if(idx < 0) idx = VR_STORIES.length - 1;
+  openVRStory(idx);
+}
+
+function nextVRStory() {
+  var idx = (vrCurrentStory + 1) % VR_STORIES.length;
+  openVRStory(idx);
+}
+
 function launchVRFullscreen() {
-  var el = document.getElementById('vr-story-modal');
+  setVRMode('vr');
+  var el = document.getElementById('vr-scene-wrap');
   if (el.requestFullscreen) el.requestFullscreen();
   else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-  alert('Full VR mode activated! Insert your phone into your Google Cardboard or VR headset for the full experience. Audio story will continue playing.');
+  else { switchVRTab('howto', null); }
+}
+
+// Upgraded canvas: particles + rotating starfield + campfire glow + scene-specific atmosphere
+function animVRModalUpgraded(ctx, c, s) {
+  cancelAnimationFrame(vrAnimId2);
+  var t = 0;
+  var W, H;
+  var stars = Array.from({length:180}, function() {
+    return { x:Math.random(), y:Math.random()*.65, r:.3+Math.random()*1.4,
+             sp:.00008+Math.random()*.00025, flicker:Math.random()*Math.PI*2 };
+  });
+  var particles = Array.from({length:30}, function() {
+    return { x:.35+Math.random()*.3, y:.55+Math.random()*.25,
+             vy:-.0004-Math.random()*.0008, vx:(Math.random()-.5)*.0003,
+             life:Math.random(), maxLife:.4+Math.random()*.5, r:1+Math.random()*3 };
+  });
+  // Drag to rotate
+  var wrap = document.getElementById('vr-scene-wrap');
+  function onDown(e){ vrMouse.down=true; vrMouse.lastX=e.clientX||(e.touches&&e.touches[0].clientX)||0; }
+  function onMove(e){ if(!vrMouse.down)return; var cx=(e.clientX||(e.touches&&e.touches[0].clientX)||0); vrMouse.yaw+=(cx-vrMouse.lastX)*.003; vrMouse.lastX=cx; }
+  function onUp(){ vrMouse.down=false; }
+  if(wrap){
+    wrap.addEventListener('mousedown',onDown); wrap.addEventListener('mousemove',onMove); wrap.addEventListener('mouseup',onUp);
+    wrap.addEventListener('touchstart',onDown,{passive:true}); wrap.addEventListener('touchmove',onMove,{passive:true}); wrap.addEventListener('touchend',onUp);
+  }
+
+  function lerp(a,b,t){ return a+(b-a)*t }
+  function hexToRgb(hex){ var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16); return [r,g,b]; }
+
+  function frame(ts) {
+    t += 0.018;
+    var canvas = document.getElementById('vr-main-canvas');
+    if(!canvas){ vrAnimId2=requestAnimationFrame(frame); return; }
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    if(W===0){ vrAnimId2=requestAnimationFrame(frame); return; }
+
+    var isVR = vrMode === 'vr';
+    var sides = isVR ? 2 : 1;
+
+    for(var side=0; side<sides; side++) {
+      var ox = isVR ? side * W/2 : 0;
+      var sw = isVR ? W/2 : W;
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(ox, 0, sw, H);
+      ctx.clip();
+
+      // Parallax yaw offset for VR split (slight divergence between eyes)
+      var eyeOffset = isVR ? (side===0 ? -0.03 : 0.03) : 0;
+      var yawWithEye = vrMouse.yaw + eyeOffset;
+
+      // Sky gradient
+      var bg = s.bg || '#0a0300';
+      var grd = ctx.createLinearGradient(ox, 0, ox, H);
+      grd.addColorStop(0, '#01020A');
+      grd.addColorStop(.45, bg);
+      grd.addColorStop(1, '#020104');
+      ctx.fillStyle = grd;
+      ctx.fillRect(ox, 0, sw, H);
+
+      // Stars with parallax rotation
+      stars.forEach(function(st) {
+        var sx = ((st.x + yawWithEye * .08 + t * st.sp) % 1 + 1) % 1;
+        var alpha = .25 + .45*Math.abs(Math.sin(t*1.5+st.flicker));
+        ctx.fillStyle = 'rgba(255,255,235,'+alpha.toFixed(2)+')';
+        ctx.beginPath();
+        ctx.arc(ox + sx*sw, st.y*H, st.r, 0, Math.PI*2);
+        ctx.fill();
+      });
+
+      // Central glow orb
+      var gx = ox + sw*.5, gy = H*.55;
+      var gl = ctx.createRadialGradient(gx, gy, 0, gx, gy, sw*.28);
+      var col = s.color || 'rgba(245,118,26,.4)';
+      gl.addColorStop(0, col);
+      gl.addColorStop(.5, col.replace(/[\d.]+\)$/, '.15)'));
+      gl.addColorStop(1, 'transparent');
+      ctx.fillStyle = gl;
+      ctx.beginPath(); ctx.arc(gx, gy, sw*.28, 0, Math.PI*2); ctx.fill();
+
+      // Campfire flicker (bottom centre)
+      var fx = ox + sw*.5, fy = H*.82;
+      var fireW = sw*.04 + Math.sin(t*8)*.008*sw;
+      var fireGrd = ctx.createRadialGradient(fx, fy, 0, fx, fy, fireW*3);
+      fireGrd.addColorStop(0, 'rgba(255,220,80,.9)');
+      fireGrd.addColorStop(.3, 'rgba(255,100,20,.6)');
+      fireGrd.addColorStop(.7, 'rgba(200,40,0,.2)');
+      fireGrd.addColorStop(1, 'transparent');
+      ctx.fillStyle = fireGrd;
+      ctx.beginPath(); ctx.arc(fx, fy, fireW*3, 0, Math.PI*2); ctx.fill();
+
+      // Smoke particles
+      particles.forEach(function(p) {
+        p.life += 0.012;
+        if(p.life > p.maxLife){ p.life=0; p.x=.45+Math.random()*.1; p.y=.75+Math.random()*.1; }
+        p.x += p.vx; p.y += p.vy;
+        var alpha = (1 - p.life/p.maxLife) * .18;
+        if(alpha > 0) {
+          ctx.fillStyle = 'rgba(255,180,60,'+alpha.toFixed(3)+')';
+          ctx.beginPath();
+          ctx.arc(ox + p.x*sw, p.y*H, p.r, 0, Math.PI*2);
+          ctx.fill();
+        }
+      });
+
+      // Distant silhouette hills
+      ctx.fillStyle = 'rgba(2,1,5,.88)';
+      ctx.beginPath();
+      ctx.moveTo(ox, H);
+      ctx.bezierCurveTo(ox+sw*.1,H*.82, ox+sw*.25,H*.76, ox+sw*.38,H*.80);
+      ctx.bezierCurveTo(ox+sw*.5,H*.83, ox+sw*.62,H*.73, ox+sw*.75,H*.78);
+      ctx.bezierCurveTo(ox+sw*.88,H*.82, ox+sw*.95,H*.78, ox+sw,H*.80);
+      ctx.lineTo(ox+sw,H); ctx.closePath(); ctx.fill();
+
+      // Foreground dark ground
+      ctx.fillStyle = 'rgba(1,0,3,.95)';
+      ctx.beginPath();
+      ctx.moveTo(ox,H);
+      ctx.bezierCurveTo(ox+sw*.2,H*.91, ox+sw*.5,H*.88, ox+sw,H*.90);
+      ctx.lineTo(ox+sw,H); ctx.closePath(); ctx.fill();
+
+      // Story title in scene (subtle)
+      ctx.font = 'italic 700 '+Math.min(sw*.038, 22)+'px Georgia, serif';
+      ctx.fillStyle = 'rgba(255,255,255,.12)';
+      ctx.textAlign = 'center';
+      ctx.fillText(s.title || '', ox+sw*.5, H*.28);
+
+      ctx.restore();
+    }
+
+    vrAnimId2 = requestAnimationFrame(frame);
+  }
+  frame();
 }
 
 function shareVRStory() {
@@ -8558,6 +9210,400 @@ function toggleWallLike(id) {
 function escWall(str) {
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
+
+
+
+/* ═══════════════════════════════════════════════════
+   FIRST-IN-AFRICA VR FEATURES — ZINTSOMI
+   1. 360° Gyroscope head-tracking
+   2. Spatial audio (binaural panning)
+   3. Izibongo AI praise poem generator
+   4. Living book pages (page-turn reader)
+   5. Community voice pods (record & share)
+   6. Web Speech synthesis (isiZulu voice)
+═══════════════════════════════════════════════════ */
+
+/* ── 1. GYROSCOPE HEAD-TRACKING ── */
+var vrGyroActive = false;
+var vrGyroAlpha = 0, vrGyroBeta = 0, vrGyroGamma = 0;
+var vrGyroYawOffset = 0;
+
+function initVRGyroscope() {
+  if (!window.DeviceOrientationEvent) return;
+  // iOS 13+ requires permission
+  if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+    DeviceOrientationEvent.requestPermission()
+      .then(function(state) {
+        if (state === 'granted') startGyroListener();
+      }).catch(function() {});
+  } else {
+    startGyroListener();
+  }
+}
+
+function startGyroListener() {
+  window.addEventListener('deviceorientation', function(e) {
+    if (!e.alpha && !e.beta) return;
+    vrGyroActive = true;
+    // alpha = compass heading (0-360, rotation around Z)
+    // beta = front-back tilt (-180 to 180)
+    // gamma = left-right tilt (-90 to 90)
+    var newAlpha = e.alpha || 0;
+    // Smooth the yaw
+    vrMouse.yaw = vrMouse.yaw * 0.85 + (-(newAlpha / 360) * Math.PI * 2) * 0.15;
+    vrGyroAlpha = newAlpha;
+    vrGyroBeta  = e.beta  || 0;
+    vrGyroGamma = e.gamma || 0;
+
+    var badge = document.getElementById('vr-gyro-badge');
+    var lbl   = document.getElementById('vr-gyro-label');
+    if (badge) badge.classList.add('active');
+    if (lbl) lbl.textContent = 'Gyro active — turn your head';
+  }, true);
+}
+
+/* ── 2. SPATIAL AUDIO (BINAURAL PAN) ── */
+var vrAudioCtx = null;
+var vrPanner   = null;
+var vrAudioSrc = null;
+
+function initSpatialAudio() {
+  try {
+    vrAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    vrPanner = vrAudioCtx.createPanner();
+    vrPanner.panningModel = 'HRTF';
+    vrPanner.distanceModel = 'inverse';
+    vrPanner.setPosition(0, 0, -1);
+    vrPanner.connect(vrAudioCtx.destination);
+  } catch(e) {}
+}
+
+function updateSpatialAudioAngle() {
+  if (!vrPanner || !vrAudioCtx) return;
+  // Map yaw rotation to 3D position on unit circle
+  var angle = vrMouse.yaw;
+  vrPanner.setPosition(Math.sin(angle), 0, -Math.cos(angle));
+}
+
+/* ── 3. IZIBONGO AI PRAISE POEM GENERATOR ── */
+var vrPoemText = '';
+var vrGenerating = false;
+
+function generateIzibongo() {
+  if (vrGenerating) return;
+  var nameEl = document.getElementById('vr-name-input');
+  var clanEl = document.getElementById('vr-clan-input');
+  var btn    = document.getElementById('vr-generate-btn');
+  var output = document.getElementById('vr-poem-output');
+  var poemDiv = document.getElementById('vr-poem-text');
+
+  var name = (nameEl ? nameEl.value.trim() : '') || 'Umuntu';
+  var clan = clanEl ? clanEl.value.trim() : '';
+
+  if (!name) { if(nameEl) nameEl.focus(); return; }
+
+  vrGenerating = true;
+  if(btn) { btn.disabled = true; btn.textContent = '✦ Composing your izibongo… ✦'; }
+  if(output) output.classList.remove('show');
+
+  var prompt = 'You are a master isiZulu oral poet (imbongi) composing an izibongo — a traditional African praise poem. '
+    + 'Compose a personal izibongo for a person named ' + name
+    + (clan ? ', from the ' + clan + ' clan' : '')
+    + '. The poem must: '
+    + '(1) Begin with the traditional opening in isiZulu '
+    + '(2) Include 6-10 lines mixing isiZulu and English '
+    + '(3) Use praise names, nature imagery (mountains, rivers, lions, fire, ancestors) '
+    + '(4) Reference African strength, community, and Ubuntu '
+    + '(5) End with a powerful closing line about legacy '
+    + 'Format: isiZulu line, then English translation in brackets on the next line. '
+    + 'Make it feel ancient, powerful, and personal. The name ' + name + ' must feature prominently.';
+
+  fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 800,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    var poem = '';
+    if (data.content && data.content[0] && data.content[0].text) {
+      poem = data.content[0].text;
+    } else {
+      poem = 'Woza ' + name + ', ndodakazi/ndodana yamaZulu!\nVuka njengengonyama — Rise like the lion.\nAmagama akho ahlala phakade — Your name lives forever.';
+    }
+    vrPoemText = poem;
+    if (poemDiv) poemDiv.innerHTML = poem.split('\n').map(function(l) {
+      return l.startsWith('[') || l.startsWith('(')
+        ? '<span style="color:rgba(255,255,255,.45);font-size:.88rem;font-style:normal">' + l + '</span>'
+        : '<strong style="color:var(--gold)">' + l + '</strong>';
+    }).join('<br>');
+    if (output) output.classList.add('show');
+    if (btn) { btn.disabled = false; btn.textContent = '✦ Generate Another Poem ✦'; }
+    vrGenerating = false;
+
+    // Fire the starfield — brief gold burst on the canvas
+    triggerVRPoemBurst();
+  })
+  .catch(function() {
+    var fallback = 'Woza ' + name + ', woza!\n[Come, ' + name + ', come!]\nNjengentaba — umi qine, umi dedelayo\n[Like a mountain — you stand firm, you endure]\nAmaZulu akuphila ngawe\n[The ancestors live through you]\nIgama lakho aliyi kulalala\n[Your name shall never sleep]';
+    vrPoemText = fallback;
+    if (poemDiv) poemDiv.textContent = fallback;
+    if (output) output.classList.add('show');
+    if (btn) { btn.disabled = false; btn.textContent = '✦ Generate My Praise Poem ✦'; }
+    vrGenerating = false;
+  });
+}
+
+function triggerVRPoemBurst() {
+  // Flash a gold particle burst on the VR canvas to celebrate the poem
+  var canvas = document.getElementById('vr-main-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height;
+  var particles = Array.from({length:40}, function() {
+    var angle = Math.random() * Math.PI * 2;
+    var speed = 1 + Math.random() * 3;
+    return { x:W/2, y:H/2, vx:Math.cos(angle)*speed, vy:Math.sin(angle)*speed,
+             life:1, r:2+Math.random()*4 };
+  });
+  function burst() {
+    var alive = false;
+    particles.forEach(function(p) {
+      if (p.life <= 0) return;
+      alive = true;
+      p.x += p.vx; p.y += p.vy;
+      p.life -= 0.025;
+      p.vx *= 0.97; p.vy *= 0.97;
+      ctx.globalAlpha = p.life;
+      ctx.fillStyle = '#E6B32A';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI*2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+    if (alive) requestAnimationFrame(burst);
+  }
+  burst();
+}
+
+/* ── WEB SPEECH — isiZulu voice ── */
+function speakIzibongo() {
+  if (!window.speechSynthesis || !vrPoemText) return;
+  window.speechSynthesis.cancel();
+  var utt = new SpeechSynthesisUtterance(vrPoemText.replace(/\[([^\]]+)\]/g, ''));
+  // Try to find a Zulu/South African voice
+  var voices = window.speechSynthesis.getVoices();
+  var zuluVoice = voices.find(function(v) {
+    return v.lang.indexOf('zu') !== -1 || v.lang.indexOf('af') !== -1 || v.lang.indexOf('en-ZA') !== -1;
+  });
+  if (zuluVoice) utt.voice = zuluVoice;
+  utt.rate = 0.82;
+  utt.pitch = 0.95;
+  utt.volume = 1;
+  window.speechSynthesis.speak(utt);
+}
+
+/* ── 4. LIVING BOOK READER ── */
+var vrBookPages = {};
+var vrBookCurrentPage = 0;
+var vrBookCurrentKey = '';
+
+// Book page content — extract from real book data
+var VR_BOOK_CONTENT = {
+  0: {
+    title: 'Kwasukasukela',
+    author: 'Dr Nomsa Sasa Mdlalose',
+    pages: [
+      '<strong>Foreword</strong><br><br>This book began not with a pen but with a fire.<br><br>I am the granddaughter of women who could not read. But they could <em>tell</em>. They could hold thirty people around a fire and make them laugh and weep and remember who they were.<br><br>That is the power I want to give back to you. Not as a relic. Not as a museum piece. But as a living, breathing, dangerous thing — a story that changes how you see the world.',
+      '<strong>Chapter 1: The Opening Formula</strong><br><br><em>Kwasukasukela...</em><br><br>Say it slowly. Feel the weight of it. This is not simply "once upon a time." It is a signal to the body, a command to the nervous system: <em>something true is about to happen.</em><br><br>In the oral tradition, the moment the storyteller opens their mouth with Kwasukasukela, the audience leans in. Children stop moving. Elders close their eyes. The fire crackles. The night holds its breath.',
+      '<strong>Chapter 1 continued</strong><br><br>What makes this opening so powerful? Three things.<br><br>First: it is <strong>shared</strong>. Everyone in the circle knows what it means. The opening formula creates an immediate community of listeners.<br><br>Second: it is <strong>ancient</strong>. When you say Kwasukasukela, you are linking yourself to every storyteller who has said it before you — back into a time before memory.<br><br>Third: it is a <strong>permission</strong>. It tells the audience: you are safe here. What follows is story. You may feel. You may be surprised. You will not be judged.',
+      '<strong>Chapter 2: The Storyteller\'s Body</strong><br><br>Before the first word, there is the body.<br><br>Stand still. This is harder than it sounds. The body wants to shift, fidget, step back. These are all fear responses — and the audience reads them instantly.<br><br>Plant your feet. Feel the earth. Breathe from your stomach, not your chest. This is the posture of someone who belongs here, who has something worth saying, who is not afraid of the silence before the story begins.',
+      '<strong>Closing Note</strong><br><br>I wrote this book for the storytellers who do not yet know they are storytellers.<br><br>For the teacher who brings a class to life with a story but has never called it storytelling. For the grandmother whose grandchildren listen to her even when they pretend not to. For the young professional who can hold a boardroom with a single anecdote.<br><br>You are already doing it. This book just gives you the language.<br><br><em>Ngiyabonga. The story lives.</em><br><br>— Dr Sasa'
+    ]
+  },
+  1: {
+    title: 'Ubuntu in the Classroom',
+    author: 'Dr Nomsa Sasa Mdlalose',
+    pages: [
+      '<strong>Introduction: Teaching as Storytelling</strong><br><br>Every great lesson is a story. Every great teacher is a storyteller.<br><br>This is not a metaphor. The research is clear: when information is embedded in narrative, retention increases by up to 22 times. The brain does not store facts — it stores <em>experiences</em>. And stories are experiences.<br><br>Ubuntu in the Classroom is a methodology, a philosophy, and a collection of strategies for educators who want to transform their teaching through the oldest technology in human history: the story.',
+      '<strong>Chapter 1: Ubuntu as Pedagogy</strong><br><br><em>Umuntu ngumuntu ngabantu.</em><br><br>A person is a person through other people.<br><br>This principle — Ubuntu — is not just a greeting. It is a complete theory of education. It says: learning is not a solo act. Knowledge does not pass from teacher to student in one direction. It is <strong>co-created</strong> in the space between people.<br><br>The Ubuntu classroom is circular, not hierarchical. Every student has something to teach. The story is the technology that makes this possible.',
+      '<strong>Chapter 2: The Storytelling Lesson Plan</strong><br><br>A storytelling lesson plan has four movements:<br><br><strong>1. The Opening (Ukuqala)</strong> — A question, an image, or a story that disrupts comfort and creates curiosity.<br><br><strong>2. The Journey (Uhambo)</strong> — The content, embedded in narrative. Characters face the problem. Students follow.<br><br><strong>3. The Turn (Ukuphenduka)</strong> — The moment of insight. The character — and the student — understands something new.<br><br><strong>4. The Return (Ukubuya)</strong> — Students bring the learning back to their own lives. The lesson becomes their story.'
+    ]
+  }
+};
+
+function openVRBook(i) {
+  var b = DR_SASA_BOOKS[i];
+  var content = VR_BOOK_CONTENT[i];
+
+  // If we have actual pages, open the reader
+  if (content && content.pages && content.pages.length > 0) {
+    vrBookCurrentKey = i;
+    vrBookCurrentPage = 0;
+    renderVRBookPage();
+    var reader = document.getElementById('vr-book-reader');
+    if (reader) reader.classList.add('open');
+    return;
+  }
+
+  // Fallback: show description in story tab
+  var body = document.getElementById('vr-story-body');
+  if(body) {
+    body.innerHTML = '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.4rem;margin-bottom:1rem">'
+      + '<div style="font-family:var(--serif);font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:.3rem">'+b.title+'</div>'
+      + '<div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.8rem">By '+b.author+'</div>'
+      + '<p style="font-size:.9rem;color:rgba(255,255,255,.6);line-height:1.9">'+b.desc+'</p>'
+      + '<p style="font-size:.8rem;color:rgba(255,255,255,.35);margin-top:1rem;line-height:1.7">Full digital editions available to <strong style="color:var(--acid)">Premium members</strong>.</p>'
+      + '<button onclick="showWorld(\'subscribe\')" style="background:var(--fire);border:none;color:#fff;font-family:var(--display);font-size:.55rem;letter-spacing:.08em;text-transform:uppercase;padding:.5rem 1.2rem;border-radius:6px;cursor:pointer;margin-top:.8rem">Get Premium Access →</button>'
+      + '</div>';
+    switchVRTab('story', document.querySelector('.vr-stab'));
+  }
+}
+
+function renderVRBookPage() {
+  var content = VR_BOOK_CONTENT[vrBookCurrentKey];
+  if (!content) return;
+  var page = content.pages[vrBookCurrentPage];
+  var titleEl   = document.getElementById('vr-book-reader-title');
+  var authorEl  = document.getElementById('vr-book-reader-author');
+  var textEl    = document.getElementById('vr-book-page-text');
+  var counterEl = document.getElementById('vr-page-counter');
+  var prevBtn   = document.getElementById('vr-page-prev');
+  var nextBtn   = document.getElementById('vr-page-next');
+  if (titleEl)   titleEl.textContent  = content.title;
+  if (authorEl)  authorEl.textContent = 'By ' + content.author;
+  if (textEl)    textEl.innerHTML     = page;
+  if (counterEl) counterEl.textContent = 'Page ' + (vrBookCurrentPage+1) + ' of ' + content.pages.length;
+  if (prevBtn)   prevBtn.disabled     = vrBookCurrentPage === 0;
+  if (nextBtn)   nextBtn.disabled     = vrBookCurrentPage === content.pages.length - 1;
+}
+
+function vrBookPage(dir) {
+  var content = VR_BOOK_CONTENT[vrBookCurrentKey];
+  if (!content) return;
+  vrBookCurrentPage = Math.max(0, Math.min(content.pages.length-1, vrBookCurrentPage + dir));
+  renderVRBookPage();
+  // Tilt canvas slightly on page turn
+  var wrap = document.getElementById('vr-book-reader-inner');
+  if (wrap) {
+    wrap.style.transform = dir > 0 ? 'translateX(-8px)' : 'translateX(8px)';
+    wrap.style.transition = 'transform .12s';
+    setTimeout(function(){
+      wrap.style.transform = 'translateX(0)';
+    }, 120);
+  }
+}
+
+function closeVRBookReader() {
+  var reader = document.getElementById('vr-book-reader');
+  if (reader) reader.classList.remove('open');
+}
+
+/* ── 5. COMMUNITY VOICES ── */
+var vrMediaRecorder = null;
+var vrAudioChunks   = [];
+var vrIsRecording   = false;
+
+function toggleCommunityRecording() {
+  var btn = document.getElementById('vr-record-btn');
+  if (!vrIsRecording) {
+    // Start recording
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      alert('Recording requires a browser that supports microphone access (Chrome, Safari, Firefox).');
+      return;
+    }
+    navigator.mediaDevices.getUserMedia({ audio: true })
+      .then(function(stream) {
+        vrMediaRecorder = new MediaRecorder(stream);
+        vrAudioChunks   = [];
+        vrMediaRecorder.ondataavailable = function(e) {
+          if (e.data.size > 0) vrAudioChunks.push(e.data);
+        };
+        vrMediaRecorder.onstop = function() {
+          var blob = new Blob(vrAudioChunks, { type: 'audio/webm' });
+          addCommunityVoiceCard(blob);
+          stream.getTracks().forEach(function(t) { t.stop(); });
+        };
+        vrMediaRecorder.start();
+        vrIsRecording = true;
+        if(btn){ btn.textContent='⏹ Stop Recording'; btn.classList.add('recording'); }
+      })
+      .catch(function() {
+        alert('Microphone access denied. Please allow microphone access and try again.');
+      });
+  } else {
+    // Stop recording
+    if (vrMediaRecorder && vrMediaRecorder.state !== 'inactive') {
+      vrMediaRecorder.stop();
+    }
+    vrIsRecording = false;
+    if(btn){ btn.textContent='🎙 Record Your Story'; btn.classList.remove('recording'); }
+  }
+}
+
+function addCommunityVoiceCard(blob) {
+  var url    = URL.createObjectURL(blob);
+  var feed   = document.getElementById('vr-community-feeds');
+  if (!feed) return;
+  var name   = (document.getElementById('vr-name-input') || {}).value || 'A Zintsomi Storyteller';
+  var card   = document.createElement('div');
+  card.className = 'vr-voice-card';
+  card.style.borderColor = 'rgba(200,240,74,.3)';
+  card.innerHTML = '<div class="vr-voice-avatar" style="background:var(--acid);color:#000">✓</div>'
+    + '<div class="vr-voice-meta">'
+    + '<div class="vr-voice-name">' + name + ' — just recorded</div>'
+    + '<div class="vr-voice-lang">Your voice · Just now</div>'
+    + '</div>'
+    + '<div class="vr-voice-play">▶</div>';
+  var audio = new Audio(url);
+  card.onclick = function() { audio.play(); };
+  feed.insertBefore(card, feed.firstChild);
+}
+
+function playCommunityVoice(idx) {
+  // Seed voices — play a synthesized placeholder
+  var texts = [
+    'Kwasukasukela. Ngibingelela nonke. I am Nandi from Durban. My grandmother told me this story when I was seven years old...',
+    'Sanibonani. My name is Sipho. I want to share the story of how my grandfather crossed the Drakensberg on foot...',
+    'Dumela. I am Thabo. This is a story my mother told me, in Sesotho, about the first rain of the season...'
+  ];
+  if (window.speechSynthesis && texts[idx]) {
+    window.speechSynthesis.cancel();
+    var utt = new SpeechSynthesisUtterance(texts[idx]);
+    utt.rate = 0.88; utt.pitch = 1;
+    var voices = window.speechSynthesis.getVoices();
+    var saVoice = voices.find(function(v){ return v.lang.indexOf('en-ZA') !== -1 || v.lang.indexOf('zu') !== -1; });
+    if (saVoice) utt.voice = saVoice;
+    window.speechSynthesis.speak(utt);
+  }
+}
+
+/* ── 6. INIT ALL FEATURES ON VR OPEN ── */
+var vrFeaturesInited = false;
+function initVRFeatures() {
+  if (vrFeaturesInited) return;
+  vrFeaturesInited = true;
+  initSpatialAudio();
+  initVRGyroscope();
+  // Load speech voices
+  if (window.speechSynthesis) {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = function() {
+      window.speechSynthesis.getVoices();
+    };
+  }
+}
+
+// Patch openVRStory to init features
+var _origOpenVRStory = openVRStory;
+openVRStory = function(idx) {
+  _origOpenVRStory(idx);
+  initVRFeatures();
+};
 
 </script>
 </body>
