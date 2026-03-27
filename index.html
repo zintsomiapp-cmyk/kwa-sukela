@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function(){
   var cur = document.getElementById('cursor');
   var ring = document.getElementById('cursor-ring');
   if(!cur || !ring) return;
+  document.addEventListener('mousemove', function showCursor(){ cur.style.display='block'; ring.style.display='block'; document.removeEventListener('mousemove', showCursor); }, {once:true});
   var mx=window.innerWidth/2, my=window.innerHeight/2, rx=mx, ry=my;
 
   // Cursor color themes based on active world/section
@@ -171,7 +172,7 @@ body{
 
 /* ═══ CUSTOM CURSOR ═══ */
 #cursor{
-  position:fixed;z-index:99999;pointer-events:none;
+  position:fixed;display:none;z-index:99999;pointer-events:none;
   width:10px;height:10px;border-radius:50%;
   background:#fff;
   box-shadow:0 0 0 2px rgba(245,118,26,.8), 0 0 16px 6px rgba(245,118,26,.5), 0 0 36px 14px rgba(245,118,26,.18);
@@ -180,7 +181,7 @@ body{
   mix-blend-mode:screen;
 }
 #cursor-ring{
-  position:fixed;z-index:99998;pointer-events:none;
+  position:fixed;display:none;z-index:99998;pointer-events:none;
   width:40px;height:40px;border-radius:50%;
   border:1.5px solid rgba(245,118,26,.55);
   background:rgba(245,118,26,.03);
@@ -371,6 +372,8 @@ nav{
 }
 .back-home-btn:hover{background:var(--fire);color:#fff;border-color:var(--fire);box-shadow:0 4px 20px rgba(245,118,26,.35)}
 .back-home-btn.visible{opacity:1;pointer-events:auto;transform:translateY(0)}
+.back-intro-btn{position:fixed;bottom:1.8rem;left:8.5rem;z-index:801;width:40px;height:40px;border-radius:50%;background:rgba(14,16,22,.92);backdrop-filter:blur(16px);border:1.5px solid rgba(245,118,26,.35);color:var(--fire);font-size:1rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;opacity:1;pointer-events:auto;}
+.back-intro-btn:hover{background:rgba(245,118,26,.2);color:var(--fire);border-color:var(--fire);opacity:1}
 
 
 /* ═══ SUDOKU ═══ */
@@ -578,13 +581,15 @@ nav{
   color:#F5C060;
   padding-left:0;
   font-family:var(--serif);
-  font-size:clamp(2rem,4.2vw,5rem);
+  font-size:clamp(4rem,9vw,10rem);
   font-style:italic;
   font-weight:400;
   letter-spacing:.03em;
-  line-height:1.1;
+  line-height:1.05;
   margin-top:.4rem;
   text-shadow:0 0 60px rgba(245,160,48,.5);
+  display:block;
+  text-transform:none;
 }
 /* Bottom-left tagline like reference */
 .home-hero-tagline{
@@ -2349,29 +2354,13 @@ body::after{
 }
 .bp-yt-thumb:hover .bp-yt-play { transform: scale(1.1); }
 
-/* ── NEDFLY (future integration placeholder) ── */
-.nedfly-banner {
-  background: linear-gradient(135deg, rgba(123,79,208,.06), rgba(14,16,22,.95));
-  border: 1px solid rgba(123,79,208,.2);
-  border-radius: 12px; padding: 1.2rem 1.5rem;
-  display: flex; align-items: center; gap: 1.2rem;
-  margin: 1.5rem 0;
-}
-.nedfly-icon { font-size: 2rem; flex-shrink: 0; }
-.nedfly-text { flex: 1; }
-.nedfly-title {
-  font-family: var(--display); font-size: .78rem; font-weight: 700; color: #fff;
-  margin-bottom: .2rem;
-}
-.nedfly-sub {
-  font-family: var(--body); font-size: .74rem; color: rgba(255,255,255,.38); line-height: 1.55;
-}
-.nedfly-badge {
-  font-family: var(--mono); font-size: .36rem; letter-spacing: .14em; text-transform: uppercase;
-  background: rgba(123,79,208,.2); color: #B088E8;
-  border: 1px solid rgba(123,79,208,.3); border-radius: 3px;
-  padding: .22rem .6rem; white-space: nowrap;
-}
+
+
+
+
+
+
+
 
 /* ── TRENDING TOPICS (blog sidebar-style strip) ── */
 .blog-trending {
@@ -2835,6 +2824,194 @@ body::after{
 }
 .vr-book-close:hover{background:rgba(255,80,80,.2);color:#ff8888}
 
+
+/* ═══ ADMIN WORLD ═══ */
+.admin-hero{background:linear-gradient(135deg,#0A0000,#1A0500,#0A0A00);
+  padding:3rem 2rem 2rem;border-bottom:1px solid rgba(255,107,107,.15)}
+.admin-grid{display:grid;grid-template-columns:240px 1fr;min-height:80vh}
+.admin-sidebar{background:rgba(0,0,0,.4);border-right:1px solid rgba(255,255,255,.07);
+  padding:1.5rem 0}
+.admin-menu-item{display:flex;align-items:center;gap:.8rem;
+  padding:.75rem 1.5rem;cursor:pointer;transition:all .18s;
+  font-family:var(--display);font-size:.65rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.45);
+  border-left:3px solid transparent}
+.admin-menu-item:hover{color:#fff;background:rgba(255,255,255,.05)}
+.admin-menu-item.active{color:#ff6b6b;border-left-color:#ff6b6b;
+  background:rgba(255,107,107,.08)}
+.admin-menu-item i{font-size:1rem;width:20px;text-align:center}
+.admin-panel{display:none;padding:2rem}
+.admin-panel.active{display:block}
+.admin-section-title{font-family:var(--impact);font-size:1.4rem;
+  letter-spacing:.06em;color:#fff;margin-bottom:.3rem;text-transform:uppercase}
+.admin-section-sub{font-size:.8rem;color:rgba(255,255,255,.35);
+  margin-bottom:1.8rem;line-height:1.6}
+/* Admin cards */
+.admin-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:1.4rem;margin-bottom:1.2rem}
+.admin-card-title{font-family:var(--display);font-size:.75rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;color:#ff6b6b;margin-bottom:1rem;
+  display:flex;align-items:center;gap:.5rem}
+/* Admin inputs */
+.admin-input{width:100%;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);border-radius:8px;
+  padding:.65rem 1rem;color:#fff;font-family:var(--body);font-size:.88rem;
+  outline:none;box-sizing:border-box;margin-bottom:.7rem;transition:border-color .2s}
+.admin-input:focus{border-color:#ff6b6b;background:rgba(255,107,107,.06)}
+.admin-input::placeholder{color:rgba(255,255,255,.2)}
+.admin-textarea{min-height:120px;resize:vertical;font-family:var(--body)}
+.admin-btn{background:#ff6b6b;border:none;color:#fff;font-family:var(--display);
+  font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:.65rem 1.5rem;border-radius:8px;cursor:pointer;transition:all .2s;
+  margin-right:.5rem}
+.admin-btn:hover{background:#ff5252;transform:translateY(-1px)}
+.admin-btn.secondary{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);
+  border:1px solid rgba(255,255,255,.12)}
+.admin-btn.secondary:hover{background:rgba(255,255,255,.14)}
+.admin-btn.success{background:#4caf50}
+.admin-btn.danger{background:rgba(255,60,60,.2);color:#ff6b6b;
+  border:1px solid rgba(255,107,107,.3)}
+/* YouTube list */
+.yt-admin-item{display:flex;align-items:center;gap:1rem;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;padding:.8rem 1rem;margin-bottom:.6rem}
+.yt-admin-thumb{width:80px;height:45px;border-radius:6px;
+  background:#111;flex-shrink:0;overflow:hidden}
+.yt-admin-thumb img{width:100%;height:100%;object-fit:cover}
+.yt-admin-info{flex:1}
+.yt-admin-title{font-family:var(--display);font-size:.72rem;font-weight:700;
+  color:#fff;letter-spacing:.04em}
+.yt-admin-id{font-family:var(--mono);font-size:.48rem;color:rgba(255,255,255,.3);
+  margin-top:.2rem;letter-spacing:.1em}
+.yt-admin-actions{display:flex;gap:.4rem;flex-shrink:0}
+/* Books list */
+.book-admin-item{display:flex;align-items:center;gap:1rem;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;padding:.8rem 1rem;margin-bottom:.6rem}
+.book-admin-cover{width:50px;height:70px;border-radius:4px;
+  flex-shrink:0;display:grid;place-items:center;font-size:1.2rem}
+.book-admin-info{flex:1}
+.book-admin-title{font-family:var(--display);font-size:.72rem;font-weight:700;color:#fff}
+.book-admin-price{font-family:var(--mono);font-size:.5rem;color:var(--gold);margin-top:.2rem}
+/* Stats row */
+.admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+.admin-stat{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;padding:1.2rem;text-align:center}
+.admin-stat-num{font-family:var(--impact);font-size:2rem;color:#ff6b6b;letter-spacing:.04em}
+.admin-stat-lbl{font-family:var(--mono);font-size:.46rem;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:.3rem}
+/* Thoughts editor */
+.thought-preview{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;padding:1rem;margin-top:.8rem;
+  font-family:var(--serif);font-size:.9rem;color:rgba(255,255,255,.65);
+  line-height:1.9;min-height:60px}
+/* Shop item */
+.shop-item-admin{display:flex;gap:1rem;align-items:center;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;padding:.8rem 1rem;margin-bottom:.6rem}
+.shop-price-badge{background:var(--gold);color:#000;font-family:var(--display);
+  font-size:.55rem;font-weight:700;letter-spacing:.06em;
+  padding:.2rem .55rem;border-radius:6px;flex-shrink:0}
+/* Success toast */
+.admin-toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;
+  background:#4caf50;color:#fff;font-family:var(--display);
+  font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  padding:.75rem 1.5rem;border-radius:10px;
+  transform:translateY(100px);opacity:0;transition:all .3s;
+  box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.admin-toast.show{transform:translateY(0);opacity:1}
+@media(max-width:700px){
+  .admin-grid{grid-template-columns:1fr}
+  .admin-sidebar{border-right:none;border-bottom:1px solid rgba(255,255,255,.07)}
+  .admin-stats{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ── VR PAYWALL ── */
+#vr-paywall{
+  position:fixed;inset:0;z-index:8000;
+  background:rgba(0,3,0,.92);backdrop-filter:blur(20px);
+  display:none;align-items:center;justify-content:center;padding:1.5rem;
+}
+#vr-paywall.open{display:flex}
+.vr-pw-inner{
+  background:linear-gradient(135deg,#020A00,#0A1A05,#050E02);
+  border:1px solid rgba(200,240,74,.2);border-radius:20px;
+  width:100%;max-width:480px;overflow:hidden;
+  box-shadow:0 0 80px rgba(200,240,74,.08);
+}
+.vr-pw-hero{
+  background:linear-gradient(135deg,#010500,#0A2000);
+  padding:2rem 2rem 1.5rem;text-align:center;
+  border-bottom:1px solid rgba(200,240,74,.12);
+}
+.vr-pw-icon{font-size:3rem;margin-bottom:.8rem;display:block}
+.vr-pw-title{
+  font-family:var(--impact);font-size:2rem;letter-spacing:.08em;
+  color:#fff;text-transform:uppercase;line-height:.9;margin-bottom:.4rem;
+}
+.vr-pw-title em{color:var(--acid);font-style:normal}
+.vr-pw-sub{font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.7}
+.vr-pw-plans{padding:1.5rem}
+.vr-pw-plan{
+  border:1.5px solid rgba(200,240,74,.2);border-radius:12px;
+  padding:1.1rem 1.3rem;margin-bottom:.8rem;cursor:pointer;
+  transition:all .22s;position:relative;overflow:hidden;
+  background:rgba(200,240,74,.04);
+}
+.vr-pw-plan:hover,.vr-pw-plan.selected{
+  border-color:var(--acid);background:rgba(200,240,74,.1);
+  box-shadow:0 0 24px rgba(200,240,74,.15);
+}
+.vr-pw-plan.popular{border-color:var(--fire);background:rgba(245,118,26,.06)}
+.vr-pw-plan.popular:hover,.vr-pw-plan.popular.selected{
+  background:rgba(245,118,26,.15);box-shadow:0 0 24px rgba(245,118,26,.2);
+}
+.vr-popular-tag{
+  position:absolute;top:.6rem;right:.7rem;
+  background:var(--fire);color:#fff;
+  font-family:var(--display);font-size:.44rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:.15rem .5rem;border-radius:100px;
+}
+.vr-pw-plan-name{
+  font-family:var(--display);font-size:.7rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  color:rgba(255,255,255,.6);margin-bottom:.2rem;
+}
+.vr-pw-plan-price{
+  font-family:var(--impact);font-size:2rem;letter-spacing:.04em;
+  color:#fff;line-height:1;
+}
+.vr-pw-plan-price span{
+  font-family:var(--body);font-size:.78rem;color:rgba(255,255,255,.45);
+  font-weight:400;
+}
+.vr-pw-plan-desc{
+  font-size:.76rem;color:rgba(255,255,255,.4);margin-top:.3rem;line-height:1.6;
+}
+.vr-pw-cta{
+  width:100%;background:var(--acid);border:none;color:#050A00;
+  font-family:var(--display);font-size:.68rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:.85rem;border-radius:8px;cursor:pointer;
+  transition:all .22s;margin-top:.4rem;
+}
+.vr-pw-cta:hover{background:#fff;transform:translateY(-1px)}
+.vr-pw-close{
+  width:100%;background:none;border:none;color:rgba(255,255,255,.25);
+  font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;
+  text-transform:uppercase;padding:.6rem;cursor:pointer;margin-top:.3rem;
+  transition:color .2s;
+}
+.vr-pw-close:hover{color:rgba(255,255,255,.5)}
+/* Timer badge on VR world */
+.vr-access-badge{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:rgba(200,240,74,.1);border:1px solid rgba(200,240,74,.25);
+  border-radius:100px;padding:.3rem .9rem;
+  font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--acid);margin-top:1rem;
+}
 </style>
 </head>
 <body>
@@ -2845,7 +3022,7 @@ body::after{
 <div id="intro">
   <canvas id="intro-canvas"></canvas>
   <div id="intro-logo">
-    <h1 style="font-weight:900;line-height:.88;letter-spacing:.03em;width:100%"><span style="display:block;color:var(--fire);font-weight:900;font-size:clamp(3.5rem,18vw,18rem);letter-spacing:.08em;line-height:.9;white-space:nowrap">ZINTSOMI</span><span style="display:block;font-size:clamp(1.5rem,10.5vw,11rem);letter-spacing:.08em;color:#fff;line-height:.9;white-space:nowrap">STORYTELLING</span><span style="display:block;color:rgba(255,255,255,.55);font-weight:300;font-size:clamp(.75rem,3vw,3rem);letter-spacing:.28em;margin-top:.4em;white-space:nowrap">COLLEGE</span></h1>
+    <h1 style="font-weight:900;line-height:.88;letter-spacing:.03em;width:100%"><span style="display:block;color:var(--fire);font-weight:900;font-size:clamp(3.5rem,18vw,18rem);letter-spacing:.08em;line-height:.9;white-space:nowrap">ZINTSOMI</span><span style="display:block;font-size:clamp(1.5rem,10.5vw,11rem);letter-spacing:.08em;color:#fff;line-height:.9;white-space:nowrap">STORYTELLING</span><span style="display:block;color:var(--fire);font-weight:900;font-size:clamp(1.2rem,5vw,5.5rem);letter-spacing:.28em;margin-top:.3em;white-space:nowrap">COLLEGE</span></h1>
     <p>Africa's Storytelling World · 2026</p>
   </div>
   <button id="skip-btn">Skip Intro</button>
@@ -2854,13 +3031,14 @@ body::after{
 <div id="site">
 
 <button class="back-home-btn" id="back-home-btn" onclick="showWorld('home')"><i class="ph ph-arrow-left"></i> Home</button>
+<button class="back-intro-btn" id="back-intro-btn" onclick="replayIntro()" title="Replay intro animation"><i class="ph ph-arrow-counter-clockwise"></i></button>
 
   <nav>
     <div class="nstrip"></div>
     <div class="nav-w">
       <div class="nav-logo-wrap"><span class="logo" onclick="showWorld('home')">ZINTSOMI <em>·</em> SC</span></div>
       <div class="nav-pills">
-        <button class="npill active" onclick="showWorld('home')"><i class="ph ph-house"></i> Home</button>
+        <button class="npill active" onclick="showWorld('home')" title="Home"><i class="ph ph-house"></i></button>
         <button class="npill" onclick="showWorld('vrvillage')" style="color:var(--acid);border-color:rgba(200,240,74,.3)" id="pill-vrvillage"><i class="ph ph-eyeglasses"></i> VR Village</button>
         <button class="npill" onclick="showWorld('games')"><i class="ph ph-game-controller"></i> Games</button>
         <button class="npill" onclick="showWorld('instruments')"><i class="ph ph-music-notes"></i> Studio</button>
@@ -2872,6 +3050,7 @@ body::after{
         <button class="npill blog-pill" onclick="showWorld('blog')"><i class="ph ph-pencil-line"></i> Dr Sasa</button>
         <button class="npill" onclick="showWorld('youtube')" style="color:#FF4444;border-color:rgba(255,68,68,.3)" id="pill-youtube"><i class="ph ph-youtube-logo"></i> YouTube</button>
         <button class="npill" onclick="showWorld('subscribe')" style="color:#B088E8;border-color:rgba(123,79,208,.3)" id="pill-subscribe"><i class="ph ph-star"></i> Subscribe</button>
+        <button class="npill" onclick="showWorld('admin')" style="color:#ff6b6b;border-color:rgba(255,107,107,.35);display:none" id="pill-admin"><i class="ph ph-shield-star"></i> Admin</button>
       </div>
       <div class="nav-auth-wrap">
         <span id="auth-nav-name" style="font-family:var(--mono);font-size:.54rem;letter-spacing:.05em;color:rgba(255,255,255,.35);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
@@ -3049,7 +3228,7 @@ body::after{
       <!-- Non-admin viewer notice (shown to everyone else) -->
       <div class="blog-viewer-notice" id="blog-viewer-notice" style="display:none">
         <span style="font-size:1.4rem"><i class="ph ph-pencil-line"></i></span>
-        <span>You're reading <em>Dr Sasa's</em> feed. Log in to like and comment. Only Dr Sasa can post here.</span>
+        <span>You're reading <em>Dr Sasa\'s</em> feed. Log in to like and comment. Only Dr Sasa can post here.</span>
       </div>
 
       <!-- FEED POSTS -->
@@ -3302,7 +3481,7 @@ body::after{
         <div style="font-size:2rem;margin-bottom:.8rem;color:rgba(255,255,255,.25)"><i class="ph ph-film-strip"></i></div>
         <div style="font-family:var(--impact);font-size:1.4rem;color:#fff;letter-spacing:.1em;margin-bottom:.5rem">REELS COMING SOON</div>
         <div style="font-family:var(--body);font-size:.84rem;color:rgba(255,255,255,.35);line-height:1.7">
-          Dr Sasa's video lessons, story clips and behind-the-scenes will live here.
+          Dr Sasa\'s video lessons, story clips and behind-the-scenes will live here.
         </div>
       </div>
     </div>
@@ -3313,7 +3492,7 @@ body::after{
         <div style="font-size:2.5rem;margin-bottom:.8rem">◎</div>
         <div style="font-family:var(--impact);font-size:1.4rem;color:#fff;letter-spacing:.1em;margin-bottom:.5rem">24H STORIES</div>
         <div style="font-family:var(--body);font-size:.84rem;color:rgba(255,255,255,.35);line-height:1.7">
-          Quick thoughts, inspirations and behind-the-scenes from Dr Sasa's day.
+          Quick thoughts, inspirations and behind-the-scenes from Dr Sasa\'s day.
         </div>
       </div>
     </div>
@@ -3411,16 +3590,7 @@ body::after{
       </div>
     </div>
 
-    <div class="ctr" style="padding-bottom:3rem">
-      <div class="nedfly-banner">
-        <div class="nedfly-icon"><i class="ph ph-rocket"></i></div>
-        <div class="nedfly-text">
-          <div class="nedfly-title">Nedfly Integration — Coming Soon</div>
-          <div class="nedfly-sub">Your course completions and watch history will sync with Nedfly for verified micro-credentials and digital badges.</div>
-        </div>
-        <div class="nedfly-badge">Coming Soon</div>
-      </div>
-    </div>
+
 
   </div><!-- /youtube-world -->
 
@@ -3443,105 +3613,134 @@ body::after{
        SUBSCRIBE WORLD
   ══════════════════════════════════════════════ -->
   <div class="world" id="subscribe-world">
-    <div class="sec" style="padding-top:4rem">
-      <div class="ctr">
-        <div style="text-align:center;margin-bottom:3.5rem">
-          <div class="sec-lbl" style="justify-content:center"><span>Memberships</span></div>
-          <div class="sec-title" style="text-align:center">Choose Your <em>Journey</em></div>
-          <div class="sec-sub" style="margin:0 auto;text-align:center;max-width:540px">Every plan gives you access to the village. What changes is how deep you go. Pay in Rands. Cancel any time.</div>
-        </div>
-        <div class="plans-grid">
-          <!-- FREE -->
-          <div class="plan-card">
-            <div class="plan-name">Explorer</div>
-            <div class="plan-price"><span class="plan-currency">R</span><span class="plan-amount">0</span><span class="plan-period">/ forever</span></div>
-            <div class="plan-desc">Start your storytelling journey. Access the games, archive, village and ancestor tree — free, always.</div>
-            <div class="plan-features">
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Full Village &amp; Games access</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Ancestor Tree — add your leaf</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Audio Archive preview</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Dr Sasa Blog — read &amp; comment</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Brain Teasers (5/day)</div>
-              <div class="pf-item locked"><span class="pf-check"><i class="ph ph-lock-simple"></i></span> Full Courses access</div>
-              <div class="pf-item locked"><span class="pf-check"><i class="ph ph-lock-simple"></i></span> Certificate of Completion</div>
-              <div class="pf-item locked"><span class="pf-check"><i class="ph ph-lock-simple"></i></span> Schools Hub full notes</div>
+    <div style="background:linear-gradient(180deg,#040812 0%,#0A0F1A 100%);min-height:100vh">
+
+      <!-- Hero -->
+      <div style="text-align:center;padding:4rem 2rem 2rem">
+        <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--fire);margin-bottom:.6rem">Access & Pricing</div>
+        <h1 style="font-family:var(--impact);font-size:clamp(2.5rem,6vw,6rem);color:#fff;letter-spacing:.06em;line-height:.88;margin-bottom:.8rem">CHOOSE YOUR<br><span style="color:var(--fire)">JOURNEY</span></h1>
+        <p style="font-size:.92rem;color:rgba(255,255,255,.4);max-width:500px;margin:0 auto;line-height:1.9">Each course and the VR Village is sold separately. Buy what you need, when you need it.</p>
+      </div>
+
+      <div class="ctr" style="padding-bottom:4rem">
+
+        <!-- VR ACCESS PLANS -->
+        <div style="margin-bottom:3rem">
+          <div style="font-family:var(--impact);font-size:1.4rem;letter-spacing:.08em;color:var(--acid);text-transform:uppercase;margin-bottom:.4rem">🥽 VR Story Village</div>
+          <div style="font-size:.82rem;color:rgba(255,255,255,.35);margin-bottom:1.5rem">Time-limited immersive access — 8 story pods in 6 African languages</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+            <div style="background:rgba(200,240,74,.06);border:1.5px solid rgba(200,240,74,.2);border-radius:16px;padding:1.8rem;text-align:center">
+              <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--acid);margin-bottom:.8rem">6-Month Access</div>
+              <div style="font-family:var(--impact);font-size:3rem;color:#fff;letter-spacing:.04em;line-height:1">R650</div>
+              <div style="font-size:.75rem;color:rgba(255,255,255,.35);margin:.3rem 0 1.2rem">6 months · all story pods</div>
+              <button onclick="selectVRPlan('sixmonth');purchaseVRAccess()" style="width:100%;background:rgba(200,240,74,.15);border:1.5px solid var(--acid);color:var(--acid);font-family:var(--display);font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.75rem;border-radius:8px;cursor:pointer;transition:all .2s" onmouseover="this.style.background='var(--acid)';this.style.color='#000'" onmouseout="this.style.background='rgba(200,240,74,.15)';this.style.color='var(--acid)'">Get 6-Month Access</button>
             </div>
-            <button class="plan-cta plan-cta-free" onclick="selectPlan('explorer')">Start Free →</button>
-            <div class="plan-note">No card required</div>
-          </div>
-          <!-- CORE -->
-          <div class="plan-card featured">
-            <div class="plan-name">Basic</div>
-            <div class="plan-price"><span class="plan-currency">R</span><span class="plan-amount">105</span><span class="plan-period">/ month</span></div>
-            <div class="plan-desc">For learners and teachers ready to go deeper. Full course access plus tools to record, share, and earn your certificate.</div>
-            <div class="plan-features">
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Everything in Explorer</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> All Storytelling Courses</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Certificate of Completion</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Schools Hub — full notes + quizzes</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Recording Studio + export</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Unlimited Brain Teasers</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Community Wall — post &amp; share</div>
-              <div class="pf-item locked"><span class="pf-check"><i class="ph ph-lock-simple"></i></span> 1-on-1 Dr Sasa sessions</div>
-            </div>
-            <button class="plan-cta plan-cta-core" onclick="selectPlan('basic')">Start Free Trial →</button>
-            <div class="plan-note">Then R105/month · Cancel anytime</div>
-          </div>
-          <!-- PRO -->
-          <div class="plan-card">
-            <div class="plan-name">Premium</div>
-            <div class="plan-price"><span class="plan-currency">R</span><span class="plan-amount">200</span><span class="plan-period">/ month</span></div>
-            <div class="plan-desc">For professionals and institutions who want the full Zintsomi experience — coaching, credentials and more.</div>
-            <div class="plan-features">
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Everything in Storyteller</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Monthly Dr Sasa live session</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> 1-on-1 coaching (1hr/month)</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Nedfly digital credential badge</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Early access to new courses</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Institutional licence (up to 10)</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Priority WhatsApp support</div>
-              <div class="pf-item"><span class="pf-check"><i class="ph ph-check"></i></span> Branded org certificate</div>
-            </div>
-            <button class="plan-cta plan-cta-pro" onclick="selectPlan('premium')">Go Premium →</button>
-            <div class="plan-note">R200/month · Billed monthly</div>
-          </div>
-        </div>
-        <div class="stripe-badges">
-          <div class="stripe-badge"><i class="ph ph-lock-simple"></i> SSL Secured</div>
-          <div class="stripe-badge"><i class="ph ph-credit-card"></i> Card &amp; EFT accepted</div>
-          <div class="stripe-badge">↩ Cancel anytime</div>
-          <div class="stripe-badge">🇿🇦 Priced in Rands</div>
-          <div class="stripe-badge"><i class="ph ph-envelope"></i> Invoice provided</div>
-        </div>
-        <div class="plans-faq">
-          <div class="sec-lbl" style="justify-content:center;margin:2.5rem 0 1.2rem"><span>Common Questions</span></div>
-          <div class="pfaq-item"><div class="pfaq-q" onclick="toggleFaq(this)">Do I need a card for the free plan?</div><div class="pfaq-a">No. The Explorer plan is completely free with no payment details required.</div></div>
-          <div class="pfaq-item"><div class="pfaq-q" onclick="toggleFaq(this)">Can I cancel anytime?</div><div class="pfaq-a">Yes. Cancel anytime from your account. You keep access until the end of your billing period.</div></div>
-          <div class="pfaq-item"><div class="pfaq-q" onclick="toggleFaq(this)">Are certificates recognised?</div><div class="pfaq-a">Zintsomi certificates are institutional. Mythopreneur completions sync with Nedfly for verified digital credentials.</div></div>
-          <div class="pfaq-item"><div class="pfaq-q" onclick="toggleFaq(this)">Discounts for schools or groups?</div><div class="pfaq-a">Yes — Mythopreneur includes up to 10 licences. For larger groups email <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7d15181111123d071413090e1210141e12080f0e180e531e1253071c">[email&#160;protected]</a></div></div>
-        </div>
-        <!-- PAYFAST SETUP NOTICE (remove after going live) -->
-        <div style="background:rgba(245,118,26,.06);border:1px dashed rgba(245,118,26,.3);border-radius:10px;padding:1.4rem 1.6rem;margin-top:2rem;display:flex;gap:1rem;align-items:flex-start">
-          <div style="font-size:1.5rem;flex-shrink:0;color:var(--fire)"><i class="ph ph-warning"></i></div>
-          <div>
-            <div style="font-family:var(--display);font-size:.7rem;font-weight:700;color:#fff;margin-bottom:.3rem">PayFast Setup Required</div>
-            <div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.05em;color:rgba(255,255,255,.45);line-height:1.8">
-              1. Create a free merchant account at <strong style="color:var(--fire)">payfast.co.za</strong><br>
-              2. Copy your <strong style="color:#fff">Merchant ID</strong> and <strong style="color:#fff">Merchant Key</strong> from your dashboard<br>
-              3. Paste them into <code style="color:var(--fire)">PAYFAST_CONFIG</code> in the site JS<br>
-              4. Set <code style="color:var(--fire)">sandbox: false</code> to go live<br>
-              5. Set your <strong style="color:#fff">notify_url</strong> to a webhook that updates Supabase when payment confirms
+            <div style="background:rgba(245,118,26,.06);border:1.5px solid rgba(245,118,26,.3);border-radius:16px;padding:1.8rem;text-align:center;position:relative">
+              <div style="position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--fire);color:#fff;font-family:var(--display);font-size:.44rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .8rem;border-radius:0 0 8px 8px">Best Value</div>
+              <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fire);margin-bottom:.8rem;margin-top:.6rem">Annual Access</div>
+              <div style="font-family:var(--impact);font-size:3rem;color:#fff;letter-spacing:.04em;line-height:1">R1,100</div>
+              <div style="font-size:.75rem;color:rgba(255,255,255,.35);margin:.3rem 0 1.2rem">12 months · save R200 · all future stories</div>
+              <button onclick="selectVRPlan('annual');purchaseVRAccess()" style="width:100%;background:var(--fire);border:none;color:#fff;font-family:var(--display);font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.75rem;border-radius:8px;cursor:pointer;transition:all .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Get Annual Access</button>
             </div>
           </div>
         </div>
-        <div class="nedfly-banner" style="margin-top:1.5rem">
-          <div class="nedfly-icon"><i class="ph ph-flying-saucer"></i></div>
-          <div class="nedfly-text">
-            <div class="nedfly-title">Nedfly Credentials — Launching with Mythopreneur</div>
-            <div class="nedfly-sub">Earn verified, portable digital credentials for every course — recognised by employers and institutions.</div>
+
+        <!-- COURSE PRICING -->
+        <div>
+          <div style="font-family:var(--impact);font-size:1.4rem;letter-spacing:.08em;color:var(--gold);text-transform:uppercase;margin-bottom:.4rem">📚 Individual Courses</div>
+          <div style="font-size:.82rem;color:rgba(255,255,255,.35);margin-bottom:1.5rem">Buy any course once — lifetime access, certificate on completion</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem">
+            <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+              <div>
+                <div style="font-size:1.4rem;margin-bottom:.5rem">⚖️</div>
+                <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Storytelling in the Legal Field</div>
+                <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">4 modules · Courtroom narrative · Client communication · Community legal contexts</div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
+                <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
+                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(29)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+              </div>
+            </div>
+            <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+              <div>
+                <div style="font-size:1.4rem;margin-bottom:.5rem">💼</div>
+                <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Storytelling in Business</div>
+                <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">3 modules · Branding · Marketing · Strategic engagement</div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
+                <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
+                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(0)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+              </div>
+            </div>
+            <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+              <div>
+                <div style="font-size:1.4rem;margin-bottom:.5rem">🎓</div>
+                <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Storytelling in the Classroom</div>
+                <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">4 modules · Critical thinking · Mathematics · Communication</div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
+                <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
+                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(4)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+              </div>
+            </div>
+            <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+              <div>
+                <div style="font-size:1.4rem;margin-bottom:.5rem">✒️</div>
+                <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Creative Story Writing & Publishing</div>
+                <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">6 modules · From imagination to published work</div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
+                <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
+                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(9)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+              </div>
+            </div>
+            <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+              <div>
+                <div style="font-size:1.4rem;margin-bottom:.5rem">🕊️</div>
+                <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Storytelling for Conflict Resolution</div>
+                <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">4 modules · Peacebuilding · Empathy · Community dialogue</div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
+                <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
+                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(14)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+              </div>
+            </div>
+            <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+              <div>
+                <div style="font-size:1.4rem;margin-bottom:.5rem">🌍</div>
+                <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Speak isiZulu Through Storytelling</div>
+                <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">16 weeks · Oral immersion · Conversational fluency</div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
+                <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
+                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(19)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+              </div>
+            </div>
+            <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+              <div>
+                <div style="font-size:1.4rem;margin-bottom:.5rem">🚀</div>
+                <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Storytelling Consultancy: Mythopreneur</div>
+                <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">4 modules · Turn storytelling into enterprise</div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
+                <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
+                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(34)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+              </div>
+            </div>
+            <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+              <div>
+                <div style="font-size:1.4rem;margin-bottom:.5rem">📖</div>
+                <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Foundations of Storytelling</div>
+                <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">15 modules · The complete storytelling journey from introduction to mastery</div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
+                <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
+                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(38)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+              </div>
+            </div>
           </div>
-          <div class="nedfly-badge">Q3 2025</div>
         </div>
+
       </div>
     </div>
   </div><!-- /subscribe-world -->
@@ -3570,7 +3769,7 @@ body::after{
         <button id="auth-submit-btn" class="btn" style="width:100%;justify-content:center;margin-top:.3rem" onclick="handleAuthSubmit()">Log In</button>
         <button id="auth-toggle-link" onclick="toggleAuthMode()" style="background:none;border:none;font-family:var(--mono);font-size:.56rem;letter-spacing:.05em;color:rgba(255,255,255,.32);cursor:pointer;text-align:center;margin-top:-.2rem">No account? Sign up free</button>
         <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:.8rem;text-align:center">
-          <span style="font-family:var(--mono);font-size:.52rem;letter-spacing:.05em;color:rgba(255,255,255,.2)">Premium unlocks all courses, notes & audio · R105/month</span>
+          <span style="font-family:var(--mono);font-size:.52rem;letter-spacing:.05em;color:rgba(255,255,255,.2)">Premium unlocks access all courses & earn certificates · R3,500 per course</span>
         </div>
       </div>
     </div>
@@ -3817,7 +4016,7 @@ body::after{
       <div class="vr-hero-content reveal">
         <span class="vr-glasses-icon"><i class="ph ph-eyeglasses"></i></span>
         <h1>VR <em>Story</em><br>Village</h1>
-        <p class="vr-hero-sub">Step inside an immersive African night. Choose a story, put on your VR glasses, and let Dr Sasa's world surround you. Compatible with Google Cardboard, Meta Quest and any WebXR headset.</p>
+        <p class="vr-hero-sub">Step inside an immersive African night. Choose a story, put on your VR glasses, and let Dr Sasa\'s world surround you. Compatible with Google Cardboard, Meta Quest and any WebXR headset.</p>
         <div class="vr-compat-strip">
           <div class="vr-compat-badge"><span style="color:#6EE78E">●</span> Google Cardboard</div>
           <div class="vr-compat-badge"><span style="color:#6EE78E">●</span> Meta Quest</div>
@@ -3914,7 +4113,7 @@ body::after{
               <div class="vr-pod-lang" style="color:var(--fire)">Dr Sasa · Exclusive</div>
               <div class="vr-pod-title">The Story That Built Zintsomi</div>
               <div class="vr-pod-desc">Dr Nomsa Sasa Mdlalose tells the story of how she founded the college — told as a story, not a speech.</div>
-              <div class="vr-pod-meta"><div class="vr-pod-dot" style="background:var(--fire)"></div> 18 min <div class="vr-pod-dot" style="background:var(--fire)"></div> Dr Sasa's Study <div class="vr-pod-vr-badge" style="color:var(--fire);border-color:rgba(245,118,26,.35);background:rgba(245,118,26,.08)"><i class="ph ph-eyeglasses"></i></div></div>
+              <div class="vr-pod-meta"><div class="vr-pod-dot" style="background:var(--fire)"></div> 18 min <div class="vr-pod-dot" style="background:var(--fire)"></div> Dr Sasa\'s Study <div class="vr-pod-vr-badge" style="color:var(--fire);border-color:rgba(245,118,26,.35);background:rgba(245,118,26,.08)"><i class="ph ph-eyeglasses"></i></div></div>
               <button class="vr-play-btn" style="background:var(--fire);color:#fff"><i class="ph ph-play"></i> Listen in VR</button>
             </div>
           </div>
@@ -4049,10 +4248,10 @@ body::after{
           </p>
         </div>
 
-        <!-- BOOKS TAB — Dr Sasa's titles in VR -->
+        <!-- BOOKS TAB — Dr Sasa\'s titles in VR -->
         <div class="vr-tab-pane" id="vr-tab-books">
           <p style="font-family:var(--mono);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,240,74,.6);margin-bottom:1rem">
-            📚 Dr Sasa's Library — touch a book to read
+            📚 Dr Sasa\'s Library — touch a book to read
           </p>
           <div class="vr-bookshelf" id="vr-bookshelf">
             <!-- Books injected by JS -->
@@ -4311,10 +4510,10 @@ body::after{
         <div id="wall-subscribe-gate" style="margin-top:1.5rem;text-align:center;background:linear-gradient(135deg,rgba(123,79,208,.1),rgba(245,118,26,.06));border:1px solid rgba(123,79,208,.25);border-radius:var(--r-xl);padding:2.2rem;backdrop-filter:blur(12px)">
           <div style="font-size:2.2rem;margin-bottom:.8rem"><i class="ph ph-tree"></i></div>
           <div style="font-family:var(--serif);font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:.4rem">Join the Community</div>
-          <div style="font-size:.92rem;color:rgba(255,255,255,.38);line-height:1.8;max-width:400px;margin:0 auto 1.4rem">Subscribe from <strong style="color:var(--ember)">R105/month</strong> to post on the community wall, access all courses, and earn certificates.</div>
+          <div style="font-size:.92rem;color:rgba(255,255,255,.38);line-height:1.8;max-width:400px;margin:0 auto 1.4rem">Subscribe from <strong style="color:var(--ember)">R3,500</strong> per course — or subscribe from R650 for VR access. Post on the community wall, access all courses, and earn certificates.</div>
           <div style="display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap">
             <button onclick="showWorld('subscribe')" style="background:var(--courses);color:#fff;border:none;font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.65rem 1.8rem;border-radius:8px;cursor:pointer">View Plans →</button>
-            <button onclick="document.getElementById('auth-modal').style.display='flex'" style="background:transparent;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.65rem 1.8rem;border-radius:8px;cursor:pointer">Already subscribed? Log In</button>
+            <button onclick="openAuthModal()" style="background:transparent;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.65rem 1.8rem;border-radius:8px;cursor:pointer">Already subscribed? Log In</button>
           </div>
         </div>
 
@@ -4763,17 +4962,17 @@ body::after{
       <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:2rem;text-align:center">
         <div class="sec-lbl" style="color:rgba(255,215,0,.32);justify-content:center">Folklore & Song</div>
         <h2 style="font-family:var(--impact);font-size:clamp(3rem,6vw,5rem);color:#FFD700;letter-spacing:.06em">Audio <span style=";color:#F5A040" style="color:var(--ember)">Archive</span></h2>
-        <p style="font-size:1rem;color:rgba(255,255,255,.45);max-width:440px;margin:.7rem auto 0;line-height:1.85">Umemolo songs, izinganekwane, lullabies, ceremonial songs and Dr Sasa's lectures. Be the first to hear when we launch — register your interest below.</p>
+        <p style="font-size:1rem;color:rgba(255,255,255,.45);max-width:440px;margin:.7rem auto 0;line-height:1.85">Umemolo songs, izinganekwane, lullabies, ceremonial songs and Dr Sasa\'s lectures. Be the first to hear when we launch — register your interest below.</p>
       </div>
     </div>
     <div style="background:#0F0A04"><div class="ctr">
       <div class="audio-grid">
         <div class="audio-card"><div class="ac-art ac-art-1"><span class="ac-vinyl-icon">💃</span><span class="ac-coming">Coming Soon</span></div><div class="ac-body"><div class="ac-name">Umemolo Songs</div><div class="ac-desc">Celebration songs at coming-of-age ceremonies.</div><button class="ac-notify">🔔 Notify me when live</button></div></div>
-        <div class="audio-card"><div class="ac-art ac-art-2"><span class="ac-vinyl-icon">📖</span><span class="ac-coming">Coming Soon</span></div><div class="ac-body"><div class="ac-name">Izinganekwane</div><div class="ac-desc">Folktales told in oral tradition — Dr Sasa's voice.</div><button class="ac-notify">🔔 Notify me when live</button></div></div>
+        <div class="audio-card"><div class="ac-art ac-art-2"><span class="ac-vinyl-icon">📖</span><span class="ac-coming">Coming Soon</span></div><div class="ac-body"><div class="ac-name">Izinganekwane</div><div class="ac-desc">Folktales told in oral tradition — Dr Sasa\'s voice.</div><button class="ac-notify">🔔 Notify me when live</button></div></div>
         <div class="audio-card"><div class="ac-art ac-art-3"><span class="ac-vinyl-icon"><i class="ph ph-moon"></i></span><span class="ac-coming">Coming Soon</span></div><div class="ac-body"><div class="ac-name">Lullabies</div><div class="ac-desc">Izihlabelelo — gentle songs carrying children to sleep.</div><button class="ac-notify">🔔 Notify me when live</button></div></div>
         <div class="audio-card"><div class="ac-art ac-art-4"><span class="ac-vinyl-icon">⚒️</span><span class="ac-coming">Coming Soon</span></div><div class="ac-body"><div class="ac-name">Work Songs</div><div class="ac-desc">Songs that turned labour into music and community.</div><button class="ac-notify">🔔 Notify me when live</button></div></div>
         <div class="audio-card"><div class="ac-art ac-art-5"><span class="ac-vinyl-icon">🌿</span><span class="ac-coming">Coming Soon</span></div><div class="ac-body"><div class="ac-name">Ceremonial Songs</div><div class="ac-desc">Sacred songs for weddings, funerals and initiations.</div><button class="ac-notify">🔔 Notify me when live</button></div></div>
-        <div class="audio-card"><div class="ac-art ac-art-6"><span class="ac-vinyl-icon">🎓</span><span class="ac-coming">Coming Soon</span></div><div class="ac-body"><div class="ac-name">Dr Sasa Lectures</div><div class="ac-desc">Audio versions of Dr Sasa's cultural talks and storytelling lectures.</div><button class="ac-notify">🔔 Notify me when live</button></div></div>
+        <div class="audio-card"><div class="ac-art ac-art-6"><span class="ac-vinyl-icon">🎓</span><span class="ac-coming">Coming Soon</span></div><div class="ac-body"><div class="ac-name">Dr Sasa Lectures</div><div class="ac-desc">Audio versions of Dr Sasa\'s cultural talks and storytelling lectures.</div><button class="ac-notify">🔔 Notify me when live</button></div></div>
       </div>
     </div></div>
   </div>
@@ -4805,7 +5004,7 @@ async function signUp(email, password, fullName) {
   if (error) { showAuthMsg(error.message, 'error'); return; }
   // Try to create profile row — won't fail even if table doesn't exist yet
   try {
-    await supa.from('profiles').insert({ id: data.user.id, email, full_name: fullName, is_premium: false });
+    await supa.from('profiles').insert({ id: data.user.id, email, full_name: fullName, is_premium: false, is_admin: false });
   } catch(e) {}
   currentUser = data.user;
   currentUser.profile = { email, full_name: fullName, is_premium: false };
@@ -4857,11 +5056,13 @@ function isPremium() {
 function updateNavForUser(profile) {
   const btn = document.getElementById('auth-nav-btn');
   const nameEl = document.getElementById('auth-nav-name');
+  const adminPill = document.getElementById('pill-admin');
   if (!btn) return;
   if (profile) {
     btn.textContent = 'Log Out';
     btn.onclick = function(){ logOut(); };
-    if (nameEl) nameEl.textContent = (profile.full_name || profile.email || '') + (profile.is_premium ? ' ⭐' : '');
+    if (nameEl) nameEl.textContent = (profile.full_name || profile.email || '') + (profile.is_premium ? ' ⭐' : '') + (profile.is_admin ? ' 🔑' : '');
+    if (adminPill) adminPill.style.display = profile.is_admin ? 'flex' : 'none';
   } else {
     btn.textContent = 'Log In';
     btn.onclick = function(){ openAuthModal(); };
@@ -5206,6 +5407,24 @@ setTimeout(function(){
     if(typeof initAll==='function') initAll();
   }
 },10000);
+}
+
+function replayIntro(){
+  var intro = document.getElementById("intro");
+  var site  = document.getElementById("site");
+  if(!intro || !site) return;
+  // Reset and replay
+  cancelAnimationFrame(introAnimId);
+  introAnimId = null;
+  introT = 0;
+  introLoop.start = null;
+  document.getElementById("intro-logo").classList.remove("show");
+  intro.classList.remove("hide");
+  intro.style.display = "flex";
+  intro.style.opacity = "1";
+  site.classList.remove("show");
+  // Loop it — when intro ends it comes back to site
+  setTimeout(function(){ requestAnimationFrame(introLoop); }, 50);
 }
 
 function endIntro(){
@@ -6622,8 +6841,8 @@ function renderLesson(){
       +'<div style="font-family:var(--impact);font-size:1.6rem;color:#fff;letter-spacing:.06em;margin-bottom:.6rem">PREMIUM MODULE</div>'
       +'<p style="font-size:.95rem;color:rgba(255,255,255,.45);line-height:1.8;max-width:380px;margin:0 auto 1.8rem">Module 1 of every course is free. Subscribe to unlock all modules, earn your Certificate of Attendance, and access every course in full.</p>'
       +'<div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap">'
-      +'<button class="btn" onclick="showWorld(\'subscribe\')" style="background:#7B4FD0;border-color:#7B4FD0"><i class="ph ph-star"></i> Subscribe &mdash; R105/month</button>'
-      +'<button class="btn btn-out" onclick="document.getElementById(\'auth-modal\').style.display=\'flex\'" style="border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.6)"><i class="ph ph-sign-in"></i> Log In</button>'
+      +'<button class="btn" onclick="showWorld(\'subscribe\')" style="background:#7B4FD0;border-color:#7B4FD0"><i class="ph ph-star"></i> Subscribe — R650 VR · R3,500/course</button>'
+      +'<button class="btn btn-out" onclick=\"openAuthModal()\"style="border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.6)"><i class="ph ph-sign-in"></i> Log In</button>'
       +'</div></div>';
     return;
   }
@@ -7627,7 +7846,7 @@ var SPOT_DATA = {
     tip:{tx:'Organic Chemistry is the most content-heavy part of Paper 2. Make flashcards for EVERY functional group with its name, general formula, and one example. The naming rules are mechanical — practise 10 names per day for a week and they become automatic.'}
   },
 
-  'fire':          { icon:'<i class="ph ph-fire"></i>', title:'The Storytelling Fire',    desc:"The heart of the village. Gather around the fire to explore storytelling courses, hear Dr Sasa's wisdom, and share your own stories with the community.", world:'courses' },
+  'fire':          { icon:'<i class="ph ph-fire"></i>', title:'The Storytelling Fire',    desc:"The heart of the village. Gather around the fire to explore storytelling courses, hear Dr Sasa\'s wisdom, and share your own stories with the community.", world:'courses' },
   'school':        { icon:'<i class="ph ph-chalkboard-teacher"></i>', title:'The School Hut',           desc:'Where young minds are sharpened. Enter the Schools Hub for Grade 12 study notes, curriculum resources, and academic tools — all free.', world:'schools' },
   'music':         { icon:'<i class="ph ph-metronome"></i>', title:'The Music Hut',            desc:'Hear the drums calling. Play the Djembe, Marimba, Hosho and Uhadi. Record your session and share it with the whole village.', world:'instruments' },
   'ancestor':      { icon:'🌳', title:'The Ancestor Tree',        desc:'Your leaf lives here. Every story told, every game played, every lesson completed adds a branch to this living community tree.', world:'tree' },
@@ -8511,7 +8730,7 @@ function closeShareModal() {
   setTimeout(function(){ modal.style.display='none'; }, 300);
 }
 function share(platform) {
-  var msg = "Check out Dr Sasa's post on Zintsomi Storytelling College!";
+  var msg = "Check out Dr Sasa\'s post on Zintsomi Storytelling College!";
   var url = window.location.href;
   if (platform==='whatsapp') window.open('https://wa.me/?text='+encodeURIComponent(msg+' '+url),'_blank');
   else if (platform==='link') { navigator.clipboard && navigator.clipboard.writeText(url).then(function(){ alert('Link copied!'); }); }
@@ -8661,7 +8880,7 @@ var vrMode = 'cinema'; // 'cinema' | 'vr' | 'book'
 var vrMouse = { down:false, lastX:0, yaw:0 };
 var vrAnimId2 = null;
 
-// Dr Sasa's books
+// Dr Sasa\'s books
 var DR_SASA_BOOKS = [
   { title:"Kwasukasukela", author:"Dr Sasa", color:"#4A1500", textColor:"#FFD080", desc:"The complete guide to isiZulu oral storytelling tradition — from fire circle to classroom.", isNew:true },
   { title:"Ubuntu in the Classroom", author:"Dr Sasa", color:"#001A10", textColor:"#6EE78E", desc:"How to use storytelling as a teaching methodology across all subjects." },
@@ -9605,6 +9824,926 @@ openVRStory = function(idx) {
   initVRFeatures();
 };
 
+
+
+/* ═══════════════════════════════════════════════════
+   ADMIN SYSTEM — ZINTSOMI STUDIO
+   Dr Sasa\'s command centre
+   All data stored in Supabase — no code edits needed
+═══════════════════════════════════════════════════ */
+
+function switchAdminPanel(panel, el) {
+  document.querySelectorAll('.admin-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.admin-menu-item').forEach(function(m){ m.classList.remove('active'); });
+  var pane = document.getElementById('panel-'+panel);
+  if(pane) pane.classList.add('active');
+  if(el) el.classList.add('active');
+  // Load data for this panel
+  if(panel==='videos')   adminLoadVideos();
+  if(panel==='thoughts') adminLoadThoughts();
+  if(panel==='books')    adminLoadBooks();
+  if(panel==='gallery')  adminLoadGallery();
+  if(panel==='members')  adminLoadMembers();
+  if(panel==='courses')  adminLoadCourseSettings();
+}
+
+function showAdminToast(msg, type) {
+  var t = document.getElementById('admin-toast');
+  if(!t) return;
+  t.textContent = msg;
+  t.style.background = type==='error' ? '#f44336' : type==='warn' ? '#ff9800' : '#4caf50';
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
+
+function adminGuard() {
+  var profile = currentUser && currentUser.profile;
+  if (!profile || !profile.is_admin) {
+    showAdminToast('Admin access required', 'error');
+    return false;
+  }
+  return true;
+}
+
+/* ──────────────────────────────────
+   YOUTUBE MANAGEMENT
+────────────────────────────────── */
+function extractYouTubeId(input) {
+  input = input.trim();
+  // Already an ID (11 chars, no spaces/slashes)
+  if (/^[a-zA-Z0-9_-]{11}$/.test(input)) return input;
+  // youtu.be/ID
+  var m = input.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+  if (m) return m[1];
+  // youtube.com/watch?v=ID
+  m = input.match(/[?&]v=([a-zA-Z0-9_-]{11})/);
+  if (m) return m[1];
+  // youtube.com/shorts/ID
+  m = input.match(/shorts\/([a-zA-Z0-9_-]{11})/);
+  if (m) return m[1];
+  return null;
+}
+
+async function adminAddVideo() {
+  if (!adminGuard()) return;
+  var urlEl   = document.getElementById('yt-url-input');
+  var titleEl = document.getElementById('yt-title-input');
+  var descEl  = document.getElementById('yt-desc-input');
+  var catEl   = document.getElementById('yt-cat-input');
+  var url     = urlEl ? urlEl.value.trim() : '';
+  var title   = titleEl ? titleEl.value.trim() : '';
+  var desc    = descEl ? descEl.value.trim() : '';
+  var cat     = catEl ? catEl.value : 'storytelling';
+  var id      = extractYouTubeId(url);
+  if (!id) { showAdminToast('Paste a valid YouTube URL or video ID', 'error'); return; }
+  if (!title) { showAdminToast('Please add a video title', 'warn'); return; }
+  try {
+    var { error } = await supa.from('yt_videos').insert({
+      video_id: id, title: title, description: desc, category: cat,
+      created_by: currentUser.id, created_at: new Date().toISOString()
+    });
+    if (error) throw error;
+    // Also push to SASA_VIDEOS array so it appears immediately on home page
+    SASA_VIDEOS.unshift({ id: id, title: title, desc: desc });
+    if(typeof renderHomeSasaYT === 'function') renderHomeSasaYT();
+    showAdminToast('Video added — now live on the app!');
+    if(urlEl) urlEl.value=''; if(titleEl) titleEl.value=''; if(descEl) descEl.value='';
+    adminLoadVideos();
+    adminUpdateStats();
+  } catch(e) {
+    // Supabase table may not exist yet — still update the live array
+    SASA_VIDEOS.unshift({ id: id, title: title, desc: desc });
+    if(typeof renderHomeSasaYT === 'function') renderHomeSasaYT();
+    showAdminToast('Video live on app! (Set up yt_videos table in Supabase to persist)','warn');
+    if(urlEl) urlEl.value=''; if(titleEl) titleEl.value='';
+    adminLoadVideos();
+  }
+}
+
+async function adminLoadVideos() {
+  var list = document.getElementById('admin-yt-list');
+  if (!list) return;
+  // Show current SASA_VIDEOS (local + Supabase)
+  var videos = [...SASA_VIDEOS];
+  try {
+    var { data } = await supa.from('yt_videos').select('*').order('created_at',{ascending:false}).limit(20);
+    if (data && data.length > 0) {
+      // Merge without duplicates
+      data.forEach(function(v) {
+        if (!videos.find(function(x){ return x.id===v.video_id; })) {
+          videos.push({ id: v.video_id, title: v.title, desc: v.description });
+        }
+      });
+    }
+  } catch(e) {}
+
+  if (videos.length === 0) {
+    list.innerHTML = '<div style="color:rgba(255,255,255,.25);font-size:.8rem;text-align:center;padding:1rem">No videos yet — add your first one above</div>';
+    return;
+  }
+  list.innerHTML = videos.map(function(v, i) {
+    return '<div class="yt-admin-item">'
+      + '<div class="yt-admin-thumb"><img src="https://i.ytimg.com/vi/'+v.id+'/mqdefault.jpg" alt="'+v.title+'" onerror="this.parentElement.style.background=\'#222\'"></div>'
+      + '<div class="yt-admin-info"><div class="yt-admin-title">'+v.title+'</div>'
+      + '<div class="yt-admin-id">ID: '+v.id+'</div></div>'
+      + '<div class="yt-admin-actions">'
+      + '<button class="admin-btn secondary" style="padding:.3rem .7rem;font-size:.5rem" onclick="window.open(\'https://youtu.be/'+v.id+'\',\'_blank\')"><i class="ph ph-arrow-square-out"></i></button>'
+      + '<button class="admin-btn danger" style="padding:.3rem .7rem;font-size:.5rem" onclick="adminRemoveVideo('+i+',\''+v.id+'\')"><i class="ph ph-trash"></i></button>'
+      + '</div></div>';
+  }).join('');
+  var statEl = document.getElementById('admin-stat-videos');
+  if(statEl) statEl.textContent = videos.length;
+}
+
+function adminRemoveVideo(idx, vidId) {
+  SASA_VIDEOS = SASA_VIDEOS.filter(function(v){ return v.id !== vidId; });
+  if(typeof renderHomeSasaYT==='function') renderHomeSasaYT();
+  try { supa.from('yt_videos').delete().eq('video_id', vidId); } catch(e){}
+  adminLoadVideos();
+  showAdminToast('Video removed');
+}
+
+/* ──────────────────────────────────
+   THOUGHTS / BLOG
+────────────────────────────────── */
+function adminPreviewThought() {
+  var body  = (document.getElementById('thought-body') || {}).value || '';
+  var title = (document.getElementById('thought-title') || {}).value || '';
+  var prev  = document.getElementById('thought-preview');
+  if (!prev) return;
+  prev.style.display = 'block';
+  prev.innerHTML = (title ? '<strong style="color:#fff;font-family:var(--display)">' + title + '</strong><br><br>' : '') + body;
+}
+
+async function adminPostThought() {
+  if (!adminGuard()) return;
+  var body  = (document.getElementById('thought-body') || {}).value.trim();
+  var title = (document.getElementById('thought-title') || {}).value.trim();
+  var type  = (document.getElementById('thought-type') || {}).value;
+  if (!body) { showAdminToast('Write something first!', 'warn'); return; }
+  var post = { title: title, body: body, type: type, author: 'Dr Sasa',
+    author_id: currentUser.id, created_at: new Date().toISOString(), likes: 0 };
+  try {
+    var { error } = await supa.from('dr_sasa_thoughts').insert(post);
+    if (error) throw error;
+    showAdminToast('Posted! Now live on the app.');
+  } catch(e) {
+    showAdminToast('Posted locally! (Set up dr_sasa_thoughts table to persist)', 'warn');
+  }
+  if(document.getElementById('thought-body')) document.getElementById('thought-body').value='';
+  if(document.getElementById('thought-title')) document.getElementById('thought-title').value='';
+  if(document.getElementById('thought-preview')) document.getElementById('thought-preview').style.display='none';
+  adminLoadThoughts();
+}
+
+async function adminLoadThoughts() {
+  var list = document.getElementById('admin-thoughts-list');
+  if (!list) return;
+  try {
+    var { data } = await supa.from('dr_sasa_thoughts').select('*').order('created_at',{ascending:false}).limit(10);
+    if (data && data.length > 0) {
+      var statEl = document.getElementById('admin-stat-thoughts');
+      if(statEl) statEl.textContent = data.length;
+      list.innerHTML = data.map(function(t) {
+        var d = new Date(t.created_at);
+        return '<div class="admin-card" style="padding:.9rem;margin-bottom:.6rem">'
+          + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem">'
+          + '<span style="font-family:var(--display);font-size:.65rem;font-weight:700;color:#fff">'+(t.title||'Thought')+'</span>'
+          + '<span style="font-family:var(--mono);font-size:.44rem;color:rgba(255,255,255,.3)">'+(d.toLocaleDateString())+'</span></div>'
+          + '<div style="font-size:.8rem;color:rgba(255,255,255,.55);line-height:1.7">'+(t.body||'').substring(0,120)+'…</div>'
+          + '<button class="admin-btn danger" style="padding:.25rem .6rem;font-size:.48rem;margin-top:.5rem" onclick="adminDeleteThought('+t.id+')"><i class="ph ph-trash"></i> Delete</button>'
+          + '</div>';
+      }).join('');
+      return;
+    }
+  } catch(e) {}
+  list.innerHTML = '<div style="color:rgba(255,255,255,.25);font-size:.8rem;text-align:center;padding:1rem">No posts yet</div>';
+}
+
+async function adminDeleteThought(id) {
+  try { await supa.from('dr_sasa_thoughts').delete().eq('id', id); } catch(e){}
+  adminLoadThoughts();
+  showAdminToast('Post deleted');
+}
+
+/* ──────────────────────────────────
+   BOOKS & SHOP
+────────────────────────────────── */
+async function adminAddBook() {
+  if (!adminGuard()) return;
+  var title  = (document.getElementById('book-title') || {}).value.trim();
+  var author = (document.getElementById('book-author') || {}).value.trim() || 'Dr Nomsa Sasa Mdlalose';
+  var desc   = (document.getElementById('book-desc') || {}).value.trim();
+  var price  = parseFloat((document.getElementById('book-price') || {}).value) || 0;
+  var cover  = (document.getElementById('book-cover') || {}).value.trim();
+  var type   = (document.getElementById('book-type') || {}).value;
+  var pdf    = (document.getElementById('book-pdf') || {}).value.trim();
+  if (!title || !price) { showAdminToast('Title and price are required', 'warn'); return; }
+  try {
+    var { error } = await supa.from('shop_books').insert({
+      title, author, description: desc, price_rands: price,
+      cover_url: cover, book_type: type, pdf_url: pdf,
+      created_at: new Date().toISOString(), active: true
+    });
+    if (error) throw error;
+    showAdminToast('Book added to shop!');
+  } catch(e) {
+    showAdminToast('Book saved locally! (Set up shop_books table to persist)', 'warn');
+  }
+  ['book-title','book-author','book-desc','book-price','book-cover','book-pdf'].forEach(function(id){
+    var el = document.getElementById(id); if(el) el.value='';
+  });
+  adminLoadBooks();
+}
+
+async function adminLoadBooks() {
+  var list = document.getElementById('admin-books-list');
+  if (!list) return;
+  try {
+    var { data } = await supa.from('shop_books').select('*').order('created_at',{ascending:false});
+    if (data && data.length > 0) {
+      var statEl = document.getElementById('admin-stat-books');
+      if(statEl) statEl.textContent = data.length;
+      list.innerHTML = data.map(function(b) {
+        return '<div class="book-admin-item">'
+          + '<div class="book-admin-cover" style="background:'+(b.cover_url?'url('+b.cover_url+') center/cover':'rgba(230,179,42,.15)')+'">'+(b.cover_url?'':'📖')+'</div>'
+          + '<div class="book-admin-info"><div class="book-admin-title">'+b.title+'</div>'
+          + '<div class="book-admin-price">R'+b.price_rands+' · '+b.book_type+'</div></div>'
+          + '<div style="display:flex;gap:.4rem">'
+          + '<div class="shop-price-badge">R'+b.price_rands+'</div>'
+          + '<button class="admin-btn danger" style="padding:.3rem .6rem;font-size:.48rem" onclick="adminRemoveBook('+b.id+')"><i class="ph ph-trash"></i></button>'
+          + '</div></div>';
+      }).join('');
+      // Also populate the public-facing shop
+      renderShopBooks(data);
+      return;
+    }
+  } catch(e) {}
+  list.innerHTML = '<div style="color:rgba(255,255,255,.25);font-size:.8rem;text-align:center;padding:1rem">No books yet — add Dr Sasa\'s first book above</div>';
+}
+
+async function adminRemoveBook(id) {
+  try { await supa.from('shop_books').delete().eq('id', id); } catch(e){}
+  adminLoadBooks();
+  showAdminToast('Book removed from shop');
+}
+
+function renderShopBooks(books) {
+  // This renders books into the subscribe/shop world if there's a container
+  var shopEl = document.getElementById('shop-books-grid');
+  if (!shopEl || !books || books.length===0) return;
+  shopEl.innerHTML = books.map(function(b) {
+    return '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;cursor:pointer" onclick="buyBook('+b.id+',\''+b.title+'\','+b.price_rands+')">'
+      + '<div style="height:160px;background:'+(b.cover_url?'url('+b.cover_url+') center/cover':'linear-gradient(135deg,#1A0A00,#2A1000)')+';display:grid;place-items:center;font-size:2rem">'+( b.cover_url?'':'📖')+'</div>'
+      + '<div style="padding:1rem">'
+      + '<div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">'+b.title+'</div>'
+      + '<div style="font-size:.72rem;color:rgba(255,255,255,.4);margin-bottom:.6rem">'+b.author+'</div>'
+      + '<div style="display:flex;align-items:center;justify-content:space-between">'
+      + '<span style="font-family:var(--impact);font-size:1.2rem;color:var(--gold)">R'+b.price_rands+'</span>'
+      + '<button style="background:var(--fire);border:none;color:#fff;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.4rem .9rem;border-radius:6px;cursor:pointer">Buy Now</button>'
+      + '</div></div></div>';
+  }).join('');
+}
+
+function buyBook(id, title, price) {
+  // PayFast checkout for book purchase
+  var form = document.createElement('form');
+  form.method = 'POST';
+  form.action = 'https://sandbox.payfast.co.za/eng/process';
+  var fields = {
+    merchant_id: '10000100',
+    merchant_key: '46f0cd694581a',
+    return_url: window.location.href,
+    cancel_url: window.location.href,
+    notify_url: 'https://natjezquifgddzzawhgo.supabase.co/functions/v1/payfast-webhook',
+    name_first: (currentUser && currentUser.profile && currentUser.profile.full_name) || 'Zintsomi',
+    email_address: (currentUser && currentUser.email) || '',
+    amount: price.toFixed(2),
+    item_name: title,
+    custom_str1: 'book_'+id,
+    custom_str2: currentUser ? currentUser.id : ''
+  };
+  Object.keys(fields).forEach(function(k) {
+    var inp = document.createElement('input');
+    inp.type='hidden'; inp.name=k; inp.value=fields[k];
+    form.appendChild(inp);
+  });
+  document.body.appendChild(form);
+  form.submit();
+}
+
+/* ──────────────────────────────────
+   GALLERY
+────────────────────────────────── */
+async function adminAddPhoto() {
+  if (!adminGuard()) return;
+  var url     = (document.getElementById('photo-url') || {}).value.trim();
+  var caption = (document.getElementById('photo-caption') || {}).value.trim();
+  var event   = (document.getElementById('photo-event') || {}).value.trim();
+  if (!url) { showAdminToast('Paste an image URL first', 'warn'); return; }
+  try {
+    await supa.from('gallery_photos').insert({
+      url, caption, event_name: event,
+      created_at: new Date().toISOString()
+    });
+    showAdminToast('Photo added!');
+  } catch(e) { showAdminToast('Photo saved! (Set up gallery_photos table to persist)', 'warn'); }
+  if(document.getElementById('photo-url')) document.getElementById('photo-url').value='';
+  adminLoadGallery();
+}
+
+async function adminLoadGallery() {
+  var grid = document.getElementById('admin-gallery-grid');
+  if (!grid) return;
+  try {
+    var { data } = await supa.from('gallery_photos').select('*').order('created_at',{ascending:false}).limit(20);
+    if (data && data.length > 0) {
+      grid.innerHTML = data.map(function(p) {
+        return '<div style="position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;background:#111">'
+          + '<img src="'+p.url+'" style="width:100%;height:100%;object-fit:cover" alt="'+p.caption+'" title="'+p.caption+'">'
+          + '<button onclick="adminRemovePhoto('+p.id+')" style="position:absolute;top:.3rem;right:.3rem;background:rgba(255,0,0,.7);border:none;color:#fff;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.7rem">✕</button>'
+          + '</div>';
+      }).join('');
+      return;
+    }
+  } catch(e) {}
+  grid.innerHTML = '<div style="color:rgba(255,255,255,.25);font-size:.8rem;text-align:center;padding:1rem;grid-column:1/-1">No photos yet</div>';
+}
+
+async function adminRemovePhoto(id) {
+  try { await supa.from('gallery_photos').delete().eq('id', id); } catch(e){}
+  adminLoadGallery();
+  showAdminToast('Photo removed');
+}
+
+/* ──────────────────────────────────
+   MEMBERS
+────────────────────────────────── */
+async function adminLoadMembers() {
+  var list = document.getElementById('admin-members-list');
+  if (!list) return;
+  try {
+    var { data } = await supa.from('profiles').select('*').order('created_at',{ascending:false}).limit(50);
+    if (data && data.length > 0) {
+      var statEl = document.getElementById('admin-stat-members');
+      if(statEl) statEl.textContent = data.length;
+      list.innerHTML = data.map(function(m) {
+        return '<div style="display:flex;align-items:center;gap:.8rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:.65rem 1rem;margin-bottom:.4rem">'
+          + '<div style="width:32px;height:32px;border-radius:50%;background:var(--fire);display:grid;place-items:center;font-size:.8rem;flex-shrink:0">'+((m.full_name||'?')[0].toUpperCase())+'</div>'
+          + '<div style="flex:1"><div style="font-size:.75rem;color:#fff;font-family:var(--display);font-weight:700">'+(m.full_name||'Member')+'</div>'
+          + '<div style="font-size:.62rem;color:rgba(255,255,255,.3)">'+(m.email||'')+'</div></div>'
+          + '<div style="display:flex;gap:.3rem;align-items:center">'
+          + (m.is_premium ? '<span style="background:var(--gold);color:#000;font-size:.44rem;font-family:var(--display);font-weight:700;padding:.15rem .4rem;border-radius:4px">PREMIUM</span>' : '')
+          + (m.is_admin   ? '<span style="background:#ff6b6b;color:#fff;font-size:.44rem;font-family:var(--display);font-weight:700;padding:.15rem .4rem;border-radius:4px">ADMIN</span>' : '')
+          + '<button class="admin-btn secondary" style="padding:.25rem .5rem;font-size:.44rem" onclick="adminTogglePremium(\''+m.id+'\','+(m.is_premium?'false':'true')+')"><i class="ph ph-star"></i></button>'
+          + '<button class="admin-btn secondary" style="padding:.25rem .5rem;font-size:.44rem" onclick="adminToggleAdmin(\''+m.id+'\','+(m.is_admin?'false':'true')+')"><i class="ph ph-shield"></i></button>'
+          + '</div></div>';
+      }).join('');
+      return;
+    }
+  } catch(e) {}
+  list.innerHTML = '<div style="color:rgba(255,255,255,.25);font-size:.8rem;text-align:center;padding:1rem">No members yet</div>';
+}
+
+async function adminTogglePremium(userId, val) {
+  try {
+    await supa.from('profiles').update({ is_premium: val }).eq('id', userId);
+    showAdminToast(val ? 'Member upgraded to Premium' : 'Premium removed');
+    adminLoadMembers();
+  } catch(e) { showAdminToast('Could not update', 'error'); }
+}
+
+async function adminToggleAdmin(userId, val) {
+  try {
+    await supa.from('profiles').update({ is_admin: val }).eq('id', userId);
+    showAdminToast(val ? 'Admin access granted' : 'Admin access removed');
+    adminLoadMembers();
+  } catch(e) { showAdminToast('Could not update', 'error'); }
+}
+
+function adminSearchMembers(query) {
+  var items = document.querySelectorAll('#admin-members-list > div');
+  items.forEach(function(item) {
+    var text = item.textContent.toLowerCase();
+    item.style.display = text.includes(query.toLowerCase()) ? '' : 'none';
+  });
+}
+
+async function adminLoadCourseSettings() {
+  var list = document.getElementById('admin-courses-list');
+  if(!list) return;
+  list.innerHTML = ['Foundations of Storytelling','Storytelling in Business','Storytelling in the Classroom',
+    'Creative Story Writing and Publishing','Storytelling for Conflict Resolution',
+    'Speak isiZulu Through Storytelling','Storytelling in the Legal Field',
+    'Storytelling Consultancy: Becoming a Mythopreneur'].map(function(c, i) {
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.06)">'
+      + '<span style="font-size:.78rem;color:#fff">'+c+'</span>'
+      + '<label style="display:flex;align-items:center;gap:.4rem;cursor:pointer">'
+      + '<input type="checkbox" checked style="accent-color:#ff6b6b"> '
+      + '<span style="font-size:.65rem;color:rgba(255,255,255,.4)">Visible</span></label></div>';
+  }).join('');
+}
+
+function adminUpdateStats() {
+  var vidStat = document.getElementById('admin-stat-videos');
+  if(vidStat) vidStat.textContent = SASA_VIDEOS.length;
+}
+
+/* Init admin world when opened */
+var _origShowWorld = showWorld;
+showWorld = function(id) {
+  _origShowWorld(id);
+  if(id === 'admin') {
+    if(!currentUser || !currentUser.profile || !currentUser.profile.is_admin) {
+      showAdminToast('You need to be logged in as admin', 'error');
+      setTimeout(function(){ _origShowWorld('home'); }, 1500);
+      return;
+    }
+    adminLoadVideos();
+    adminUpdateStats();
+  }
+};
+
+
+/* ═══════════════════════════════════════════════════
+   VR ACCESS SYSTEM — R650/6months · R1100/annual
+   COURSE PRICING — R3,500 per course
+═══════════════════════════════════════════════════ */
+
+var vrSelectedPlan = 'annual';
+var VR_PRICES = { annual: { price: 1100, label: 'R1,100/year', months: 12 },
+                  sixmonth: { price: 650, label: 'R650/6 months', months: 6 } };
+
+function checkVRAccess() {
+  // Check localStorage for VR access token
+  try {
+    var access = JSON.parse(localStorage.getItem('vr_access') || 'null');
+    if (access && access.expiry && new Date(access.expiry) > new Date()) {
+      return true; // valid access
+    }
+  } catch(e) {}
+  // Check Supabase profile
+  if (currentUser && currentUser.profile && currentUser.profile.vr_access_expiry) {
+    if (new Date(currentUser.profile.vr_access_expiry) > new Date()) return true;
+  }
+  // Admins always have access
+  if (currentUser && currentUser.profile && currentUser.profile.is_admin) return true;
+  return false;
+}
+
+function selectVRPlan(plan) {
+  vrSelectedPlan = plan;
+  document.querySelectorAll('.vr-pw-plan').forEach(function(p) { p.classList.remove('selected'); });
+  var planEl = document.getElementById('vr-plan-' + plan);
+  if (planEl) planEl.classList.add('selected');
+  var cta = document.getElementById('vr-pw-cta-btn');
+  var p = VR_PRICES[plan];
+  if (cta && p) cta.textContent = '🥽 Unlock VR Village — ' + p.label;
+}
+
+function openVRPaywall() {
+  var pw = document.getElementById('vr-paywall');
+  if (pw) { pw.classList.add('open'); selectVRPlan('annual'); }
+}
+
+function closeVRPaywall() {
+  var pw = document.getElementById('vr-paywall');
+  if (pw) pw.classList.remove('open');
+}
+
+function purchaseVRAccess() {
+  if (!currentUser) {
+    closeVRPaywall();
+    openAuthModal();
+    return;
+  }
+  var plan = VR_PRICES[vrSelectedPlan];
+  // PayFast checkout
+  var form = document.createElement('form');
+  form.method = 'POST';
+  form.action = 'https://sandbox.payfast.co.za/eng/process';
+  var fields = {
+    merchant_id: '10000100',
+    merchant_key: '46f0cd694581a',
+    return_url: window.location.href + '?vr_access=1&plan=' + vrSelectedPlan,
+    cancel_url: window.location.href,
+    notify_url: 'https://natjezquifgddzzawhgo.supabase.co/functions/v1/payfast-webhook',
+    name_first: (currentUser.profile && currentUser.profile.full_name) || 'Zintsomi',
+    email_address: currentUser.email || '',
+    amount: plan.price.toFixed(2),
+    item_name: 'Zintsomi VR Village — ' + plan.label,
+    custom_str1: 'vr_access_' + vrSelectedPlan,
+    custom_str2: currentUser.id
+  };
+  Object.keys(fields).forEach(function(k) {
+    var inp = document.createElement('input');
+    inp.type = 'hidden'; inp.name = k; inp.value = fields[k];
+    form.appendChild(inp);
+  });
+  document.body.appendChild(form);
+  form.submit();
+}
+
+// Check URL for return from PayFast
+(function checkVRReturn() {
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('vr_access') === '1') {
+    var plan = params.get('plan') || 'annual';
+    var months = VR_PRICES[plan] ? VR_PRICES[plan].months : 6;
+    var expiry = new Date();
+    expiry.setMonth(expiry.getMonth() + months);
+    try {
+      localStorage.setItem('vr_access', JSON.stringify({ expiry: expiry.toISOString(), plan: plan }));
+    } catch(e) {}
+    // Clear params from URL
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+})();
+
+// Patch showWorld to gate VR
+var _origShowWorldVR = showWorld;
+showWorld = function(id) {
+  if (id === 'vrvillage') {
+    if (!checkVRAccess()) {
+      openVRPaywall();
+      return;
+    }
+  }
+  _origShowWorldVR(id);
+};
+
+// Also gate openVRStory
+var _origOpenVRStoryGate = openVRStory;
+openVRStory = function(idx) {
+  if (!checkVRAccess()) { openVRPaywall(); return; }
+  _origOpenVRStoryGate(idx);
+};
+
+/* ═══════════════════════════════════════════════════
+   COURSE PRICING — R3,500 per individual course
+═══════════════════════════════════════════════════ */
+
+var COURSE_PRICE = 3500;
+var purchasedCourses = {};
+
+function checkCourseAccess(courseIdx) {
+  // Admins and premium users have all courses
+  if (currentUser && currentUser.profile) {
+    if (currentUser.profile.is_admin || currentUser.profile.is_premium) return true;
+  }
+  // Check localStorage for individual course purchase
+  try {
+    var bought = JSON.parse(localStorage.getItem('purchased_courses') || '{}');
+    if (bought[courseIdx]) return true;
+  } catch(e) {}
+  return false;
+}
+
+function renderCoursePrice(courseIdx) {
+  // Show price badge on course tab
+  if (!checkCourseAccess(courseIdx)) {
+    return '<span style="display:block;font-family:var(--mono);font-size:.44rem;'
+      + 'color:var(--gold);letter-spacing:.06em;margin-top:.3rem">R3,500</span>';
+  }
+  return '<span style="display:block;font-family:var(--mono);font-size:.44rem;'
+    + 'color:var(--acid);letter-spacing:.06em;margin-top:.3rem">✓ Enrolled</span>';
+}
+
+// Patch selectCourse to check payment
+var _origSelectCourse = selectCourse;
+selectCourse = function(idx) {
+  if (!checkCourseAccess(idx)) {
+    showCoursePurchasePrompt(idx);
+    return;
+  }
+  _origSelectCourse(idx);
+};
+
+function showCoursePurchasePrompt(courseIdx) {
+  var course = COURSES[courseIdx];
+  if (!course) return;
+  // Build a purchase overlay
+  var existing = document.getElementById('course-purchase-overlay');
+  if (existing) existing.remove();
+
+  var overlay = document.createElement('div');
+  overlay.id = 'course-purchase-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:8500;background:rgba(0,0,0,.88);'
+    + 'backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:1.5rem';
+  overlay.innerHTML = '<div style="background:linear-gradient(135deg,#0A0300,#1A0800);'
+    + 'border:1px solid rgba(245,118,26,.25);border-radius:20px;width:100%;max-width:420px;overflow:hidden;">'
+    + '<div style="background:rgba(245,118,26,.1);padding:1.8rem 2rem;text-align:center;border-bottom:1px solid rgba(245,118,26,.15)">'
+    + '<div style="font-size:2.5rem;margin-bottom:.6rem">' + (course.icon || '📖') + '</div>'
+    + '<div style="font-family:var(--impact);font-size:1.6rem;color:#fff;letter-spacing:.06em;text-transform:uppercase;line-height:.9">'
+    + course.title + '</div>'
+    + '<div style="font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.35);letter-spacing:.12em;text-transform:uppercase;margin-top:.5rem">'
+    + (course.tag || '') + '</div></div>'
+    + '<div style="padding:1.8rem 2rem">'
+    + '<div style="font-family:var(--impact);font-size:3rem;color:var(--gold);letter-spacing:.04em;text-align:center;line-height:1">R3,500</div>'
+    + '<div style="text-align:center;font-size:.75rem;color:rgba(255,255,255,.35);margin-bottom:1.2rem">Once-off · Lifetime access to this course</div>'
+    + '<div style="font-size:.82rem;color:rgba(255,255,255,.55);line-height:1.8;margin-bottom:1.4rem">'
+    + '<strong style="color:rgba(255,255,255,.8)">What you get:</strong><br>'
+    + '✓ All ' + (course.modules ? course.modules.length : '') + ' modules with full lesson content<br>'
+    + '✓ Reflection exercises and quizzes<br>'
+    + '✓ Certificate of attendance on completion<br>'
+    + '✓ Lifetime access — revisit anytime</div>'
+    + '<button onclick="purchaseCourse(' + courseIdx + ')" style="width:100%;background:var(--fire);'
+    + 'border:none;color:#fff;font-family:var(--display);font-size:.68rem;font-weight:700;'
+    + 'letter-spacing:.1em;text-transform:uppercase;padding:.9rem;border-radius:8px;cursor:pointer;margin-bottom:.6rem">'
+    + '💳 Enrol Now — R3,500</button>'
+    + '<button onclick="document.getElementById(\'course-purchase-overlay\').remove()" '
+    + 'style="width:100%;background:none;border:none;color:rgba(255,255,255,.25);'
+    + 'font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;'
+    + 'padding:.5rem;cursor:pointer">No thanks — go back</button>'
+    + '</div></div>';
+  document.body.appendChild(overlay);
+}
+
+function purchaseCourse(courseIdx) {
+  if (!currentUser) {
+    document.getElementById('course-purchase-overlay').remove();
+    openAuthModal();
+    return;
+  }
+  var course = COURSES[courseIdx];
+  var form = document.createElement('form');
+  form.method = 'POST';
+  form.action = 'https://sandbox.payfast.co.za/eng/process';
+  var fields = {
+    merchant_id: '10000100',
+    merchant_key: '46f0cd694581a',
+    return_url: window.location.href + '?course_purchased=' + courseIdx,
+    cancel_url: window.location.href,
+    notify_url: 'https://natjezquifgddzzawhgo.supabase.co/functions/v1/payfast-webhook',
+    name_first: (currentUser.profile && currentUser.profile.full_name) || 'Zintsomi',
+    email_address: currentUser.email || '',
+    amount: COURSE_PRICE.toFixed(2),
+    item_name: 'Zintsomi Course: ' + (course ? course.title : 'Course'),
+    custom_str1: 'course_' + courseIdx,
+    custom_str2: currentUser.id
+  };
+  Object.keys(fields).forEach(function(k) {
+    var inp = document.createElement('input');
+    inp.type = 'hidden'; inp.name = k; inp.value = fields[k];
+    form.appendChild(inp);
+  });
+  document.body.appendChild(form);
+  form.submit();
+}
+
+// Check URL for course purchase return
+(function checkCourseReturn() {
+  var params = new URLSearchParams(window.location.search);
+  var ci = params.get('course_purchased');
+  if (ci !== null) {
+    try {
+      var bought = JSON.parse(localStorage.getItem('purchased_courses') || '{}');
+      bought[parseInt(ci)] = true;
+      localStorage.setItem('purchased_courses', JSON.stringify(bought));
+    } catch(e) {}
+    window.history.replaceState({}, '', window.location.pathname);
+    // Open the course they just bought
+    if (typeof _origSelectCourse === 'function') {
+      showWorld('courses');
+      setTimeout(function(){ _origSelectCourse(parseInt(ci)); }, 500);
+    }
+  }
+})();
 </script>
+
+  <!-- ═══ ADMIN WORLD ═══ -->
+  <div class="world" id="admin-world">
+    <!-- Hero -->
+    <div class="admin-hero">
+      <div class="ctr">
+        <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:#ff6b6b;margin-bottom:.5rem">🔑 Admin Panel</div>
+        <h1 style="font-family:var(--impact);font-size:clamp(2.5rem,5vw,5rem);letter-spacing:.06em;color:#fff;line-height:.9">ZINTSOMI<br><span style="color:#ff6b6b">STUDIO</span></h1>
+        <p style="font-size:.85rem;color:rgba(255,255,255,.4);margin-top:.6rem">Dr Sasa\'s command centre — manage videos, books, thoughts, and shop</p>
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="ctr" style="padding-top:1.5rem">
+      <div class="admin-stats">
+        <div class="admin-stat">
+          <div class="admin-stat-num" id="admin-stat-videos">—</div>
+          <div class="admin-stat-lbl">YouTube Videos</div>
+        </div>
+        <div class="admin-stat">
+          <div class="admin-stat-num" id="admin-stat-books">—</div>
+          <div class="admin-stat-lbl">Books in Shop</div>
+        </div>
+        <div class="admin-stat">
+          <div class="admin-stat-num" id="admin-stat-thoughts">—</div>
+          <div class="admin-stat-lbl">Thoughts Posted</div>
+        </div>
+        <div class="admin-stat">
+          <div class="admin-stat-num" id="admin-stat-members">—</div>
+          <div class="admin-stat-lbl">Members</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main grid -->
+    <div class="admin-grid ctr">
+
+      <!-- Sidebar -->
+      <div class="admin-sidebar">
+        <div class="admin-menu-item active" onclick="switchAdminPanel('videos',this)">
+          <i class="ph ph-youtube-logo"></i> YouTube Videos
+        </div>
+        <div class="admin-menu-item" onclick="switchAdminPanel('thoughts',this)">
+          <i class="ph ph-pencil-line"></i> Dr Sasa\'s Thoughts
+        </div>
+        <div class="admin-menu-item" onclick="switchAdminPanel('books',this)">
+          <i class="ph ph-books"></i> Books & Shop
+        </div>
+        <div class="admin-menu-item" onclick="switchAdminPanel('gallery',this)">
+          <i class="ph ph-image"></i> Photo Gallery
+        </div>
+        <div class="admin-menu-item" onclick="switchAdminPanel('courses',this)">
+          <i class="ph ph-graduation-cap"></i> Course Settings
+        </div>
+        <div class="admin-menu-item" onclick="switchAdminPanel('members',this)">
+          <i class="ph ph-users"></i> Members
+        </div>
+      </div>
+
+      <!-- Panels -->
+      <div style="min-width:0">
+
+        <!-- ── YOUTUBE PANEL ── -->
+        <div class="admin-panel active" id="panel-videos">
+          <div class="admin-section-title">YouTube Videos</div>
+          <div class="admin-section-sub">Paste a YouTube URL or video ID — it appears on the app instantly. No code changes needed.</div>
+
+          <div class="admin-card">
+            <div class="admin-card-title"><i class="ph ph-plus-circle"></i> Add New Video</div>
+            <input class="admin-input" id="yt-url-input" placeholder="Paste YouTube URL — e.g. https://youtu.be/aCNnn5FtX6E"/>
+            <input class="admin-input" id="yt-title-input" placeholder="Video title"/>
+            <input class="admin-input" id="yt-desc-input" placeholder="Short description (1–2 sentences)"/>
+            <select class="admin-input" id="yt-cat-input">
+              <option value="storytelling">Storytelling</option>
+              <option value="law">Law & Narrative</option>
+              <option value="schools">Schools</option>
+              <option value="culture">Music & Culture</option>
+              <option value="drsasa">Dr Sasa Talks</option>
+            </select>
+            <button class="admin-btn" onclick="adminAddVideo()"><i class="ph ph-plus"></i> Add Video</button>
+          </div>
+
+          <div class="admin-card">
+            <div class="admin-card-title"><i class="ph ph-list"></i> Your Videos</div>
+            <div id="admin-yt-list">
+              <!-- populated by JS -->
+              <div style="color:rgba(255,255,255,.25);font-size:.8rem;text-align:center;padding:1rem">Loading videos…</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── THOUGHTS PANEL ── -->
+        <div class="admin-panel" id="panel-thoughts">
+          <div class="admin-section-title">Dr Sasa\'s Thoughts</div>
+          <div class="admin-section-sub">Write a thought, reflection, or announcement. It appears immediately on the Blog / Dr Sasa\'s Corner on the home page.</div>
+
+          <div class="admin-card">
+            <div class="admin-card-title"><i class="ph ph-pencil-line"></i> Write a New Post</div>
+            <input class="admin-input" id="thought-title" placeholder="Title (optional — leave blank for a quote-style post)"/>
+            <textarea class="admin-input admin-textarea" id="thought-body" placeholder="Write your thought here — a reflection, a proverb, a story opening, an announcement..."></textarea>
+            <select class="admin-input" id="thought-type">
+              <option value="thought">💭 Thought / Reflection</option>
+              <option value="quote">💬 Quote / Proverb</option>
+              <option value="announcement">📣 Announcement</option>
+              <option value="story">📖 Story Extract</option>
+            </select>
+            <div style="display:flex;gap:.5rem;align-items:center">
+              <button class="admin-btn" onclick="adminPostThought()"><i class="ph ph-paper-plane-tilt"></i> Post Now</button>
+              <button class="admin-btn secondary" onclick="adminPreviewThought()"><i class="ph ph-eye"></i> Preview</button>
+            </div>
+            <div class="thought-preview" id="thought-preview" style="display:none"></div>
+          </div>
+
+          <div class="admin-card">
+            <div class="admin-card-title"><i class="ph ph-clock-counter-clockwise"></i> Recent Posts</div>
+            <div id="admin-thoughts-list">
+              <div style="color:rgba(255,255,255,.25);font-size:.8rem;text-align:center;padding:1rem">Loading posts…</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── BOOKS & SHOP PANEL ── -->
+        <div class="admin-panel" id="panel-books">
+          <div class="admin-section-title">Books & Shop</div>
+          <div class="admin-section-sub">Add Dr Sasa\'s books for sale. People can buy directly from the app. Set price in Rands — PayFast handles payment.</div>
+
+          <div class="admin-card">
+            <div class="admin-card-title"><i class="ph ph-plus-circle"></i> Add Book to Shop</div>
+            <input class="admin-input" id="book-title" placeholder="Book title"/>
+            <input class="admin-input" id="book-author" placeholder="Author (default: Dr Nomsa Sasa Mdlalose)"/>
+            <textarea class="admin-input admin-textarea" id="book-desc" placeholder="Book description — what will the reader learn?" style="min-height:80px"></textarea>
+            <input class="admin-input" id="book-price" placeholder="Price in Rands — e.g. 250" type="number"/>
+            <input class="admin-input" id="book-cover" placeholder="Cover image URL (paste a link to the image)"/>
+            <select class="admin-input" id="book-type">
+              <option value="physical">📦 Physical Book (shipped)</option>
+              <option value="ebook">📱 eBook (instant download)</option>
+              <option value="both">📦📱 Both (physical + eBook)</option>
+            </select>
+            <input class="admin-input" id="book-pdf" placeholder="PDF download link (for eBooks — optional)"/>
+            <button class="admin-btn" onclick="adminAddBook()"><i class="ph ph-plus"></i> Add to Shop</button>
+          </div>
+
+          <div class="admin-card">
+            <div class="admin-card-title"><i class="ph ph-storefront"></i> Books in Shop</div>
+            <div id="admin-books-list">
+              <div style="color:rgba(255,255,255,.25);font-size:.8rem;text-align:center;padding:1rem">Loading books…</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── GALLERY PANEL ── -->
+        <div class="admin-panel" id="panel-gallery">
+          <div class="admin-section-title">Photo Gallery</div>
+          <div class="admin-section-sub">Add photos from events, shows, the centre. They appear in the Blog world and the home page.</div>
+
+          <div class="admin-card">
+            <div class="admin-card-title"><i class="ph ph-image-square-plus"></i> Add Photo</div>
+            <input class="admin-input" id="photo-url" placeholder="Image URL — paste a link to the photo"/>
+            <input class="admin-input" id="photo-caption" placeholder="Caption — what is happening in this photo?"/>
+            <input class="admin-input" id="photo-event" placeholder="Event name — e.g. Storytelling Night, Midrand"/>
+            <button class="admin-btn" onclick="adminAddPhoto()"><i class="ph ph-plus"></i> Add Photo</button>
+          </div>
+
+          <div class="admin-card">
+            <div class="admin-card-title"><i class="ph ph-images"></i> Recent Photos</div>
+            <div id="admin-gallery-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.6rem">
+              <div style="color:rgba(255,255,255,.25);font-size:.8rem;text-align:center;padding:1rem;grid-column:1/-1">Loading…</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── COURSE SETTINGS PANEL ── -->
+        <div class="admin-panel" id="panel-courses">
+          <div class="admin-section-title">Course Settings</div>
+          <div class="admin-section-sub">Enable or disable courses, set prices, and manage course visibility.</div>
+          <div class="admin-card">
+            <div class="admin-card-title"><i class="ph ph-toggle-right"></i> Course Visibility</div>
+            <div id="admin-courses-list">
+              <div style="color:rgba(255,255,255,.25);font-size:.8rem;text-align:center;padding:1rem">Loading courses…</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── MEMBERS PANEL ── -->
+        <div class="admin-panel" id="panel-members">
+          <div class="admin-section-title">Members</div>
+          <div class="admin-section-sub">View members, upgrade to Premium, or grant Admin access.</div>
+          <div class="admin-card">
+            <div class="admin-card-title"><i class="ph ph-users"></i> Member List</div>
+            <input class="admin-input" id="member-search" placeholder="Search by name or email…" oninput="adminSearchMembers(this.value)"/>
+            <div id="admin-members-list">
+              <div style="color:rgba(255,255,255,.25);font-size:.8rem;text-align:center;padding:1rem">Loading members…</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /panels -->
+    </div><!-- /admin-grid -->
+
+    <!-- Admin toast notification -->
+    <div class="admin-toast" id="admin-toast"></div>
+  </div><!-- /admin-world -->
+
+  <!-- ═══ VR PAYWALL ═══ -->
+  <div id="vr-paywall">
+    <div class="vr-pw-inner">
+      <div class="vr-pw-hero">
+        <span class="vr-pw-icon">🥽</span>
+        <div class="vr-pw-title">VR <em>Story</em><br>Village</div>
+        <p class="vr-pw-sub">Immersive African storytelling in 6 languages.<br>8 story pods · Stereoscopic VR · Izibongo AI · Dr Sasa's books</p>
+      </div>
+      <div class="vr-pw-plans">
+        <div class="vr-pw-plan popular" id="vr-plan-annual" onclick="selectVRPlan('annual')">
+          <div class="vr-popular-tag">Best Value</div>
+          <div class="vr-pw-plan-name">Annual Access</div>
+          <div class="vr-pw-plan-price">R1,100 <span>/ year</span></div>
+          <div class="vr-pw-plan-desc">Full VR Village access for 12 months · Unlimited story pods · All future stories included</div>
+        </div>
+        <div class="vr-pw-plan" id="vr-plan-sixmonth" onclick="selectVRPlan('sixmonth')">
+          <div class="vr-pw-plan-name">6-Month Access</div>
+          <div class="vr-pw-plan-price">R650 <span>/ 6 months</span></div>
+          <div class="vr-pw-plan-desc">Full VR Village access for 6 months · All 8 story pods</div>
+        </div>
+        <button class="vr-pw-cta" id="vr-pw-cta-btn" onclick="purchaseVRAccess()">
+          🥽 Unlock VR Village — R1,100/year
+        </button>
+        <button class="vr-pw-close" onclick="closeVRPaywall()">
+          No thanks — go back
+        </button>
+        <div id="vr-pw-login-note" style="text-align:center;margin-top:.5rem;font-size:.72rem;color:rgba(255,255,255,.25)">
+          Already purchased? <button onclick="openAuthModal()" style="background:none;border:none;color:var(--acid);font-family:var(--mono);font-size:.5rem;cursor:pointer;text-decoration:underline">Log in</button> to restore access.
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
