@@ -372,8 +372,8 @@ nav{
 }
 .back-home-btn:hover{background:var(--fire);color:#fff;border-color:var(--fire);box-shadow:0 4px 20px rgba(245,118,26,.35)}
 .back-home-btn.visible{opacity:1;pointer-events:auto;transform:translateY(0)}
-.back-intro-btn{position:fixed;bottom:1.8rem;left:8.5rem;z-index:801;width:40px;height:40px;border-radius:50%;background:rgba(14,16,22,.92);backdrop-filter:blur(16px);border:1.5px solid rgba(245,118,26,.35);color:var(--fire);font-size:1rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;opacity:1;pointer-events:auto;}
-.back-intro-btn:hover{background:rgba(245,118,26,.2);color:var(--fire);border-color:var(--fire);opacity:1}
+
+
 
 
 /* ═══ SUDOKU ═══ */
@@ -3026,12 +3026,12 @@ body::after{
     <p>Africa's Storytelling World · 2026</p>
   </div>
   <button id="skip-btn">Skip Intro</button>
+  <button id="replay-btn" onclick="replayIntro()" style="position:absolute;bottom:2rem;left:2rem;z-index:3;background:rgba(14,16,22,.7);backdrop-filter:blur(12px);border:1.5px solid rgba(245,118,26,.5);border-radius:100px;color:var(--fire);font-family:var(--mono);font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;padding:.55rem 1.2rem;cursor:pointer;display:none;align-items:center;gap:.5rem;transition:all .2s"><i class="ph ph-arrow-counter-clockwise"></i> Replay</button>
 </div>
 
 <div id="site">
 
-<button class="back-home-btn" id="back-home-btn" onclick="showWorld('home')"><i class="ph ph-arrow-left"></i> Home</button>
-<button class="back-intro-btn" id="back-intro-btn" onclick="replayIntro()" title="Replay intro animation"><i class="ph ph-arrow-counter-clockwise"></i></button>
+<button class="back-home-btn" id="back-home-btn" onclick="showWorld('home')"><i class="ph ph-arrow-left"></i> Back</button>
 
   <nav>
     <div class="nstrip"></div>
@@ -4396,7 +4396,7 @@ body::after{
             <em>Built for</em><br>
             Every Human Being.
           </p>
-          <div class="home-hero-btns">
+          <div class="home-hero-btns"><button id="home-replay-btn" onclick="replayIntro()" style="display:none;align-items:center;gap:.5rem;background:rgba(14,16,22,.8);backdrop-filter:blur(12px);border:1.5px solid rgba(245,118,26,.4);border-radius:100px;color:var(--fire);font-family:var(--mono);font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;padding:.55rem 1.2rem;cursor:pointer;transition:all .2s;margin-bottom:.5rem" onmouseover="this.style.background='rgba(245,118,26,.15)'" onmouseout="this.style.background='rgba(14,16,22,.8)'"><i class="ph ph-arrow-counter-clockwise"></i>&nbsp; Replay Intro</button>
             <button class="btn" style="font-size:.95rem;padding:.9rem 2.2rem;letter-spacing:.06em" onclick="showWorld('courses')"><i class="ph ph-books"></i> Start Learning</button>
           </div>
         </div>
@@ -5433,6 +5433,9 @@ function endIntro(){
   document.getElementById('site').classList.add('show');
   setTimeout(function(){document.getElementById('intro').style.display='none'},1500);
   initAll();
+  // Show replay button on the home world hero
+  var rb = document.getElementById('home-replay-btn');
+  if(rb) rb.style.display='inline-flex';
 }
 
 document.getElementById('skip-btn').onclick=function(){endIntro()};
