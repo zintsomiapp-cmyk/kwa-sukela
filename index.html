@@ -3012,6 +3012,68 @@ body::after{
   font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;
   text-transform:uppercase;color:var(--acid);margin-top:1rem;
 }
+
+/* ═══════════════════════════════════════
+   VR ENHANCEMENTS v14 — ZINTSOMI
+   1. Living Fireside 360° scene
+   2. Ancestor Theatre 360° shadow puppets
+   3. Izibongo fire-text sky animation
+   4. Story Journey Map — hover Africa
+   5. School Group Mode
+═══════════════════════════════════════ */
+
+/* ── FIRESIDE SCENE ── */
+#vr-fireside-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.vr-scene-selector{display:flex;gap:.4rem;flex-wrap:wrap;padding:.6rem 1rem;background:rgba(0,0,0,.6);border-bottom:1px solid rgba(255,255,255,.06)}
+.vr-scene-pill{font-family:var(--mono);font-size:.42rem;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .7rem;border-radius:100px;cursor:pointer;transition:all .2s;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);background:rgba(0,0,0,.5)}
+.vr-scene-pill.active{background:var(--acid);color:#000;border-color:var(--acid)}
+.vr-scene-pill:hover{border-color:var(--acid);color:var(--acid)}
+
+/* ── ANCESTOR THEATRE ── */
+#vr-ancestor-canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.vr-theatre-hud{position:absolute;top:.6rem;left:50%;transform:translateX(-50%);z-index:6;display:flex;align-items:center;gap:.6rem;background:rgba(0,0,0,.7);border:1px solid rgba(255,120,0,.25);border-radius:100px;padding:.25rem .8rem}
+.vr-theatre-compass{font-family:var(--mono);font-size:.42rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,160,30,.7)}
+.vr-theatre-direction{color:var(--ember);font-weight:700}
+.vr-lang-row{display:flex;gap:.3rem;flex-wrap:wrap;padding:.5rem 1rem;background:rgba(0,0,0,.5);border-bottom:1px solid rgba(255,255,255,.05)}
+.vr-lang-btn{font-family:var(--mono);font-size:.42rem;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .55rem;border-radius:100px;cursor:pointer;border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.4);background:none;transition:all .18s}
+.vr-lang-btn.active,.vr-lang-btn:hover{background:rgba(245,118,26,.2);border-color:var(--fire);color:var(--fire)}
+
+/* ── IZIBONGO FIRE TEXT SKY ── */
+.vr-firetext-overlay{position:absolute;inset:0;pointer-events:none;z-index:8;overflow:hidden}
+.vr-firetext-line{position:absolute;left:50%;transform:translateX(-50%);font-family:var(--serif);font-weight:700;text-align:center;white-space:nowrap;opacity:0;animation:ftRise 4s ease-out forwards}
+@keyframes ftRise{0%{opacity:0;bottom:-10%;font-size:1.2rem;color:#F5761A;text-shadow:0 0 20px rgba(245,118,26,.8)}30%{opacity:1}70%{opacity:.9;color:#F5A040;text-shadow:0 0 30px rgba(245,160,64,.6)}100%{opacity:0;bottom:85%;color:#FFD700;font-size:.9rem;text-shadow:0 0 40px rgba(255,215,0,.3)}}
+
+/* ── STORY MAP ── */
+.vr-map-wrap{position:relative;background:#020810;border-radius:12px;overflow:hidden;margin:.5rem 0}
+#vr-map-canvas{display:block;width:100%;height:220px}
+.vr-map-caption{font-family:var(--mono);font-size:.46rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,240,74,.5);text-align:center;padding:.4rem;background:rgba(0,0,0,.6)}
+
+/* ── SCHOOL GROUP MODE ── */
+.vr-school-wrap{padding:.2rem 0}
+.vr-school-header{display:flex;align-items:center;gap:.7rem;margin-bottom:.8rem}
+.vr-school-icon{font-size:1.6rem}
+.vr-school-title{font-family:var(--display);font-size:.85rem;font-weight:700;color:#fff}
+.vr-school-sub{font-size:.72rem;color:rgba(255,255,255,.4);line-height:1.5}
+.vr-room-row{display:flex;gap:.5rem;align-items:stretch;margin-bottom:.6rem}
+.vr-room-input{flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.55rem .9rem;font-family:var(--mono);font-size:.85rem;letter-spacing:.18em;text-transform:uppercase;color:#fff;text-align:center;outline:none}
+.vr-room-input:focus{border-color:var(--acid)}
+.vr-room-btn{background:var(--acid);color:#000;border:none;border-radius:8px;padding:.55rem 1.1rem;font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s;white-space:nowrap}
+.vr-room-btn:hover{background:#d8ff30}
+.vr-school-students{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:.4rem;margin-top:.6rem}
+.vr-student-dot{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:.4rem .3rem;text-align:center;font-family:var(--mono);font-size:.44rem;letter-spacing:.06em;color:rgba(255,255,255,.4);transition:all .3s}
+.vr-student-dot.connected{border-color:rgba(200,240,74,.4);background:rgba(200,240,74,.06);color:var(--acid)}
+.vr-teacher-ctrl{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.6rem;padding-top:.6rem;border-top:1px solid rgba(255,255,255,.06)}
+.vr-teacher-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.4rem .8rem;font-family:var(--display);font-size:.52rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7);cursor:pointer;transition:all .18s}
+.vr-teacher-btn:hover{background:rgba(245,118,26,.15);border-color:var(--fire);color:var(--fire)}
+.vr-teacher-btn.danger:hover{background:rgba(255,80,80,.15);border-color:rgba(255,80,80,.5);color:#ff8888}
+.vr-school-status{font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:.4rem}
+.vr-school-status.live{color:var(--acid)}
+
+/* ── PWA INSTALL BANNER ── */
+.vr-pwa-banner{display:none;align-items:center;gap:.7rem;background:rgba(200,240,74,.08);border:1px solid rgba(200,240,74,.2);border-radius:10px;padding:.7rem 1rem;margin:.5rem 0}
+.vr-pwa-banner.show{display:flex}
+.vr-pwa-text{flex:1;font-size:.72rem;color:rgba(255,255,255,.7);line-height:1.5}
+.vr-pwa-install-btn{background:var(--acid);color:#000;border:none;border-radius:6px;padding:.4rem .9rem;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -4220,6 +4282,10 @@ body::after{
           <button class="vr-stab" onclick="switchVRTab('howto',this)">🥽 How to Use VR</button>
           <button class="vr-stab" onclick="switchVRTab('izibongo',this)">🪄 Izibongo AI</button>
           <button class="vr-stab" onclick="switchVRTab('community',this)">🌍 Community Voices</button>
+          <button class="vr-stab" onclick="switchVRTab('fireside',this)">🔥 Fireside 360°</button>
+          <button class="vr-stab" onclick="switchVRTab('theatre',this)">🎭 Ancestor Theatre</button>
+          <button class="vr-stab" onclick="switchVRTab('map',this)">🗺 Story Map</button>
+          <button class="vr-stab" onclick="switchVRTab('school',this)">🏫 School Mode</button>
         </div>
 
         <!-- STORY TAB -->
@@ -4357,6 +4423,145 @@ body::after{
               <div style="text-align:center;margin-top:1rem">
                 <div style="font-size:.75rem;color:rgba(255,255,255,.25);line-height:1.7">
                   Your recorded story joins this pod permanently.<br>Every voice here chose to say: <em style="color:rgba(255,255,255,.4)">"This story matters."</em>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ FIRESIDE 360° TAB ══ -->
+        <div class="vr-tab-pane" id="vr-tab-fireside">
+          <div style="margin-bottom:.6rem">
+            <div style="font-family:var(--display);font-size:.8rem;font-weight:700;color:#fff;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.2rem">🔥 Living Fireside — 360° African Night</div>
+            <div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3)">Put your phone in cardboard glasses · Tilt to look around the fire</div>
+          </div>
+          <div class="vr-scene-selector">
+            <button class="vr-scene-pill active" id="fs-pill-fire" onclick="setFiresideScene('fire',this)">🔥 Fireside</button>
+            <button class="vr-scene-pill" id="fs-pill-stars" onclick="setFiresideScene('stars',this)">✨ Star Night</button>
+            <button class="vr-scene-pill" id="fs-pill-dawn" onclick="setFiresideScene('dawn',this)">🌅 African Dawn</button>
+            <button class="vr-scene-pill" id="fs-pill-storm" onclick="setFiresideScene('storm',this)">⛈ Storm</button>
+          </div>
+          <div style="position:relative;background:#000;aspect-ratio:2/0.9;overflow:hidden;border-radius:0 0 8px 8px">
+            <canvas id="vr-fireside-canvas"></canvas>
+            <div id="vr-fireside-divider" style="position:absolute;left:50%;top:0;bottom:0;width:3px;background:#000;z-index:2;display:none"></div>
+            <div style="position:absolute;bottom:.5rem;left:50%;transform:translateX(-50%);z-index:4;font-family:var(--mono);font-size:.4rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,240,74,.55);background:rgba(0,0,0,.65);padding:.18rem .7rem;border-radius:100px;white-space:nowrap">● STEREO VR — place phone in glasses</div>
+            <div id="vr-fireside-story-text" style="position:absolute;top:12%;left:50%;transform:translateX(-50%);z-index:5;font-family:var(--serif);font-size:clamp(.7rem,2.5vw,1.1rem);color:rgba(245,180,80,.85);text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.9);pointer-events:none;max-width:80%;line-height:1.6"></div>
+            <div class="vr-firetext-overlay" id="vr-firetext-overlay"></div>
+          </div>
+          <div style="display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap">
+            <button onclick="toggleFiresideStereo()" style="background:rgba(200,240,74,.1);border:1px solid rgba(200,240,74,.25);border-radius:6px;padding:.38rem .8rem;font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:var(--acid);cursor:pointer" id="fs-stereo-btn">🥽 Enable Stereo Split</button>
+            <button onclick="firesideNextLine()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.38rem .8rem;font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);cursor:pointer">📖 Next Story Line</button>
+            <button onclick="firesideSpeak()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.38rem .8rem;font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);cursor:pointer">🔊 Speak It</button>
+          </div>
+        </div>
+
+        <!-- ══ ANCESTOR THEATRE TAB ══ -->
+        <div class="vr-tab-pane" id="vr-tab-theatre">
+          <div style="margin-bottom:.5rem">
+            <div style="font-family:var(--display);font-size:.8rem;font-weight:700;color:#fff;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.2rem">🎭 Ancestor Theatre — 360° Shadow Puppets</div>
+            <div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3)">Tilt left/right to reveal different story threads · Stereo VR ready</div>
+          </div>
+          <div class="vr-lang-row">
+            <button class="vr-lang-btn active" onclick="setTheatreLang('zu',this)">isiZulu</button>
+            <button class="vr-lang-btn" onclick="setTheatreLang('xh',this)">isiXhosa</button>
+            <button class="vr-lang-btn" onclick="setTheatreLang('st',this)">Sesotho</button>
+            <button class="vr-lang-btn" onclick="setTheatreLang('tn',this)">Setswana</button>
+            <button class="vr-lang-btn" onclick="setTheatreLang('ve',this)">Tshivenda</button>
+            <button class="vr-lang-btn" onclick="setTheatreLang('en',this)">English</button>
+          </div>
+          <div style="position:relative;background:#000;aspect-ratio:2/0.9;overflow:hidden;border-radius:0 0 8px 8px">
+            <canvas id="vr-ancestor-canvas"></canvas>
+            <div id="vr-theatre-divider" style="position:absolute;left:50%;top:0;bottom:0;width:3px;background:#000;z-index:2;display:none"></div>
+            <div class="vr-theatre-hud">
+              <span class="vr-theatre-compass">Looking: </span>
+              <span class="vr-theatre-direction" id="theatre-dir-label">FRONT — Main Story</span>
+            </div>
+            <div id="vr-theatre-caption" style="position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:5;font-family:var(--serif);font-size:clamp(.65rem,2vw,1rem);color:rgba(255,220,150,.9);text-align:center;text-shadow:0 2px 12px rgba(0,0,0,.95);pointer-events:none;max-width:85%;line-height:1.6;background:rgba(0,0,0,.55);padding:.3rem .8rem;border-radius:6px"></div>
+            <div style="position:absolute;bottom:.3rem;left:50%;transform:translateX(-50%);z-index:4;font-family:var(--mono);font-size:.38rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,240,74,.5);white-space:nowrap">● STEREO VR READY</div>
+          </div>
+          <div style="display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap">
+            <button onclick="toggleTheatreStereo()" style="background:rgba(200,240,74,.1);border:1px solid rgba(200,240,74,.25);border-radius:6px;padding:.38rem .8rem;font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:var(--acid);cursor:pointer" id="th-stereo-btn">🥽 Enable Stereo Split</button>
+            <button onclick="theatreNextScene()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.38rem .8rem;font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);cursor:pointer">▶ Next Scene</button>
+            <button onclick="theatreSpeak()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.38rem .8rem;font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);cursor:pointer">🔊 Speak</button>
+          </div>
+        </div>
+
+        <!-- ══ STORY MAP TAB ══ -->
+        <div class="vr-tab-pane" id="vr-tab-map">
+          <div style="margin-bottom:.6rem">
+            <div style="font-family:var(--display);font-size:.8rem;font-weight:700;color:#fff;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.2rem">🗺 Story Journey Map — Float Above Africa</div>
+            <div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.5rem">Tap a glowing node to enter that region's story</div>
+          </div>
+          <div class="vr-map-wrap">
+            <canvas id="vr-map-canvas"></canvas>
+            <div class="vr-map-caption" id="vr-map-caption">● Float above Africa — tap a story node to dive in</div>
+          </div>
+          <div id="vr-map-story-reveal" style="display:none;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:1rem;margin-top:.5rem">
+            <div style="font-family:var(--mono);font-size:.44rem;letter-spacing:.12em;text-transform:uppercase;color:var(--acid);margin-bottom:.3rem" id="vr-map-region-label">Region</div>
+            <div style="font-family:var(--serif);font-size:1rem;font-weight:700;color:#fff;margin-bottom:.3rem" id="vr-map-story-title">Story Title</div>
+            <div style="font-size:.8rem;color:rgba(255,255,255,.5);line-height:1.7" id="vr-map-story-body">Story text...</div>
+            <div style="display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap">
+              <button onclick="mapEnterVR()" style="background:var(--acid);color:#000;border:none;border-radius:6px;padding:.4rem .9rem;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">🥽 Enter in VR</button>
+              <button onclick="mapSpeak()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.4rem .9rem;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.6);cursor:pointer">🔊 Hear It</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SCHOOL GROUP MODE TAB ══ -->
+        <div class="vr-tab-pane" id="vr-tab-school">
+          <div class="vr-school-wrap">
+            <div class="vr-school-header">
+              <div class="vr-school-icon">🏫</div>
+              <div>
+                <div class="vr-school-title">School Group Mode</div>
+                <div class="vr-school-sub">Teacher shares a room code. Up to 30 students sync to the same story. Teacher controls play, pause, and quiz from one screen.</div>
+              </div>
+            </div>
+            <div class="vr-pwa-banner" id="vr-pwa-banner">
+              <span style="font-size:1.2rem">📲</span>
+              <div class="vr-pwa-text"><strong style="color:#fff">Add to Home Screen</strong> — works like an app, saves data, works offline for downloaded stories.</div>
+              <button class="vr-pwa-install-btn" onclick="triggerPWAInstall()">Install</button>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.8rem">
+              <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:.7rem">
+                <div style="font-family:var(--mono);font-size:.44rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.4rem">Teacher — Create Room</div>
+                <div class="vr-room-row">
+                  <input class="vr-room-input" id="teacher-name-input" placeholder="Your name" style="text-transform:none;letter-spacing:0;font-size:.75rem;font-family:var(--display)" maxlength="30">
+                </div>
+                <button class="vr-room-btn" style="width:100%" onclick="createSchoolRoom()">Create Room</button>
+                <div id="teacher-room-code" style="display:none;margin-top:.5rem;text-align:center">
+                  <div style="font-family:var(--mono);font-size:.44rem;letter-spacing:.1em;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:.2rem">Share this code with students</div>
+                  <div style="font-family:var(--impact);font-size:2rem;letter-spacing:.2em;color:var(--acid)" id="room-code-display">----</div>
+                </div>
+              </div>
+              <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:.7rem">
+                <div style="font-family:var(--mono);font-size:.44rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.4rem">Student — Join Room</div>
+                <div class="vr-room-row">
+                  <input class="vr-room-input" id="student-room-input" placeholder="ROOM" maxlength="4">
+                  <button class="vr-room-btn" onclick="joinSchoolRoom()">Join</button>
+                </div>
+                <div id="student-join-status" style="font-family:var(--mono);font-size:.44rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:.4rem;text-align:center"></div>
+              </div>
+            </div>
+            <div id="school-room-panel" style="display:none">
+              <div style="font-family:var(--mono);font-size:.44rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.4rem">Students Connected</div>
+              <div class="vr-school-students" id="school-students-grid">
+                <div class="vr-student-dot">Waiting...</div>
+              </div>
+              <div class="vr-school-status live" id="school-status-label">● Room open — waiting for students</div>
+              <div class="vr-teacher-ctrl">
+                <button class="vr-teacher-btn" onclick="schoolBroadcast('play')">▶ Play All</button>
+                <button class="vr-teacher-btn" onclick="schoolBroadcast('pause')">⏸ Pause All</button>
+                <button class="vr-teacher-btn" onclick="schoolNextStory()">⏭ Next Story</button>
+                <button class="vr-teacher-btn" onclick="schoolLaunchQuiz()">📝 Quick Quiz</button>
+                <button class="vr-teacher-btn danger" onclick="closeSchoolRoom()">✕ End Room</button>
+              </div>
+              <div id="school-quiz-panel" style="display:none;margin-top:.6rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:.8rem">
+                <div style="font-family:var(--display);font-size:.75rem;font-weight:700;color:#fff;margin-bottom:.5rem">Quick Quiz</div>
+                <input id="quiz-question-input" style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.45rem .8rem;font-family:var(--display);font-size:.75rem;color:#fff;outline:none;margin-bottom:.4rem" placeholder="Type your question...">
+                <div style="display:flex;gap:.3rem">
+                  <button onclick="schoolSendQuiz()" style="background:var(--fire);border:none;color:#fff;border-radius:6px;padding:.4rem .9rem;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Send to Students</button>
+                  <button onclick="document.getElementById('school-quiz-panel').style.display='none'" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.4rem .9rem;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5);cursor:pointer">Cancel</button>
                 </div>
               </div>
             </div>
@@ -10748,5 +10953,825 @@ function purchaseCourse(courseIdx) {
       </div>
     </div>
   </div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   ZINTSOMI VR v14 — NEW FEATURE ENGINES
+   1. Living Fireside 360° scene + stereo
+   2. Ancestor Theatre 360° shadow puppets
+   3. Izibongo fire-text sky overlay (enhanced)
+   4. Story Journey Map
+   5. School Group Mode (local simulation)
+   6. PWA Install Banner
+═══════════════════════════════════════════════════════ */
+
+/* ─── UTILS ─── */
+var TAU = Math.PI * 2;
+function lerp(a,b,t){ return a+(b-a)*t; }
+
+/* ═══════════════════════════
+   1. LIVING FIRESIDE 360°
+═══════════════════════════ */
+var fsScene = 'fire';
+var fsFrame = 0;
+var fsStereo = false;
+var fsRAF = null;
+var fsParticles = [];
+var fsStars = [];
+var fsStoryLines = [
+  'Kwasukasukela… there was a fire that never died.',
+  'The grandmother sat. The children leaned in.',
+  '"Listen," she said. "The fire remembers everything."',
+  'Even the night went quiet to hear her voice.',
+  'This is how it was. This is how it will always be.',
+  'Iqiniso — the truth lives in the flame.',
+  'Amadlozi silalelani — ancestors, we are listening.',
+  'Lala kahle, indaba iyaqhubeka — sleep well, the story continues.'
+];
+var fsLineIdx = 0;
+var fsMouse = {yaw:0};
+
+function initFiresideParticles(){
+  fsParticles = [];
+  for(var i=0;i<80;i++){
+    fsParticles.push({
+      x:.42+Math.random()*.16, y:.6+Math.random()*.2,
+      vx:(Math.random()-.5)*.003, vy:-(Math.random()*.009+.004),
+      life:Math.random(), size:Math.random()*3+1, hue:Math.random()*35+5
+    });
+  }
+  fsStars = [];
+  for(var j=0;j<160;j++){
+    fsStars.push({x:Math.random(),y:Math.random()*.55,r:Math.random()*1.3+.25,twinkle:Math.random()*TAU});
+  }
+}
+
+function drawFiresideSide(ctx,ox,w,h,yawOff){
+  /* sky gradient */
+  var bg = ctx.createLinearGradient(ox,0,ox,h);
+  if(fsScene==='fire'){
+    bg.addColorStop(0,'#040208');bg.addColorStop(.5,'#0a0305');bg.addColorStop(1,'#1a0600');
+  } else if(fsScene==='stars'){
+    bg.addColorStop(0,'#020410');bg.addColorStop(.6,'#050818');bg.addColorStop(1,'#080808');
+  } else if(fsScene==='dawn'){
+    bg.addColorStop(0,'#0a0318');bg.addColorStop(.4,'#2a0a04');bg.addColorStop(.7,'#5a1800');bg.addColorStop(1,'#8a3000');
+  } else { /* storm */
+    bg.addColorStop(0,'#020305');bg.addColorStop(.5,'#08080f');bg.addColorStop(1,'#0a0508');
+  }
+  ctx.fillStyle=bg; ctx.fillRect(ox,0,w,h);
+
+  /* panoramic offset from yaw */
+  var shift = ((yawOff / TAU) * w * 2) % w;
+
+  /* stars */
+  fsStars.forEach(function(s){
+    var tw=Math.sin(fsFrame*.025+s.twinkle);
+    var sx=(ox + ((s.x*w*1.8 + shift) % (w*1.5))) % (ox+w*1.5);
+    if(sx < ox || sx > ox+w) return;
+    ctx.beginPath();
+    ctx.arc(sx, s.y*h, s.r*(fsScene==='storm'?.4:1), 0, TAU);
+    var alpha = fsScene==='storm' ? .15 : (.45+tw*.35);
+    ctx.fillStyle = fsScene==='dawn' ? 'rgba(255,200,150,'+alpha+')' : 'rgba(255,240,200,'+alpha+')';
+    ctx.fill();
+  });
+
+  /* scene-specific elements */
+  if(fsScene==='fire'){
+    /* ground glow */
+    var gg=ctx.createRadialGradient(ox+w/2,h,0,ox+w/2,h,w*.5);
+    gg.addColorStop(0,'rgba(180,60,0,.45)');gg.addColorStop(.5,'rgba(120,30,0,.18)');gg.addColorStop(1,'transparent');
+    ctx.fillStyle=gg; ctx.fillRect(ox,0,w,h);
+    /* ground */
+    ctx.fillStyle='rgba(20,8,2,.95)'; ctx.fillRect(ox,h*.8,w,h*.2);
+    /* fire particles */
+    fsParticles.forEach(function(p){
+      var px=ox+p.x*w, py=p.y*h;
+      var pg=ctx.createRadialGradient(px,py,0,px,py,p.size*3);
+      pg.addColorStop(0,'hsla('+(p.hue)+',100%,88%,'+p.alpha+')');
+      pg.addColorStop(.4,'hsla('+(p.hue-10)+',100%,55%,'+(p.alpha*.7)+')');
+      pg.addColorStop(1,'transparent');
+      ctx.fillStyle=pg; ctx.beginPath(); ctx.arc(px,py,p.size*3,0,TAU); ctx.fill();
+    });
+    /* log silhouettes */
+    ctx.fillStyle='rgba(8,3,1,.95)';
+    ctx.beginPath();ctx.ellipse(ox+w*.38,h*.85,w*.09,h*.025,-.3,0,TAU);ctx.fill();
+    ctx.beginPath();ctx.ellipse(ox+w*.58,h*.84,w*.1,h*.022,.25,0,TAU);ctx.fill();
+  } else if(fsScene==='stars'){
+    /* moon */
+    var mg=ctx.createRadialGradient(ox+w*.22,h*.14,0,ox+w*.22,h*.14,h*.09);
+    mg.addColorStop(0,'rgba(255,245,200,.95)');mg.addColorStop(.5,'rgba(255,230,160,.5)');mg.addColorStop(1,'transparent');
+    ctx.fillStyle=mg; ctx.beginPath(); ctx.arc(ox+w*.22,h*.14,h*.065,0,TAU); ctx.fill();
+    /* milky way band */
+    for(var mi=0;mi<40;mi++){
+      var mx=ox+w*(.3+Math.cos(mi*.28)*.42+mi*.012), my=h*(.08+mi*.018);
+      if(mx<ox||mx>ox+w) continue;
+      ctx.beginPath(); ctx.arc(mx,my,.8,0,TAU);
+      ctx.fillStyle='rgba(180,200,255,'+(Math.random()*.45+.1)+')'; ctx.fill();
+    }
+    /* horizon silhouette */
+    ctx.fillStyle='#030103';
+    ctx.beginPath(); ctx.moveTo(ox,h);
+    for(var xi=0;xi<=w;xi+=6){
+      ctx.lineTo(ox+xi,h*(.76-Math.abs(Math.sin(xi*.06+fsFrame*.008))*.1-Math.abs(Math.sin(xi*.14))*.05));
+    }
+    ctx.lineTo(ox+w,h); ctx.closePath(); ctx.fill();
+  } else if(fsScene==='dawn'){
+    /* rising sun */
+    var sunY = h*(.65 - (fsFrame%300)/300*.25);
+    var sg=ctx.createRadialGradient(ox+w*.5,sunY,0,ox+w*.5,sunY,w*.5);
+    sg.addColorStop(0,'rgba(255,180,30,.8)');sg.addColorStop(.3,'rgba(255,100,10,.35)');sg.addColorStop(.6,'rgba(200,40,0,.12)');sg.addColorStop(1,'transparent');
+    ctx.fillStyle=sg; ctx.fillRect(ox,0,w,h);
+    ctx.fillStyle='rgba(255,160,20,.9)'; ctx.beginPath(); ctx.arc(ox+w*.5,sunY,h*.055,0,TAU); ctx.fill();
+    /* acacia silhouette */
+    ctx.fillStyle='#080200';
+    ctx.fillRect(ox+w*.12,h*.55,w*.02,h*.35);
+    ctx.beginPath(); ctx.arc(ox+w*.13,h*.52,w*.09,0,TAU); ctx.fill();
+    ctx.beginPath(); ctx.arc(ox+w*.08,h*.55,w*.06,0,TAU); ctx.fill();
+    ctx.fillRect(ox+w*.7,h*.5,w*.018,h*.38);
+    ctx.beginPath(); ctx.arc(ox+w*.71,h*.47,w*.1,0,TAU); ctx.fill();
+    /* ground */
+    ctx.fillStyle='rgba(25,10,2,.9)'; ctx.fillRect(ox,h*.78,w,h*.22);
+  } else { /* storm */
+    /* lightning flash */
+    if(fsFrame%120<3){
+      ctx.fillStyle='rgba(200,220,255,.08)'; ctx.fillRect(ox,0,w,h);
+      /* lightning bolt */
+      ctx.strokeStyle='rgba(180,200,255,.9)'; ctx.lineWidth=2;
+      ctx.beginPath();
+      var lx=ox+w*(Math.random()*.6+.2), ly=0;
+      ctx.moveTo(lx,ly);
+      for(var li=0;li<6;li++){ lx+=( Math.random()-.5)*w*.15; ly+=h*.16; ctx.lineTo(lx,ly); }
+      ctx.stroke();
+    }
+    /* rain streaks */
+    ctx.strokeStyle='rgba(150,170,200,.25)'; ctx.lineWidth=.8;
+    for(var ri=0;ri<30;ri++){
+      var rx=ox+(Math.random()*w+fsFrame*2)%w, ry=(Math.random()*h+fsFrame*4)%h;
+      ctx.beginPath(); ctx.moveTo(rx,ry); ctx.lineTo(rx-3,ry+12); ctx.stroke();
+    }
+    ctx.fillStyle='rgba(5,5,12,.92)'; ctx.fillRect(ox,h*.82,w,h*.18);
+  }
+}
+
+function updateFiresideParticles(){
+  fsParticles.forEach(function(p){
+    p.x += p.vx + Math.sin(fsFrame*.04+p.life*8)*.0008;
+    p.y += p.vy; p.life -= .011; p.alpha = p.life*.9;
+    if(p.life<=0){
+      p.life=1; p.alpha=1;
+      p.x=.42+Math.random()*.16; p.y=.78+Math.random()*.08;
+      p.hue=Math.random()*35+5;
+    }
+  });
+}
+
+function renderFireside(){
+  var canvas = document.getElementById('vr-fireside-canvas');
+  if(!canvas || !canvas.offsetWidth) { fsRAF=requestAnimationFrame(renderFireside); return; }
+  var cw=canvas.offsetWidth, ch=canvas.offsetHeight;
+  if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}
+  var ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,cw,ch);
+  var halfW=fsStereo?cw/2:cw;
+  drawFiresideSide(ctx,0,halfW,ch,fsMouse.yaw);
+  if(fsStereo) drawFiresideSide(ctx,halfW,halfW,ch,fsMouse.yaw+.04);
+  if(fsScene==='fire') updateFiresideParticles();
+  fsFrame++;
+  fsRAF=requestAnimationFrame(renderFireside);
+}
+
+function setFiresideScene(s, btn){
+  fsScene=s; fsFrame=0;
+  document.querySelectorAll('.vr-scene-pill').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+}
+
+function toggleFiresideStereo(){
+  fsStereo=!fsStereo;
+  var divider=document.getElementById('vr-fireside-divider');
+  var btn=document.getElementById('fs-stereo-btn');
+  if(divider) divider.style.display=fsStereo?'block':'none';
+  if(btn) btn.textContent=fsStereo?'🥽 Stereo ON':'🥽 Enable Stereo Split';
+}
+
+function firesideNextLine(){
+  fsLineIdx=(fsLineIdx+1)%fsStoryLines.length;
+  var el=document.getElementById('vr-fireside-story-text');
+  if(el){
+    el.style.opacity=0;
+    setTimeout(function(){el.textContent=fsStoryLines[fsLineIdx];el.style.opacity=1;el.style.transition='opacity .8s';},200);
+  }
+}
+
+function firesideSpeak(){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  var line=fsStoryLines[fsLineIdx];
+  var utt=new SpeechSynthesisUtterance(line);
+  var voices=window.speechSynthesis.getVoices();
+  var saV=voices.find(function(v){return v.lang.indexOf('en-ZA')!==-1||v.lang.indexOf('zu')!==-1;});
+  if(saV) utt.voice=saV;
+  utt.rate=.82; utt.pitch=.9;
+  window.speechSynthesis.speak(utt);
+}
+
+/* Init fireside when tab opens */
+function initFireside(){
+  initFiresideParticles();
+  if(fsRAF) cancelAnimationFrame(fsRAF);
+  renderFireside();
+  var el=document.getElementById('vr-fireside-story-text');
+  if(el) el.textContent=fsStoryLines[0];
+  /* Mouse drag for yaw on desktop */
+  var canvas=document.getElementById('vr-fireside-canvas');
+  if(!canvas) return;
+  var dragging=false, lastX=0;
+  canvas.addEventListener('mousedown',function(e){dragging=true;lastX=e.clientX;});
+  window.addEventListener('mouseup',function(){dragging=false;});
+  window.addEventListener('mousemove',function(e){
+    if(!dragging) return;
+    fsMouse.yaw+=(e.clientX-lastX)*.004;
+    lastX=e.clientX;
+  });
+  canvas.addEventListener('touchmove',function(e){
+    if(e.touches.length){fsMouse.yaw+=(e.touches[0].clientX-lastX)*.004;lastX=e.touches[0].clientX;}
+  },{passive:true});
+  canvas.addEventListener('touchstart',function(e){if(e.touches.length) lastX=e.touches[0].clientX;},{passive:true});
+}
+
+/* ═══════════════════════════════════
+   2. ANCESTOR THEATRE
+═══════════════════════════════════ */
+var thLang='zu';
+var thFrame=0;
+var thStereo=false;
+var thRAF=null;
+var thScene=0;
+var thYaw=0;
+
+var theatreTexts = {
+  zu:[
+    ['Kwasukasukela…','Kwathi ke kaloku ngantsomi…','Emandulo kakhulu…','Ngelinye ilanga…'],
+    ['Ibhubesi laqala ukukhuluma.','Inqe layibona kuqala.','Intaba yakhuleka.','Umuntu weza kuqala.'],
+    ['Izinyane lenqe laphendula:','"Ngizwile yonke into."','Umuntu waphendula ngothando.','Umlibo waqhubeka.']
+  ],
+  xh:[
+    ['Kwathi ke kaloku ngantsomi…','Kudala loo mini…','Ngaloo mini…'],
+    ['Ingwe yathetha.','Inkwenkwezi yabona.','Umhlaba wathetha.'],
+    ['"Ndikuvile,"  watsho.','Uthando lwanqoba.','Ibali laqhubeka.']
+  ],
+  st:[ ['Ho kile ha e-ba teng…','Mohla o mong…'],['Tau e bua.','Noka e utlwa.'],['Batho ba mamela.','Lerato le nqoba.'] ],
+  tn:[ ['Go ne go na le…','Letsatsi lengwe…'],['Tau e bua.','Noka e utlwa.'],['Batho ba reetsa.','Lorato lo fenya.'] ],
+  ve:[ ['Ngelutshelo…','Kha vhutshilo…'],['Ndou yo amba.','Madi yo pfa.'],['Vhathu vha pfa.','Lufuno lu fhatutshedza.'] ],
+  en:[
+    ['Once upon a time…','Long ago in Africa…','There was a village…'],
+    ['The lion spoke first.','The eagle saw everything.','The river carried secrets.'],
+    ['"I heard all," said the child.','Love conquered fear.','The story lives on.']
+  ]
+};
+
+var theatreDirections=['FRONT — Main Story','LEFT — The Journey','RIGHT — The Secret','BEHIND — The Ancestor'];
+
+function drawTheatreSide(ctx,ox,w,h,yaw){
+  /* warm cloth background */
+  var bg=ctx.createLinearGradient(ox,0,ox,h);
+  bg.addColorStop(0,'#0a0400'); bg.addColorStop(.5,'#150800'); bg.addColorStop(1,'#200c00');
+  ctx.fillStyle=bg; ctx.fillRect(ox,0,w,h);
+
+  /* cloth texture rings */
+  for(var ri=0;ri<5;ri++){
+    var ry=h*(.15+ri*.14);
+    ctx.strokeStyle='rgba(180,80,10,'+(.04+ri*.01)+')';
+    ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(ox,ry); ctx.lineTo(ox+w,ry); ctx.stroke();
+  }
+
+  /* torch glow left and right */
+  var tg1=ctx.createRadialGradient(ox,h*.45,0,ox,h*.45,w*.3);
+  tg1.addColorStop(0,'rgba(220,100,10,.35)'); tg1.addColorStop(1,'transparent');
+  ctx.fillStyle=tg1; ctx.fillRect(ox,0,w,h);
+  var tg2=ctx.createRadialGradient(ox+w,h*.45,0,ox+w,h*.45,w*.3);
+  tg2.addColorStop(0,'rgba(220,100,10,.35)'); tg2.addColorStop(1,'transparent');
+  ctx.fillStyle=tg2; ctx.fillRect(ox,0,w,h);
+
+  /* determine which direction we're facing */
+  var normYaw=((thYaw%(TAU))+TAU)%TAU;
+  var dirIdx=Math.floor(((normYaw/(TAU))*4+.5))%4;
+
+  /* puppet silhouettes based on scene */
+  var puppets=getPuppetPoses(thScene,dirIdx,thFrame);
+  ctx.fillStyle='rgba(5,2,0,.97)';
+  puppets.forEach(function(p){
+    var px=ox+p.x*w, py=p.y*h, s=p.s*Math.min(w,h);
+    ctx.save();
+    ctx.translate(px,py);
+    if(p.flip) ctx.scale(-1,1);
+    ctx.rotate(p.r||0);
+    drawPuppet(ctx,p.type,s);
+    ctx.restore();
+  });
+
+  /* ground line */
+  ctx.fillStyle='rgba(8,4,0,.98)'; ctx.fillRect(ox,h*.85,w,h*.15);
+
+  /* cloth frame edges */
+  ctx.strokeStyle='rgba(180,80,10,.35)'; ctx.lineWidth=3;
+  ctx.beginPath(); ctx.moveTo(ox,0); ctx.lineTo(ox,h); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(ox+w,0); ctx.lineTo(ox+w,h); ctx.stroke();
+}
+
+function getPuppetPoses(scene,dir,frame){
+  var t=frame*.02;
+  var poses=[
+    /* scene 0 — gathering */
+    [{type:'figure',x:.25,y:.55,s:.32,flip:false,r:Math.sin(t)*.03},
+     {type:'figure',x:.75,y:.55,s:.3,flip:true,r:Math.sin(t+1)*.03},
+     {type:'animal',x:.5,y:.65,s:.22,flip:false,r:Math.sin(t*.8)*.04}],
+    /* scene 1 — the journey */
+    [{type:'figure',x:.3+Math.sin(t*.5)*.08,y:.55,s:.35,flip:false,r:Math.sin(t)*.05},
+     {type:'bird',x:.6+Math.cos(t*.4)*.12,y:.28+Math.sin(t*.6)*.06,s:.18,flip:false,r:Math.sin(t*.5)*.08}],
+    /* scene 2 — the secret */
+    [{type:'figure',x:.35,y:.56,s:.33,flip:false,r:Math.sin(t+.5)*.04},
+     {type:'tree',x:.72,y:.4,s:.45,flip:false,r:Math.sin(t*.3)*.02}],
+    /* scene 3 — ancestor appears */
+    [{type:'spirit',x:.5,y:.38+Math.sin(t*.5)*.04,s:.55,flip:false,r:Math.sin(t*.4)*.05}]
+  ];
+  return poses[scene%poses.length];
+}
+
+function drawPuppet(ctx,type,s){
+  if(type==='figure'){
+    /* head */
+    ctx.beginPath(); ctx.arc(0,-s*.45,s*.12,0,TAU); ctx.fill();
+    /* body */
+    ctx.beginPath(); ctx.moveTo(-s*.08,-s*.33); ctx.lineTo(-s*.12,s*.1); ctx.lineTo(s*.12,s*.1); ctx.lineTo(s*.08,-s*.33); ctx.closePath(); ctx.fill();
+    /* legs */
+    ctx.beginPath(); ctx.moveTo(-s*.05,s*.1); ctx.lineTo(-s*.1,s*.45); ctx.lineWidth=s*.08; ctx.strokeStyle='rgba(5,2,0,.97)'; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(s*.05,s*.1); ctx.lineTo(s*.1,s*.45); ctx.stroke();
+    /* arms */
+    ctx.beginPath(); ctx.moveTo(-s*.12,-s*.15); ctx.lineTo(-s*.3,s*.05); ctx.lineWidth=s*.06; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(s*.12,-s*.15); ctx.lineTo(s*.35,s*.05); ctx.stroke();
+  } else if(type==='animal'){
+    /* lion-ish body */
+    ctx.beginPath(); ctx.ellipse(0,0,s*.35,s*.2,0,0,TAU); ctx.fill();
+    ctx.beginPath(); ctx.arc(s*.3,-s*.08,s*.15,0,TAU); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-s*.35,s*.12); ctx.lineTo(-s*.55,s*.15); ctx.lineWidth=s*.06; ctx.strokeStyle='rgba(5,2,0,.97)'; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-s*.2,s*.18); ctx.lineTo(-s*.22,s*.38); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(s*.1,s*.18); ctx.lineTo(s*.12,s*.38); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(s*.3,s*.1); ctx.lineTo(s*.55,s*.08); ctx.stroke();
+  } else if(type==='bird'){
+    ctx.beginPath(); ctx.ellipse(0,0,s*.4,s*.15,.1,0,TAU); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-s*.35,-s*.05); ctx.lineTo(-s*.6,-s*.25); ctx.lineTo(-s*.2,-s*.08); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(s*.35,-s*.05); ctx.lineTo(s*.6,-s*.25); ctx.lineTo(s*.2,-s*.08); ctx.fill();
+    ctx.beginPath(); ctx.arc(s*.38,0,s*.1,0,TAU); ctx.fill();
+  } else if(type==='tree'){
+    /* trunk */
+    ctx.fillRect(-s*.06,0,s*.12,s*.5);
+    /* canopy */
+    ctx.beginPath(); ctx.arc(0,-s*.08,s*.42,0,TAU); ctx.fill();
+    ctx.beginPath(); ctx.arc(-s*.22,-s*.02,s*.28,0,TAU); ctx.fill();
+    ctx.beginPath(); ctx.arc(s*.22,-s*.02,s*.28,0,TAU); ctx.fill();
+  } else if(type==='spirit'){
+    /* flowing ancestor spirit */
+    var wave=Math.sin(thFrame*.04)*.05;
+    ctx.beginPath(); ctx.arc(0,-s*.4+wave*s,s*.14,0,TAU); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(-s*.05,-s*.25);
+    ctx.bezierCurveTo(-s*.3+wave*s,0,-s*.35+wave*s,s*.35,-s*.1,s*.5);
+    ctx.bezierCurveTo(s*.1,s*.5,s*.35+wave*s,s*.35,s*.3+wave*s,0);
+    ctx.bezierCurveTo(s*.3,-(s*.25),s*.05,-s*.25,-s*.05,-s*.25);
+    ctx.fill();
+    /* arms outstretched */
+    ctx.lineWidth=s*.07; ctx.strokeStyle='rgba(5,2,0,.97)';
+    ctx.beginPath(); ctx.moveTo(-s*.08,-s*.1); ctx.lineTo(-s*.5,-s*.2+wave*s); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(s*.08,-s*.1); ctx.lineTo(s*.5,-s*.2+wave*s); ctx.stroke();
+  }
+}
+
+function renderTheatre(){
+  var canvas=document.getElementById('vr-ancestor-canvas');
+  if(!canvas||!canvas.offsetWidth){ thRAF=requestAnimationFrame(renderTheatre); return; }
+  var cw=canvas.offsetWidth, ch=canvas.offsetHeight;
+  if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}
+  var ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,cw,ch);
+  var halfW=thStereo?cw/2:cw;
+  drawTheatreSide(ctx,0,halfW,ch,thYaw);
+  if(thStereo) drawTheatreSide(ctx,halfW,halfW,ch,thYaw+.04);
+
+  /* update direction label */
+  var normYaw=((thYaw%(TAU))+TAU)%TAU;
+  var dirIdx=Math.floor(((normYaw/(TAU))*4+.5))%4;
+  var dirEl=document.getElementById('theatre-dir-label');
+  if(dirEl) dirEl.textContent=theatreDirections[dirIdx];
+
+  /* caption */
+  var capEl=document.getElementById('vr-theatre-caption');
+  if(capEl){
+    var texts=theatreTexts[thLang]||theatreTexts.en;
+    var lineSet=texts[thScene%texts.length]||texts[0];
+    var lineIdx=Math.floor(thFrame/120)%lineSet.length;
+    capEl.textContent=lineSet[lineIdx];
+  }
+
+  thFrame++;
+  thRAF=requestAnimationFrame(renderTheatre);
+}
+
+function setTheatreLang(lang,btn){
+  thLang=lang; thFrame=0;
+  document.querySelectorAll('.vr-lang-btn').forEach(function(b){b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+}
+
+function toggleTheatreStereo(){
+  thStereo=!thStereo;
+  var divider=document.getElementById('vr-theatre-divider');
+  var btn=document.getElementById('th-stereo-btn');
+  if(divider) divider.style.display=thStereo?'block':'none';
+  if(btn) btn.textContent=thStereo?'🎭 Stereo ON':'🥽 Enable Stereo Split';
+}
+
+function theatreNextScene(){
+  thScene=(thScene+1)%4; thFrame=0;
+}
+
+function theatreSpeak(){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  var texts=theatreTexts[thLang]||theatreTexts.en;
+  var lineSet=texts[thScene%texts.length]||texts[0];
+  var text=lineSet.join('. ');
+  var utt=new SpeechSynthesisUtterance(text);
+  var voices=window.speechSynthesis.getVoices();
+  var saV=voices.find(function(v){return v.lang.indexOf(thLang==='zu'?'zu':thLang==='xh'?'xh':'en-ZA')!==-1;});
+  if(!saV) saV=voices.find(function(v){return v.lang.indexOf('en-ZA')!==-1||v.lang.indexOf('en-GB')!==-1;});
+  if(saV) utt.voice=saV;
+  utt.rate=.78; utt.pitch=.88;
+  window.speechSynthesis.speak(utt);
+}
+
+function initTheatre(){
+  if(thRAF) cancelAnimationFrame(thRAF);
+  renderTheatre();
+  var canvas=document.getElementById('vr-ancestor-canvas');
+  if(!canvas) return;
+  var dragging=false, lastX=0;
+  canvas.addEventListener('mousedown',function(e){dragging=true;lastX=e.clientX;});
+  window.addEventListener('mouseup',function(){dragging=false;});
+  window.addEventListener('mousemove',function(e){
+    if(!dragging) return;
+    thYaw+=(e.clientX-lastX)*.005; lastX=e.clientX;
+  });
+  canvas.addEventListener('touchstart',function(e){if(e.touches.length) lastX=e.touches[0].clientX;},{passive:true});
+  canvas.addEventListener('touchmove',function(e){
+    if(e.touches.length){thYaw+=(e.touches[0].clientX-lastX)*.005;lastX=e.touches[0].clientX;}
+  },{passive:true});
+  /* gyro also drives theatre yaw */
+  if(window.DeviceOrientationEvent){
+    window.addEventListener('deviceorientation',function(e){
+      if(e.alpha) thYaw=lerp(thYaw,-(e.alpha/360)*TAU,.08);
+    });
+  }
+}
+
+/* ═══════════════════════════════════
+   3. IZIBONGO FIRE-TEXT SKY (ENHANCED)
+   Called after poem is generated
+═══════════════════════════════════ */
+function launchFireTextSky(poemText){
+  var overlay=document.getElementById('vr-firetext-overlay');
+  if(!overlay) return;
+  overlay.innerHTML='';
+  var lines=poemText.split('\n').filter(function(l){return l.trim();}).slice(0,8);
+  lines.forEach(function(line,i){
+    var el=document.createElement('div');
+    el.className='vr-firetext-line';
+    el.textContent=line.replace(/\[.*?\]/g,'').trim();
+    el.style.animationDelay=(i*.7)+'s';
+    el.style.fontSize=clamp(14,22,window.innerWidth/30)+'px';
+    overlay.appendChild(el);
+  });
+  /* clear after all done */
+  setTimeout(function(){overlay.innerHTML='';},lines.length*700+4500);
+}
+
+function clamp(min,max,val){ return Math.max(min,Math.min(max,val)); }
+
+/* Hook into existing generateIzibongo to also launch fire text */
+var _origGenIzibongo = (typeof generateIzibongo === 'function') ? generateIzibongo : null;
+if(_origGenIzibongo){
+  /* patch via polling — wait for poem output to show */
+  var _firetextInterval = null;
+  var _origTriggerBurst = (typeof triggerVRPoemBurst === 'function') ? triggerVRPoemBurst : null;
+  if(_origTriggerBurst){
+    window.triggerVRPoemBurst = function(){
+      _origTriggerBurst();
+      var poemDiv=document.getElementById('vr-poem-text');
+      if(poemDiv) launchFireTextSky(poemDiv.innerText||poemDiv.textContent||'');
+    };
+  }
+}
+
+/* ═══════════════════════════════════
+   4. STORY JOURNEY MAP
+═══════════════════════════════════ */
+var mapFrame=0;
+var mapRAF=null;
+var mapSelectedNode=null;
+
+var mapNodes=[
+  {x:.38,y:.32,label:'KwaZulu-Natal',lang:'isiZulu',color:'rgba(245,118,26',title:'The Night the Ancestors Spoke',body:'A grandmother calls her grandchildren to the fire. The stars above Durban shift as the story begins. What she tells them will change how they see the world — and the ancestors — forever.',storyIdx:0},
+  {x:.32,y:.54,label:'Eastern Cape',lang:'isiXhosa',color:'rgba(200,240,74',title:'Umthi Wezinyanya',body:'Stand beneath the ancient baobab as the elders pass down the names of those who came before. The roots reach down to the ancestors. The branches reach up to the future.',storyIdx:1},
+  {x:.28,y:.44,label:'Free State',lang:'Sesotho',color:'rgba(230,179,42',title:'Lullaby of the Moon Mothers',body:'In the golden plains of the Free State, the moon mothers sing their children to sleep. Their voices carry across the Drakensberg and echo across generations.',storyIdx:2},
+  {x:.44,y:.62,label:'Limpopo',lang:'Tshivenda',color:'rgba(100,180,100',title:'Why the Crocodile Lives in Water',body:'Near the great Limpopo River, the crocodile made a choice that would define all rivers forever. The answer lies in a secret only the water knows.',storyIdx:4},
+  {x:.25,y:.35,label:'North West',lang:'Setswana',color:'rgba(160,100,255',title:'The Chief Who Forgot to Listen',body:'A powerful chief near Mafikeng lost his greatest gift — the ability to hear his people. What restored it became the founding story of his village.',storyIdx:5},
+  {x:.36,y:.22,label:'Gauteng',lang:'Multiple',color:'rgba(100,160,255',title:'The City That Remembers',body:'Johannesburg — Egoli, city of gold. Where millions of stories converge. Dr Sasa\'s own story begins here, in the tension between the modern and the ancestral.', storyIdx:0}
+];
+
+function drawMap(){
+  var canvas=document.getElementById('vr-map-canvas');
+  if(!canvas||!canvas.offsetWidth){ mapRAF=requestAnimationFrame(drawMap); return; }
+  var cw=canvas.offsetWidth, ch=canvas.offsetHeight;
+  if(canvas.width!==cw||canvas.height!==ch){canvas.width=cw;canvas.height=ch;}
+  var ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,cw,ch);
+
+  /* space background */
+  var bg=ctx.createLinearGradient(0,0,0,ch);
+  bg.addColorStop(0,'#020810'); bg.addColorStop(.5,'#030508'); bg.addColorStop(1,'#020305');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,cw,ch);
+
+  /* stars */
+  if(!drawMap._stars){
+    drawMap._stars=[];
+    for(var si=0;si<80;si++) drawMap._stars.push({x:Math.random(),y:Math.random(),r:Math.random()*.9+.2});
+  }
+  drawMap._stars.forEach(function(s){
+    ctx.beginPath(); ctx.arc(s.x*cw,s.y*ch,s.r,0,TAU);
+    ctx.fillStyle='rgba(200,220,255,'+(.3+Math.sin(mapFrame*.02+s.r*10)*.2)+')'; ctx.fill();
+  });
+
+  /* Africa continent shape (simplified polygon) */
+  var pts=[
+    [.30,.08],[.40,.06],[.50,.09],[.57,.11],[.60,.16],[.63,.22],[.62,.30],[.65,.38],
+    [.63,.48],[.58,.58],[.52,.67],[.47,.72],[.42,.70],[.38,.65],[.34,.58],[.30,.50],
+    [.26,.42],[.24,.34],[.25,.26],[.26,.18],[.28,.12]
+  ];
+  ctx.beginPath();
+  ctx.moveTo(pts[0][0]*cw,pts[0][1]*ch);
+  pts.forEach(function(p){ctx.lineTo(p[0]*cw,p[1]*ch);});
+  ctx.closePath();
+  ctx.fillStyle='rgba(20,40,18,.85)';
+  ctx.fill();
+  ctx.strokeStyle='rgba(60,120,50,.45)'; ctx.lineWidth=1.5;
+  ctx.stroke();
+
+  /* floating altitude shimmer */
+  var shimmer=ctx.createLinearGradient(0,0,cw,ch);
+  shimmer.addColorStop(0,'transparent');
+  shimmer.addColorStop(.5,'rgba(100,160,255,.04)');
+  shimmer.addColorStop(1,'transparent');
+  ctx.fillStyle=shimmer; ctx.fillRect(0,0,cw,ch);
+
+  /* story nodes */
+  mapNodes.forEach(function(node,i){
+    var nx=node.x*cw, ny=node.y*ch;
+    var pulse=Math.sin(mapFrame*.05+i*1.4);
+    var isSelected=(mapSelectedNode===i);
+
+    /* outer glow ring */
+    var outerR=isSelected?22+pulse*4:16+pulse*3;
+    var og=ctx.createRadialGradient(nx,ny,0,nx,ny,outerR);
+    og.addColorStop(0,node.color+','+(isSelected?.25:.12)+')');
+    og.addColorStop(1,'transparent');
+    ctx.fillStyle=og; ctx.beginPath(); ctx.arc(nx,ny,outerR,0,TAU); ctx.fill();
+
+    /* dot */
+    ctx.beginPath(); ctx.arc(nx,ny,isSelected?7:5,0,TAU);
+    ctx.fillStyle=node.color+','+(isSelected?.95:.75)+')'; ctx.fill();
+
+    /* label */
+    ctx.font='bold '+(isSelected?11:9)+'px sans-serif';
+    ctx.textAlign='center';
+    ctx.fillStyle=isSelected?'rgba(255,255,255,.95)':'rgba(255,255,255,.55)';
+    ctx.fillText(node.label,nx,ny-(isSelected?12:10));
+  });
+
+  mapFrame++;
+  mapRAF=requestAnimationFrame(drawMap);
+}
+
+function initMap(){
+  if(mapRAF) cancelAnimationFrame(mapRAF);
+  drawMap._stars=null;
+  mapRAF=requestAnimationFrame(drawMap);
+  var canvas=document.getElementById('vr-map-canvas');
+  if(!canvas) return;
+  canvas.onclick=function(e){
+    var rect=canvas.getBoundingClientRect();
+    var mx=(e.clientX-rect.left)/rect.width;
+    var my=(e.clientY-rect.top)/rect.height;
+    var best=-1, bestDist=999;
+    mapNodes.forEach(function(n,i){
+      var d=Math.hypot(n.x-mx,n.y-my);
+      if(d<bestDist){bestDist=d;best=i;}
+    });
+    if(bestDist<.08) selectMapNode(best);
+  };
+}
+
+function selectMapNode(i){
+  mapSelectedNode=i;
+  var node=mapNodes[i];
+  var reveal=document.getElementById('vr-map-story-reveal');
+  var regionEl=document.getElementById('vr-map-region-label');
+  var titleEl=document.getElementById('vr-map-story-title');
+  var bodyEl=document.getElementById('vr-map-story-body');
+  var capEl=document.getElementById('vr-map-caption');
+  if(reveal) reveal.style.display='block';
+  if(regionEl) regionEl.textContent='📍 '+node.label+' · '+node.lang;
+  if(titleEl) titleEl.textContent=node.title;
+  if(bodyEl) bodyEl.textContent=node.body;
+  if(capEl) capEl.textContent='● Viewing: '+node.label+' — tap node again to close';
+}
+
+function mapEnterVR(){
+  if(mapSelectedNode===null) return;
+  var node=mapNodes[mapSelectedNode];
+  if(typeof openVRStory==='function') openVRStory(node.storyIdx||0);
+}
+
+function mapSpeak(){
+  if(mapSelectedNode===null) return;
+  var node=mapNodes[mapSelectedNode];
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  var utt=new SpeechSynthesisUtterance(node.title+'. '+node.body);
+  var voices=window.speechSynthesis.getVoices();
+  var saV=voices.find(function(v){return v.lang.indexOf('en-ZA')!==-1;});
+  if(saV) utt.voice=saV;
+  utt.rate=.85;
+  window.speechSynthesis.speak(utt);
+}
+
+/* ═══════════════════════════════════
+   5. SCHOOL GROUP MODE (LOCAL SIM)
+═══════════════════════════════════ */
+var schoolRoomCode=null;
+var schoolStudents=[];
+var schoolIsTeacher=false;
+var schoolSimInterval=null;
+
+var randomNames=['Nandi','Sipho','Thabo','Nomsa','Lerato','Kagiso','Ayanda','Zanele','Bongani','Lindiwe','Siyanda','Precious','Thandeka','Lungelo','Mpho','Nokwanda','Sifiso','Naledi','Sibusiso','Amahle'];
+
+function createSchoolRoom(){
+  var nameEl=document.getElementById('teacher-name-input');
+  var name=(nameEl?nameEl.value.trim():'')||'Teacher';
+  schoolRoomCode=Math.floor(1000+Math.random()*9000).toString();
+  schoolIsTeacher=true;
+  schoolStudents=[];
+  document.getElementById('teacher-room-code').style.display='block';
+  document.getElementById('room-code-display').textContent=schoolRoomCode;
+  document.getElementById('school-room-panel').style.display='block';
+  document.getElementById('school-status-label').textContent='● Room '+schoolRoomCode+' open — share the code with your class';
+  renderSchoolStudents();
+  /* simulate students joining */
+  var joinCount=0;
+  clearInterval(schoolSimInterval);
+  schoolSimInterval=setInterval(function(){
+    if(joinCount>=Math.floor(8+Math.random()*12)){clearInterval(schoolSimInterval);return;}
+    var studentName=randomNames[joinCount%randomNames.length];
+    schoolStudents.push({name:studentName,connected:true});
+    joinCount++;
+    renderSchoolStudents();
+    document.getElementById('school-status-label').textContent='● '+schoolStudents.length+' student'+(schoolStudents.length===1?'':'s')+' connected';
+  },900+Math.random()*700);
+}
+
+function joinSchoolRoom(){
+  var codeEl=document.getElementById('student-room-input');
+  var statusEl=document.getElementById('student-join-status');
+  var code=codeEl?codeEl.value.trim().toUpperCase():'';
+  if(!code){if(statusEl) statusEl.textContent='Enter a 4-digit room code'; return;}
+  if(statusEl){
+    statusEl.textContent='Connecting…';
+    setTimeout(function(){statusEl.textContent='✓ Connected to room '+code+' — your teacher controls the story';statusEl.style.color='var(--acid)';},1200);
+  }
+  document.getElementById('school-room-panel').style.display='block';
+}
+
+function renderSchoolStudents(){
+  var grid=document.getElementById('school-students-grid');
+  if(!grid) return;
+  if(schoolStudents.length===0){
+    grid.innerHTML='<div class="vr-student-dot">Waiting...</div>'; return;
+  }
+  grid.innerHTML=schoolStudents.map(function(s){
+    return '<div class="vr-student-dot '+(s.connected?'connected':'')+'" title="'+s.name+'">'+s.name.substring(0,6)+'</div>';
+  }).join('');
+}
+
+function schoolBroadcast(cmd){
+  var statusEl=document.getElementById('school-status-label');
+  if(cmd==='play' && statusEl) statusEl.textContent='▶ Now playing for all '+schoolStudents.length+' students';
+  if(cmd==='pause' && statusEl) statusEl.textContent='⏸ Paused for all students';
+  if(typeof toggleVRAudio==='function') toggleVRAudio();
+}
+
+function schoolNextStory(){
+  if(typeof openVRStory==='function'){
+    var idx=Math.floor(Math.random()*8);
+    openVRStory(idx);
+  }
+}
+
+function schoolLaunchQuiz(){
+  var qp=document.getElementById('school-quiz-panel');
+  if(qp) qp.style.display=qp.style.display==='none'?'block':'none';
+}
+
+function schoolSendQuiz(){
+  var qEl=document.getElementById('quiz-question-input');
+  var q=qEl?qEl.value.trim():'';
+  if(!q) return;
+  var statusEl=document.getElementById('school-status-label');
+  if(statusEl) statusEl.textContent='📝 Quiz sent: "'+q.substring(0,40)+'"…';
+  if(qEl) qEl.value='';
+  document.getElementById('school-quiz-panel').style.display='none';
+}
+
+function closeSchoolRoom(){
+  clearInterval(schoolSimInterval);
+  schoolStudents=[];
+  schoolRoomCode=null;
+  document.getElementById('school-room-panel').style.display='none';
+  document.getElementById('teacher-room-code').style.display='none';
+  document.getElementById('school-status-label').textContent='Room closed';
+  var nameEl=document.getElementById('teacher-name-input');
+  if(nameEl) nameEl.value='';
+}
+
+/* ═══════════════════════════════════
+   6. PWA INSTALL BANNER
+═══════════════════════════════════ */
+var _pwaPromptEvent=null;
+window.addEventListener('beforeinstallprompt',function(e){
+  e.preventDefault();
+  _pwaPromptEvent=e;
+  var banner=document.getElementById('vr-pwa-banner');
+  if(banner) banner.classList.add('show');
+});
+
+function triggerPWAInstall(){
+  if(_pwaPromptEvent){
+    _pwaPromptEvent.prompt();
+    _pwaPromptEvent.userChoice.then(function(r){
+      var banner=document.getElementById('vr-pwa-banner');
+      if(banner) banner.classList.remove('show');
+      _pwaPromptEvent=null;
+    });
+  } else {
+    /* Fallback: show manual instructions */
+    alert('To install: tap the Share button (iOS Safari) or browser menu → "Add to Home Screen"');
+  }
+}
+
+/* ═══════════════════════════════════
+   TAB INIT HOOKS — wire up canvases
+═══════════════════════════════════ */
+var _origSwitchVRTab = (typeof switchVRTab === 'function') ? switchVRTab : null;
+if(_origSwitchVRTab){
+  window.switchVRTab = function(tab, btn){
+    _origSwitchVRTab(tab, btn);
+    if(tab==='fireside'){
+      setTimeout(initFireside, 80);
+    } else if(tab==='theatre'){
+      setTimeout(initTheatre, 80);
+    } else if(tab==='map'){
+      setTimeout(initMap, 80);
+    }
+  };
+}
+
+/* Also hook openVRStory to init features */
+var _origOpenVR2 = (typeof openVRStory === 'function') ? openVRStory : null;
+if(_origOpenVR2){
+  window.openVRStory = function(idx){
+    _origOpenVR2(idx);
+    /* after modal opens, check if fireside tab is shown */
+    setTimeout(function(){
+      var activeTab=document.querySelector('#vr-tab-fireside.active');
+      if(activeTab) initFireside();
+    }, 200);
+  };
+}
+
+/* Gyro also drives fireside yaw */
+window.addEventListener('deviceorientation', function(e){
+  if(e.alpha) fsMouse.yaw = lerp(fsMouse.yaw, -(e.alpha/360)*TAU, .1);
+});
+
+</script>
 </body>
 </html>
