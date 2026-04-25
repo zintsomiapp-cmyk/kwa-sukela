@@ -3075,11 +3075,99 @@ body::after{
 .vr-pwa-text{flex:1;font-size:.72rem;color:rgba(255,255,255,.7);line-height:1.5}
 .vr-pwa-install-btn{background:var(--acid);color:#000;border:none;border-radius:6px;padding:.4rem .9rem;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
 </style>
+<style>
+/* ═══ LANGUAGE TOGGLE ═══ */
+#lang-toggle{position:fixed;top:1rem;right:1rem;z-index:9999;display:flex;gap:.3rem;background:rgba(14,16,22,.85);border:1px solid rgba(245,118,26,.25);border-radius:100px;padding:.25rem .4rem;backdrop-filter:blur(12px)}
+.lang-btn{font-family:var(--mono,monospace);font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;padding:.22rem .55rem;border-radius:100px;border:1px solid transparent;background:none;color:rgba(255,255,255,.38);cursor:pointer;transition:all .18s}
+.lang-btn.active,.lang-btn:hover{background:rgba(245,118,26,.22);border-color:var(--fire,#F5761A);color:var(--fire,#F5761A)}
+
+/* ═══ ONBOARDING OVERLAY ═══ */
+#onboarding-overlay{position:fixed;inset:0;z-index:99999;background:rgba(4,8,18,.92);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;padding:1.5rem}
+#onboarding-overlay.hidden{display:none}
+.ob-card{background:rgba(20,23,30,1);border:1px solid rgba(245,118,26,.3);border-radius:1.2rem;max-width:420px;width:100%;padding:2rem 1.8rem;position:relative}
+.ob-logo{font-family:var(--display,'Bebas Neue'),sans-serif;font-size:2rem;color:var(--fire,#F5761A);letter-spacing:.1em;margin-bottom:.2rem}
+.ob-title{font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:.25rem}
+.ob-sub{font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:1.5rem;line-height:1.6}
+.ob-steps{display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.5rem}
+.ob-step{display:flex;align-items:center;gap:.8rem;padding:.75rem 1rem;border-radius:.7rem;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03);cursor:pointer;transition:all .18s}
+.ob-step.done{border-color:rgba(110,231,142,.35);background:rgba(110,231,142,.06)}
+.ob-step-icon{font-size:1.3rem;flex-shrink:0}
+.ob-step-text{flex:1}
+.ob-step-label{font-size:.78rem;font-weight:600;color:#fff}
+.ob-step-desc{font-size:.65rem;color:rgba(255,255,255,.38);margin-top:.1rem}
+.ob-step-check{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.65rem;transition:all .2s}
+.ob-step.done .ob-step-check{background:rgba(110,231,142,.8);border-color:rgba(110,231,142,.8);color:#000}
+.ob-cta{width:100%;padding:.75rem;background:var(--fire,#F5761A);border:none;border-radius:.6rem;font-family:var(--display,'Bebas Neue'),sans-serif;font-size:.9rem;letter-spacing:.1em;color:#fff;cursor:pointer;transition:all .2s}
+.ob-cta:hover{background:#c4520e}
+.ob-skip{display:block;text-align:center;margin-top:.75rem;font-size:.6rem;color:rgba(255,255,255,.25);cursor:pointer;background:none;border:none;width:100%}
+.ob-skip:hover{color:rgba(255,255,255,.5)}
+
+/* ═══ REAL STREAK BADGE ═══ */
+#live-streak-badge{position:fixed;bottom:1.2rem;left:1rem;z-index:9998;background:rgba(14,16,22,.88);border:1px solid rgba(245,118,26,.3);border-radius:.8rem;padding:.5rem .85rem;display:flex;align-items:center;gap:.5rem;backdrop-filter:blur(10px);cursor:pointer;transition:all .2s}
+#live-streak-badge:hover{border-color:var(--fire,#F5761A);transform:translateY(-2px)}
+.lsb-fire{font-size:1.2rem}
+.lsb-count{font-family:var(--display,'Bebas Neue'),sans-serif;font-size:1.1rem;color:var(--fire,#F5761A);line-height:1}
+.lsb-label{font-size:.52rem;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;font-family:var(--mono,monospace)}
+</style>
 </head>
 <body>
 <canvas id="sky-bg"></canvas>
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
+
+<!-- ═══ LANGUAGE TOGGLE ═══ -->
+<div id="lang-toggle">
+  <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
+  <button class="lang-btn" onclick="setLang('zu')" data-lang="zu">isiZulu</button>
+  <button class="lang-btn" onclick="setLang('xh')" data-lang="xh">isiXhosa</button>
+  <button class="lang-btn" onclick="setLang('st')" data-lang="st">Sesotho</button>
+</div>
+
+<!-- ═══ LIVE STREAK BADGE ═══ -->
+<div id="live-streak-badge" title="Your daily learning streak">
+  <span class="lsb-fire">🔥</span>
+  <div>
+    <div class="lsb-count" id="lsb-num">0</div>
+    <div class="lsb-label">Day Streak</div>
+  </div>
+</div>
+
+<!-- ═══ ONBOARDING OVERLAY ═══ -->
+<div id="onboarding-overlay">
+  <div class="ob-card">
+    <div class="ob-logo">ZINTSOMI</div>
+    <div class="ob-title" id="ob-title">Wamkelekile — Welcome</div>
+    <div class="ob-sub" id="ob-sub">Africa's Storytelling World. Let's get you started in 3 quick steps.</div>
+    <div class="ob-steps">
+      <div class="ob-step" id="ob-s1" onclick="obComplete(1)">
+        <span class="ob-step-icon">🌍</span>
+        <div class="ob-step-text">
+          <div class="ob-step-label" id="ob-l1">Choose your language</div>
+          <div class="ob-step-desc" id="ob-d1">Pick isiZulu, isiXhosa, Sesotho or English above</div>
+        </div>
+        <div class="ob-step-check" id="ob-c1"></div>
+      </div>
+      <div class="ob-step" id="ob-s2" onclick="obComplete(2)">
+        <span class="ob-step-icon">🥽</span>
+        <div class="ob-step-text">
+          <div class="ob-step-label" id="ob-l2">Explore the VR Village</div>
+          <div class="ob-step-desc" id="ob-d2">8 immersive story pods — no headset needed to start</div>
+        </div>
+        <div class="ob-step-check" id="ob-c2"></div>
+      </div>
+      <div class="ob-step" id="ob-s3" onclick="obComplete(3)">
+        <span class="ob-step-icon">🔥</span>
+        <div class="ob-step-text">
+          <div class="ob-step-label" id="ob-l3">Start your streak</div>
+          <div class="ob-step-desc" id="ob-d3">Come back daily to grow your fire</div>
+        </div>
+        <div class="ob-step-check" id="ob-c3"></div>
+      </div>
+    </div>
+    <button class="ob-cta" id="ob-cta" onclick="obFinish()">Enter Zintsomi →</button>
+    <button class="ob-skip" onclick="obFinish()">Skip for now</button>
+  </div>
+</div>
 
 <div id="intro">
   <canvas id="intro-canvas"></canvas>
@@ -11770,6 +11858,152 @@ if(_origOpenVR2){
 /* Gyro also drives fireside yaw */
 window.addEventListener('deviceorientation', function(e){
   if(e.alpha) fsMouse.yaw = lerp(fsMouse.yaw, -(e.alpha/360)*TAU, .1);
+});
+
+// ════════════════════════════════════════════
+// LANGUAGE TOGGLE SYSTEM
+// ════════════════════════════════════════════
+var ZINTSOMI_LANGS = {
+  en: {
+    nav_vr:'VR Village', nav_courses:'Courses', nav_games:'Games', nav_schools:'Schools',
+    ob_title:'Wamkelekile — Welcome', ob_sub:"Africa's Storytelling World. Let's get you started in 3 quick steps.",
+    ob_l1:'Choose your language', ob_d1:'Pick isiZulu, isiXhosa, Sesotho or English above',
+    ob_l2:'Explore the VR Village', ob_d2:'8 immersive story pods — no headset needed to start',
+    ob_l3:'Start your streak', ob_d3:'Come back daily to grow your fire',
+    ob_cta:'Enter Zintsomi →',
+    streak_label:'Day Streak'
+  },
+  zu: {
+    nav_vr:'Idolobha le-VR', nav_courses:'Izifundo', nav_games:'Imidlalo', nav_schools:'Izikole',
+    ob_title:'Siyakwamukela — Wamukelekile', ob_sub:'Izindaba zeAfrika. Asisebenze nzima ukufika lapho.',
+    ob_l1:'Khetha ulimi lwakho', ob_d1:'Khetha isiZulu, isiXhosa, Sesotho noma isiNgisi phezulu',
+    ob_l2:'Hlola iDolobha le-VR', ob_d2:'Izindaba ezi-8 — awudinga iheadset ukuqala',
+    ob_l3:'Qala umsinga wakho', ob_d3:'Buya nsuku zonke ukhulise umlilo wakho',
+    ob_cta:'Ngena ku-Zintsomi →',
+    streak_label:'Usuku Lwanamuhla'
+  },
+  xh: {
+    nav_vr:'Ilali ye-VR', nav_courses:'Izifundo', nav_games:'Imidlalo', nav_schools:'Izikolo',
+    ob_title:'Wamkelekile — Siyakwamkela', ob_sub:'Iindaba zeAfrika. Masiqale ngamanyathelo amathathu.',
+    ob_l1:'Khetha ulwimi lwakho', ob_d1:'Khetha isiZulu, isiXhosa, Sesotho okanye isiNgesi phezulu',
+    ob_l2:'Phanda iLali ye-VR', ob_d2:'Iindaba ezi-8 — awudingi iheadset ukuqala',
+    ob_l3:'Qala umsinga wakho', ob_d3:'Buya imihla yonke ukhulise umlilo wakho',
+    ob_cta:'Ngena ku-Zintsomi →',
+    streak_label:'Imihla Yoqhagamshelwano'
+  },
+  st: {
+    nav_vr:'Motse wa VR', nav_courses:'Dithuto', nav_games:'Dipapadi', nav_schools:'Dikolo',
+    ob_title:'Re a o Amohela — Wamkelekile', ob_sub:'Dipale tsa Afrika. A re qaleng ka mehato e meraro.',
+    ob_l1:'Kgetha puo ya hao', ob_d1:'Kgetha isiZulu, isiXhosa, Sesotho kapa Senyesemane ka hodimo',
+    ob_l2:'Hlahloba Motse wa VR', ob_d2:'Dipale tse 8 — ha o hloke headset ho qala',
+    ob_l3:'Qala motjeko wa hao', ob_d3:'Kgutla letsatsi le letsatsi o hlahise mollo wa hao',
+    ob_cta:'Kena ho Zintsomi →',
+    streak_label:'Matsatsi a Lenaneo'
+  }
+};
+
+var currentLang = localStorage.getItem('zintsomi_lang') || 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('zintsomi_lang', lang);
+  // Update toggle buttons
+  document.querySelectorAll('.lang-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  // Apply translations
+  var t = ZINTSOMI_LANGS[lang] || ZINTSOMI_LANGS.en;
+  function setText(id, val){ var el=document.getElementById(id); if(el) el.textContent=val; }
+  setText('ob-title', t.ob_title);
+  setText('ob-sub', t.ob_sub);
+  setText('ob-l1', t.ob_l1); setText('ob-d1', t.ob_d1);
+  setText('ob-l2', t.ob_l2); setText('ob-d2', t.ob_d2);
+  setText('ob-l3', t.ob_l3); setText('ob-d3', t.ob_d3);
+  setText('ob-cta', t.ob_cta);
+  setText('lsb-label-text', t.streak_label);
+  // Mark language step done in onboarding
+  if(lang !== 'en') obComplete(1);
+}
+
+// Init language on load
+document.addEventListener('DOMContentLoaded', function(){
+  setLang(currentLang);
+});
+
+// ════════════════════════════════════════════
+// REAL DAILY STREAK SYSTEM
+// ════════════════════════════════════════════
+function initRealStreak() {
+  var today = new Date().toDateString();
+  var data = JSON.parse(localStorage.getItem('zintsomi_streak') || '{}');
+  var last = data.lastVisit || null;
+  var count = data.count || 0;
+
+  if (last === today) {
+    // Same day — keep streak as is
+  } else if (last) {
+    var yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    if (last === yesterday.toDateString()) {
+      count += 1; // consecutive day
+    } else {
+      count = 1; // broke streak, restart
+    }
+  } else {
+    count = 1; // first visit ever
+  }
+
+  localStorage.setItem('zintsomi_streak', JSON.stringify({ lastVisit: today, count: count }));
+
+  // Update UI
+  var badge = document.getElementById('lsb-num');
+  if (badge) badge.textContent = count;
+  // Also update the brain teasers streak display
+  streakDays = count;
+  var sc = document.getElementById('streak-count');
+  if (sc) sc.textContent = count;
+  initStreakDots();
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  initRealStreak();
+});
+
+// ════════════════════════════════════════════
+// ONBOARDING SYSTEM
+// ════════════════════════════════════════════
+var obDone = JSON.parse(localStorage.getItem('zintsomi_ob') || '{}');
+
+function obComplete(step) {
+  obDone['s'+step] = true;
+  localStorage.setItem('zintsomi_ob', JSON.stringify(obDone));
+  var el = document.getElementById('ob-s'+step);
+  var ch = document.getElementById('ob-c'+step);
+  if (el) el.classList.add('done');
+  if (ch) ch.textContent = '✓';
+  // Check if all done
+  if (obDone.s1 && obDone.s2 && obDone.s3) {
+    var cta = document.getElementById('ob-cta');
+    if (cta) cta.style.background = '#6EE78E';
+  }
+}
+
+function obFinish() {
+  localStorage.setItem('zintsomi_ob_complete', '1');
+  var ov = document.getElementById('onboarding-overlay');
+  if (ov) { ov.style.opacity='0'; ov.style.transition='opacity .4s'; setTimeout(function(){ ov.classList.add('hidden'); }, 400); }
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  // Restore completed steps
+  [1,2,3].forEach(function(i){
+    if(obDone['s'+i]) obComplete(i);
+  });
+  // If already completed onboarding before, skip it
+  if (localStorage.getItem('zintsomi_ob_complete') === '1') {
+    var ov = document.getElementById('onboarding-overlay');
+    if (ov) ov.classList.add('hidden');
+  }
 });
 
 </script>
