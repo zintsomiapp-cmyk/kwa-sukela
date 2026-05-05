@@ -1,76 +1,895 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Dr Sasa's Story Forest Quest</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
-    body { margin:0; overflow:hidden; background:black; }
-    #ui {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      color: white;
-      font-family: Arial;
-      z-index: 10;
+    :root{--bg:#05070b;--panel:rgba(10,15,20,.88);--accent:#f4bb5d;--ok:#7ded8a;--text:#f5f2ea;--danger:#ff7680;--blue:#89c5ff}
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;overflow:hidden;background:#000;color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,sans-serif}
+    #game{position:fixed;inset:0}
+    #hud{position:fixed;inset:0;pointer-events:none}
+    .panel{background:var(--panel);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(8px);border-radius:14px}
+
+    /* ── TOP BAR ── */
+    #topBar{position:absolute;left:12px;top:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+    #quest{padding:10px 14px;max-width:560px}
+    #quest h1{margin:0 0 6px;font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent)}
+    #quest p{margin:0;font-size:12px;opacity:.88;line-height:1.55}
+    #compass{padding:8px 12px;min-width:86px;text-align:center;font-weight:700}
+    #compassVal{font-size:22px;color:var(--blue);letter-spacing:.04em}
+
+    /* ── BOTTOM LEFT STACK ── */
+    #bottomLeft{position:absolute;left:12px;bottom:12px;display:flex;flex-direction:column;gap:6px}
+    #progress{padding:7px 12px;font-size:13px;font-weight:600}
+    #meta{padding:7px 12px;font-size:12px;line-height:1.5}
+    #credits{padding:7px 12px;font-size:12px}
+
+    /* ── MINIMAP ── */
+    #minimapWrap{position:absolute;right:12px;bottom:12px;width:158px;height:158px;padding:8px}
+    #minimap{width:100%;height:100%;background:rgba(0,0,0,.5);border-radius:10px}
+
+    /* ── PROMPT / CROSSHAIR / TOAST ── */
+    #prompt{position:absolute;left:50%;bottom:94px;transform:translateX(-50%);padding:10px 18px;display:none;font-size:14px;font-weight:600;white-space:nowrap}
+    #crosshair{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);opacity:.75;width:22px;height:22px}
+    #crosshair::before,#crosshair::after{content:"";position:absolute;background:#ffffffa0}
+    #crosshair::before{width:22px;height:2px;left:0;top:10px}
+    #crosshair::after{height:22px;width:2px;left:10px;top:0}
+    #toast{position:fixed;top:90px;left:50%;transform:translateX(-50%);display:none;z-index:15;padding:9px 14px;font-size:13px;font-weight:600;white-space:nowrap}
+
+    /* ── MODALS ── */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:18px;z-index:10}
+    .modalCard{pointer-events:auto;max-width:760px;width:min(100%,760px);max-height:90vh;overflow:auto;padding:22px}
+    .modal h2{margin:0 0 10px;color:var(--accent)}
+    .modal p,.modal li{line-height:1.68;opacity:.95}
+    .btn{pointer-events:auto;background:linear-gradient(135deg,#ffcb71,#e6a43d);border:none;color:#1f1300;padding:10px 16px;border-radius:10px;font-weight:700;cursor:pointer;font-size:13px;transition:opacity .15s}
+    .btn:hover{opacity:.88}
+    .btn.alt{background:#1b2430;color:#dfe8f6;border:1px solid #39485f}
+    .btn.danger{background:#2a0f13;color:#ffd6d8;border:1px solid #5f2f35}
+    .asset{max-width:100%;border-radius:10px;border:1px solid rgba(255,255,255,.14);margin:8px 0 12px}
+    .creditWarn{color:#ffd8a8;font-size:13px}
+
+    /* ── RIDDLE MODAL (replaces native prompt()) ── */
+    #riddleModal{z-index:20}
+    #riddleModal .modalCard{max-width:480px}
+    #riddleModal h2{color:var(--accent)}
+    #riddleInput{width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid #40526a;background:#0f1722;color:#fff;font-size:15px;margin:10px 0 14px;outline:none}
+    #riddleInput:focus{border-color:var(--accent)}
+    #riddleFeedback{font-size:13px;min-height:18px;margin-bottom:10px;color:var(--ok)}
+    #riddleFeedback.err{color:var(--danger)}
+
+    /* ── TOUCH UI ── */
+    #touchUI{position:fixed;left:12px;bottom:12px;display:none;z-index:12;pointer-events:auto}
+    .dpad{display:grid;grid-template-columns:54px 54px 54px;grid-template-rows:54px 54px 54px;gap:6px}
+    .touchBtn{border:none;border-radius:12px;background:rgba(18,24,33,.85);color:#dce8ff;font-size:20px;font-weight:700;cursor:pointer}
+    .touchBtn:active{transform:scale(.93)}
+    #collectBtn{position:fixed;right:14px;bottom:40px;display:none;z-index:12;pointer-events:auto}
+    #collectBtn button{width:78px;height:78px;border-radius:50%;border:none;background:linear-gradient(135deg,#f7d192,#c68b2f);font-size:19px;font-weight:800;cursor:pointer}
+
+    /* ── START OVERLAY ── */
+    #startOverlay{position:fixed;inset:0;background:linear-gradient(rgba(3,6,12,.6),rgba(3,6,12,.92)),url('assets/vr-generated/forest-night-texture.svg') center/cover no-repeat;display:flex;align-items:center;justify-content:center;z-index:20}
+    #startCard{max-width:700px;padding:26px}
+    #startCard h1{margin:0 0 10px;font-size:28px;color:var(--accent)}
+    #startCard p{opacity:.9;line-height:1.65;font-size:14px}
+    #settings{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+    .chip{padding:6px 12px;border-radius:999px;background:#0f1722;border:1px solid #34455a;font-size:12px;cursor:pointer;color:#d7e4ff;transition:border-color .15s}
+    .chip:hover{border-color:var(--accent)}
+
+    @media(max-width:900px){
+      #minimapWrap{width:120px;height:120px}
+      #touchUI{display:block}
+      #collectBtn{display:block}
+      #topBar{flex-direction:column}
+      #bottomLeft{bottom:200px}
     }
   </style>
 </head>
 <body>
+  <div id="game"></div>
+  <div id="hud">
+    <div id="topBar">
+      <div id="quest" class="panel">
+        <h1>Dr Sasa's Story Forest Quest</h1>
+        <p id="objectiveText">Find 5 hidden story scrolls in the night forest. Use <b>WASD</b> + mouse. Press <b>E</b> to collect.</p>
+      </div>
+      <div id="compass" class="panel">
+        <div style="font-size:10px;opacity:.5;letter-spacing:.08em;text-transform:uppercase">Compass</div>
+        <div id="compassVal">N</div>
+      </div>
+    </div>
 
-<div id="ui">Dr Sasa Forest Loading...</div>
+    <div id="crosshair"></div>
+    <div id="toast" class="panel"></div>
+    <div id="prompt" class="panel">Press E to collect scroll</div>
 
-<script>
-let scene, camera, renderer;
+    <div id="bottomLeft">
+      <div id="progress" class="panel">Scrolls: <span id="count">0</span>/5 &nbsp;·&nbsp; Relics: <span id="relicCount">0</span>/3</div>
+      <div id="meta" class="panel">
+        Time: <span id="timer">00:00</span> &nbsp;·&nbsp; Best: <span id="best">--:--</span><br>
+        Streak: <span id="streak">0</span> 🔥 &nbsp;·&nbsp; Grace: <span id="grace">1</span>
+      </div>
+      <div id="credits" class="panel">
+        Credits: <span id="creditCount">100</span>/100 &nbsp;·&nbsp; +1 in <span id="creditEta">--:--</span>
+      </div>
+    </div>
 
-init();
-animate();
+    <div id="minimapWrap" class="panel">
+      <canvas id="minimap" width="140" height="140"></canvas>
+    </div>
+  </div>
 
-function init(){
-  scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x000000, 10, 60);
+  <!-- Touch Controls -->
+  <div id="touchUI">
+    <div class="dpad">
+      <div></div><button class="touchBtn" data-key="w">▲</button><div></div>
+      <button class="touchBtn" data-key="a">◀</button><div></div><button class="touchBtn" data-key="d">▶</button>
+      <div></div><button class="touchBtn" data-key="s">▼</button><div></div>
+    </div>
+  </div>
+  <div id="collectBtn"><button id="collectTouch">E</button></div>
 
-  camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-  camera.position.set(0,2,5);
+  <!-- Modals -->
+  <div id="storyModal" class="modal"><div class="modalCard panel" id="storyCard"></div></div>
+  <div id="finalModal" class="modal"><div class="modalCard panel" id="finalCard"></div></div>
+  <div id="communityModal" class="modal"><div class="modalCard panel" id="communityCard"></div></div>
+  <div id="creditModal" class="modal"><div class="modalCard panel" id="creditCard"></div></div>
 
-  renderer = new THREE.WebGLRenderer({antialias:true});
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+  <!-- FIX: Custom riddle modal — replaces native prompt() which is blocked in many browsers -->
+  <div id="riddleModal" class="modal">
+    <div class="modalCard panel">
+      <h2>🌙 Riddle of the Night</h2>
+      <p id="riddleQuestion" style="font-size:15px;margin:0 0 4px"></p>
+      <input id="riddleInput" type="text" placeholder="Type your one-word answer…" autocomplete="off" />
+      <div id="riddleFeedback"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" onclick="submitRiddle()">Submit Answer</button>
+        <button class="btn alt" onclick="skipRiddle()">Skip Riddle</button>
+      </div>
+    </div>
+  </div>
 
-  // ground
-  const geo = new THREE.PlaneGeometry(100,100);
-  const mat = new THREE.MeshBasicMaterial({color:0x0a2a18});
-  const ground = new THREE.Mesh(geo, mat);
-  ground.rotation.x = -Math.PI/2;
-  scene.add(ground);
+  <!-- Start Overlay -->
+  <div id="startOverlay">
+    <div id="startCard" class="panel">
+      <h1>
+        <span style="display:inline-flex;vertical-align:middle;margin-right:.4rem">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f4bb5d" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3c.5 0 .8.55.53.98A7 7 0 1 0 20 13.26c.4-.28 1 .01 1 .53z"/>
+          </svg>
+        </span>
+        Enter the Story Forest
+      </h1>
+      <p>Explore a cinematic African night world inspired by adventure classics. Unlock all five learning scrolls, then hear Dr Sasa's final speech and download your Story Keeper certificate.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+        <button class="btn" id="startBtn">Start / Resume Quest</button>
+        <button class="btn alt" id="vrBtn">Enter VR Headset</button>
+        <button class="btn danger" id="resetBtn">Reset Progress</button>
+        <button class="btn alt" id="hubBtn">Story Hub</button>
+        <a href="index.html" class="btn alt" style="text-decoration:none;display:inline-flex;align-items:center">← Back to VR Village</a>
+      </div>
+      <div id="settings">
+        <button class="chip" id="audioChip">Ambient Audio: ON</button>
+        <button class="chip" id="qualityChip">Quality: Auto</button>
+        <span class="chip" id="dailyChip" style="cursor:default">Daily Path: --</span>
+        <span class="chip" id="creditChip" style="cursor:default">Story Credits: --</span>
+      </div>
+    </div>
+  </div>
 
-  // simple light (fire placeholder)
-  const light = new THREE.PointLight(0xffaa33, 2, 50);
-  light.position.set(0,3,0);
-  scene.add(light);
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+  // ══════════════════════════════════════
+  // CONSTANTS & SAVE STATE
+  // ══════════════════════════════════════
+  const SAVE_KEY       = 'drsasa_forest_v2';
+  const USER_STORY_KEY = 'drsasa_user_stories_v1';
+  const CREDIT_KEY     = 'drsasa_vr_credits_v1';
+  const CREDIT_MAX     = 100;
+  const CREDIT_REGEN_MIN = 15;
+  const START_COST     = 10;
+  const SCROLL_COST    = 2;
 
-  // cube “dr sasa placeholder”
-  const box = new THREE.Mesh(
-    new THREE.BoxGeometry(1,2,1),
-    new THREE.MeshBasicMaterial({color:0x884422})
+  const save = JSON.parse(localStorage.getItem(SAVE_KEY) || '{"collected":[],"best":null,"audio":true,"quality":"auto","streak":0,"lastPlayed":null,"grace":1,"relics":[],"riddleSolvedDay":null}');
+  const credits = JSON.parse(localStorage.getItem(CREDIT_KEY) || '{"credits":100,"maxCredits":100,"regenMinutes":15,"lastRefillAt":0,"lastDailyBonusDay":null,"subscriber":false}');
+
+  // FIX: Renamed from runStart to avoid const re-assignment issue on re-starts
+  let sessionStart = Date.now();
+
+  const userStories = JSON.parse(localStorage.getItem(USER_STORY_KEY) || '[]');
+
+  // ── Streak logic ──
+  function isoDay(ts){ return new Date(ts).toISOString().slice(0,10); }
+  function dayDiff(a,b){ return Math.round((new Date(b)-new Date(a))/86400000); }
+  const today = isoDay(Date.now());
+  if(save.lastPlayed){
+    const delta = dayDiff(save.lastPlayed, today);
+    if(delta === 1)     save.streak = (save.streak||0)+1;
+    else if(delta > 1){ if((save.grace||0)>0){ save.grace-=1; } else save.streak=0; }
+  } else save.streak = 1;
+  save.lastPlayed = today;
+  if(save.streak > 0 && save.streak % 7 === 0) save.grace = (save.grace||0)+1;
+
+  // ── Credits init ──
+  if(!credits.lastRefillAt) credits.lastRefillAt = Date.now();
+  credits.maxCredits   = CREDIT_MAX;
+  credits.regenMinutes = CREDIT_REGEN_MIN;
+
+  // ── Daily bonus ──
+  if(credits.lastDailyBonusDay !== today){
+    credits.credits = Math.min(credits.maxCredits, (credits.credits||0)+5);
+    credits.lastDailyBonusDay = today;
+    persistCredits();
+  }
+
+  function persistCredits(){ localStorage.setItem(CREDIT_KEY, JSON.stringify(credits)); }
+  function persist(){ localStorage.setItem(SAVE_KEY, JSON.stringify(save)); }
+
+  function refillCredits(){
+    if(credits.subscriber) return;
+    const now = Date.now(), step = credits.regenMinutes * 60000;
+    const earned = Math.floor((now - credits.lastRefillAt) / step);
+    if(earned > 0){
+      credits.credits = Math.min(credits.maxCredits, credits.credits + earned);
+      credits.lastRefillAt += earned * step;
+      persistCredits();
+    }
+  }
+
+  function nextCreditEta(){
+    if(credits.subscriber || credits.credits >= credits.maxCredits) return '--:--';
+    const step = credits.regenMinutes * 60000;
+    const left = Math.max(0, step - (Date.now() - credits.lastRefillAt));
+    const m = Math.floor(left/60000), s = Math.floor((left%60000)/1000);
+    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+
+  function updateCreditsUI(){
+    refillCredits();
+    const c = credits.subscriber ? '∞' : Math.max(0, Math.floor(credits.credits));
+    document.getElementById('creditCount').textContent = c;
+    document.getElementById('creditEta').textContent   = credits.subscriber ? '--:--' : nextCreditEta();
+    document.getElementById('creditChip').textContent  = credits.subscriber ? 'Credits: Unlimited' : `Credits: ${Math.floor(credits.credits)}/${credits.maxCredits}`;
+  }
+
+  function creditGate(reason, cost){
+    document.getElementById('creditCard').innerHTML = `
+      <h2>Not enough Story Credits</h2>
+      <p class="creditWarn">You need <b>${cost}</b> credits to ${reason}. Credits refill every ${credits.regenMinutes} minutes.</p>
+      <p>Current: <b>${Math.floor(credits.credits)}/${credits.maxCredits}</b> · Next +1 in <b>${nextCreditEta()}</b></p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+        <a class="btn" href="index.html">Subscribe for Unlimited</a>
+        <button class="btn alt" onclick="closeCreditGate()">Wait for Refill</button>
+      </div>`;
+    document.getElementById('creditModal').style.display = 'flex';
+  }
+  window.closeCreditGate = () => document.getElementById('creditModal').style.display = 'none';
+
+  function spendCredits(cost, reason){
+    if(credits.subscriber) return true;
+    refillCredits();
+    if(credits.credits < cost){ creditGate(reason, cost); return false; }
+    credits.credits -= cost;
+    persistCredits();
+    updateCreditsUI();
+    return true;
+  }
+
+  // ── Deterministic daily quest path ──
+  const seed = [...today].reduce((a,c) => a + c.charCodeAt(0), 0);
+  const dailyFirst = seed % 5;
+
+  // ══════════════════════════════════════
+  // THREE.JS SCENE SETUP
+  // ══════════════════════════════════════
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x060913);
+  scene.fog = new THREE.FogExp2(0x0a1020, 0.018);
+
+  const camera = new THREE.PerspectiveCamera(75, innerWidth/innerHeight, 0.1, 350);
+  camera.position.set(0, 1.8, 8);
+
+  const renderer = new THREE.WebGLRenderer({antialias:true, powerPreference:'high-performance'});
+  renderer.setPixelRatio(Math.min(devicePixelRatio, save.quality==='low' ? 1.2 : 1.8));
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.xr.enabled = true;
+  document.getElementById('game').appendChild(renderer.domElement);
+
+  // ── Lighting ──
+  const hemi = new THREE.HemisphereLight(0x8ea2cc, 0x10100d, 0.52); scene.add(hemi);
+  const moonLight = new THREE.DirectionalLight(0x9cb6ff, 0.56);
+  moonLight.position.set(-25, 34, -6); moonLight.castShadow = true;
+  moonLight.shadow.mapSize.set(1024, 1024); scene.add(moonLight);
+
+  const moon = new THREE.Mesh(new THREE.SphereGeometry(3,28,28), new THREE.MeshBasicMaterial({color:0xe7ecff}));
+  moon.position.set(-36, 40, -60); scene.add(moon);
+
+  // ── Stars ──
+  const starGeo = new THREE.BufferGeometry();
+  const stars = [];
+  for(let i=0;i<1200;i++) stars.push((Math.random()-0.5)*260, Math.random()*130+8, (Math.random()-0.5)*260);
+  starGeo.setAttribute('position', new THREE.Float32BufferAttribute(stars, 3));
+  scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({color:0xc9d9ff, size:0.55, sizeAttenuation:true})));
+
+  // ── Ground ──
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(260,260),
+    new THREE.MeshStandardMaterial({color:0x19261c, roughness:1, metalness:0})
   );
-  box.position.set(0,1,0);
-  scene.add(box);
+  ground.rotation.x = -Math.PI/2; ground.receiveShadow = true; scene.add(ground);
 
-  window.addEventListener('resize', onResize);
-}
+  // ── Trees ──
+  const colliders = [];
+  function mkTree(x, z, type='baobab'){
+    const g = new THREE.Group();
+    const trunkH = type==='baobab' ? 7+Math.random()*4 : 5+Math.random()*3;
+    const trunkR = type==='baobab' ? 1.6+Math.random()*1.2 : 0.5+Math.random()*0.4;
+    const trunk = new THREE.Mesh(
+      new THREE.CylinderGeometry(trunkR*0.9, trunkR, trunkH, 12),
+      new THREE.MeshStandardMaterial({color: type==='baobab'?0x5b422d:0x47341f, roughness:1})
+    );
+    trunk.castShadow = true; trunk.position.y = trunkH/2; g.add(trunk);
+    const crownGeo = type==='baobab' ? new THREE.SphereGeometry(4.6,16,12) : new THREE.ConeGeometry(3.8,4.8,14);
+    const leaves = new THREE.Mesh(crownGeo, new THREE.MeshStandardMaterial({color: type==='baobab'?0x2a522f:0x355f3a, roughness:.9}));
+    leaves.position.y = trunkH + (type==='baobab'?1.6:2.2); leaves.castShadow = true; g.add(leaves);
+    g.position.set(x, 0, z); scene.add(g);
+    colliders.push({x, z, r: trunkR+2});
+  }
 
-function onResize(){
-  camera.aspect = window.innerWidth/window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+  for(let i=0;i<56;i++){
+    const x=(Math.random()-0.5)*180, z=(Math.random()-0.5)*180;
+    if(Math.abs(x)<10 && Math.abs(z)<10) continue;
+    mkTree(x, z, Math.random()>0.5?'baobab':'acacia');
+  }
 
-function animate(){
-  requestAnimationFrame(animate);
-  renderer.render(scene, camera);
-}
-</script>
+  // ── Grass tufts ──
+  for(let i=0;i<260;i++){
+    const tuft = new THREE.Mesh(
+      new THREE.ConeGeometry(0.2+Math.random()*0.26, 0.9+Math.random()*0.7, 5),
+      new THREE.MeshStandardMaterial({color: Math.random()>0.5?0x436e39:0x507a41})
+    );
+    tuft.position.set((Math.random()-0.5)*220, 0.45, (Math.random()-0.5)*220);
+    scene.add(tuft);
+  }
 
+  // ── Hut ──
+  const hut = new THREE.Group();
+  const hutBase = new THREE.Mesh(new THREE.CylinderGeometry(3.5,4.2,4.5,18), new THREE.MeshStandardMaterial({color:0x6f4f2f,roughness:1}));
+  hutBase.position.y=2.2; hutBase.castShadow=true; hut.add(hutBase);
+  const hutRoof = new THREE.Mesh(new THREE.ConeGeometry(5.5,4.6,18), new THREE.MeshStandardMaterial({color:0x553a22,roughness:1}));
+  hutRoof.position.y=6.5; hutRoof.castShadow=true; hut.add(hutRoof);
+  hut.position.set(8,0,-10); scene.add(hut); colliders.push({x:8,z:-10,r:6});
+
+  // ── Campfire ──
+  const fire = new THREE.Group();
+  const ember = new THREE.Mesh(new THREE.SphereGeometry(0.8,16,16), new THREE.MeshStandardMaterial({emissive:0xff6320,emissiveIntensity:1.8,color:0x221000}));
+  ember.position.set(0,0.6,0); fire.add(ember);
+  for(let i=0;i<7;i++){
+    const log = new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.22,2.2,8), new THREE.MeshStandardMaterial({color:0x503319,roughness:1}));
+    log.rotation.z=Math.PI/2; log.rotation.y=(i/7)*Math.PI*2; log.position.y=0.22; fire.add(log);
+  }
+  fire.position.set(0,0,-6); scene.add(fire);
+  const fireLight = new THREE.PointLight(0xff7a33,1.8,22,2);
+  fireLight.position.set(0,2.4,-6); fireLight.castShadow=true; scene.add(fireLight);
+
+  // ── Dr Sasa character ──
+  const drSasa = new THREE.Group();
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.8,2.2,12), new THREE.MeshStandardMaterial({color:0x7d3f2a}));
+  body.position.y=1.1; drSasa.add(body);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.44,20,20), new THREE.MeshStandardMaterial({color:0x8a5b3f}));
+  head.position.y=2.7; drSasa.add(head);
+  const shawl = new THREE.Mesh(new THREE.ConeGeometry(1.05,1.5,14), new THREE.MeshStandardMaterial({color:0x294f65}));
+  shawl.position.y=1.8; drSasa.add(shawl);
+  drSasa.position.set(-1.6,0,-7.6); scene.add(drSasa);
+
+  // ══════════════════════════════════════
+  // SCROLL DATA
+  // ══════════════════════════════════════
+  const scrollData = [
+    { title:'Scroll 1 — The Origin of Story', art:'assets/vr-generated/scroll-1.svg',
+      content:`<p>Long before writing, communities used oral storytelling to carry memory. In many African societies, stories preserved maps, water routes, medicine, farming rhythms, and social law.</p><ul><li><b>Survival stories:</b> lessons about danger, drought, and cooperation.</li><li><b>Identity stories:</b> who we are, where we came from, and why values matter.</li><li><b>Oral literature:</b> performance with voice, rhythm, song, and audience response.</li></ul><p>Story was never "just entertainment" — it was a living tool for survival and belonging.</p>`
+    },
+    { title:'Scroll 2 — The Structure of a Story', art:'assets/vr-generated/scroll-2.svg',
+      content:`<p>A strong story often follows three acts. In this quest, think of them as:</p><ol><li><b>The Spark:</b> a question, conflict, or call to begin.</li><li><b>The Forest:</b> obstacles, choices, transformation.</li><li><b>The Fire:</b> meaning, return, and wisdom shared with others.</li></ol><p>Structure helps listeners follow emotion and remember the message long after the story ends.</p>`
+    },
+    { title:'Scroll 3 — Folklore & the Animal Kingdom', art:'assets/vr-generated/scroll-3.svg',
+      content:`<p>Across the continent, animals stand in for human behavior. The hare, lion, tortoise, hyena, and bird become mirrors for courage, greed, patience, trickery, and justice.</p><p>Why animals? They make hard truths safer to discuss and easier for all ages to understand. Fable tradition turns ethics into memorable narrative.</p>`
+    },
+    { title:'Scroll 4 — The Griot Tradition', art:'assets/vr-generated/scroll-4.svg',
+      content:`<p>In many traditions, griots, izimbongi, and praise poets are living libraries. They carry genealogies, victories, warnings, and community philosophy in spoken art.</p><p>Performance is dynamic: drum pulse, chant, call-and-response, improvisation, and witness. Knowledge is not static — it lives in relation.</p>`
+    },
+    { title:'Scroll 5 — The Power of Your Story', art:'assets/vr-generated/scroll-5.svg',
+      content:`<p>Every human being is a story in motion. Your language, memory, challenge, joy, and dream all hold narrative power.</p><p>When you tell your story with honesty and care, you heal silence, connect generations, and create pathways for others.</p><p><b>Your voice matters. Your story matters.</b></p>`
+    }
+  ];
+
+  // ── Scrolls in world ──
+  const scrollMeshes = [];
+  [[22,-18],[-24,-12],[30,28],[-16,34],[2,38]].forEach((pos,i)=>{
+    const s = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.35,0.35,1.2,18),
+      new THREE.MeshStandardMaterial({color:0xd8b463,emissive:0x8b6718,emissiveIntensity:0.9})
+    );
+    s.rotation.z=Math.PI/2; s.position.set(pos[0],1.2,pos[1]);
+    s.userData = {idx:i, collected:false}; scene.add(s); scrollMeshes.push(s);
+    const glow = new THREE.PointLight(0xffd26a,0.8,9); glow.position.copy(s.position); scene.add(glow);
+  });
+  save.collected.forEach(i=>{
+    if(scrollMeshes[i]){ scrollMeshes[i].userData.collected=true; scrollMeshes[i].visible=false; }
+  });
+
+  // ── Relics ──
+  const relicData = [
+    {name:'Moon Drum Relic', lore:'The moon drum keeps time between heartbeats and history.'},
+    {name:'Griot Calabash', lore:'A vessel of names, songs, and lineages carried by memory.'},
+    {name:'Baobab Seed Relic', lore:'Small seed, giant future — every story begins this way.'}
+  ];
+  const relicSpots = [[34,-22],[-36,19],[18,44],[-44,-30],[5,-45],[-10,26]];
+  const relicSeed = seed % relicSpots.length;
+  const activeRelicSpots = [relicSpots[relicSeed], relicSpots[(relicSeed+2)%relicSpots.length], relicSpots[(relicSeed+4)%relicSpots.length]];
+  const relics = [];
+  activeRelicSpots.forEach((p,i)=>{
+    const relic = new THREE.Mesh(
+      new THREE.OctahedronGeometry(0.62, 0),
+      new THREE.MeshStandardMaterial({color:0x7fd5ff, emissive:0x1a6a96, emissiveIntensity:0.8, roughness:0.28, metalness:0.4})
+    );
+    relic.position.set(p[0],1.45,p[1]);
+    relic.userData = {idx:i, collected:(save.relics||[]).includes(i)};
+    relic.visible = !relic.userData.collected;
+    scene.add(relic);
+    const glow = new THREE.PointLight(0x74caff,0.55,8); glow.position.copy(relic.position);
+    glow.visible = relic.visible; relic.userData.glow = glow; scene.add(glow);
+    relics.push(relic);
+  });
+
+  // ══════════════════════════════════════
+  // GAME STATE
+  // ══════════════════════════════════════
+  const keys = {w:false,a:false,s:false,d:false};
+  let yaw=0, pitch=0, pointerLock=false;
+  let nearest=null, relicNearest=null;
+  let collected = save.collected.length;
+
+  // FIX: Use separate variable names to avoid shadowing native APIs
+  const hud_prompt   = document.getElementById('prompt');
+  const storyModal   = document.getElementById('storyModal');
+  const timerEl      = document.getElementById('timer');
+  const bestEl       = document.getElementById('best');
+  const toastEl      = document.getElementById('toast');
+
+  function fmt(seconds){ const m=Math.floor(seconds/60),s=seconds%60; return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
+
+  bestEl.textContent              = save.best ? fmt(save.best) : '--:--';
+  document.getElementById('count').textContent      = collected;
+  document.getElementById('relicCount').textContent = (save.relics||[]).length;
+  document.getElementById('streak').textContent     = save.streak||0;
+  document.getElementById('grace').textContent      = save.grace||0;
+  document.getElementById('dailyChip').textContent  = `Daily Path: Scroll ${dailyFirst+1} first`;
+
+  // ══════════════════════════════════════
+  // INPUT
+  // ══════════════════════════════════════
+  addEventListener('keydown', e=>{ if(keys[e.key.toLowerCase()]!==undefined) keys[e.key.toLowerCase()]=true; if(e.key.toLowerCase()==='e') collectNearest(); });
+  addEventListener('keyup',   e=>{ if(keys[e.key.toLowerCase()]!==undefined) keys[e.key.toLowerCase()]=false; });
+
+  renderer.domElement.addEventListener('click', ()=>{ if(!pointerLock) renderer.domElement.requestPointerLock(); });
+  document.addEventListener('pointerlockchange', ()=> pointerLock = document.pointerLockElement === renderer.domElement);
+  addEventListener('mousemove', e=>{
+    if(!pointerLock) return;
+    yaw   -= e.movementX * 0.002;
+    pitch -= e.movementY * 0.002;
+    pitch  = Math.max(-1.2, Math.min(1.2, pitch));
+    camera.rotation.set(pitch, yaw, 0, 'YXZ');
+  });
+
+  document.querySelectorAll('.touchBtn').forEach(btn=>{
+    const k = btn.dataset.key;
+    btn.addEventListener('touchstart', e=>{e.preventDefault(); keys[k]=true;}, {passive:false});
+    btn.addEventListener('touchend',   ()=> keys[k]=false);
+    btn.addEventListener('mousedown',  ()=> keys[k]=true);
+    btn.addEventListener('mouseup',    ()=> keys[k]=false);
+    btn.addEventListener('mouseleave', ()=> keys[k]=false);
+  });
+  document.getElementById('collectTouch').onclick = collectNearest;
+
+  // ── Collision ──
+  function canMove(nx, nz){
+    for(const c of colliders){ const dx=nx-c.x,dz=nz-c.z; if(dx*dx+dz*dz<c.r*c.r) return false; }
+    return true;
+  }
+
+  // ══════════════════════════════════════
+  // TOAST
+  // ══════════════════════════════════════
+  function showToast(msg){
+    toastEl.textContent = msg;
+    toastEl.style.display = 'block';
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(()=> toastEl.style.display='none', 2600);
+  }
+
+  // ══════════════════════════════════════
+  // COLLECT LOGIC
+  // ══════════════════════════════════════
+  function collectNearest(){
+    // Relic first
+    if(relicNearest && !relicNearest.userData.collected){
+      relicNearest.userData.collected = true;
+      relicNearest.visible = false;
+      if(relicNearest.userData.glow) relicNearest.userData.glow.visible = false;
+      save.relics = [...new Set([...(save.relics||[]), relicNearest.userData.idx])];
+      persist();
+      credits.credits = Math.min(credits.maxCredits, (credits.credits||0)+4);
+      persistCredits(); updateCreditsUI();
+      const rd = relicData[relicNearest.userData.idx];
+      document.getElementById('relicCount').textContent = (save.relics||[]).length;
+      showToast(`Relic found: ${rd.name} · +4 credits`);
+      document.getElementById('storyCard').innerHTML = `
+        <h2>✨ ${rd.name}</h2>
+        <p>${rd.lore}</p>
+        <p>You found a hidden relic path. Relics rotate daily — keep exploring.</p>
+        <div style="margin-top:14px"><button class="btn" onclick="closeStory()">Continue Quest</button></div>`;
+      storyModal.style.display = 'flex';
+      hud_prompt.style.display = 'none';
+      updateObjective();
+      return;
+    }
+    // Scroll
+    if(!nearest || nearest.userData.collected) return;
+    if(!spendCredits(SCROLL_COST, 'collect this scroll')) return;
+    nearest.userData.collected = true;
+    nearest.visible = false;
+    collected++;
+    document.getElementById('count').textContent = collected;
+    save.collected = [...new Set([...save.collected, nearest.userData.idx])];
+    persist();
+
+    const isDaily = nearest.userData.idx === dailyFirst;
+    if(isDaily){
+      credits.credits = Math.min(credits.maxCredits, (credits.credits||0)+10);
+      persistCredits(); updateCreditsUI();
+    }
+    showToast(`Scroll ${nearest.userData.idx+1} collected${isDaily?' · Daily bonus +10':''}${` · -${SCROLL_COST} credit`}`);
+
+    const data = scrollData[nearest.userData.idx];
+    document.getElementById('storyCard').innerHTML = `
+      <h2>${data.title}</h2>
+      <img class="asset" alt="${data.title}" src="${data.art}" onerror="this.style.display='none'">
+      <div>${data.content}</div>
+      <div style="margin-top:16px"><button class="btn" onclick="closeStory()">Continue Quest</button></div>`;
+    storyModal.style.display = 'flex';
+    hud_prompt.style.display = 'none';
+
+    if(collected === 5) setTimeout(showFinal, 500);
+    updateObjective();
+  }
+
+  function updateObjective(){
+    const left = 5 - collected;
+    const relicLeft = Math.max(0, 3-(save.relics||[]).length);
+    document.getElementById('objectiveText').innerHTML = left > 0
+      ? `Find <b>${left}</b> more scroll${left>1?'s':''}. Daily bonus: collect Scroll <b>${dailyFirst+1}</b> first. Relics left: <b>${relicLeft}</b>. Press <b>E</b> near glowing objects.`
+      : `All scrolls found! Return to Dr Sasa at the fire. Hidden relics left: <b>${relicLeft}</b>.`;
+  }
+  updateObjective();
+
+  window.closeStory = ()=> storyModal.style.display = 'none';
+
+  // ══════════════════════════════════════
+  // FINAL SPEECH + CERTIFICATE
+  // ══════════════════════════════════════
+  function showFinal(){
+    const elapsed = Math.floor((Date.now() - sessionStart)/1000);
+    if(!save.best || elapsed < save.best){ save.best=elapsed; persist(); bestEl.textContent=fmt(save.best); }
+    document.getElementById('finalCard').innerHTML = `
+      <h2>Dr Sasa's Final Speech</h2>
+      <img class="asset" src="assets/vr-generated/dr-sasa-portrait.svg" alt="Dr Sasa storyteller portrait" onerror="this.style.display='none'">
+      <p>"You entered this forest to collect scrolls, but what you truly collected is responsibility. A story is a fire passed hand to hand. When you tell truth with care, you keep your people visible in history.</p>
+      <p>Do not wait for permission to speak your memory. Build with language. Heal with narrative. Teach the child. Honor the elder. Let your voice become a bridge between yesterday and tomorrow."</p>
+      <h3 style="margin:14px 0 8px;color:#d7e6ff">Story Keeper Certificate</h3>
+      <p style="margin-top:0">Completed in <b>${fmt(elapsed)}</b>${save.best===elapsed?' · New best time!':''}. Enter your name to generate your certificate.</p>
+      <input id="certName" placeholder="Your full name" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid #4b6077;background:#0f1722;color:#fff;margin-bottom:14px;font-size:14px" />
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" onclick="downloadCert(${elapsed})">Download Certificate</button>
+        <a class="btn alt" href="index.html">Return to VR Village</a>
+      </div>`;
+    document.getElementById('finalModal').style.display = 'flex';
+  }
+
+  window.downloadCert = function(elapsed){
+    const name = (document.getElementById('certName').value || 'Story Keeper').trim();
+    const c = document.createElement('canvas'); c.width=1600; c.height=1100;
+    const x = c.getContext('2d');
+    const grad = x.createLinearGradient(0,0,1600,1100);
+    grad.addColorStop(0,'#141d2a'); grad.addColorStop(1,'#2a180c');
+    x.fillStyle=grad; x.fillRect(0,0,1600,1100);
+    x.strokeStyle='#d9b36e'; x.lineWidth=16; x.strokeRect(40,40,1520,1020);
+    x.fillStyle='#f5ddb0'; x.font='700 68px Georgia'; x.textAlign='center'; x.fillText('Certificate of Storykeeping',800,210);
+    x.fillStyle='#f3f6ff'; x.font='42px Georgia'; x.fillText('Awarded to',800,320);
+    x.fillStyle='#ffe3ab'; x.font='700 84px Georgia'; x.fillText(name,800,435);
+    x.fillStyle='#d7e4ff'; x.font='34px Georgia';
+    x.fillText("for completing Dr Sasa's Story Forest Quest",800,540);
+    x.fillText(`Time: ${fmt(elapsed)} · Scrolls unlocked: 5/5`,800,595);
+    x.fillStyle='#f5c06c'; x.font='30px Georgia'; x.fillText(new Date().toLocaleDateString(),800,760);
+    x.fillStyle='#f2d4a2'; x.fillText('Dr Sasa Story Academy · Zintsomi',800,840);
+    const a = document.createElement('a');
+    a.download = `story-certificate-${name.replace(/\s+/g,'-').toLowerCase()}.png`;
+    a.href = c.toDataURL('image/png'); a.click();
+  };
+
+  // ══════════════════════════════════════
+  // FIX: CUSTOM RIDDLE MODAL
+  // Replaces native window.prompt() which is blocked in many browsers
+  // and was also shadowed by `const prompt = document.getElementById('prompt')`
+  // ══════════════════════════════════════
+  const riddles = [
+    {q:'I carry voices without paper. What am I?',                             a:'memory', tip:'Think: oral tradition.'},
+    {q:'I am born in silence, but I travel through tongues. What am I?',       a:'story',  tip:'What are you collecting here?'},
+    {q:'The more we share me, the bigger I become. What am I?',               a:'wisdom', tip:'Community knowledge.'}
+  ];
+  let riddleAnswerCorrect = false;
+
+  function openRiddleModal(){
+    const r = riddles[seed % riddles.length];
+    document.getElementById('riddleQuestion').textContent = r.q;
+    document.getElementById('riddleInput').value = '';
+    document.getElementById('riddleFeedback').textContent = '';
+    document.getElementById('riddleFeedback').className = '';
+    document.getElementById('riddleModal').style.display = 'flex';
+    setTimeout(()=> document.getElementById('riddleInput').focus(), 80);
+  }
+
+  window.submitRiddle = function(){
+    const r = riddles[seed % riddles.length];
+    const guess = document.getElementById('riddleInput').value.trim().toLowerCase();
+    const fb = document.getElementById('riddleFeedback');
+    if(guess === r.a){
+      fb.textContent = '✓ Correct! +6 credits awarded.';
+      fb.className = '';
+      save.riddleSolvedDay = today; persist();
+      credits.credits = Math.min(credits.maxCredits, (credits.credits||0)+6);
+      persistCredits(); updateCreditsUI();
+      showToast('Riddle solved! +6 credits');
+      setTimeout(()=>{ document.getElementById('riddleModal').style.display='none'; }, 900);
+    } else {
+      fb.textContent = `Not quite. Tip: ${r.tip}`;
+      fb.className = 'err';
+    }
+  };
+
+  window.skipRiddle = function(){
+    document.getElementById('riddleModal').style.display = 'none';
+  };
+
+  // Allow Enter key in riddle input
+  document.getElementById('riddleInput').addEventListener('keydown', e=>{ if(e.key==='Enter') window.submitRiddle(); });
+
+  // ══════════════════════════════════════
+  // COMMUNITY / STORY HUB
+  // ══════════════════════════════════════
+  function renderCommunity(){
+    const topScroll = save.collected[save.collected.length-1] != null ? (save.collected[save.collected.length-1]+1) : (dailyFirst+1);
+    const list = userStories.length
+      ? userStories.map((s,i)=>`
+          <div style="padding:12px;border:1px solid #2f4157;border-radius:10px;margin-bottom:10px">
+            <div style="font-weight:700;color:var(--accent)">${s.title}</div>
+            <div style="font-size:12px;color:#9fb2cc;margin-bottom:6px">by ${s.author}</div>
+            <div style="font-size:13px;line-height:1.6">${s.text}</div>
+            <button class="btn alt" style="margin-top:10px;padding:6px 12px;font-size:12px" onclick="upvoteStory(${i})">👍 Upvote (${s.votes||0})</button>
+          </div>`).join('')
+      : '<p style="color:#9fb2cc;font-style:italic">No community stories yet. Be the first to publish.</p>';
+
+    document.getElementById('communityCard').innerHTML = `
+      <h2>Story Hub</h2>
+      <p>Recommended next: <b>Scroll ${topScroll}</b> — based on your progress and daily path.</p>
+      <div style="display:grid;gap:10px;margin:14px 0">
+        <input id="storyAuthor" placeholder="Your name" style="padding:10px;border-radius:8px;border:1px solid #40526a;background:#0f1722;color:#fff" />
+        <input id="storyTitle" placeholder="Story title" style="padding:10px;border-radius:8px;border:1px solid #40526a;background:#0f1722;color:#fff" />
+        <textarea id="storyText" placeholder="Share your own story insight (min. 20 characters)…" style="min-height:90px;padding:10px;border-radius:8px;border:1px solid #40526a;background:#0f1722;color:#fff;resize:vertical"></textarea>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" onclick="saveUserStory()">Publish Story</button>
+          <button class="btn alt" onclick="closeCommunity()">Close</button>
+        </div>
+      </div>
+      <h3 style="margin:10px 0">Community Stories</h3>
+      ${list}`;
+  }
+
+  window.saveUserStory = function(){
+    const author = (document.getElementById('storyAuthor').value||'Anonymous').trim();
+    const title  = (document.getElementById('storyTitle').value||'Untitled Story').trim();
+    const text   = (document.getElementById('storyText').value||'').trim();
+    if(text.length < 20){ showToast('Please add at least 20 characters.'); return; }
+    userStories.unshift({author,title,text,votes:0,createdAt:Date.now()});
+    localStorage.setItem(USER_STORY_KEY, JSON.stringify(userStories.slice(0,50)));
+    showToast('Story published! Thank you.');
+    renderCommunity();
+  };
+
+  window.upvoteStory = function(i){
+    userStories[i].votes = (userStories[i].votes||0)+1;
+    localStorage.setItem(USER_STORY_KEY, JSON.stringify(userStories));
+    renderCommunity();
+  };
+
+  window.closeCommunity = ()=> document.getElementById('communityModal').style.display = 'none';
+  document.getElementById('hubBtn').onclick = ()=>{ renderCommunity(); document.getElementById('communityModal').style.display='flex'; };
+
+  // ══════════════════════════════════════
+  // AUDIO
+  // ══════════════════════════════════════
+  let audioCtx, fireGain;
+  function setAudio(enabled){
+    save.audio = enabled; persist();
+    document.getElementById('audioChip').textContent = 'Ambient Audio: '+(enabled?'ON':'OFF');
+    if(!audioCtx){
+      audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+      const humOsc = audioCtx.createOscillator(); humOsc.frequency.value=78;
+      const humGain = audioCtx.createGain(); humGain.gain.value=0.02;
+      humOsc.connect(humGain).connect(audioCtx.destination); humOsc.start();
+      const buffer = audioCtx.createBuffer(1,audioCtx.sampleRate*2,audioCtx.sampleRate);
+      const data = buffer.getChannelData(0); for(let i=0;i<data.length;i++) data[i]=Math.random()*2-1;
+      const fireNoise = audioCtx.createBufferSource(); fireNoise.buffer=buffer; fireNoise.loop=true;
+      const filter = audioCtx.createBiquadFilter(); filter.type='lowpass'; filter.frequency.value=700;
+      fireGain = audioCtx.createGain(); fireGain.gain.value=0.02;
+      fireNoise.connect(filter).connect(fireGain).connect(audioCtx.destination); fireNoise.start();
+    }
+    const target = enabled ? 0.02 : 0.0001;
+    if(audioCtx && fireGain) fireGain.gain.setTargetAtTime(target, audioCtx.currentTime, 0.08);
+  }
+  document.getElementById('audioChip').onclick = ()=> setAudio(!save.audio);
+  document.getElementById('qualityChip').onclick = ()=>{
+    save.quality = save.quality==='auto'?'low':'auto'; persist();
+    document.getElementById('qualityChip').textContent = 'Quality: '+(save.quality==='auto'?'Auto':'Low');
+    renderer.setPixelRatio(Math.min(devicePixelRatio, save.quality==='low'?1.2:1.8));
+    showToast('Quality updated — reload for full effect');
+  };
+
+  // ══════════════════════════════════════
+  // START BUTTON
+  // ══════════════════════════════════════
+  document.getElementById('startBtn').onclick = ()=>{
+    if(!spendCredits(START_COST, 'start a quest run')) return;
+    sessionStart = Date.now();
+    document.getElementById('startOverlay').style.display = 'none';
+    if(save.audio) setAudio(true);
+    if((save.streak||0) >= 3) showToast(`Welcome back! ${save.streak}-day story streak 🔥`);
+    showToast(`Quest started · -${START_COST} credits`);
+
+    // Show riddle if not yet solved today
+    if(save.riddleSolvedDay !== today){
+      setTimeout(openRiddleModal, 800);
+    }
+  };
+
+  document.getElementById('resetBtn').onclick = ()=>{
+    if(confirm('Reset all quest progress and best time?')){
+      localStorage.removeItem(SAVE_KEY);
+      location.reload();
+    }
+  };
+
+  document.getElementById('vrBtn').onclick = async ()=>{
+    document.getElementById('startOverlay').style.display = 'none';
+    if(navigator.xr){
+      try{
+        const session = await navigator.xr.requestSession('immersive-vr');
+        renderer.xr.setSession(session);
+      } catch(e){ alert('VR session unavailable on this device/browser.'); }
+    } else {
+      alert('WebXR not supported on this browser. Try Chrome on an Android device with a headset.');
+    }
+  };
+
+  // ══════════════════════════════════════
+  // MINIMAP
+  // ══════════════════════════════════════
+  const minimap = document.getElementById('minimap'), mctx = minimap.getContext('2d');
+  function drawMinimap(){
+    mctx.clearRect(0,0,140,140);
+    mctx.fillStyle='#091017'; mctx.fillRect(0,0,140,140);
+    const scale=0.6;
+    colliders.forEach(c=>{
+      mctx.fillStyle='rgba(69,111,77,.8)';
+      mctx.beginPath(); mctx.arc(70+c.x*scale,70+c.z*scale,2.5,0,Math.PI*2); mctx.fill();
+    });
+    scrollMeshes.forEach(s=>{
+      if(!s.userData.collected){
+        mctx.fillStyle='#f9d286';
+        mctx.fillRect(67+s.position.x*scale,67+s.position.z*scale,4,4);
+      }
+    });
+    relics.forEach(r=>{
+      if(!r.userData.collected){
+        mctx.fillStyle='#7fd5ff';
+        mctx.beginPath(); mctx.arc(70+r.position.x*scale,70+r.position.z*scale,3,0,Math.PI*2); mctx.fill();
+      }
+    });
+    // Player arrow
+    mctx.save();
+    mctx.translate(70+camera.position.x*scale, 70+camera.position.z*scale);
+    mctx.rotate(yaw);
+    mctx.fillStyle='#89c5ff';
+    mctx.beginPath(); mctx.moveTo(0,-7); mctx.lineTo(4,5); mctx.lineTo(-4,5); mctx.closePath(); mctx.fill();
+    mctx.restore();
+  }
+
+  // ── Compass ──
+  function headingFromYaw(rad){ const d=(((-rad*180/Math.PI)%360)+360)%360; return d>=315||d<45?'N':d<135?'E':d<225?'S':'W'; }
+
+  // ══════════════════════════════════════
+  // INIT
+  // ══════════════════════════════════════
+  document.getElementById('audioChip').textContent  = 'Ambient Audio: '+(save.audio?'ON':'OFF');
+  document.getElementById('qualityChip').textContent = 'Quality: '+(save.quality==='auto'?'Auto':'Low');
+  updateCreditsUI();
+  setInterval(updateCreditsUI, 30000);
+  persist();
+
+  // ══════════════════════════════════════
+  // GAME LOOP
+  // ══════════════════════════════════════
+  let last = performance.now();
+  function animate(now){
+    const dt = Math.min(0.033, (now-last)/1000); last=now;
+    const elapsed = Math.floor((Date.now()-sessionStart)/1000);
+    timerEl.textContent = fmt(elapsed);
+
+    // Movement
+    const speed = 7*dt; let dx=0, dz=0;
+    if(keys.w){ dx+=Math.sin(yaw)*speed;  dz-=Math.cos(yaw)*speed; }
+    if(keys.s){ dx-=Math.sin(yaw)*speed;  dz+=Math.cos(yaw)*speed; }
+    if(keys.a){ dx+=Math.sin(yaw-Math.PI/2)*speed; dz-=Math.cos(yaw-Math.PI/2)*speed; }
+    if(keys.d){ dx+=Math.sin(yaw+Math.PI/2)*speed; dz-=Math.cos(yaw+Math.PI/2)*speed; }
+    const nx=camera.position.x+dx, nz=camera.position.z+dz;
+    if(canMove(nx,nz)){ camera.position.x=nx; camera.position.z=nz; }
+    camera.position.y = 1.8; // keep at eye level
+
+    // Fire flicker
+    fireLight.intensity = 1.2 + Math.sin(now*0.01)*0.35 + Math.random()*0.2;
+    ember.scale.y = 0.9 + Math.sin(now*0.014)*0.14;
+
+    // Dr Sasa subtle sway
+    drSasa.rotation.y = Math.sin(now*0.0008)*0.06;
+
+    // Scroll hover + proximity
+    nearest=null; let bestDist=2.6;
+    scrollMeshes.forEach(s=>{
+      if(s.userData.collected) return;
+      s.rotation.x = Math.sin(now*0.0018+s.position.x)*0.2;
+      s.position.y = 1.2+Math.sin(now*0.002+s.position.z)*0.22;
+      const d = camera.position.distanceTo(s.position);
+      if(d < bestDist){ bestDist=d; nearest=s; }
+    });
+
+    // Relic spin + proximity
+    relicNearest=null; let relicBestDist=2.5;
+    relics.forEach(r=>{
+      if(r.userData.collected) return;
+      r.rotation.y += 0.016;
+      r.rotation.x = Math.sin(now*0.0015+r.position.x)*0.15;
+      const d = camera.position.distanceTo(r.position);
+      if(d < relicBestDist){ relicBestDist=d; relicNearest=r; }
+    });
+
+    // Prompt
+    const hasNearby = (nearest || relicNearest) && storyModal.style.display!=='flex';
+    hud_prompt.textContent = relicNearest ? 'Press E — hidden relic nearby' : 'Press E to collect scroll';
+    hud_prompt.style.display = hasNearby ? 'block' : 'none';
+
+    document.getElementById('compassVal').textContent = headingFromYaw(yaw);
+    drawMinimap();
+    renderer.render(scene, camera);
+  }
+
+  renderer.setAnimationLoop(animate);
+  addEventListener('resize', ()=>{
+    camera.aspect = innerWidth/innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+  });
+  </script>
 </body>
 </html>
