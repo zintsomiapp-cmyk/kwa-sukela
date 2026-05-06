@@ -1,20 +1,788 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zintsomi Storytelling College</title>
-    <style>
-        body { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --primary-color: #3a87ad;
-            --secondary-color: #2b6da9;
-            --glow: rgba(58, 135, 173, 0.8);
-        }
-    </style>
-</head>
-<body>
-    <h1>Zintsomi Storytelling College</h1>
-    <p>Coming soon.</p>
-</body>
-</html>
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/index.html b/index.html
+index 5c725b4ca4aa6727bb05c16f502232421eb09dfb..eebde02cfeeadbcfdb818a7040619c18c3262388 100644
+--- a/index.html
++++ b/index.html
+@@ -494,52 +494,52 @@ nav{
+   position:relative;
+   overflow:hidden;
+   display:flex;flex-direction:column;justify-content:center;
+   background:linear-gradient(160deg,#1A0000 0%,#2E0500 18%,#4A0800 38%,#3A0600 58%,#1E0200 78%,#0E0000 100%);
+ }
+ /* Warm radial glow — like the reference's backlit amber spotlight */
+ .home-hero::before{
+   content:'';position:absolute;inset:0;pointer-events:none;
+   background:
+     radial-gradient(ellipse 70% 80% at 62% 50%, rgba(180,40,0,.45) 0%, transparent 65%),
+     radial-gradient(ellipse 40% 55% at 72% 45%, rgba(255,120,0,.22) 0%, transparent 50%),
+     radial-gradient(ellipse 50% 40% at 50% 100%, rgba(80,0,0,.6) 0%, transparent 60%);
+ }
+ /* Grain texture for depth like the reference */
+ .home-hero::after{
+   content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+   opacity:.038;mix-blend-mode:overlay;
+ }
+ /* Giant bg letterform — "Z" watermark like reference's huge BG text */
+ .home-hero-bg-word{
+   position:absolute;
+   font-family:var(--impact);
+   font-size:clamp(28vw,38vw,52vw);
+   line-height:.85;
+-  color:transparent;
+-  -webkit-text-stroke:1px rgba(255,60,0,.12);
++  color:rgba(255,90,20,.14);
++  text-shadow:0 0 32px rgba(255,80,20,.2);
+   letter-spacing:-.02em;
+   pointer-events:none;
+   user-select:none;
+   top:50%;left:-4vw;
+   transform:translateY(-50%);
+   z-index:0;
+   white-space:nowrap;
+ }
+ /* Top bar — editorial header like reference */
+ .home-hero-topbar{
+   position:absolute;top:0;left:0;right:0;
+   display:flex;justify-content:space-between;align-items:center;
+   padding:1.4rem 3rem;
+   border-bottom:1px solid rgba(255,255,255,.06);
+   z-index:4;
+ }
+ .home-hero-topbar-l{
+   font-family:var(--mono);font-size:.52rem;letter-spacing:.2em;
+   text-transform:uppercase;color:rgba(255,255,255,.45);
+ }
+ .home-hero-topbar-r{
+   font-family:var(--mono);font-size:.52rem;letter-spacing:.15em;
+   text-transform:uppercase;color:rgba(255,255,255,.35);
+   display:flex;gap:2.5rem;
+ }
+@@ -551,52 +551,52 @@ nav{
+   padding:7rem 3rem 4rem;
+   display:grid;
+   grid-template-columns:1fr 1fr;
+   gap:0;
+   align-items:end;
+   min-height:92vh;
+ }
+ /* Giant oversized headline — fills left+spans width like reference */
+ .home-hero-headline{
+   grid-column:1/-1;
+   position:relative;
+   margin-bottom:2.5rem;
+ }
+ .home-hero-headline .line1,
+ .home-hero-headline .line2,
+ .home-hero-headline .line3{
+   display:block;
+   font-family:var(--impact);
+   font-size:clamp(4.5rem,18vw,19rem);
+   line-height:.85;
+   letter-spacing:.02em;
+   color:#FFFFFF;
+   text-transform:uppercase;
+ }
+ .home-hero-headline .line2{
+-  color:transparent;
+-  -webkit-text-stroke:1.5px rgba(255,255,255,.75);
++  color:rgba(255,255,255,.94);
++  text-shadow:0 1px 0 rgba(255,255,255,.28), 0 0 22px rgba(255,255,255,.12);
+   padding-left:0;
+ }
+ .home-hero-headline .line3{
+   color:#F5C060;
+   padding-left:0;
+   font-family:var(--serif);
+   font-size:clamp(4rem,9vw,10rem);
+   font-style:italic;
+   font-weight:400;
+   letter-spacing:.03em;
+   line-height:1.05;
+   margin-top:.4rem;
+   text-shadow:0 0 60px rgba(245,160,48,.5);
+   display:block;
+   text-transform:none;
+ }
+ /* Bottom-left tagline like reference */
+ .home-hero-tagline{
+   align-self:end;
+   padding-bottom:3.5rem;
+ }
+ .home-hero-tagline p{
+   font-family:var(--impact);
+   font-size:clamp(1rem,1.6vw,1.5rem);
+   letter-spacing:.06em;
+@@ -3111,51 +3111,51 @@ body::after{
+ </style>
+ </head>
+ <body>
+ <canvas id="sky-bg"></canvas>
+ <div id="cursor"></div>
+ <div id="cursor-ring"></div>
+ 
+ <!-- ═══ LANGUAGE TOGGLE ═══ -->
+ <div id="lang-toggle">
+   <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
+   <button class="lang-btn" onclick="setLang('zu')" data-lang="zu">isiZulu</button>
+   <button class="lang-btn" onclick="setLang('xh')" data-lang="xh">isiXhosa</button>
+   <button class="lang-btn" onclick="setLang('st')" data-lang="st">Sesotho</button>
+ </div>
+ 
+ <!-- ═══ LIVE STREAK BADGE ═══ -->
+ <div id="live-streak-badge" title="Your daily learning streak">
+   <span class="lsb-fire">🔥</span>
+   <div>
+     <div class="lsb-count" id="lsb-num">0</div>
+     <div class="lsb-label">Day Streak</div>
+   </div>
+ </div>
+ 
+ <!-- ═══ ONBOARDING OVERLAY ═══ -->
+-<div id="onboarding-overlay">
++<div id="onboarding-overlay" class="hidden">
+   <div class="ob-card">
+     <div class="ob-logo">ZINTSOMI</div>
+     <div class="ob-title" id="ob-title">Wamkelekile — Welcome</div>
+     <div class="ob-sub" id="ob-sub">Africa's Storytelling World. Let's get you started in 3 quick steps.</div>
+     <div class="ob-steps">
+       <div class="ob-step" id="ob-s1" onclick="obComplete(1)">
+         <span class="ob-step-icon">🌍</span>
+         <div class="ob-step-text">
+           <div class="ob-step-label" id="ob-l1">Choose your language</div>
+           <div class="ob-step-desc" id="ob-d1">Pick isiZulu, isiXhosa, Sesotho or English above</div>
+         </div>
+         <div class="ob-step-check" id="ob-c1"></div>
+       </div>
+       <div class="ob-step" id="ob-s2" onclick="obComplete(2)">
+         <span class="ob-step-icon">🥽</span>
+         <div class="ob-step-text">
+           <div class="ob-step-label" id="ob-l2">Explore the VR Village</div>
+           <div class="ob-step-desc" id="ob-d2">8 immersive story pods — no headset needed to start</div>
+         </div>
+         <div class="ob-step-check" id="ob-c2"></div>
+       </div>
+       <div class="ob-step" id="ob-s3" onclick="obComplete(3)">
+         <span class="ob-step-icon">🔥</span>
+         <div class="ob-step-text">
+           <div class="ob-step-label" id="ob-l3">Start your streak</div>
+@@ -3786,128 +3786,128 @@ body::after{
+               <button onclick="selectVRPlan('sixmonth');purchaseVRAccess()" style="width:100%;background:rgba(200,240,74,.15);border:1.5px solid var(--acid);color:var(--acid);font-family:var(--display);font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.75rem;border-radius:8px;cursor:pointer;transition:all .2s" onmouseover="this.style.background='var(--acid)';this.style.color='#000'" onmouseout="this.style.background='rgba(200,240,74,.15)';this.style.color='var(--acid)'">Get 6-Month Access</button>
+             </div>
+             <div style="background:rgba(245,118,26,.06);border:1.5px solid rgba(245,118,26,.3);border-radius:16px;padding:1.8rem;text-align:center;position:relative">
+               <div style="position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--fire);color:#fff;font-family:var(--display);font-size:.44rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .8rem;border-radius:0 0 8px 8px">Best Value</div>
+               <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--fire);margin-bottom:.8rem;margin-top:.6rem">Annual Access</div>
+               <div style="font-family:var(--impact);font-size:3rem;color:#fff;letter-spacing:.04em;line-height:1">R1,100</div>
+               <div style="font-size:.75rem;color:rgba(255,255,255,.35);margin:.3rem 0 1.2rem">12 months · save R200 · all future stories</div>
+               <button onclick="selectVRPlan('annual');purchaseVRAccess()" style="width:100%;background:var(--fire);border:none;color:#fff;font-family:var(--display);font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.75rem;border-radius:8px;cursor:pointer;transition:all .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">Get Annual Access</button>
+             </div>
+           </div>
+         </div>
+ 
+         <!-- COURSE PRICING -->
+         <div>
+           <div style="font-family:var(--impact);font-size:1.4rem;letter-spacing:.08em;color:var(--gold);text-transform:uppercase;margin-bottom:.4rem">📚 Individual Courses</div>
+           <div style="font-size:.82rem;color:rgba(255,255,255,.35);margin-bottom:1.5rem">Buy any course once — lifetime access, certificate on completion</div>
+           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem">
+             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+               <div>
+                 <div style="font-size:1.4rem;margin-bottom:.5rem">⚖️</div>
+                 <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Storytelling in the Legal Field</div>
+                 <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">4 modules · Courtroom narrative · Client communication · Community legal contexts</div>
+               </div>
+               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
+                 <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
+-                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(29)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
++                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(5)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+               </div>
+             </div>
+             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+               <div>
+                 <div style="font-size:1.4rem;margin-bottom:.5rem">💼</div>
+                 <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Storytelling in Business</div>
+                 <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">3 modules · Branding · Marketing · Strategic engagement</div>
+               </div>
+               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
+                 <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
+                 <button onclick="showWorld('courses');setTimeout(function(){selectCourse(0)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+               </div>
+             </div>
+             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+               <div>
+                 <div style="font-size:1.4rem;margin-bottom:.5rem">🎓</div>
+                 <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Storytelling in the Classroom</div>
+                 <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">4 modules · Critical thinking · Mathematics · Communication</div>
+               </div>
+               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
+                 <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
+-                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(4)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
++                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(1)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+               </div>
+             </div>
+             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+               <div>
+                 <div style="font-size:1.4rem;margin-bottom:.5rem">✒️</div>
+                 <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Creative Story Writing & Publishing</div>
+                 <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">6 modules · From imagination to published work</div>
+               </div>
+               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
+                 <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
+-                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(9)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
++                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(2)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+               </div>
+             </div>
+             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+               <div>
+                 <div style="font-size:1.4rem;margin-bottom:.5rem">🕊️</div>
+                 <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Storytelling for Conflict Resolution</div>
+                 <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">4 modules · Peacebuilding · Empathy · Community dialogue</div>
+               </div>
+               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
+                 <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
+-                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(14)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
++                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(3)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+               </div>
+             </div>
+             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+               <div>
+                 <div style="font-size:1.4rem;margin-bottom:.5rem">🌍</div>
+                 <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Speak isiZulu Through Storytelling</div>
+                 <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">16 weeks · Oral immersion · Conversational fluency</div>
+               </div>
+               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
+                 <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
+-                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(19)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
++                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(4)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+               </div>
+             </div>
+             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+               <div>
+                 <div style="font-size:1.4rem;margin-bottom:.5rem">🚀</div>
+                 <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Storytelling Consultancy: Mythopreneur</div>
+                 <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">4 modules · Turn storytelling into enterprise</div>
+               </div>
+               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
+                 <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
+-                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(34)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
++                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(6)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+               </div>
+             </div>
+             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
+               <div>
+                 <div style="font-size:1.4rem;margin-bottom:.5rem">📖</div>
+                 <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Foundations of Storytelling</div>
+                 <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">15 modules · The complete storytelling journey from introduction to mastery</div>
+               </div>
+               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
+                 <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
+-                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(38)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
++                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(7)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+               </div>
+             </div>
+           </div>
+         </div>
+ 
+       </div>
+     </div>
+   </div><!-- /subscribe-world -->
+ 
+   <!-- AUTH MODAL -->
+   <div id="auth-overlay" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.75);align-items:center;justify-content:center;padding:1rem">
+     <div style="background:#1B2A3A;border-radius:10px;width:100%;max-width:380px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 20px 60px rgba(0,0,0,.5)">
+       <div style="background:var(--fire);padding:1.1rem 1.4rem;display:flex;justify-content:space-between;align-items:center">
+         <div id="auth-mode-title" style="font-family:var(--serif);font-size:1.2rem;font-weight:700;color:#fff">Log In</div>
+         <button onclick="closeAuthModal()" style="background:none;border:none;color:rgba(255,255,255,.6);font-size:1.2rem;cursor:pointer;line-height:1"><i class="ph ph-x"></i></button>
+       </div>
+       <div style="padding:1.6rem;display:flex;flex-direction:column;gap:.75rem">
+         <div id="auth-name-row" style="display:none">
+           <label style="font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);display:block;margin-bottom:.3rem">Full Name</label>
+           <input id="auth-name" type="text" placeholder="Your name" style="width:100%;padding:.65rem .9rem;border-radius:4px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font-family:var(--body);font-size:1rem;outline:none">
+         </div>
+         <div>
+           <label style="font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);display:block;margin-bottom:.3rem">Email</label>
+           <input id="auth-email" type="email" placeholder="you@email.com" style="width:100%;padding:.65rem .9rem;border-radius:4px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font-family:var(--body);font-size:1rem;outline:none">
+         </div>
+@@ -4153,50 +4153,51 @@ body::after{
+         </div>
+ 
+       </div>
+     </div>
+   </div>
+ 
+   <!-- ══════════════════════════════════════════════
+        VR VILLAGE WORLD — STORY EXPERIENCE
+   ══════════════════════════════════════════════ -->
+   <div class="world" id="vrvillage-world">
+     <!-- Hero -->
+     <div class="vr-hero">
+       <canvas class="vr-hero-canvas" id="vr-hero-canvas"></canvas>
+       <div class="vr-hero-content reveal">
+         <span class="vr-glasses-icon"><i class="ph ph-eyeglasses"></i></span>
+         <h1>VR <em>Story</em><br>Village</h1>
+         <p class="vr-hero-sub">Step inside an immersive African night. Choose a story, put on your VR glasses, and let Dr Sasa\'s world surround you. Compatible with Google Cardboard, Meta Quest and any WebXR headset.</p>
+         <div class="vr-compat-strip">
+           <div class="vr-compat-badge"><span style="color:#6EE78E">●</span> Google Cardboard</div>
+           <div class="vr-compat-badge"><span style="color:#6EE78E">●</span> Meta Quest</div>
+           <div class="vr-compat-badge"><span style="color:#6EE78E">●</span> Any WebXR Browser</div>
+           <div class="vr-compat-badge"><span style="color:#6EE78E">●</span> Desktop 360° Mode</div>
+         </div>
+         <div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap">
+           <button class="btn" onclick="openVRStory(0)" style="font-size:.62rem;padding:.8rem 1.8rem"><i class="ph ph-eyeglasses"></i> Enter VR Now</button>
++          <a class="btn" href="vr-forest.html" style="font-size:.62rem;padding:.8rem 1.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem"><i class="ph ph-tree-evergreen"></i> Dr Sasa's Quest — Play Game</a>
+           <button class="btn btn-out" style="border-color:rgba(200,240,74,.3);color:var(--acid)" onclick="document.getElementById('vr-pods-section').scrollIntoView({behavior:'smooth'})">Browse Stories ↓</button>
+         </div>
+       </div>
+     </div>
+     <!-- Info strip -->
+     <div style="background:rgba(11,18,30,.5);border-top:1px solid rgba(200,240,74,.08);padding:2rem 0">
+       <div class="ctr">
+         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center">
+           <div class="reveal stagger-1"><div style="font-family:var(--impact);font-size:2rem;color:var(--acid);letter-spacing:.06em">8</div><div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-top:.25rem">Story Pods</div></div>
+           <div class="reveal stagger-2"><div style="font-family:var(--impact);font-size:2rem;color:var(--ember);letter-spacing:.06em">360°</div><div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-top:.25rem">Immersive Sound</div></div>
+           <div class="reveal stagger-3"><div style="font-family:var(--impact);font-size:2rem;color:var(--gold);letter-spacing:.06em">11</div><div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-top:.25rem">Languages</div></div>
+           <div class="reveal stagger-4"><div style="font-family:var(--impact);font-size:2rem;color:var(--success);letter-spacing:.06em">Free</div><div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-top:.25rem">Always</div></div>
+         </div>
+       </div>
+     </div>
+     <!-- Story pods -->
+     <div class="vr-pods" id="vr-pods-section">
+       <div class="ctr">
+         <div class="sec-lbl">Story Library</div>
+         <h2 class="sec-title">Choose Your <em style="font-style:normal;color:var(--acid)">Story</em></h2>
+         <p class="sec-sub">Each pod is a full 360° VR environment. Wear your headset or explore on any screen.</p>
+         <div class="vr-pods-grid">
+           <div class="vr-pod reveal stagger-1" onclick="openVRStory(0)">
+             <div class="vr-pod-scene" style="background:linear-gradient(135deg,#0a0300,#1a0800,#0d0200)"><span class="vr-pod-scene-icon"><i class="ph ph-fire"></i></span></div>
+             <div class="vr-pod-body">
+@@ -5703,50 +5704,51 @@ setTimeout(function(){
+ }
+ 
+ function replayIntro(){
+   var intro = document.getElementById("intro");
+   var site  = document.getElementById("site");
+   if(!intro || !site) return;
+   // Reset and replay
+   cancelAnimationFrame(introAnimId);
+   introAnimId = null;
+   introT = 0;
+   introLoop.start = null;
+   document.getElementById("intro-logo").classList.remove("show");
+   intro.classList.remove("hide");
+   intro.style.display = "flex";
+   intro.style.opacity = "1";
+   site.classList.remove("show");
+   // Loop it — when intro ends it comes back to site
+   setTimeout(function(){ requestAnimationFrame(introLoop); }, 50);
+ }
+ 
+ function endIntro(){
+   cancelAnimationFrame(introAnimId);
+   document.getElementById('intro').classList.add('hide');
+   document.getElementById('site').classList.add('show');
+   setTimeout(function(){document.getElementById('intro').style.display='none'},1500);
++  showOnboardingAfterIntro();
+   initAll();
+   // Show replay button on the home world hero
+   var rb = document.getElementById('home-replay-btn');
+   if(rb) rb.style.display='inline-flex';
+ }
+ 
+ document.getElementById('skip-btn').onclick=function(){endIntro()};
+ requestAnimationFrame(introLoop);
+ // Failsafe: force site visible if intro hangs
+ setTimeout(function(){
+   var site=document.getElementById('site');
+   if(site && !site.classList.contains('show')){
+     document.getElementById('intro').style.display='none';
+     site.classList.add('show');
+     if(typeof initAll==='function') initAll();
+   }
+ },10000);
+ 
+ // ════ WORLDS ════
+ function showWorld(id){
+   document.querySelectorAll('.world').forEach(function(w){w.classList.remove('active')});
+   document.querySelectorAll('.npill').forEach(function(p){p.classList.remove('active')});
+   var w=document.getElementById(id+'-world');if(w)w.classList.add('active');
+   // Show/hide back button
+   var backBtn=document.getElementById('back-home-btn');
+@@ -6127,79 +6129,85 @@ function selectInst(inst,btn){
+ }
+ 
+ // ════ BRAIN TEASERS ════
+ var streakDays=7,puzzleType='proverb',puzzleIdx=0;
+ function initStreakDots(){
+   var d=document.getElementById('streak-dots');if(!d)return;d.innerHTML='';
+   for(var i=0;i<7;i++){var s=document.createElement('div');s.className='sd'+(i<streakDays?' done':'')+(i===streakDays-1?' today':'');d.appendChild(s)}
+ }
+ function setPuzzleType(t){
+   puzzleType=t;puzzleIdx=0;
+   document.querySelectorAll('.p-tab').forEach(function(p){p.classList.remove('active')});
+   var types=['proverb','pattern','logic','maths','science','drum'];
+   var tabs=document.querySelectorAll('.p-tab');
+   var idx=types.indexOf(t);if(tabs[idx])tabs[idx].classList.add('active');
+   renderPuzzle();
+ }
+ var PZ={
+   proverb:[
+     {q:'Gcwalisa (Complete): <strong>"Umuntu ngumuntu nga___"</strong>',opts:['muntu','ntu','bantu','untu'],ans:'bantu',exp:'Umuntu ngumuntu ngabantu — A person is a person through other people. Lokhu kuchaza ubuntu. This is the meaning of Ubuntu.'},
+     {q:'Gcwalisa (Complete): <strong>"Izandla ziya___"</strong>',opts:['gezana','hlaba','shona','khala'],ans:'gezana',exp:'Izandla ziyagezana — Hands wash each other. Sisizana — we help one another. No one succeeds alone.'},
+     {q:'Gcwalisa (Complete): <strong>"Isandla sihlamba ___"</strong>',opts:['esinye','amanzi','umuntu','umhlaba'],ans:'esinye',exp:'Isandla sihlamba esinye — One hand washes the other. Reciprocity is at the heart of ubuntu.'},
+     {q:'Gcwalisa (Complete): <strong>"Umuntu akaphili ___"</strong>',opts:['yedwa','ngamanzi','ngodwa','phansi'],ans:'yedwa',exp:'Umuntu akaphili yedwa — A person does not live alone. Isolation weakens. Community sustains.'},
+     {q:'Chaza (Explain): <strong>"Indlela ibuzwa kwabaphambili"</strong> — What does this mean?',opts:['Ask those who have gone before you','Walk fast and do not stop','The road is always long','Ask the youngest for directions'],ans:'Ask those who have gone before you',exp:'Indlela ibuzwa kwabaphambili — The road is asked from those ahead of you. Seek wisdom from elders who have walked the path.'},
+     {q:'Gcwalisa (Complete): <strong>"Inyoni yaziwa nge___"</strong>',opts:['zwi layo','mbo yayo','phiko layo','gama layo'],ans:'zwi layo',exp:'Inyoni yaziwa ngezwi layo — A bird is known by its voice. A person is known by their words and how they speak.'},
+     {q:'Gcwalisa (Complete): <strong>"Ukufa komuntu akufi ___"</strong>',opts:['igama lakhe','indlela yakhe','umuzi wakhe','izandla zakhe'],ans:'igama lakhe',exp:'Ukufa komuntu akufi igama lakhe — A person dies but their name does not die. This is why oral storytelling preserves our ancestors.'},
+-    {q:'Wusho umukhuba (Choose the meaning): <strong>"Kuhlonipha</strong> — what does it mean to practise inhlonipho?',opts:['To show respect — especially to elders','To sing loudly at ceremonies','To eat before your elders','To speak in English only'],ans:'To show respect — especially to elders',exp:'Inhlonipho — deep respectful conduct. In isiZulu culture, how you speak to and about elders reflects your entire upbringing.'}
++    {q:'Wusho umkhuba (Choose the meaning): <strong>"Kuhlonipha</strong> — what does it mean to practise inhlonipho?',opts:['To show respect — especially to elders','To sing loudly at ceremonies','To eat before your elders','To speak in English only'],ans:'To show respect — especially to elders',exp:'Inhlonipho — deep respectful conduct. In isiZulu culture, how you speak to and about elders reflects your entire upbringing.'},
++    {q:'Gcwalisa (Complete): <strong>"Inkunzi isematholeni"</strong> means future strength is in the...',opts:['Elders only','Children/youth','Money','Land titles'],ans:'Children/youth',exp:'Inkunzi isematholeni — tomorrow's power lives in the young. Invest in youth learning.'}
+   ],
+   pattern:[
+     {q:'What comes next? <strong>🔺 🔷 🔺 🔷 🔺 ___</strong>',opts:['🔷','🔺','🟡','⬛'],ans:'🔷',exp:'Alternating pattern: triangle, diamond repeating.'},
+     {q:'Complete the sequence: <strong>2, 4, 8, 16, ___</strong>',opts:['24','32','30','28'],ans:'32',exp:'Multiply by 2 each time — geometric sequence.'},
+     {q:'What is next: <strong>1, 1, 2, 3, 5, 8, ___</strong>',opts:['11','12','13','14'],ans:'13',exp:'Fibonacci — add the two numbers before it: 5+8=13.'},
+-    {q:'Next: <strong>A, C, E, G, ___</strong>',opts:['H','I','J','K'],ans:'I',exp:'Every second letter of the alphabet.'}
++    {q:'Next: <strong>A, C, E, G, ___</strong>',opts:['H','I','J','K'],ans:'I',exp:'Every second letter of the alphabet.'},
++    {q:'What comes next? <strong>3, 6, 11, 18, 27, ___</strong>',opts:['36','38','40','41'],ans:'38',exp:'Differences are +3, +5, +7, +9 so next is +11 → 38.'}
+   ],
+   logic:[
+     {q:'Nandi has 3 calabashes. A boat holds only 2. Minimum trips to cross the river?',opts:['2','3','4','5'],ans:'3',exp:'Trip 1: carry 2. Return with 1. Trip 3: carry the remaining 2.'},
+     {q:'A storyteller tells 2 people. Each tells 2 more. Each of those tells 2 more. After 3 rounds, how many NEW people have heard it?',opts:['6','14','8','12'],ans:'14',exp:'Round 1: 2, Round 2: 4, Round 3: 8. Total new: 2+4+8=14.'},
+-    {q:'All izinganekwane are stories. All stories teach lessons. Do all izinganekwane teach lessons?',opts:['Yes, always','No, never','Sometimes','Cannot tell'],ans:'Yes, always',exp:'Logical syllogism — transitive property applies here.'}
++    {q:'All izinganekwane are stories. All stories teach lessons. Do all izinganekwane teach lessons?',opts:['Yes, always','No, never','Sometimes','Cannot tell'],ans:'Yes, always',exp:'Logical syllogism — transitive property applies here.'},
++    {q:'If no drummer performs without practice, and Sizwe performed perfectly, what is most logical?',opts:['Sizwe never practised','Sizwe practised','Practice is optional','Cannot infer anything'],ans:'Sizwe practised',exp:'From the premise, good performance implies prior practice.'}
+   ],
+   maths:[
+     {q:'<div class="maths-scenario"><div class="ms-lbl">📐 Real World Maths</div><div class="ms-story">A baobab grows 2.3cm/year and is 14m tall. Approximately how old is it?</div></div>',opts:['600 years','609 years','570 years','650 years'],ans:'609 years',exp:'1400cm ÷ 2.3 ≈ 608.7 ≈ 609 years.'},
+     {q:'<div class="maths-scenario"><div class="ms-lbl">📊 Statistics</div><div class="ms-story">In a village of 240 people, 3 out of every 8 attend the weekly storytelling circle. How many attend?</div></div>',opts:['80','90','100','75'],ans:'90',exp:'240 × (3/8) = 90 people.'},
+     {q:'<div class="maths-scenario"><div class="ms-lbl">💰 Financial Maths</div><div class="ms-story">A course costs R3 500. A student saves R250/month. Price increases 8% per year. Can they afford it after 12 months?</div></div>',opts:['Yes, R3000 vs R3500','No, R3000 vs R3780','Yes, exactly enough','Need more info'],ans:'No, R3000 vs R3780',exp:'Saved: R250×12=R3000. New price: R3500×1.08=R3780. Short by R780.'},
+-    {q:'<div class="maths-scenario"><div class="ms-lbl">📐 Calculus</div><div class="ms-story">f(x) = 3x³ - 2x + 5. What is f\'(x)?</div></div>',opts:["9x² - 2","9x² + 5","3x² - 2","9x - 2"],ans:"9x² - 2",exp:"Power rule: d/dx[3x³] = 9x², d/dx[-2x] = -2, d/dx[5] = 0."}
++    {q:'<div class="maths-scenario"><div class="ms-lbl">📐 Calculus</div><div class="ms-story">f(x) = 3x³ - 2x + 5. What is f\'(x)?</div></div>',opts:["9x² - 2","9x² + 5","3x² - 2","9x - 2"],ans:"9x² - 2",exp:"Power rule: d/dx[3x³] = 9x², d/dx[-2x] = -2, d/dx[5] = 0."},
++    {q:'<div class=\"maths-scenario\"><div class=\"ms-lbl\">📐 Geometry</div><div class=\"ms-story\">A circular drum has radius 14cm. Approximate area? (π≈22/7)</div></div>',opts:['616 cm²','308 cm²','154 cm²','1 232 cm²'],ans:'616 cm²',exp:'Area = πr² = (22/7)×14×14 = 616 cm².'}
+   ],
+   science:[
+     {q:'<div class="maths-scenario"><div class="ms-lbl">⚡ Physics — Momentum</div><div class="ms-story">A 0.2kg drum stick moves at 8 m/s and stops in 0.05s. What is the impulse?</div></div>',opts:['1.6 N·s','0.8 N·s','3.2 N·s','0.4 N·s'],ans:'1.6 N·s',exp:'Impulse = mΔv = 0.2 × 8 = 1.6 N·s'},
+     {q:'<div class="maths-scenario"><div class="ms-lbl">🧪 Chemistry — pH</div><div class="ms-story">A solution has [H⁺] = 1×10⁻¹² mol/L. Is it acid, base, or neutral?</div></div>',opts:['Acid (pH=12)','Base (pH=12)','Neutral (pH=7)','Cannot tell'],ans:'Base (pH=12)',exp:'pH = -log(10⁻¹²) = 12. Above 7 = basic/alkaline.'},
+     {q:'A gene is autosomal. Both parents are Aa × Aa. What % of offspring are homozygous recessive (aa)?',opts:['25%','50%','75%','0%'],ans:'25%',exp:'Punnett square: AA(25%) Aa(50%) aa(25%).'},
+-    {q:'<div class="maths-scenario"><div class="ms-lbl">⚡ Physics — Work</div><div class="ms-story">A 15kg drum is carried 100m up a 30° incline. How much work against gravity? (g=9.8)</div></div>',opts:['14 700 J','7 350 J','29 400 J','3 675 J'],ans:'7 350 J',exp:'W = mgh = 15 × 9.8 × (100 × sin30°) = 15 × 9.8 × 50 = 7350 J'}
++    {q:'<div class="maths-scenario"><div class="ms-lbl">⚡ Physics — Work</div><div class="ms-story">A 15kg drum is carried 100m up a 30° incline. How much work against gravity? (g=9.8)</div></div>',opts:['14 700 J','7 350 J','29 400 J','3 675 J'],ans:'7 350 J',exp:'W = mgh = 15 × 9.8 × (100 × sin30°) = 15 × 9.8 × 50 = 7350 J'},
++    {q:'<div class="maths-scenario"><div class="ms-lbl">🧬 Biology — Cells</div><div class="ms-story">Which organelle is called the powerhouse of the cell?</div></div>',opts:['Nucleus','Mitochondrion','Ribosome','Golgi apparatus'],ans:'Mitochondrion',exp:'Mitochondria generate ATP used for cellular energy.'}
+   ],
+   drum:[
+     {pat:['<i class="ph ph-metronome"></i>','·','<i class="ph ph-metronome"></i>','<i class="ph ph-metronome"></i>','·','<i class="ph ph-metronome"></i>'],ans:4,q:'Count only the drum HITS (<i class="ph ph-metronome"></i>), not the rests (·):'},
+     {pat:['<i class="ph ph-metronome"></i>','<i class="ph ph-metronome"></i>','·','<i class="ph ph-metronome"></i>','·','·','<i class="ph ph-metronome"></i>'],ans:4,q:'How many drum hits in this sequence?'},
+-    {pat:['<i class="ph ph-metronome"></i>','·','·','<i class="ph ph-metronome"></i>','<i class="ph ph-metronome"></i>','·','<i class="ph ph-metronome"></i>','·','<i class="ph ph-metronome"></i>'],ans:5,q:'Count the beats (<i class="ph ph-metronome"></i>):'}
++    {pat:['<i class="ph ph-metronome"></i>','·','·','<i class="ph ph-metronome"></i>','<i class="ph ph-metronome"></i>','·','<i class="ph ph-metronome"></i>','·','<i class="ph ph-metronome"></i>'],ans:5,q:'Count the beats (<i class="ph ph-metronome"></i>):'},
++    {pat:['·','<i class="ph ph-metronome"></i>','<i class="ph ph-metronome"></i>','·','<i class="ph ph-metronome"></i>','<i class="ph ph-metronome"></i>','·','·','<i class="ph ph-metronome"></i>'],ans:5,q:'How many hits are in this syncopated line?'}
+   ]
+ };
+ 
+ 
+ // ════ SUDOKU ENGINE ════
+ var SDK = {
+   board: [],        // current board (0=empty)
+   solution: [],     // full solution
+   given: [],        // which cells are pre-filled
+   selected: -1,     // selected cell index
+   level: 'easy',
+   mistakes: 0,
+   maxMistakes: 3,
+   timer: 0,
+   timerInterval: null,
+   complete: false,
+ 
+   // 81-cell flat arrays — [row*9+col]
+   puzzles: {
+     easy: [
+       { g:[5,3,0,0,7,0,0,0,0, 6,0,0,1,9,5,0,0,0, 0,9,8,0,0,0,0,6,0, 8,0,0,0,6,0,0,0,3, 4,0,0,8,0,3,0,0,1, 7,0,0,0,2,0,0,0,6, 0,6,0,0,0,0,2,8,0, 0,0,0,4,1,9,0,0,5, 0,0,0,0,8,0,0,7,9],
+              s:[5,3,4,6,7,8,9,1,2, 6,7,2,1,9,5,3,4,8, 1,9,8,3,4,2,5,6,7, 8,5,9,7,6,1,4,2,3, 4,2,6,8,5,3,7,9,1, 7,1,3,9,2,4,8,5,6, 9,6,1,5,3,7,2,8,4, 2,8,7,4,1,9,6,3,5, 3,4,5,2,8,6,1,7,9] },
+       { g:[0,0,0,2,6,0,7,0,1, 6,8,0,0,7,0,0,9,0, 1,9,0,0,0,4,5,0,0, 8,2,0,1,0,0,0,4,0, 0,0,4,6,0,2,9,0,0, 0,5,0,0,0,3,0,2,8, 0,0,9,3,0,0,0,7,4, 0,4,0,0,5,0,0,3,6, 7,0,3,0,1,8,0,0,0],
+              s:[4,3,5,2,6,9,7,8,1, 6,8,2,5,7,1,4,9,3, 1,9,7,8,3,4,5,6,2, 8,2,6,1,9,5,3,4,7, 3,7,4,6,8,2,9,1,5, 9,5,1,7,4,3,6,2,8, 5,1,9,3,2,6,8,7,4, 2,4,8,9,5,7,1,3,6, 7,6,3,4,1,8,2,5,9] }
+     ],
+@@ -6802,51 +6810,51 @@ var NOTES={
+       {t:'PRACTICE',cl:'',body:'<div class="practice-q"><div class="pq-num">Q1</div><div class="pq-q">Why does energy decrease at each trophic level?</div><button class="pq-toggle" onclick="toggleAns(this)">Show Answer</button><div class="pq-ans">Energy is lost as heat through metabolic processes (cellular respiration). Only ~10% is stored in body tissue and available to the next level.</div></div><div class="practice-q"><div class="pq-num">Q2</div><div class="pq-q">Distinguish between in-situ and ex-situ conservation.</div><button class="pq-toggle" onclick="toggleAns(this)">Show Answer</button><div class="pq-ans">In-situ: conservation in the organism\'s natural habitat (game reserves). Ex-situ: conservation outside natural habitat (zoos, botanical gardens, frozen gene banks).</div></div>'}
+     ],
+     tip:{tx:'Ecosystem questions often combine multiple concepts — food webs, energy flow, nutrient cycles, human impact. Practise drawing and annotating a food web: it shows connections faster than any text.'}
+   }};
+ 
+ function openNotes(topic,subject){
+   var overlay=document.getElementById('notes-overlay'),data=NOTES[topic];
+   document.getElementById('nm-title').textContent=topic;
+   if(!data){
+     document.getElementById('nm-body').innerHTML='<div style="padding:2rem;text-align:center"><p style="color:rgba(255,255,255,.6);font-style:normal;font-family:var(--serif);font-size:1.1rem">Full notes for <strong>'+topic+'</strong> are being prepared by Dr Sasa\'s team. Check back soon!</p><div class="tip-box" style="margin:1.5rem 0"><div class="tip-icon">👩‍🏫</div><div><div class="tip-lbl">Dr Sasa says</div><div class="tip-text">Work through past papers and your formula sheet while these notes are finalised. The DBE website has papers from 2015-2024.</div></div></div></div>';
+     overlay.classList.add('open');return;
+   }
+   var html='';
+   data.secs.forEach(function(s){html+='<div class="nm-section"><div class="nm-section-title '+s.cl+'">'+s.t+'</div>'+s.body+'</div>'});
+   if(data.tip)html+='<div class="tip-box"><div class="tip-icon">👩‍🏫</div><div><div class="tip-lbl">Dr Sasa\'s Exam Tip</div><div class="tip-text">'+data.tip.tx+'</div></div></div>';
+   document.getElementById('nm-body').innerHTML=html;
+   overlay.classList.add('open');
+ }
+ function closeNotes(){document.getElementById('notes-overlay').classList.remove('open')}
+ function toggleAns(btn){var a=btn.nextElementSibling;var sh=a.style.display==='block';a.style.display=sh?'none':'block';btn.textContent=sh?'Show Answer':'Hide Answer'}
+ 
+ // ════ AUDIO NOTIFICATIONS ════
+ document.querySelectorAll('.ac-notify').forEach(function(b){b.addEventListener('click',function(){this.textContent='✓ Will notify you!';this.style.color='#27AE60'})});
+ 
+ // ════ COURSES ENGINE ════
+-var courseProgress = [0,0,0,0]; // completed modules per course
++var courseProgress = [0,0,0,0,0,0,0,0]; // completed modules per course
+ var activeCourse = 0;
+ var activeModule = 0;
+ var TOTAL_COURSES = 8;
+ 
+ var COURSES = [
+   // ── COURSE 1: STORYTELLING IN BUSINESS ──
+   { title:'Storytelling in Business', icon:'<i class="ph ph-briefcase"></i>', color:'#CA5C08', tag:'Short Course · 3 Modules',
+     desc:'Empower yourself with the skills to apply cultural storytelling — particularly folktales, anecdotes and personal stories — to business communication, branding, and strategic engagement.',
+     modules:[
+       { title:'Stories That Work for Business', duration:'1 Hour',
+         body:'<h3>Course Aim</h3><p>To empower students with the skills to apply cultural storytelling — particularly folktales, anecdotes and personal stories — to business communication, branding, and strategic engagement across live and digital platforms.</p><h3>Introduction to Business Storytelling</h3><p>Stories resonate on an emotional level, making businesses more relatable and memorable. This introduction outlines how folktales and fables serve branding and strategic goals in live presentations and digital formats.</p><h3>The Cultural Roots and Strategic Relevance of Storytelling</h3><p>Types of stories: <strong>Personal, Anecdotes, Folktales, and Fables.</strong></p><p>Case studies: How <strong>Nando\'s, Absa Bank, Mugg & Bean, and Duracell</strong> use storytelling to build emotional connection and brand loyalty.</p><div class="lesson-callout"><div class="lc-label">Key Insight</div><p>Stories resonate on an emotional level, making businesses more relatable and memorable. A business without a story is just a transaction.</p></div>',
+         quiz:{ q:'Which of these is NOT a type of story used in business storytelling?', opts:['Personal stories','Folktales and Fables','Technical manuals','Anecdotes'], ans:2, fb:'Technical manuals inform but do not connect. Business storytelling uses personal, cultural and narrative forms.' }
+       },
+       { title:'Symbolism and Emotional Resonance', duration:'1 Hour',
+         body:'<h3>Symbolism and Emotional Resonance</h3><p>Interpreting metaphors and symbolism in folktales. Writing exercises to connect brand messaging with emotions. How emotional storytelling strengthens loyalty and retention.</p><h3>Folktales in Business Contexts</h3><p>How to translate story themes into brand identity. Folktale examples:</p><p><strong>The Donkey That Wanted to Be a Zebra</strong> — Authenticity & transformation<br><strong>Green Apples and A Pear</strong> — Diversity, equity, resilience</p><p>Application across branding, product storytelling, CSR, internal culture, and social media.</p><div class="lesson-reflection"><div class="lr-label">Writing Exercise</div><p>Connect a brand you admire to a folktale or fable. What is the story underneath the brand? Write it in 200 words.</p></div>',
+         quiz:{ q:'What does "The Donkey That Wanted to Be a Zebra" represent in a business context?', opts:['The importance of hard work','Authenticity and transformation','Market competition','Financial growth'], ans:1, fb:'Authenticity and transformation — the folktale warns against abandoning who you are to become something you\'re not.' }
+       },
+       { title:'Folktales in Business Contexts', duration:'1 Hour',
+         body:'<h3><i class="ph ph-notebook"></i> Learner Workbook: Storytelling in Business</h3><p><em>Using African Folktales for Strategic Brand Communication</em></p><h3>How to Use This Workbook</h3><p>This workbook is your personal space for applying the course content to your own brand, business, or idea. Each section mirrors the modules covered in this course — but now you are the subject.</p><h3>Learning Outcomes Review</h3><p>By the end of this course, you will be able to:<br>a. Understand the cultural and emotional power of storytelling in business<br>b. Decode symbolism in folktales and apply it to brand messaging<br>c. Analyze brand case studies that use storytelling effectively<br>d. Adapt traditional stories for marketing, CSR, and internal culture<br>e. Create compelling brand narratives<br>f. Use multimedia tools to deliver stories across platforms<br>g. Present stories live with clarity and impact</p><h3><i class="ph ph-robot"></i> AI Copilot Tips</h3><p>Use an AI assistant to help you define and refine:<br><strong>Brand core values</strong> — ask: "What values does my brand embody? Help me find the story in them."<br><strong>Narrative tone and voice</strong> — ask: "What is the difference between a brand that sounds wise and one that sounds warm? Help me find mine."<br><strong>Story outlines for marketing</strong> — ask: "Help me write a 3-sentence brand story using the folktale of The Donkey That Wanted to Be a Zebra."<br><strong>Loyalty campaign narratives</strong> — ask: "Create a story-driven concept for a customer loyalty campaign using Ubuntu as the central value."<br><strong>CSR report storytelling</strong> — ask: "Help me turn our CSR statistics into a human story about real impact."<br><strong>Visual and multimedia assets</strong> — ask: "Suggest 3 visual concepts for a brand story campaign rooted in African oral tradition."</p><h3>Brand Story Audit</h3><p>Pick a brand you admire. Complete the audit below:</p><p><strong>Brand Name:</strong> _______________________<br><strong>Story Theme:</strong> _______________________<br><strong>Emotional Tone:</strong> _______________________<br><strong>Folktale Parallel:</strong> Which folktale does this brand\'s story remind you of, and why?<br><strong>What would make this story stronger?</strong> _______________________</p><div class="lesson-reflection"><div class="lr-label">Final Assignment</div><p>Write your own Brand Story — 200 to 300 words. Use one folktale, one personal anecdote, and one clear value statement. Then deliver it aloud — to a colleague, a camera, or a mirror. Time yourself. Aim for 2 minutes of clarity, confidence, and strategic intent.</p></div>',
+         quiz:{ q:'What is the purpose of the Brand Story Audit?', opts:['To criticise other brands','To apply the course\'s storytelling framework to a real brand — analysing its story, tone, and folktale parallels','To write advertising copy','To create a logo'], ans:1, fb:'The Brand Story Audit applies your new skills to a real brand — decoding its story, emotional tone, and the folktale that runs beneath it.' }
+       }
+     ]
+   },
+   // ── COURSE 2: STORYTELLING IN THE CLASSROOM ──
+   { title:'Storytelling in the Classroom', icon:'<i class="ph ph-chalkboard-teacher"></i>', color:'#1E8449', tag:'4 Modules · Educators',
+@@ -6864,51 +6872,50 @@ var COURSES = [
+         body:'<h3>Section A: Analytic Thinking Through Narrative Structure</h3><p>Humans are natural storytellers; even math problems begin with a story. "If Thabo has 5 mangoes and gives 2 to his sister..." — this is narrative. Framing mathematics within story makes abstract concepts accessible, memorable, and meaningful.</p><h3>Section B: Number Sense Through Narrative</h3><p>Stories that involve counting, measurement, pattern, and sequence build number sense organically. Traditional stories about distribution, sharing, and trade embed mathematical thinking within cultural context.</p><h3>Section C: Geometry, Patterns & Logical Sequencing</h3><p>Geometric patterns in African beadwork, weaving, and architecture are storytelling in another language. Using these as classroom tools connects mathematics to culture, to beauty, and to identity.</p><div class="lesson-reflection"><div class="lr-label">Activity</div><p>Take a word problem and reframe it as a 3-sentence story. Share it with a learner and note the difference in engagement and comprehension.</p></div>',
+         quiz:{ q:'How does framing mathematics within story benefit learners?', opts:['It makes lessons longer','It makes abstract concepts accessible, memorable and meaningful','It replaces the need for numbers','It only works for younger learners'], ans:1, fb:'Story makes abstract maths accessible and meaningful — even the simplest word problem is a narrative.' }
+       },
+       { title:'Discovering Meaning Through Stories', duration:'1 Hour',
+         body:'<h3>Section A: Latent Thinking & Hidden Meaning</h3><p>The deepest learning often happens beneath the surface of a story. Latent thinking — the ability to find meaning that is not explicitly stated — is one of the most valuable cognitive skills a learner can develop. African folktales are masterclasses in latent meaning: nothing is accidental, everything signifies.</p><h3>Section B: Imagination and Creative Reasoning</h3><p>Imagination is not a soft skill — it is the engine of innovation, problem-solving, and empathy. Stories create the conditions for imagination to flourish. When learners are invited to continue a story, change its ending, or retell it from a different perspective, they practice creative reasoning in its purest form.</p><h3>Section C: Moral Reasoning and Ethical Dilemmas</h3><p>Stories have always been the primary vehicle for moral education. A dilemma presented through story is more nuanced, more emotionally resonant, and more memorable than any abstract principle. The classroom that tells stories regularly is producing ethically thoughtful citizens.</p><div class="lesson-callout"><div class="lc-label">Vision</div><p>A new generation of educators confidently using storytelling to cultivate curiosity, insight, and deep learning across diverse subjects.</p></div>',
+         quiz:{ q:'What is "latent thinking" in storytelling?', opts:['Reading aloud clearly','Finding meaning that is not explicitly stated — what lies beneath the surface','Memorising story text','Loud vocal projection'], ans:1, fb:'Latent thinking means finding the hidden meaning — what the story says without saying it. African folktales are masterclasses in this.' }
+       }
+     ]
+   },
+   // ── COURSE 3: CREATIVE STORY WRITING & PUBLISHING ──
+   { title:'Creative Story Writing and Publishing: From Imagination to Impact', icon:'<i class="ph ph-pencil-line"></i>', color:'#1A6EA8', tag:'4 Months · From Imagination to Impact',
+     desc:'From Imagination to Impact. A hands-on immersion in creative writing, illustration dynamics, and the publishing journey — equipping aspiring children\'s authors.',
+     modules:[
+       { title:'Observation & Imaginative Thinking', duration:'1 Hour',
+         body:'<h3>Course Introduction</h3><p>A four-month, hands-on immersion in creative writing, illustration dynamics, and the publishing journey. This course equips aspiring children\'s authors with the skills to craft compelling narratives and transform them into published works.</p><h3>Mission</h3><p>To cultivate resilient, imaginative writers who can express complex ideas through impactful story writing and navigate the path to publishing.</p><h3>Vision</h3><p>Empowering diverse voices to use story writing as a tool for career development, cultural preservation, personal growth, and social transformation across local and global platforms.</p><h3>Course Objectives</h3><p>By the end of this course, participants will be able to: Master techniques of creative and descriptive writing. Collaborate in group writing formats to stimulate shared writing. Analyze story structures across genres. Create and revise original stories for publication. Draw illustrations. Understand the publishing process from manuscript to distribution.</p><div class="lesson-callout"><div class="lc-label">Portfolio of Evidence</div><p>Each student will compile: 2 revised short stories, 1 collaborative story from the group module, 1 sensory descriptive piece.</p></div>',
+         quiz:{ q:'What is the vision of this Creative Story Writing course?', opts:['To train professional editors','To empower diverse voices to use story writing as a tool for career, culture, and social transformation','To teach grammar rules only','To prepare students for academic exams'], ans:1, fb:'Correct — empowering diverse voices to use story writing for career development, cultural preservation, and social transformation.' }
+       },
+       { title:'Craft, Character & Genre', duration:'1 Hour',
+         body:'<h3>Genre Dive</h3><p>Students read one story each from mystery, fantasy, and realism to discuss style and pacing. Each genre has its own rules, rhythms, and reader expectations. Understanding genre allows a writer to work within it — or deliberately break it.</p><h3>Character Development</h3><p>Compelling characters are built from contradiction — strengths that create weaknesses, desires that create conflict. Children\'s characters in particular must feel authentic, never simplified. A child reader recognises a real child immediately and will reject a cardboard one.</p><h3>Sensory Writing</h3><p>Students bring real objects to class — anchoring sensory exercises in lived experience. What does your grandmother\'s kitchen smell like? What does sand between your toes feel like? Sensory specificity is what separates memorable writing from forgettable writing.</p><div class="lesson-reflection"><div class="lr-label">Exercise</div><p>Choose one object from your immediate environment. Write 150 words describing it using all five senses — without naming what it is.</p></div>',
+         quiz:{ q:'What makes children\'s characters compelling?', opts:['They are always happy and positive','They feel authentic — built from contradiction, like real children','They are described in great detail','They are always the same age as the reader'], ans:1, fb:'Authenticity — built from contradiction. Children immediately recognise a real child and will reject a simplified one.' }
+       },
+       { title:'Collaborative Writing', duration:'1 Hour',
+         body:'<h3>Group Storytelling and Co-Writing</h3><p>Writing does not have to be solitary. Collaborative writing — where multiple voices contribute to a single narrative — teaches writers to listen, negotiate, and synthesise. The result is often richer than any single writer could produce alone.</p><h3>The Mini-Pitch Festival</h3><p>Students present story ideas to a mock panel of editors. This exercise builds confidence, teaches concision (you have 90 seconds — make them matter), and introduces the professional reality of pitching creative work.</p><div class="lesson-reflection"><div class="lr-label">Group Assignment</div><p>In groups of 3–4, write a collaborative story of 500–800 words. Each person writes one section. The challenge: make it feel like one voice. Debrief afterwards — what required compromise? What surprised you?</p></div>',
+         quiz:{ q:'What does collaborative writing teach that solo writing cannot?', opts:['Faster typing','Listening, negotiation, and synthesis of multiple voices','Grammar correction','How to use a dictionary'], ans:1, fb:'Collaboration teaches listening, negotiation, and synthesis — skills no solo writing exercise can replicate.' }
+       },
+-,
+       { title:'Sensory Description & Experiential Writing', duration:'1 Hour',
+         body:'<h3>Sensory Description</h3><p>Great stories immerse the reader in sensation. This module trains storytellers to write through sound, smell, taste, texture, and sight — turning abstract scenes into lived experience.</p><h3>Experiential Writing</h3><p>Exercises focus on memory and the senses: describe a market, a grandmother\'s kitchen, a river crossing. The goal is to make the reader <em>feel</em> they are there, not just see it.</p><div class="lesson-callout"><div class="lc-label">Writing Exercise</div><p>Choose one sensory memory from your childhood. Write 200 words using only sensory detail — no explaining what things mean, only what they feel, smell, sound, look and taste like.</p></div>',
+         quiz:{ q:'What is the primary goal of sensory writing?', opts:['To describe settings accurately','To make the reader feel present in the scene','To list all five senses','To impress with vocabulary'], ans:1, fb:'Sensory writing pulls the reader into the scene — not to describe, but to make them feel they are living it.' }
+       },
+       { title:'Long-Form Reading & Creative Divergence', duration:'1 Hour',
+         body:'<h3>Long-Form Reading</h3><p>Storytellers must be readers. This module assigns long-form reading — novels, novellas, and extended short story collections — with a specific focus on character reflection and narrative surprise.</p><h3>Creative Divergence</h3><p>After reading, learners create new stories <em>diverging</em> from the original — different setting, different outcome, different voice. This is not retelling: it is story generation triggered by great work.</p><div class="lesson-reflection"><div class="lr-label">Assignment</div><p>Read a short story by an African author of your choice. Then write a new story that begins where theirs ends — or that reimagines the same character in a completely different world.</p></div>',
+         quiz:{ q:'What is "creative divergence" in this context?', opts:['Summarising what you read','Creating a new story inspired by — but departing from — a source text','Criticising an author\'s choices','Translating a story into another language'], ans:1, fb:'Creative divergence uses great writing as a springboard, not a template. You read deeply, then leap away with your own voice.' }
+       },
+       { title:'Publishing: Manuscript to Distribution', duration:'1 Hour',
+         body:'<h3>The Publishing Journey</h3><p>Understanding the publishing process from manuscript to distribution. The journey from finished story to published book involves: editing and revision, illustration and layout, ISBN registration, printing or digital formatting, distribution and marketing.</p><h3>Digital Publishing Options</h3><p>Tools like Amazon KDP (Kindle Direct Publishing) allow authors to self-publish globally with no upfront cost. eBook formatting, print-on-demand, and digital distribution have democratised publishing — a children\'s author in South Africa can now reach a reader in Tokyo.</p><h3>Guest Speaker Series</h3><p>Local authors, digital publishers, and illustrators share their journeys — including the rejections, the breakthroughs, and the lessons that shaped their practice.</p><div class="lesson-callout"><div class="lc-label">Publishing Masterclass</div><p>Demo of formatting for eBooks and print layout tools for different platforms like Amazon. Students leave with a practical roadmap to publication.</p></div>',
+         quiz:{ q:'What has democratised children\'s publishing globally?', opts:['Traditional publishing houses only','Expensive printing equipment','Digital publishing tools like Amazon KDP — allowing global reach with no upfront cost','University qualifications'], ans:2, fb:'Digital publishing tools like Amazon KDP have democratised publishing — a South African author can now reach a global reader.' }
+       }
+     ]
+   },
+   // ── COURSE 4: CONFLICT RESOLUTION ──
+   { title:'Storytelling for Conflict Resolution', icon:'<i class="ph ph-dove"></i>', color:'#8E44AD', tag:'Short Course · 4 Weeks',
+     desc:'To empower individuals with the art and practice of storytelling as a transformative tool in resolving interpersonal, institutional, and cultural conflicts.',
+     modules:[
+       { title:'The Art of Conflict-Resolution Storytelling', duration:'1 Hour',
+         body:'<h3>Course Aim</h3><p>To empower individuals with the art and practice of storytelling as a transformative tool in resolving interpersonal, institutional, and cultural conflicts.</p><h3>Mission</h3><p>To foster empathy, collaboration, and sustainable peace through narrative-based conflict resolution across communities and sectors.</p><h3>Vision</h3><p>A society where stories mend misunderstandings, build bridges, and promote reconciliation grounded in human values and shared experience.</p><h3>Why Storytelling Heals</h3><p>Conflict hardens positions. Story softens them. When we hear the story behind someone\'s behaviour — not just the behaviour itself — our capacity for empathy expands. The anatomy of a healing story: <strong>Setting</strong> (context that explains), <strong>Conflict</strong> (honestly named), <strong>Climax</strong> (the moment of highest tension), <strong>Resolution</strong> (a way forward that honours all parties).</p><p>Voice and emotional modulation are critical in conflict storytelling — tone conveys intent, and intent is what conflicted parties are always listening for.</p><div class="lesson-callout"><div class="lc-label">Case Study</div><p>"The Grandmother and Her Granddaughters" — a story used to facilitate perception shifts in intergenerational conflict. The grandmother\'s story and the granddaughter\'s story are both true. The resolution lives in the space between them.</p></div>',
+         quiz:{ q:'How does storytelling help in conflict situations?', opts:['It proves who is right','It distracts from the conflict','Story softens hardened positions by revealing the human experience behind behaviour','It replaces legal processes'], ans:2, fb:'Story softens positions — when we hear the story behind behaviour, our capacity for empathy expands.' }
+       },
+       { title:'The Wisdom of Many Truths', duration:'1 Hour',
+         body:'<h3>Conflict is Not Always Black and White</h3><p>The most intractable conflicts are those where both parties are right — from within their own experience and perspective. The storyteller\'s role in conflict resolution is not to determine truth, but to facilitate perception shifts: to help each party hear the other\'s story without immediately defending against it.</p><h3>Intercultural Conflict and Communication</h3><p>Many conflicts have roots in cultural misunderstanding — different assumptions about time, authority, directness, family obligation, and respect. Stories from each cultural tradition, told and heard in a safe space, can dissolve these misunderstandings more effectively than any mediation framework.</p><div class="lesson-reflection"><div class="lr-label">Exercise</div><p>Think of a conflict you have experienced or witnessed. Write it from the perspective of the other party — not to excuse, but to understand. What story were they living from? What did they need that they could not ask for directly?</p></div>',
+         quiz:{ q:'What is the storyteller\'s role in conflict resolution?', opts:['To decide who is right','To facilitate perception shifts — helping each party hear the other\'s story','To entertain both parties','To document the conflict'], ans:1, fb:'Facilitate perception shifts — not determine truth, but help each party genuinely hear the other\'s story.' }
+@@ -7059,53 +7066,56 @@ var COURSES = [
+       { title:'Module 11: Careers in Storytelling', duration:'1 Hour',
+         body:'<h3>Careers in Storytelling</h3><p>Storytelling is not just an art — it is a career path that offers diverse opportunities in performance, writing, coaching, consulting, entrepreneurship, and branding.</p><h3>Career Pathways</h3><p>• <strong>Live Performer</strong> — storytelling at schools, events, festivals, corporate<br>• <strong>Author & Publisher</strong> — books, e-books, children\'s publishing<br>• <strong>Educator & Trainer</strong> — teaching storytelling methodology<br>• <strong>Brand Storyteller</strong> — marketing, communications, content strategy<br>• <strong>Story Coach</strong> — helping others find and tell their stories<br>• <strong>Digital Content Creator</strong> — podcasts, YouTube, social media<br>• <strong>Mythopreneur</strong> — storytelling consultancy across sectors</p><h3>Building Your Career</h3><p>Develop craft → gain experience → build a personal brand → define your niche → leverage digital tools → grow your audience.</p>',
+         quiz:{ q:'What is a "Mythopreneur"?', opts:['A mythology teacher','Someone who only tells myths','A storytelling consultant who turns narrative craft into business across sectors','A person who tells stories at funerals'], ans:2, fb:'A Mythopreneur turns storytelling into enterprise — using narrative tools to solve problems, build brands, resolve conflict, and deepen human connection across industries.' }
+       },
+       { title:'Module 12: Cultural Perspectives in Storytelling', duration:'1 Hour',
+         body:'<h3>Cultural Perspectives in Storytelling</h3><p>Storytelling is deeply rooted in culture, history, and tradition — serving as a bridge between generations and shaping collective identity.</p><h3>Global Traditions</h3><p>• <strong>African oral tradition</strong> — izinganekwane, izibongo, the storytelling fire circle<br>• <strong>Native American</strong> — stories as law, spirituality, and ecological knowledge<br>• <strong>Japanese</strong> — the art of <em>kamishibai</em> (picture storytelling) and Noh theatre<br>• <strong>Hawaiian</strong> — hula as embodied story<br>• <strong>Western</strong> — the novel tradition, film narrative, and podcast</p><h3>How History Shapes Story</h3><p>War, migration, and colonialism leave deep marks on narrative form. The stories a culture tells about trauma reveal its resilience — and its wounds. Reading stories across cultures builds intercultural fluency.</p>',
+         quiz:{ q:'What does "intercultural fluency" mean in the context of storytelling?', opts:['Speaking many languages','The ability to understand, respect, and adapt stories across different cultural traditions','Studying folklore academically','Only telling stories from your own culture'], ans:1, fb:'Intercultural fluency means understanding the values, assumptions, and emotional registers that different cultures embed in their stories — and being able to work across those traditions with respect.' }
+       },
+       { title:'Module 13: Public Performance & Stage Fright', duration:'1 Hour',
+         body:'<h3>Public Performance & Overcoming Stage Fright</h3><p>Storytelling is a public art, and performing in front of an audience can be intimidating. Many storytellers face stage fright, self-doubt, and fear of judgment. With the right strategies, anyone can overcome these barriers and deliver compelling performances.</p><h3>Understanding Stage Fright</h3><p>Stage fright is not weakness — it is energy. The same physiological response that creates panic can be channelled into presence and power.</p><h3>Strategies for Confidence</h3><p>• <strong>Preparation</strong> — know your story so well that anxiety has nothing to grip<br>• <strong>Breathwork</strong> — slow breath before you begin resets the nervous system<br>• <strong>Eye contact</strong> — find one friendly face and begin there<br>• <strong>Reframe nervousness</strong> — "I am excited" rather than "I am afraid"<br>• <strong>Start small</strong> — practise to one person before one hundred</p>',
+         quiz:{ q:'How should a storyteller reframe stage fright?', opts:['Ignore it completely','Tell the audience they are nervous','See nervousness as energy that can be channelled into presence and power','Always practise alone'], ans:2, fb:'Stage fright and excitement are physiologically identical. The reframe is cognitive: "I am not afraid — I am ready." That shift changes performance completely.' }
+       },
+       { title:'Module 14: Final Storytelling Showcase', duration:'1 Hour',
+         body:'<h3>Final Storytelling Showcase</h3><p>This module is the culmination of the storytelling journey. Learners present a full storytelling performance, receive peer feedback, and reflect on their personal growth as storytellers.</p><h3>The Showcase Format</h3><p>• Each learner delivers a complete storytelling performance (8–12 minutes)<br>• Incorporating: voice modulation, gestures, audience engagement, and authentic connection<br>• Peers provide structured feedback using the course framework<br>• A written reflection on personal growth closes the course</p><div class="lesson-callout"><div class="lc-label">A Final Word from Dr Sasa</div><p>This is not an exam. It is a rite of passage. The story you tell today carries everything you have learned — your voice, your culture, your courage. Tell it as if the ancestors are listening. Because they are.</p></div>',
+         quiz:{ q:'What is the purpose of the Final Storytelling Showcase?', opts:['To grade students and award marks only','To test memorisation','To celebrate growth, demonstrate technique, and receive feedback — a rite of passage','To compete against other storytellers'], ans:2, fb:'The showcase is a rite of passage — the moment where learning becomes performance, and the storyteller steps fully into their craft in front of their community.' }
+       },
+       { title:'Module 15: Advanced Storytelling Techniques', duration:'1 Hour',
+         body:'<h3>Advanced Storytelling Techniques</h3><p>At this stage, a storyteller has mastered the craft, developed a unique style, and built a vast repertoire. Advanced storytellers captivate audiences effortlessly, incorporating humour, rhythm, and emotional depth into their delivery.</p><h3>Advanced Techniques</h3><p>• <strong>Rhythm and pacing mastery</strong> — using silence, speed, and pause to shape emotional journeys<br>• <strong>Interactivity</strong> — building call-and-response structures that shift with each audience<br>• <strong>Format experimentation</strong> — multimedia storytelling, visual performance, hybrid formats<br>• <strong>Authenticity at scale</strong> — performing to thousands while feeling like a one-on-one conversation<br>• <strong>Mentoring</strong> — the advanced storyteller lifts others into their craft</p>',
+         quiz:{ q:'What separates an advanced storyteller from an intermediate one?', opts:['They speak louder','They have memorised more stories','They can adapt technique intuitively — matching rhythm, format, and emotion to each unique audience and moment','They perform for bigger crowds only'], ans:2, fb:'Advanced storytelling is fluid, adaptive, and authentic. The craft has become second nature — so the storyteller is fully present to the audience, not thinking about technique.' }
+       }
+     ],
+     tip:{tx:'These 15 modules are the complete foundation. Work through them in order — each builds on the last. By Module 15 you will not just be a storyteller. You will be a storyteller who understands why and how stories change the world.'}
+   }];
+ 
+ 
+-var completedModules = [[],[],[],[],[],[],[]]; // 7 courses
++var completedModules = [[],[],[],[],[],[],[],[]]; // 8 courses
+ 
+ function selectCourse(idx){
++  if(idx < 0 || idx >= COURSES.length){
++    idx = 0;
++  }
+   activeCourse = idx;
+   activeModule = 0;
+   document.querySelectorAll('.course-tab').forEach(function(t,i){ t.classList.toggle('active', i===idx); });
+   renderModuleList();
+   renderLesson();
+ }
+ 
+ function renderModuleList(){
+   var c = COURSES[activeCourse];
+   var list = document.getElementById('module-list');
+   if(!list) return;
+   list.innerHTML = c.modules.map(function(m,i){
+     var done = completedModules[activeCourse].includes(i);
+     var active = i === activeModule;
+     return '<div class="module-item'+(active?' active':'')+(done?' done':'')+'" onclick="goModule('+i+')">'
+       +'<span class="module-num">0'+(i+1)+'</span>'
+       +'<span class="module-name">'+m.title+'</span>'
+       +'<span class="module-tick">'+(done?'<i class="ph ph-check-circle"></i>':active?'<i class="ph ph-play-circle"></i>':'<i class="ph ph-circle"></i>')+'</span>'
+       +'</div>';
+   }).join('');
+   // Progress
+   var done = completedModules[activeCourse].length;
+   var total = c.modules.length;
+   var pct = Math.round(done/total*100);
+   var pb = document.getElementById('progress-bar');
+@@ -11900,112 +11910,115 @@ var ZINTSOMI_LANGS = {
+     ob_cta:'Kena ho Zintsomi →',
+     streak_label:'Matsatsi a Lenaneo'
+   }
+ };
+ 
+ var currentLang = localStorage.getItem('zintsomi_lang') || 'en';
+ 
+ function setLang(lang) {
+   currentLang = lang;
+   localStorage.setItem('zintsomi_lang', lang);
+   // Update toggle buttons
+   document.querySelectorAll('.lang-btn').forEach(function(b){
+     b.classList.toggle('active', b.dataset.lang === lang);
+   });
+   // Apply translations
+   var t = ZINTSOMI_LANGS[lang] || ZINTSOMI_LANGS.en;
+   function setText(id, val){ var el=document.getElementById(id); if(el) el.textContent=val; }
+   setText('ob-title', t.ob_title);
+   setText('ob-sub', t.ob_sub);
+   setText('ob-l1', t.ob_l1); setText('ob-d1', t.ob_d1);
+   setText('ob-l2', t.ob_l2); setText('ob-d2', t.ob_d2);
+   setText('ob-l3', t.ob_l3); setText('ob-d3', t.ob_d3);
+   setText('ob-cta', t.ob_cta);
+   setText('lsb-label-text', t.streak_label);
+   // Mark language step done in onboarding
+-  if(lang !== 'en') obComplete(1);
++  obComplete(1);
+ }
+ 
+ // Init language on load
+ document.addEventListener('DOMContentLoaded', function(){
+   setLang(currentLang);
+ });
+ 
+ // ════════════════════════════════════════════
+ // REAL DAILY STREAK SYSTEM
+ // ════════════════════════════════════════════
+ function initRealStreak() {
+   var today = new Date().toDateString();
+   var data = JSON.parse(localStorage.getItem('zintsomi_streak') || '{}');
+   var last = data.lastVisit || null;
+   var count = data.count || 0;
+ 
+   if (last === today) {
+     // Same day — keep streak as is
+   } else if (last) {
+     var yesterday = new Date();
+     yesterday.setDate(yesterday.getDate() - 1);
+     if (last === yesterday.toDateString()) {
+       count += 1; // consecutive day
+     } else {
+       count = 1; // broke streak, restart
+     }
+   } else {
+     count = 1; // first visit ever
+   }
+ 
+   localStorage.setItem('zintsomi_streak', JSON.stringify({ lastVisit: today, count: count }));
+ 
+   // Update UI
+   var badge = document.getElementById('lsb-num');
+   if (badge) badge.textContent = count;
+   // Also update the brain teasers streak display
+   streakDays = count;
+   var sc = document.getElementById('streak-count');
+   if (sc) sc.textContent = count;
+   initStreakDots();
+ }
+ 
+ document.addEventListener('DOMContentLoaded', function(){
+   initRealStreak();
+ });
+ 
+ // ════════════════════════════════════════════
+ // ONBOARDING SYSTEM
+ // ════════════════════════════════════════════
+ var obDone = JSON.parse(localStorage.getItem('zintsomi_ob') || '{}');
++function showOnboardingAfterIntro() {
++  if (localStorage.getItem('zintsomi_ob_complete') === '1') return;
++  var ov = document.getElementById('onboarding-overlay');
++  if (ov) ov.classList.remove('hidden');
++}
+ 
+ function obComplete(step) {
+   obDone['s'+step] = true;
+   localStorage.setItem('zintsomi_ob', JSON.stringify(obDone));
+   var el = document.getElementById('ob-s'+step);
+   var ch = document.getElementById('ob-c'+step);
+   if (el) el.classList.add('done');
+   if (ch) ch.textContent = '✓';
+   // Check if all done
+   if (obDone.s1 && obDone.s2 && obDone.s3) {
+     var cta = document.getElementById('ob-cta');
+     if (cta) cta.style.background = '#6EE78E';
+   }
+ }
+ 
+ function obFinish() {
+   localStorage.setItem('zintsomi_ob_complete', '1');
+   var ov = document.getElementById('onboarding-overlay');
+   if (ov) { ov.style.opacity='0'; ov.style.transition='opacity .4s'; setTimeout(function(){ ov.classList.add('hidden'); }, 400); }
+ }
+ 
+ document.addEventListener('DOMContentLoaded', function(){
+   // Restore completed steps
+   [1,2,3].forEach(function(i){
+     if(obDone['s'+i]) obComplete(i);
+   });
+-  // If already completed onboarding before, skip it
+-  if (localStorage.getItem('zintsomi_ob_complete') === '1') {
+-    var ov = document.getElementById('onboarding-overlay');
+-    if (ov) ov.classList.add('hidden');
+-  }
++  // Keep onboarding hidden until intro animation has ended.
++  var ov = document.getElementById('onboarding-overlay');
++  if (ov) ov.classList.add('hidden');
+ });
+ 
+ </script>
+ </body>
+ </html>
+ 
+EOF
+)
