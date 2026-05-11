@@ -5,12 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Dr Sasa's Story Forest Quest</title>
   <style>
+    :root{--bg:#05070b;--panel:rgba(10,15,20,.85);--accent:#f4bb5d;--ok:#7ded8a;--text:#f5f2ea;--danger:#ff7680}
     :root{--bg:#05070b;--panel:rgba(10,15,20,.88);--accent:#f4bb5d;--ok:#7ded8a;--text:#f5f2ea;--danger:#ff7680;--blue:#89c5ff}
     *{box-sizing:border-box}
     html,body{margin:0;height:100%;overflow:hidden;background:#000;color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,sans-serif}
     #game{position:fixed;inset:0}
     #hud{position:fixed;inset:0;pointer-events:none}
     .panel{background:var(--panel);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(8px);border-radius:14px}
+    #topBar{position:absolute;left:12px;top:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+    #quest{padding:10px 12px;max-width:560px}
+    #quest h1{margin:0 0 6px;font-size:14px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+    #quest p{margin:0;font-size:12px;opacity:.88;line-height:1.5}
+    #compass{padding:8px 10px;min-width:82px;text-align:center;font-weight:700}
+    #compassVal{font-size:20px;color:#d5e7ff}
+    #prompt{position:absolute;left:50%;bottom:94px;transform:translateX(-50%);padding:10px 16px;display:none;font-size:14px}
+    #progress{position:absolute;left:12px;bottom:12px;padding:8px 12px;font-size:13px}
+    #meta{position:absolute;left:12px;bottom:58px;padding:8px 12px;font-size:12px;line-height:1.45}
+    #minimapWrap{position:absolute;right:12px;bottom:12px;width:158px;height:158px;padding:8px}
+    #minimap{width:100%;height:100%;background:rgba(0,0,0,.5);border-radius:10px}
+    #credits{position:absolute;left:12px;bottom:12px}
+    #creditModal .modalCard{max-width:460px}
+    .creditWarn{color:#ffd8a8;font-size:13px}
+    #crosshair{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);opacity:.8}
+    #crosshair::before,#crosshair::after{content:"";position:absolute;background:#ffffff8f}
+    #crosshair::before{width:22px;height:2px;left:-11px;top:0}
+    #crosshair::after{height:22px;width:2px;left:0;top:-11px}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.74);display:none;align-items:center;justify-content:center;padding:18px;z-index:10}
+    .modalCard{pointer-events:auto;max-width:760px;width:min(100%,760px);max-height:90vh;overflow:auto;padding:20px}
+    .modal h2{margin:0 0 10px;color:var(--accent)} .modal p,.modal li{line-height:1.66;opacity:.95}
+    .btn{pointer-events:auto;background:linear-gradient(135deg,#ffcb71,#e6a43d);border:none;color:#1f1300;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+    .btn.alt{background:#1b2430;color:#dfe8f6;border:1px solid #39485f}
+    .btn.danger{background:#2a0f13;color:#ffd6d8;border:1px solid #5f2f35}
+    .asset{max-width:100%;border-radius:10px;border:1px solid rgba(255,255,255,.14);margin:8px 0 12px}
+    #touchUI{position:fixed;left:12px;bottom:12px;display:none;z-index:12;pointer-events:auto}
+    .dpad{display:grid;grid-template-columns:54px 54px 54px;grid-template-rows:54px 54px 54px;gap:6px}
+    .touchBtn{border:none;border-radius:12px;background:rgba(18,24,33,.82);color:#dce8ff;font-size:20px;font-weight:700}
+    .touchBtn:active{transform:scale(.96)}
+    #collectBtn{position:fixed;right:14px;bottom:40px;display:none;z-index:12;pointer-events:auto}
+    #collectBtn button{width:78px;height:78px;border-radius:50%;border:none;background:linear-gradient(135deg,#f7d192,#c68b2f);font-size:19px;font-weight:800}
+    #startOverlay{position:fixed;inset:0;background:linear-gradient(rgba(3,6,12,.58),rgba(3,6,12,.9)),url('assets/vr-generated/forest-night-texture.svg') center/cover no-repeat;display:flex;align-items:center;justify-content:center;z-index:20}
+    #startCard{max-width:700px;padding:24px}
+    #startCard h1{margin:0 0 10px;font-size:28px}
+    #startCard p{opacity:.9;line-height:1.65}
+    #settings{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .chip{padding:6px 10px;border-radius:999px;background:#0f1722;border:1px solid #34455a;font-size:12px;cursor:pointer;color:#d7e4ff}
+    #toast{position:fixed;top:96px;left:50%;transform:translateX(-50%);display:none;z-index:15;padding:8px 12px}
+    @media (max-width:900px){#minimapWrap{width:120px;height:120px} #touchUI{display:block} #collectBtn{display:block} #topBar{flex-direction:column}}
 
     /* ── TOP BAR ── */
     #topBar{position:absolute;left:12px;top:12px;right:12px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
