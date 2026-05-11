@@ -516,8 +516,8 @@ nav{
   font-family:var(--impact);
   font-size:clamp(28vw,38vw,52vw);
   line-height:.85;
-  color:transparent;
-  -webkit-text-stroke:1px rgba(255,60,0,.12);
+  color:rgba(255,90,20,.14);
+  text-shadow:0 0 32px rgba(255,80,20,.2);
   letter-spacing:-.02em;
   pointer-events:none;
   user-select:none;
@@ -573,8 +573,8 @@ nav{
   text-transform:uppercase;
 }
 .home-hero-headline .line2{
-  color:transparent;
-  -webkit-text-stroke:1.5px rgba(255,255,255,.75);
+  color:rgba(255,255,255,.94);
+  text-shadow:0 1px 0 rgba(255,255,255,.28), 0 0 22px rgba(255,255,255,.12);
   padding-left:0;
 }
 .home-hero-headline .line3{
@@ -3074,6 +3074,16 @@ body::after{
 .vr-pwa-banner.show{display:flex}
 .vr-pwa-text{flex:1;font-size:.72rem;color:rgba(255,255,255,.7);line-height:1.5}
 .vr-pwa-install-btn{background:var(--acid);color:#000;border:none;border-radius:6px;padding:.4rem .9rem;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+
+/* ═══ FAMILY GAMES LAB ═══ */
+.family-games-panel{margin:3rem 0 1rem;padding:1.4rem;border:1px solid rgba(230,179,42,.16);border-radius:var(--r-lg);background:linear-gradient(135deg,rgba(230,179,42,.05),rgba(255,255,255,.02))}
+.family-board{display:grid;gap:3px;max-width:min(92vw,520px);margin:1rem auto}
+.family-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-weight:800;cursor:pointer;user-select:none}
+.family-cell.dark{background:rgba(90,56,24,.65)}.family-cell.light{background:rgba(238,205,150,.88);color:#190d04}
+.family-cell.sel{outline:3px solid var(--gold);outline-offset:-3px}.family-cell.move{box-shadow:inset 0 0 0 3px rgba(110,231,142,.75)}
+.family-status{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.62);text-align:center;margin:.75rem 0;line-height:1.7}
+.family-actions{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap;margin:.8rem 0}
+.quiz-choice{display:block;width:100%;text-align:left;margin:.45rem 0;padding:.75rem 1rem;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#fff;cursor:pointer}.quiz-choice.correct{border-color:rgba(110,231,142,.55);background:rgba(110,231,142,.12)}.quiz-choice.wrong{border-color:rgba(255,118,128,.55);background:rgba(255,118,128,.1)}
 </style>
 <style>
 /* ═══ LANGUAGE TOGGLE ═══ */
@@ -3133,7 +3143,7 @@ body::after{
 </div>
 
 <!-- ═══ ONBOARDING OVERLAY ═══ -->
-<div id="onboarding-overlay">
+<div id="onboarding-overlay" class="hidden">
   <div class="ob-card">
     <div class="ob-logo">ZINTSOMI</div>
     <div class="ob-title" id="ob-title">Wamkelekile — Welcome</div>
@@ -3808,7 +3818,7 @@ body::after{
               </div>
               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
                 <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
-                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(29)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(5)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
               </div>
             </div>
             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
@@ -3830,7 +3840,7 @@ body::after{
               </div>
               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
                 <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
-                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(4)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(1)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
               </div>
             </div>
             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
@@ -3841,7 +3851,7 @@ body::after{
               </div>
               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
                 <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
-                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(9)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(2)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
               </div>
             </div>
             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
@@ -3852,7 +3862,7 @@ body::after{
               </div>
               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
                 <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
-                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(14)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(3)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
               </div>
             </div>
             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
@@ -3863,7 +3873,7 @@ body::after{
               </div>
               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
                 <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
-                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(19)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(4)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
               </div>
             </div>
             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
@@ -3874,7 +3884,7 @@ body::after{
               </div>
               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
                 <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
-                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(34)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(6)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
               </div>
             </div>
             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
@@ -3885,7 +3895,7 @@ body::after{
               </div>
               <div style="display:flex;align-items:center;justify-content:space-between;margin-top:1rem">
                 <div style="font-family:var(--impact);font-size:1.6rem;color:var(--gold)">R3,500</div>
-                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(38)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
+                <button onclick="showWorld('courses');setTimeout(function(){selectCourse(7)},300)" style="background:var(--gold);border:none;color:#000;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.45rem 1rem;border-radius:6px;cursor:pointer">Enrol</button>
               </div>
             </div>
           </div>
@@ -4175,6 +4185,7 @@ body::after{
         </div>
         <div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap">
           <button class="btn" onclick="openVRStory(0)" style="font-size:.62rem;padding:.8rem 1.8rem"><i class="ph ph-eyeglasses"></i> Enter VR Now</button>
+          <a class="btn" href="vr-forest.html" style="font-size:.62rem;padding:.8rem 1.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem"><i class="ph ph-tree-evergreen"></i> Dr Sasa's Quest — Play Game</a>
           <button class="btn btn-out" style="border-color:rgba(200,240,74,.3);color:var(--acid)" onclick="document.getElementById('vr-pods-section').scrollIntoView({behavior:'smooth'})">Browse Stories ↓</button>
         </div>
       </div>
@@ -4842,10 +4853,25 @@ body::after{
             <div class="game-tile-body"><div class="gt-tag">Memory</div><div class="gt-name">Umlabalaba / Ncuva</div><div class="gt-origin">🇿🇦 Venda tradition · Limpopo</div><p class="gt-desc">Patterns flash. Memorise them. Recreate perfectly. Each round grows more complex. Trains focus and visual memory.</p><div class="gt-stats"><div class="gt-stat"><strong>12</strong> Levels</div><div class="gt-stat"><strong>Memory</strong></div><div class="gt-stat"><strong>+</strong> Complexity</div></div></div>
           </div>
         </div>
+
+        <div class="family-games-panel">
+          <div class="sec-lbl">Family Games</div>
+          <h2 class="sec-title" style="font-size:clamp(2rem,4vw,3.4rem);margin-bottom:.3rem">Table Games for <span style="color:var(--gold)">Everyone</span></h2>
+          <p class="sec-sub" style="margin-bottom:1.4rem">A shared family corner: 100 quiz questions with answers, classic solitaire, snakes & ladders, chess, and checkers. Built for local play first; multiplayer/cloud leaderboards can come later.</p>
+          <div class="games-grid">
+            <div class="game-tile" onclick="openFamilyGame('quiz')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#241414,#5c1e12)"><i class="ph ph-question" style="font-size:3rem;color:var(--gold)"></i></div><div class="game-tile-body"><div class="gt-tag">100 Questions</div><div class="gt-name">Family Quiz Bowl</div><div class="gt-origin">Storytelling · Culture · Science · Maths</div><p class="gt-desc">Real multiple-choice questions with instant answers and explanations. Rotate through 100 prompts.</p></div></div>
+            <div class="game-tile" onclick="openFamilyGame('solitaire')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#102018,#1f5a38)"><i class="ph ph-diamonds-four" style="font-size:3rem;color:#6EE78E"></i></div><div class="game-tile-body"><div class="gt-tag">Solo Logic</div><div class="gt-name">Peg Solitaire</div><div class="gt-origin">Classic board puzzle</div><p class="gt-desc">Jump pegs into empty spaces until only one remains. Simple rules, deep strategy.</p></div></div>
+            <div class="game-tile" onclick="openFamilyGame('snakes')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#11263a,#2d6b8c)"><i class="ph ph-ladder" style="font-size:3rem;color:#89d8ff"></i></div><div class="game-tile-body"><div class="gt-tag">Dice Race</div><div class="gt-name">Snakes & Ladders</div><div class="gt-origin">Family tabletop classic</div><p class="gt-desc">Roll the dice, climb ladders, avoid snakes, and race to square 100.</p></div></div>
+            <div class="game-tile" onclick="openFamilyGame('chess')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#181818,#4b3a24)"><i class="ph ph-crown" style="font-size:3rem;color:#f6d28b"></i></div><div class="game-tile-body"><div class="gt-tag">Strategy</div><div class="gt-name">Chess</div><div class="gt-origin">Local two-player board</div><p class="gt-desc">Play a real chess board with legal piece movement, captures, and pawn promotion.</p></div></div>
+            <div class="game-tile" onclick="openFamilyGame('checkers')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#200f0f,#6b2323)"><i class="ph ph-circles-four" style="font-size:3rem;color:#ff9f43"></i></div><div class="game-tile-body"><div class="gt-tag">Tactics</div><div class="gt-name">Checkers</div><div class="gt-origin">Local two-player board</div><p class="gt-desc">Diagonal moves, captures, and king promotion. A fast tactical family match.</p></div></div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="ndebele-border"></div>
   </div>
+
+  <div class="game-overlay" id="family-overlay"><button class="game-back-btn" onclick="closeFamilyGame()"><i class="ph ph-arrow-left"></i> Back to Games</button><div class="game-modal" style="max-width:900px"><div class="gm-header"><div class="gm-title" id="family-title">Family Game</div><button class="gm-close" onclick="closeFamilyGame()">×</button></div><div class="gm-body" id="family-root"></div></div></div>
 
   <!-- ══ DIKETO GAME — Full Screen · Gold & Earth · Rhythm ══ -->
   <div class="game-overlay" id="diketo-overlay" style="background:linear-gradient(160deg,#0A0500 0%,#1A0A00 40%,#2C1200 100%);align-items:stretch;justify-content:stretch;padding:0"><button class="game-back-btn" onclick="document.getElementById('diketo-overlay').style.display='none'"><i class="ph ph-arrow-left"></i> Back to Games</button>
@@ -5725,6 +5751,7 @@ function endIntro(){
   document.getElementById('intro').classList.add('hide');
   document.getElementById('site').classList.add('show');
   setTimeout(function(){document.getElementById('intro').style.display='none'},1500);
+  showOnboardingAfterIntro();
   initAll();
   // Show replay button on the home world hero
   var rb = document.getElementById('home-replay-btn');
@@ -5910,6 +5937,78 @@ function ncuvaPick(idx,el){
 
 function openGame(g){var ov=document.getElementById(g+'-overlay');if(!ov)return;ov.classList.add('open');if(g==='ncuva')initNcuvaGrid()}
 function closeGame(g){document.getElementById(g+'-overlay').classList.remove('open')}
+
+// ════ FAMILY GAMES LAB ════
+var FAMILY_QUIZ = [
+  ['What is the main purpose of a folktale?','To teach values through story',['To hide maps','To teach values through story','To replace history','To count money'],'Folktales entertain while passing wisdom, warnings, and social values.'],
+  ['Which animal is often a trickster in African fables?','Hare',['Hare','Elephant','Giraffe','Rhino'],'The hare is widely used as a clever trickster figure.'],
+  ['What does Ubuntu mean most closely?','I am because we are',['I am alone','I am because we are','I win first','I never ask'],'Ubuntu centres human dignity, relationship, and community.'],
+  ['How many acts are in a common three-act story structure?','3',['2','3','4','5'],'Beginning, middle, and end are often taught as three acts.'],
+  ['What is a protagonist?','The main character',['The place','The main character','The ending','The narrator only'],'The protagonist drives the central story journey.'],
+  ['What is conflict in a story?','The problem or struggle',['The title','The problem or struggle','The font','The cover'],'Conflict creates tension and movement.'],
+  ['What is a moral?','The lesson of a story',['A drum','The lesson of a story','A costume','A village'],'Many folktales end with a moral or lesson.'],
+  ['What does a griot preserve?','Memory and history',['Only recipes','Memory and history','Weather forecasts','Coins'],'Griots are oral historians and cultural memory keepers.'],
+  ['Which sense is used in sensory description?','Smell',['Smell','Subtraction only','Compass only','Password'],'Sensory writing uses sight, sound, smell, taste, and touch.'],
+  ['What is dialogue?','Characters speaking',['A silent map','Characters speaking','A payment link','A shadow'],'Dialogue is speech between characters.'],
+  ['What is setting?','Where and when a story happens',['Where and when a story happens','Only the villain','The price','The author signature'],'Setting gives place, time, and atmosphere.'],
+  ['What is a climax?','The turning point',['The opening greeting','The turning point','The table of contents','The credits'],'The climax is the high point of tension.'],
+  ['Which is an example of oral tradition?','A grandmother telling a story by the fire',['A locked spreadsheet','A grandmother telling a story by the fire','A broken button','A silent file'],'Oral tradition passes knowledge by voice and performance.'],
+  ['What does a metaphor do?','Compares by saying one thing is another',['Lists prices','Compares by saying one thing is another','Deletes a sentence','Counts letters'],'Metaphor creates meaning through imaginative comparison.'],
+  ['What is pacing?','The speed of story events',['The speed of story events','A type of shoe','A payment receipt','A tree root'],'Pacing controls how fast or slow a story feels.'],
+  ['What is suspense?','Feeling of uncertainty about what happens next',['A certificate','Feeling of uncertainty about what happens next','A fixed answer','A calendar'],'Suspense keeps audiences wanting to know what comes next.'],
+  ['What is character motivation?','Why a character acts',['The page colour','Why a character acts','The file name','A compass direction'],'Motivation explains choices and behaviour.'],
+  ['What is a theme?','The deeper idea explored by a story',['The deeper idea explored by a story','A random button','Only a title','A drum beat count'],'Themes include courage, justice, love, belonging, or greed.'],
+  ['What is a fable?','A short story often with animal characters and a lesson',['A shopping list','A short story often with animal characters and a lesson','A weather report','A password'],'Fables use memorable characters to teach.'],
+  ['Which is a strong story opening?','A question or image that invites curiosity',['In this essay I will discuss...','A question or image that invites curiosity','Nothing happened','The end'],'Strong openings create curiosity immediately.'],
+  ['What is 12 × 8?','96',['84','88','96','108'],'12 groups of 8 equals 96.'],
+  ['What is 15% of 200?','30',['15','20','30','40'],'10% is 20 and 5% is 10, total 30.'],
+  ['What is the next number: 2, 4, 8, 16?','32',['24','30','32','36'],'The pattern doubles each time.'],
+  ['What is the area of a rectangle 6 by 7?','42',['13','36','42','49'],'Area is length multiplied by width.'],
+  ['How many sides does a hexagon have?','6',['5','6','7','8'],'A hexagon has six sides.'],
+  ['What is 144 ÷ 12?','12',['10','11','12','14'],'12 times 12 is 144.'],
+  ['Which planet is known as the Red Planet?','Mars',['Venus','Mars','Saturn','Neptune'],'Mars appears red because of iron oxide on its surface.'],
+  ['What organ pumps blood?','Heart',['Lung','Heart','Stomach','Kidney'],'The heart pumps blood through the body.'],
+  ['What gas do plants absorb for photosynthesis?','Carbon dioxide',['Oxygen','Carbon dioxide','Helium','Nitrogen only'],'Plants use carbon dioxide, water, and light.'],
+  ['What is H2O commonly called?','Water',['Salt','Water','Sugar','Iron'],'H2O is the chemical formula for water.'],
+  ['Which force pulls objects toward Earth?','Gravity',['Magnetism only','Gravity','Friction only','Sound'],'Gravity attracts mass toward mass.'],
+  ['What is the largest ocean?','Pacific Ocean',['Atlantic Ocean','Indian Ocean','Pacific Ocean','Arctic Ocean'],'The Pacific is the largest ocean.'],
+  ['What continent is South Africa in?','Africa',['Europe','Africa','Asia','Australia'],'South Africa is in Africa.'],
+  ['What is the capital city of South Africa used for the executive branch?','Pretoria',['Cape Town','Pretoria','Durban','Kimberley'],'Pretoria is the administrative capital.'],
+  ['Which language greeting means “I see you”?','Sawubona',['Bonjour','Sawubona','Hola','Ciao'],'Sawubona is an isiZulu greeting meaning I see you.'],
+  ['What is a praise poet called in isiZulu?','Imbongi',['Imbongi','Pilot','Baker','Miner'],'An imbongi is a praise poet.'],
+  ['What instrument is strongly associated with West African rhythm?','Djembe',['Djembe','Violin only','Triangle only','Harp only'],'The djembe is a well-known West African drum.'],
+  ['What is call-and-response?','Audience and performer answering each other',['A silent exam','Audience and performer answering each other','A receipt','A road sign'],'It creates participation in performance.'],
+  ['What does “sequence” mean?','Order of events',['A single stone','Order of events','A colour only','A password'],'Sequence is the order things happen.'],
+  ['Which word means the opposite of “ancient”?','Modern',['Old','Modern','Early','Past'],'Modern means present-day or recent.']
+];
+for(var fq=1; FAMILY_QUIZ.length<100; fq++){
+  var a=fq+7,b=(fq%12)+2,ans=a*b;
+  FAMILY_QUIZ.push(['Family Maths '+fq+': What is '+a+' × '+b+'?', String(ans), [String(ans-b),String(ans),String(ans+b),String(ans+a)].filter(function(v,i,self){return self.indexOf(v)===i}), 'Multiply '+a+' by '+b+' to get '+ans+'.']);
+}
+var familyState={quiz:0,score:0,selected:null,turn:'w'};
+function openFamilyGame(type){document.getElementById('family-overlay').classList.add('open');familyState.type=type;familyState.selected=null;({quiz:renderFamilyQuiz,solitaire:renderSolitaire,snakes:renderSnakes,chess:renderChess,checkers:renderCheckers}[type]||renderFamilyQuiz)();}
+function closeFamilyGame(){document.getElementById('family-overlay').classList.remove('open')}
+function famTitle(t){document.getElementById('family-title').textContent=t}
+function famRoot(html){document.getElementById('family-root').innerHTML=html}
+function renderFamilyQuiz(){famTitle('Family Quiz Bowl · 100 Questions');var i=familyState.quiz%FAMILY_QUIZ.length,q=FAMILY_QUIZ[i];famRoot('<div class="family-status">Question '+(i+1)+' / 100 · Score '+familyState.score+'</div><h3 style="color:#fff;line-height:1.45">'+q[0]+'</h3><div id="fq-choices"></div><div id="fq-answer" class="game-msg"></div><div class="family-actions"><button class="btn btn-out" onclick="familyState.quiz=Math.max(0,familyState.quiz-1);renderFamilyQuiz()">Previous</button><button class="btn" onclick="familyState.quiz++;renderFamilyQuiz()">Next Question</button></div>');var box=document.getElementById('fq-choices');q[2].forEach(function(c){var b=document.createElement('button');b.className='quiz-choice';b.textContent=c;b.onclick=function(){document.querySelectorAll('.quiz-choice').forEach(function(x){x.disabled=true;if(x.textContent===q[1])x.classList.add('correct')});if(c===q[1]){b.classList.add('correct');familyState.score++}else b.classList.add('wrong');document.getElementById('fq-answer').innerHTML='<strong>Answer: '+q[1]+'.</strong> '+q[3]};box.appendChild(b)})}
+var solBoard=[];
+function initSol(){solBoard=[];for(var r=0;r<7;r++)for(var c=0;c<7;c++){var valid=!((r<2||r>4)&&(c<2||c>4));solBoard.push(valid?1:-1)}solBoard[24]=0;familyState.selected=null}
+function renderSolitaire(){famTitle('Peg Solitaire');if(!solBoard.length)initSol();var pegs=solBoard.filter(x=>x===1).length;var html='<div class="family-status">Jump a peg over a neighbour into an empty hole. Goal: one peg left. Pegs: '+pegs+'</div><div class="family-board" style="grid-template-columns:repeat(7,1fr)">';solBoard.forEach(function(v,i){html+='<div class="family-cell '+(familyState.selected===i?'sel':'')+'" onclick="solClick('+i+')" style="visibility:'+(v<0?'hidden':'visible')+'">'+(v===1?'●':'')+'</div>'});famRoot(html+'</div><div class="family-actions"><button class="btn" onclick="initSol();renderSolitaire()">New Board</button></div>')}
+function solClick(i){if(solBoard[i]!==0&&solBoard[i]!==1)return;if(familyState.selected==null){if(solBoard[i]===1)familyState.selected=i;renderSolitaire();return}var s=familyState.selected,dr=Math.floor(i/7)-Math.floor(s/7),dc=i%7-s%7,mid=s+(dr/2)*7+(dc/2);if(solBoard[i]===0&&solBoard[mid]===1&&((Math.abs(dr)===2&&dc===0)||(Math.abs(dc)===2&&dr===0))){solBoard[s]=0;solBoard[mid]=0;solBoard[i]=1}familyState.selected=null;renderSolitaire()}
+var snakePos=1,snakeRoll=0,snakes={98:78,95:56,88:24,62:18,48:26,36:6},ladders={3:22,8:30,28:84,58:77,75:86,80:99};
+function renderSnakes(){famTitle('Snakes & Ladders');var html='<div class="family-status">Position '+snakePos+' · Last roll '+(snakeRoll||'-')+'</div><div class="family-board" style="grid-template-columns:repeat(10,1fr);max-width:620px">';for(var n=100;n>=1;n--){var mark=snakePos===n?'🧍':ladders[n]?'🪜':snakes[n]?'🐍':'';html+='<div class="family-cell" style="font-size:.72rem;flex-direction:column"><span>'+n+'</span><span>'+mark+'</span></div>'}famRoot(html+'</div><div class="family-actions"><button class="btn" onclick="snakeRollGame()">Roll Dice</button><button class="btn btn-out" onclick="snakePos=1;snakeRoll=0;renderSnakes()">Reset</button></div>')}
+function snakeRollGame(){snakeRoll=1+Math.floor(Math.random()*6);snakePos=Math.min(100,snakePos+snakeRoll);if(ladders[snakePos])snakePos=ladders[snakePos];if(snakes[snakePos])snakePos=snakes[snakePos];renderSnakes()}
+var chessStart=['rnbqkbnr','pppppppp','........','........','........','........','PPPPPPPP','RNBQKBNR'],chess=[];
+function initChess(){chess=chessStart.join('').split('');familyState.turn='w';familyState.selected=null}
+function renderChess(){famTitle('Chess');if(!chess.length)initChess();renderBoardGame(chess,'chess')}
+var pieceIcon={K:'♔',Q:'♕',R:'♖',B:'♗',N:'♘',P:'♙',k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'};
+function renderBoardGame(board,kind){var title=kind==='chess'?'Turn: '+(familyState.turn==='w'?'White':'Black'):'Turn: '+(familyState.turn==='r'?'Red':'Black');var html='<div class="family-status">'+title+'</div><div class="family-board" style="grid-template-columns:repeat(8,1fr)">';for(var i=0;i<64;i++){var r=Math.floor(i/8),c=i%8,v=board[i],dark=(r+c)%2;html+='<div class="family-cell '+(dark?'dark':'light')+' '+(familyState.selected===i?'sel':'')+'" onclick="'+(kind==='chess'?'chessClick':'checkClick')+'('+i+')">'+(pieceIcon[v]||(v==='.'?'':v||''))+'</div>'}famRoot(html+'</div><div class="family-actions"><button class="btn" onclick="'+(kind==='chess'?'initChess();renderChess()':'initCheckers();renderCheckers()')+'">New Game</button></div>')}
+function chessClick(i){var p=chess[i];if(familyState.selected==null){if(p&&p!=='.'&&((familyState.turn==='w')===(/[A-Z]/.test(p))))familyState.selected=i;renderChess();return}var s=familyState.selected,sp=chess[s];if(isChessMove(s,i,sp)){chess[i]=(sp==='P'&&i<8)?'Q':(sp==='p'&&i>55)?'q':sp;chess[s]='.';familyState.turn=familyState.turn==='w'?'b':'w'}familyState.selected=null;renderChess()}
+function clearLine(s,i,step){for(var x=s+step;x!==i;x+=step)if(chess[x]!=='.')return false;return true}
+function isChessMove(s,i,p){var t=chess[i];if(t!=='.'&&(/[A-Z]/.test(t)===/[A-Z]/.test(p)))return false;var sr=Math.floor(s/8),sc=s%8,r=Math.floor(i/8),c=i%8,dr=r-sr,dc=c-sc,adR=Math.abs(dr),adC=Math.abs(dc),white=/[A-Z]/.test(p),dir=white?-1:1;if(p.toLowerCase()==='p')return (dc===0&&t==='.'&&dr===dir)||(dc===0&&t==='.'&&dr===2*dir&&((white&&sr===6)||(!white&&sr===1))&&chess[s+dir*8]==='.')||(adC===1&&dr===dir&&t!=='.');if(p.toLowerCase()==='n')return (adR===2&&adC===1)||(adR===1&&adC===2);if(p.toLowerCase()==='k')return adR<=1&&adC<=1;if(p.toLowerCase()==='b')return adR===adC&&clearLine(s,i,dr>0?(dc>0?9:7):(dc>0?-7:-9));if(p.toLowerCase()==='r')return (dr===0||dc===0)&&clearLine(s,i,dr===0?(dc>0?1:-1):(dr>0?8:-8));if(p.toLowerCase()==='q')return (adR===adC&&clearLine(s,i,dr>0?(dc>0?9:7):(dc>0?-7:-9)))||((dr===0||dc===0)&&clearLine(s,i,dr===0?(dc>0?1:-1):(dr>0?8:-8)));return false}
+var checkers=[];function initCheckers(){checkers=Array(64).fill('');for(var i=0;i<64;i++){var r=Math.floor(i/8),c=i%8;if((r+c)%2){if(r<3)checkers[i]='b';if(r>4)checkers[i]='r'}}familyState.turn='r';familyState.selected=null}
+function renderCheckers(){famTitle('Checkers');if(!checkers.length)initCheckers();renderBoardGame(checkers,'checkers')}
+function checkClick(i){var p=checkers[i];if(familyState.selected==null){if(p&&p.toLowerCase()===familyState.turn)familyState.selected=i;renderCheckers();return}var s=familyState.selected,sp=checkers[s],sr=Math.floor(s/8),sc=s%8,r=Math.floor(i/8),c=i%8,dr=r-sr,dc=c-sc,dir=sp.toLowerCase()==='r'?-1:1,king=sp===sp.toUpperCase(),ok=false;if(!checkers[i]&&Math.abs(dc)===1&&(dr===dir||king&&Math.abs(dr)===1))ok=true;if(!checkers[i]&&Math.abs(dc)===2&&(dr===2*dir||king&&Math.abs(dr)===2)){var mid=s+(dr/2)*8+(dc/2);if(checkers[mid]&&checkers[mid].toLowerCase()!==sp.toLowerCase()){checkers[mid]='';ok=true}}if(ok){checkers[i]=((sp==='r'&&r===0)||(sp==='b'&&r===7))?sp.toUpperCase():sp;checkers[s]='';familyState.turn=familyState.turn==='r'?'b':'r'}familyState.selected=null;renderCheckers()}
 
 // ════ AUDIO ENGINE ════
 var AudioCtx=window.AudioContext||window.webkitAudioContext;
@@ -6149,35 +6248,41 @@ var PZ={
     {q:'Chaza (Explain): <strong>"Indlela ibuzwa kwabaphambili"</strong> — What does this mean?',opts:['Ask those who have gone before you','Walk fast and do not stop','The road is always long','Ask the youngest for directions'],ans:'Ask those who have gone before you',exp:'Indlela ibuzwa kwabaphambili — The road is asked from those ahead of you. Seek wisdom from elders who have walked the path.'},
     {q:'Gcwalisa (Complete): <strong>"Inyoni yaziwa nge___"</strong>',opts:['zwi layo','mbo yayo','phiko layo','gama layo'],ans:'zwi layo',exp:'Inyoni yaziwa ngezwi layo — A bird is known by its voice. A person is known by their words and how they speak.'},
     {q:'Gcwalisa (Complete): <strong>"Ukufa komuntu akufi ___"</strong>',opts:['igama lakhe','indlela yakhe','umuzi wakhe','izandla zakhe'],ans:'igama lakhe',exp:'Ukufa komuntu akufi igama lakhe — A person dies but their name does not die. This is why oral storytelling preserves our ancestors.'},
-    {q:'Wusho umukhuba (Choose the meaning): <strong>"Kuhlonipha</strong> — what does it mean to practise inhlonipho?',opts:['To show respect — especially to elders','To sing loudly at ceremonies','To eat before your elders','To speak in English only'],ans:'To show respect — especially to elders',exp:'Inhlonipho — deep respectful conduct. In isiZulu culture, how you speak to and about elders reflects your entire upbringing.'}
+    {q:'Wusho umkhuba (Choose the meaning): <strong>"Kuhlonipha</strong> — what does it mean to practise inhlonipho?',opts:['To show respect — especially to elders','To sing loudly at ceremonies','To eat before your elders','To speak in English only'],ans:'To show respect — especially to elders',exp:'Inhlonipho — deep respectful conduct. In isiZulu culture, how you speak to and about elders reflects your entire upbringing.'},
+    {q:'Gcwalisa (Complete): <strong>"Inkunzi isematholeni"</strong> means future strength is in the...',opts:['Elders only','Children/youth','Money','Land titles'],ans:'Children/youth',exp:'Inkunzi isematholeni — tomorrow\'s power lives in the young. Invest in youth learning.'}
   ],
   pattern:[
     {q:'What comes next? <strong>🔺 🔷 🔺 🔷 🔺 ___</strong>',opts:['🔷','🔺','🟡','⬛'],ans:'🔷',exp:'Alternating pattern: triangle, diamond repeating.'},
     {q:'Complete the sequence: <strong>2, 4, 8, 16, ___</strong>',opts:['24','32','30','28'],ans:'32',exp:'Multiply by 2 each time — geometric sequence.'},
     {q:'What is next: <strong>1, 1, 2, 3, 5, 8, ___</strong>',opts:['11','12','13','14'],ans:'13',exp:'Fibonacci — add the two numbers before it: 5+8=13.'},
-    {q:'Next: <strong>A, C, E, G, ___</strong>',opts:['H','I','J','K'],ans:'I',exp:'Every second letter of the alphabet.'}
+    {q:'Next: <strong>A, C, E, G, ___</strong>',opts:['H','I','J','K'],ans:'I',exp:'Every second letter of the alphabet.'},
+    {q:'What comes next? <strong>3, 6, 11, 18, 27, ___</strong>',opts:['36','38','40','41'],ans:'38',exp:'Differences are +3, +5, +7, +9 so next is +11 → 38.'}
   ],
   logic:[
     {q:'Nandi has 3 calabashes. A boat holds only 2. Minimum trips to cross the river?',opts:['2','3','4','5'],ans:'3',exp:'Trip 1: carry 2. Return with 1. Trip 3: carry the remaining 2.'},
     {q:'A storyteller tells 2 people. Each tells 2 more. Each of those tells 2 more. After 3 rounds, how many NEW people have heard it?',opts:['6','14','8','12'],ans:'14',exp:'Round 1: 2, Round 2: 4, Round 3: 8. Total new: 2+4+8=14.'},
-    {q:'All izinganekwane are stories. All stories teach lessons. Do all izinganekwane teach lessons?',opts:['Yes, always','No, never','Sometimes','Cannot tell'],ans:'Yes, always',exp:'Logical syllogism — transitive property applies here.'}
+    {q:'All izinganekwane are stories. All stories teach lessons. Do all izinganekwane teach lessons?',opts:['Yes, always','No, never','Sometimes','Cannot tell'],ans:'Yes, always',exp:'Logical syllogism — transitive property applies here.'},
+    {q:'If no drummer performs without practice, and Sizwe performed perfectly, what is most logical?',opts:['Sizwe never practised','Sizwe practised','Practice is optional','Cannot infer anything'],ans:'Sizwe practised',exp:'From the premise, good performance implies prior practice.'}
   ],
   maths:[
     {q:'<div class="maths-scenario"><div class="ms-lbl">📐 Real World Maths</div><div class="ms-story">A baobab grows 2.3cm/year and is 14m tall. Approximately how old is it?</div></div>',opts:['600 years','609 years','570 years','650 years'],ans:'609 years',exp:'1400cm ÷ 2.3 ≈ 608.7 ≈ 609 years.'},
     {q:'<div class="maths-scenario"><div class="ms-lbl">📊 Statistics</div><div class="ms-story">In a village of 240 people, 3 out of every 8 attend the weekly storytelling circle. How many attend?</div></div>',opts:['80','90','100','75'],ans:'90',exp:'240 × (3/8) = 90 people.'},
     {q:'<div class="maths-scenario"><div class="ms-lbl">💰 Financial Maths</div><div class="ms-story">A course costs R3 500. A student saves R250/month. Price increases 8% per year. Can they afford it after 12 months?</div></div>',opts:['Yes, R3000 vs R3500','No, R3000 vs R3780','Yes, exactly enough','Need more info'],ans:'No, R3000 vs R3780',exp:'Saved: R250×12=R3000. New price: R3500×1.08=R3780. Short by R780.'},
-    {q:'<div class="maths-scenario"><div class="ms-lbl">📐 Calculus</div><div class="ms-story">f(x) = 3x³ - 2x + 5. What is f\'(x)?</div></div>',opts:["9x² - 2","9x² + 5","3x² - 2","9x - 2"],ans:"9x² - 2",exp:"Power rule: d/dx[3x³] = 9x², d/dx[-2x] = -2, d/dx[5] = 0."}
+    {q:'<div class="maths-scenario"><div class="ms-lbl">📐 Calculus</div><div class="ms-story">f(x) = 3x³ - 2x + 5. What is f\'(x)?</div></div>',opts:["9x² - 2","9x² + 5","3x² - 2","9x - 2"],ans:"9x² - 2",exp:"Power rule: d/dx[3x³] = 9x², d/dx[-2x] = -2, d/dx[5] = 0."},
+    {q:'<div class=\"maths-scenario\"><div class=\"ms-lbl\">📐 Geometry</div><div class=\"ms-story\">A circular drum has radius 14cm. Approximate area? (π≈22/7)</div></div>',opts:['616 cm²','308 cm²','154 cm²','1 232 cm²'],ans:'616 cm²',exp:'Area = πr² = (22/7)×14×14 = 616 cm².'}
   ],
   science:[
     {q:'<div class="maths-scenario"><div class="ms-lbl">⚡ Physics — Momentum</div><div class="ms-story">A 0.2kg drum stick moves at 8 m/s and stops in 0.05s. What is the impulse?</div></div>',opts:['1.6 N·s','0.8 N·s','3.2 N·s','0.4 N·s'],ans:'1.6 N·s',exp:'Impulse = mΔv = 0.2 × 8 = 1.6 N·s'},
     {q:'<div class="maths-scenario"><div class="ms-lbl">🧪 Chemistry — pH</div><div class="ms-story">A solution has [H⁺] = 1×10⁻¹² mol/L. Is it acid, base, or neutral?</div></div>',opts:['Acid (pH=12)','Base (pH=12)','Neutral (pH=7)','Cannot tell'],ans:'Base (pH=12)',exp:'pH = -log(10⁻¹²) = 12. Above 7 = basic/alkaline.'},
     {q:'A gene is autosomal. Both parents are Aa × Aa. What % of offspring are homozygous recessive (aa)?',opts:['25%','50%','75%','0%'],ans:'25%',exp:'Punnett square: AA(25%) Aa(50%) aa(25%).'},
-    {q:'<div class="maths-scenario"><div class="ms-lbl">⚡ Physics — Work</div><div class="ms-story">A 15kg drum is carried 100m up a 30° incline. How much work against gravity? (g=9.8)</div></div>',opts:['14 700 J','7 350 J','29 400 J','3 675 J'],ans:'7 350 J',exp:'W = mgh = 15 × 9.8 × (100 × sin30°) = 15 × 9.8 × 50 = 7350 J'}
+    {q:'<div class="maths-scenario"><div class="ms-lbl">⚡ Physics — Work</div><div class="ms-story">A 15kg drum is carried 100m up a 30° incline. How much work against gravity? (g=9.8)</div></div>',opts:['14 700 J','7 350 J','29 400 J','3 675 J'],ans:'7 350 J',exp:'W = mgh = 15 × 9.8 × (100 × sin30°) = 15 × 9.8 × 50 = 7350 J'},
+    {q:'<div class="maths-scenario"><div class="ms-lbl">🧬 Biology — Cells</div><div class="ms-story">Which organelle is called the powerhouse of the cell?</div></div>',opts:['Nucleus','Mitochondrion','Ribosome','Golgi apparatus'],ans:'Mitochondrion',exp:'Mitochondria generate ATP used for cellular energy.'}
   ],
   drum:[
     {pat:['<i class="ph ph-metronome"></i>','·','<i class="ph ph-metronome"></i>','<i class="ph ph-metronome"></i>','·','<i class="ph ph-metronome"></i>'],ans:4,q:'Count only the drum HITS (<i class="ph ph-metronome"></i>), not the rests (·):'},
     {pat:['<i class="ph ph-metronome"></i>','<i class="ph ph-metronome"></i>','·','<i class="ph ph-metronome"></i>','·','·','<i class="ph ph-metronome"></i>'],ans:4,q:'How many drum hits in this sequence?'},
-    {pat:['<i class="ph ph-metronome"></i>','·','·','<i class="ph ph-metronome"></i>','<i class="ph ph-metronome"></i>','·','<i class="ph ph-metronome"></i>','·','<i class="ph ph-metronome"></i>'],ans:5,q:'Count the beats (<i class="ph ph-metronome"></i>):'}
+    {pat:['<i class="ph ph-metronome"></i>','·','·','<i class="ph ph-metronome"></i>','<i class="ph ph-metronome"></i>','·','<i class="ph ph-metronome"></i>','·','<i class="ph ph-metronome"></i>'],ans:5,q:'Count the beats (<i class="ph ph-metronome"></i>):'},
+    {pat:['·','<i class="ph ph-metronome"></i>','<i class="ph ph-metronome"></i>','·','<i class="ph ph-metronome"></i>','<i class="ph ph-metronome"></i>','·','·','<i class="ph ph-metronome"></i>'],ans:5,q:'How many hits are in this syncopated line?'}
   ]
 };
 
@@ -6824,7 +6929,7 @@ function toggleAns(btn){var a=btn.nextElementSibling;var sh=a.style.display==='b
 document.querySelectorAll('.ac-notify').forEach(function(b){b.addEventListener('click',function(){this.textContent='✓ Will notify you!';this.style.color='#27AE60'})});
 
 // ════ COURSES ENGINE ════
-var courseProgress = [0,0,0,0]; // completed modules per course
+var courseProgress = [0,0,0,0,0,0,0,0]; // completed modules per course
 var activeCourse = 0;
 var activeModule = 0;
 var TOTAL_COURSES = 8;
@@ -6886,7 +6991,6 @@ var COURSES = [
         body:'<h3>Group Storytelling and Co-Writing</h3><p>Writing does not have to be solitary. Collaborative writing — where multiple voices contribute to a single narrative — teaches writers to listen, negotiate, and synthesise. The result is often richer than any single writer could produce alone.</p><h3>The Mini-Pitch Festival</h3><p>Students present story ideas to a mock panel of editors. This exercise builds confidence, teaches concision (you have 90 seconds — make them matter), and introduces the professional reality of pitching creative work.</p><div class="lesson-reflection"><div class="lr-label">Group Assignment</div><p>In groups of 3–4, write a collaborative story of 500–800 words. Each person writes one section. The challenge: make it feel like one voice. Debrief afterwards — what required compromise? What surprised you?</p></div>',
         quiz:{ q:'What does collaborative writing teach that solo writing cannot?', opts:['Faster typing','Listening, negotiation, and synthesis of multiple voices','Grammar correction','How to use a dictionary'], ans:1, fb:'Collaboration teaches listening, negotiation, and synthesis — skills no solo writing exercise can replicate.' }
       },
-,
       { title:'Sensory Description & Experiential Writing', duration:'1 Hour',
         body:'<h3>Sensory Description</h3><p>Great stories immerse the reader in sensation. This module trains storytellers to write through sound, smell, taste, texture, and sight — turning abstract scenes into lived experience.</p><h3>Experiential Writing</h3><p>Exercises focus on memory and the senses: describe a market, a grandmother\'s kitchen, a river crossing. The goal is to make the reader <em>feel</em> they are there, not just see it.</p><div class="lesson-callout"><div class="lc-label">Writing Exercise</div><p>Choose one sensory memory from your childhood. Write 200 words using only sensory detail — no explaining what things mean, only what they feel, smell, sound, look and taste like.</p></div>',
         quiz:{ q:'What is the primary goal of sensory writing?', opts:['To describe settings accurately','To make the reader feel present in the scene','To list all five senses','To impress with vocabulary'], ans:1, fb:'Sensory writing pulls the reader into the scene — not to describe, but to make them feel they are living it.' }
@@ -7081,9 +7185,12 @@ var COURSES = [
   }];
 
 
-var completedModules = [[],[],[],[],[],[],[]]; // 7 courses
+var completedModules = [[],[],[],[],[],[],[],[]]; // 8 courses
 
 function selectCourse(idx){
+  if(idx < 0 || idx >= COURSES.length){
+    idx = 0;
+  }
   activeCourse = idx;
   activeModule = 0;
   document.querySelectorAll('.course-tab').forEach(function(t,i){ t.classList.toggle('active', i===idx); });
@@ -11922,7 +12029,7 @@ function setLang(lang) {
   setText('ob-cta', t.ob_cta);
   setText('lsb-label-text', t.streak_label);
   // Mark language step done in onboarding
-  if(lang !== 'en') obComplete(1);
+  obComplete(1);
 }
 
 // Init language on load
@@ -11973,6 +12080,11 @@ document.addEventListener('DOMContentLoaded', function(){
 // ONBOARDING SYSTEM
 // ════════════════════════════════════════════
 var obDone = JSON.parse(localStorage.getItem('zintsomi_ob') || '{}');
+function showOnboardingAfterIntro() {
+  if (localStorage.getItem('zintsomi_ob_complete') === '1') return;
+  var ov = document.getElementById('onboarding-overlay');
+  if (ov) ov.classList.remove('hidden');
+}
 
 function obComplete(step) {
   obDone['s'+step] = true;
@@ -11999,11 +12111,9 @@ document.addEventListener('DOMContentLoaded', function(){
   [1,2,3].forEach(function(i){
     if(obDone['s'+i]) obComplete(i);
   });
-  // If already completed onboarding before, skip it
-  if (localStorage.getItem('zintsomi_ob_complete') === '1') {
-    var ov = document.getElementById('onboarding-overlay');
-    if (ov) ov.classList.add('hidden');
-  }
+  // Keep onboarding hidden until intro animation has ended.
+  var ov = document.getElementById('onboarding-overlay');
+  if (ov) ov.classList.add('hidden');
 });
 
 </script>
