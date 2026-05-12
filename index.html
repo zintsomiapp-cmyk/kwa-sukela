@@ -3922,8 +3922,14 @@ body::after{
           <input id="auth-email" type="email" placeholder="you@email.com" style="width:100%;padding:.65rem .9rem;border-radius:4px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font-family:var(--body);font-size:1rem;outline:none">
         </div>
         <div>
-          <label style="font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);display:block;margin-bottom:.3rem">Password</label>
-          <input id="auth-password" type="password" placeholder="Min 6 characters" style="width:100%;padding:.65rem .9rem;border-radius:4px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font-family:var(--body);font-size:1rem;outline:none">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem">
+            <label style="font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35)">Password</label>
+            <button id="auth-forgot-link" onclick="handleForgotPassword()" style="background:none;border:none;font-family:var(--mono);font-size:.52rem;letter-spacing:.04em;color:var(--fire);cursor:pointer;text-decoration:underline;padding:0">Forgot password?</button>
+          </div>
+          <div style="position:relative">
+            <input id="auth-password" type="password" placeholder="Min 6 characters" style="width:100%;padding:.65rem 2.6rem .65rem .9rem;border-radius:4px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font-family:var(--body);font-size:1rem;outline:none">
+            <button onclick="togglePasswordVisibility()" title="Show / hide password" style="position:absolute;right:.6rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:rgba(255,255,255,.4);font-size:1.1rem;line-height:1;padding:.2rem" id="auth-eye-btn"><i class="ph ph-eye" id="auth-eye-icon"></i></button>
+          </div>
         </div>
         <div id="auth-msg" style="display:none;font-size:1rem;padding:.5rem .7rem;border-radius:3px;background:rgba(255,255,255,.04)"></div>
         <button id="auth-submit-btn" class="btn" style="width:100%;justify-content:center;margin-top:.3rem" onclick="handleAuthSubmit()">Log In</button>
@@ -12035,6 +12041,52 @@ function setLang(lang) {
 // Init language on load
 document.addEventListener('DOMContentLoaded', function(){
   setLang(currentLang);
+});
+
+// ════════════════════════════════════════════
+// PASSWORD TOGGLE & FORGOT PASSWORD
+// ════════════════════════════════════════════
+function togglePasswordVisibility() {
+  var inp = document.getElementById('auth-password');
+  var icon = document.getElementById('auth-eye-icon');
+  if (!inp) return;
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    icon.className = 'ph ph-eye-slash';
+  } else {
+    inp.type = 'password';
+    icon.className = 'ph ph-eye';
+  }
+}
+
+async function handleForgotPassword() {
+  var email = (document.getElementById('auth-email') || {}).value || '';
+  var msgEl = document.getElementById('auth-msg');
+  if (!email) {
+    if (msgEl) { msgEl.style.display='block'; msgEl.style.color='#F5A040'; msgEl.textContent='Enter your email above first, then click Forgot password.'; }
+    return;
+  }
+  if (msgEl) { msgEl.style.display='block'; msgEl.style.color='rgba(255,255,255,.5)'; msgEl.textContent='Sending reset link\u2026'; }
+  try {
+    var result = await supa.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin });
+    if (result.error) throw result.error;
+    if (msgEl) { msgEl.style.color='#6EE78E'; msgEl.textContent='\u2713 Reset link sent! Check your inbox.'; }
+  } catch(e) {
+    if (msgEl) { msgEl.style.color='rgba(255,100,100,.8)'; msgEl.textContent='Could not send reset link: '+(e.message||e); }
+  }
+}
+
+// Hide "Forgot password?" when user switches to Sign Up mode
+document.addEventListener('DOMContentLoaded', function(){
+  var _orig = window.toggleAuthMode;
+  if (typeof _orig === 'function') {
+    window.toggleAuthMode = function(){
+      _orig();
+      var fl = document.getElementById('auth-forgot-link');
+      var nameRow = document.getElementById('auth-name-row');
+      if (fl && nameRow) fl.style.display = (nameRow.style.display !== 'none') ? 'none' : 'inline';
+    };
+  }
 });
 
 // ════════════════════════════════════════════
