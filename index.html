@@ -3928,7 +3928,7 @@ body::after{
           </div>
           <div style="position:relative">
             <input id="auth-password" type="password" placeholder="Min 6 characters" style="width:100%;padding:.65rem 2.6rem .65rem .9rem;border-radius:4px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font-family:var(--body);font-size:1rem;outline:none">
-            <button onclick="togglePasswordVisibility()" title="Show / hide password" style="position:absolute;right:.6rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:rgba(255,255,255,.4);font-size:1.1rem;line-height:1;padding:.2rem" id="auth-eye-btn"><i class="ph ph-eye" id="auth-eye-icon"></i></button>
+            <button type="button" onclick="togglePasswordVisibility()" title="Show / hide password" style="position:absolute;right:.6rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:rgba(255,255,255,.4);font-size:1.1rem;line-height:1;padding:.2rem"><i class="ph ph-eye" id="auth-eye-icon"></i></button>
           </div>
         </div>
         <div id="auth-msg" style="display:none;font-size:1rem;padding:.5rem .7rem;border-radius:3px;background:rgba(255,255,255,.04)"></div>
@@ -4942,6 +4942,7 @@ body::after{
         </div>
         <div style="display:flex;align-items:center;gap:1.4rem">
           <div style="text-align:center"><div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;color:rgba(110,231,142,.4);text-transform:uppercase">Score</div><div style="font-family:var(--impact);font-size:1.8rem;color:#6EE78E;letter-spacing:.06em" id="k-score">0</div></div>
+          <div style="text-align:center"><div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;color:rgba(110,231,142,.4);text-transform:uppercase">Best</div><div style="font-family:var(--impact);font-size:1.8rem;color:rgba(110,231,142,.55);letter-spacing:.06em" id="k-best">0</div></div>
           <div style="text-align:center"><div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;color:rgba(110,231,142,.4);text-transform:uppercase">Level</div><div style="font-family:var(--impact);font-size:1.8rem;color:#fff;letter-spacing:.06em" id="k-level">1</div></div>
           <div style="text-align:center"><div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;color:rgba(110,231,142,.4);text-transform:uppercase">Lives</div><div style="font-family:var(--impact);font-size:1.8rem;color:#ff6b6b;letter-spacing:.06em" id="k-lives">3</div></div>
           <button onclick="closeGame('kgati')" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.45);font-size:1rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center" onmouseover="this.style.background='rgba(255,255,255,.14)'" onmouseout="this.style.background='rgba(255,255,255,.06)'"><i class="ph ph-x"></i></button>
@@ -5419,7 +5420,49 @@ function openAuthModal() {
 
 function closeAuthModal() {
   document.getElementById('auth-overlay').style.display = 'none';
+  var pw = document.getElementById('auth-password');
+  var icon = document.getElementById('auth-eye-icon');
+  if (pw) pw.type = 'password';
+  if (icon) icon.className = 'ph ph-eye';
 }
+
+function togglePasswordVisibility() {
+  var inp = document.getElementById('auth-password');
+  var icon = document.getElementById('auth-eye-icon');
+  if (!inp) return;
+  if (inp.type === 'password') { inp.type = 'text'; icon.className = 'ph ph-eye-slash'; }
+  else { inp.type = 'password'; icon.className = 'ph ph-eye'; }
+}
+
+async function handleForgotPassword() {
+  var email = (document.getElementById('auth-email') || {}).value || '';
+  var msgEl = document.getElementById('auth-msg');
+  if (!email) {
+    if (msgEl) { msgEl.style.display = 'block'; msgEl.style.color = '#F5A040'; msgEl.textContent = 'Enter your email above first, then click Forgot password.'; }
+    return;
+  }
+  if (msgEl) { msgEl.style.display = 'block'; msgEl.style.color = 'rgba(255,255,255,.5)'; msgEl.textContent = 'Sending reset link\u2026'; }
+  try {
+    var result = await supa.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin });
+    if (result.error) throw result.error;
+    if (msgEl) { msgEl.style.color = '#6EE78E'; msgEl.textContent = '\u2713 Reset link sent! Check your inbox.'; }
+  } catch(e) {
+    if (msgEl) { msgEl.style.color = 'rgba(255,100,100,.8)'; msgEl.textContent = 'Could not send: ' + (e.message || e); }
+  }
+}
+
+// Hide Forgot Password when in Sign Up mode
+document.addEventListener('DOMContentLoaded', function() {
+  var _orig = window.toggleAuthMode;
+  if (typeof _orig === 'function') {
+    window.toggleAuthMode = function() {
+      _orig();
+      var fl = document.getElementById('auth-forgot-link');
+      var nameRow = document.getElementById('auth-name-row');
+      if (fl && nameRow) fl.style.display = nameRow.style.display !== 'none' ? 'none' : 'inline';
+    };
+  }
+});
 
 function toggleAuthMode() {
   authMode = authMode === 'login' ? 'signup' : 'login';
@@ -5842,9 +5885,9 @@ function initFireflies(){
 }
 
 // ════ DIKETO ════
-var dSeq=[],dPlayer=[],dState='idle',dScore=0,dBest=0,dLevel=1;
+var dSeq=[],dPlayer=[],dState='idle',dScore=0,dBest=parseInt(localStorage.getItem('zintsomi_best_diketo')||'0'),dLevel=1;
 var dEmojis=['◉','◆','●','◈','◇'];
-function startDiketo(){dSeq=[];dPlayer=[];dState='showing';dScore=0;dLevel=1;document.getElementById('d-score').textContent=0;document.getElementById('d-level').textContent=1;buildDiketoRound()}
+function startDiketo(){dSeq=[];dPlayer=[];dState='showing';dScore=0;dLevel=1;document.getElementById('d-score').textContent=0;document.getElementById('d-best').textContent=dBest;document.getElementById('d-level').textContent=1;buildDiketoRound()}
 function buildDiketoRound(){
   var len=2+dLevel;while(dSeq.length<len)dSeq.push(Math.floor(Math.random()*5));
   var el=document.getElementById('diketo-seq');el.innerHTML='';
@@ -5865,7 +5908,7 @@ function diketoTap(){
   items[pos].classList.add('correct');
   dPlayer.push(dSeq[pos]);
   if(dPlayer.length===dSeq.length){
-    dScore+=dLevel*10;dBest=Math.max(dScore,dBest);dLevel++;
+    dScore+=dLevel*10;dBest=Math.max(dScore,dBest);localStorage.setItem('zintsomi_best_diketo',dBest);dLevel++;
     document.getElementById('d-score').textContent=dScore;document.getElementById('d-best').textContent=dBest;document.getElementById('d-level').textContent=dLevel;
     dState='showing';dPlayer=[];
     setTimeout(function(){document.getElementById('d-msg').textContent='Well done! Next round...';buildDiketoRound()},700);
@@ -5873,8 +5916,8 @@ function diketoTap(){
 }
 
 // ════ KGATI ════
-var kMoves=['Jump','Skip','Step','Hop','Pause'],kAns=[],kSel=[],kLevel=1,kScore=0,kLives=3;
-function startKgati(){kLives=3;kScore=0;kLevel=1;document.getElementById('k-lives').textContent=3;document.getElementById('k-score').textContent=0;buildKgati()}
+var kMoves=['Jump','Skip','Step','Hop','Pause'],kAns=[],kSel=[],kLevel=1,kScore=0,kBest=parseInt(localStorage.getItem('zintsomi_best_kgati')||'0'),kLives=3;
+function startKgati(){kLives=3;kScore=0;kLevel=1;document.getElementById('k-lives').textContent=3;document.getElementById('k-score').textContent=0;document.getElementById('k-best').textContent=kBest;buildKgati()}
 function buildKgati(){
   document.getElementById('k-level').textContent=kLevel;
   var len=2+Math.min(kLevel,5);kAns=[];kSel=[];
@@ -5893,7 +5936,7 @@ function kgatiSel(move,el){
     var ok=kSel.every(function(m,i){return m===kMoves[kAns[i]]});
     if(ok){
       var j=document.getElementById('kgati-jumper');j.classList.add('jump');setTimeout(function(){j.classList.remove('jump')},280);
-      kScore+=kLevel*15;kLevel++;document.getElementById('k-score').textContent=kScore;document.getElementById('k-level').textContent=kLevel;
+      kScore+=kLevel*15;kBest=Math.max(kScore,kBest);localStorage.setItem('zintsomi_best_kgati',kBest);kLevel++;document.getElementById('k-score').textContent=kScore;document.getElementById('k-level').textContent=kLevel;
       document.getElementById('k-msg').textContent='✓ Perfect! Next level!';setTimeout(buildKgati,900);
     }else{
       kLives--;document.getElementById('k-lives').textContent=kLives;
@@ -5904,7 +5947,7 @@ function kgatiSel(move,el){
 }
 
 // ════ NCUVA ════
-var nPat=[],nPicks=[],nLevel=1,nScore=0,nBest=0,nState='idle';
+var nPat=[],nPicks=[],nLevel=1,nScore=0,nBest=parseInt(localStorage.getItem('zintsomi_best_ncuva')||'0'),nState='idle';
 var nEmojis=['🔴','🟡','🔵','🟢','🟠','⚪'];
 function initNcuvaGrid(){
   var g=document.getElementById('ncuva-grid');g.innerHTML='';
@@ -5933,7 +5976,7 @@ function ncuvaPick(idx,el){
   if(idx===expected){
     el.classList.add('correct');
     if(nPicks.length===nPat.length){
-      nScore+=nLevel*12;nLevel++;nBest=Math.max(nScore,nBest);
+      nScore+=nLevel*12;nLevel++;nBest=Math.max(nScore,nBest);localStorage.setItem('zintsomi_best_ncuva',nBest);
       document.getElementById('n-score').textContent=nScore;document.getElementById('n-best').textContent=nBest;document.getElementById('n-level').textContent=nLevel;
       document.getElementById('n-msg').textContent='✓ Perfect memory!';nState='idle';
       setTimeout(function(){initNcuvaGrid();showNcuvaPat()},900);
@@ -5991,19 +6034,88 @@ for(var fq=1; FAMILY_QUIZ.length<100; fq++){
   var a=fq+7,b=(fq%12)+2,ans=a*b;
   FAMILY_QUIZ.push(['Family Maths '+fq+': What is '+a+' × '+b+'?', String(ans), [String(ans-b),String(ans),String(ans+b),String(ans+a)].filter(function(v,i,self){return self.indexOf(v)===i}), 'Multiply '+a+' by '+b+' to get '+ans+'.']);
 }
-var familyState={quiz:0,score:0,selected:null,turn:'w'};
-function openFamilyGame(type){document.getElementById('family-overlay').classList.add('open');familyState.type=type;familyState.selected=null;({quiz:renderFamilyQuiz,solitaire:renderSolitaire,snakes:renderSnakes,chess:renderChess,checkers:renderCheckers}[type]||renderFamilyQuiz)();}
+var familyState={quiz:0,score:0,selected:null,turn:'w',answered:{}};
+function openFamilyGame(type){
+  document.getElementById('family-overlay').classList.add('open');
+  familyState.type=type;
+  familyState.selected=null;
+  if(type==='quiz'){
+    // Restore persisted score & answered map across sessions
+    var saved=JSON.parse(localStorage.getItem('zintsomi_fquiz')||'{}');
+    familyState.score=saved.score||0;
+    familyState.quiz=saved.idx||0;
+    familyState.answered=saved.answered||{};
+  }
+  ({quiz:renderFamilyQuiz,solitaire:renderSolitaire,snakes:renderSnakes,chess:renderChess,checkers:renderCheckers}[type]||renderFamilyQuiz)();
+}
 function closeFamilyGame(){document.getElementById('family-overlay').classList.remove('open')}
 function famTitle(t){document.getElementById('family-title').textContent=t}
 function famRoot(html){document.getElementById('family-root').innerHTML=html}
-function renderFamilyQuiz(){famTitle('Family Quiz Bowl · 100 Questions');var i=familyState.quiz%FAMILY_QUIZ.length,q=FAMILY_QUIZ[i];famRoot('<div class="family-status">Question '+(i+1)+' / 100 · Score '+familyState.score+'</div><h3 style="color:#fff;line-height:1.45">'+q[0]+'</h3><div id="fq-choices"></div><div id="fq-answer" class="game-msg"></div><div class="family-actions"><button class="btn btn-out" onclick="familyState.quiz=Math.max(0,familyState.quiz-1);renderFamilyQuiz()">Previous</button><button class="btn" onclick="familyState.quiz++;renderFamilyQuiz()">Next Question</button></div>');var box=document.getElementById('fq-choices');q[2].forEach(function(c){var b=document.createElement('button');b.className='quiz-choice';b.textContent=c;b.onclick=function(){document.querySelectorAll('.quiz-choice').forEach(function(x){x.disabled=true;if(x.textContent===q[1])x.classList.add('correct')});if(c===q[1]){b.classList.add('correct');familyState.score++}else b.classList.add('wrong');document.getElementById('fq-answer').innerHTML='<strong>Answer: '+q[1]+'.</strong> '+q[3]};box.appendChild(b)})}
+function renderFamilyQuiz(){
+  famTitle('Family Quiz Bowl · 100 Questions');
+  var i=familyState.quiz%FAMILY_QUIZ.length,q=FAMILY_QUIZ[i];
+  var alreadyAnswered=familyState.answered[i];
+  famRoot('<div class="family-status">Question '+(i+1)+' / 100 · Score '+familyState.score+'</div><h3 style="color:#fff;line-height:1.45">'+q[0]+'</h3><div id="fq-choices"></div><div id="fq-answer" class="game-msg">'+(alreadyAnswered?('<strong>Answer: '+q[1]+'.</strong> '+q[3]):'')+'</div><div class="family-actions"><button class="btn btn-out" onclick="familyState.quiz=Math.max(0,familyState.quiz-1);renderFamilyQuiz()">Previous</button><button class="btn" onclick="familyState.quiz++;renderFamilyQuiz()">Next Question</button><button class="btn btn-out" onclick="familyState.score=0;familyState.quiz=0;familyState.answered={};localStorage.removeItem(\'zintsomi_fquiz\');renderFamilyQuiz()" style="font-size:.5rem;opacity:.55">Reset</button></div>');
+  var box=document.getElementById('fq-choices');
+  q[2].forEach(function(c){
+    var b=document.createElement('button');
+    b.className='quiz-choice';
+    b.textContent=c;
+    if(alreadyAnswered){
+      b.disabled=true;
+      if(c===q[1])b.classList.add('correct');
+      else if(c===alreadyAnswered)b.classList.add('wrong');
+    } else {
+      b.onclick=function(){
+        document.querySelectorAll('.quiz-choice').forEach(function(x){x.disabled=true;if(x.textContent===q[1])x.classList.add('correct')});
+        if(c===q[1]){b.classList.add('correct');familyState.score++;}else b.classList.add('wrong');
+        familyState.answered[i]=c;
+        document.getElementById('fq-answer').innerHTML='<strong>Answer: '+q[1]+'.</strong> '+q[3];
+        localStorage.setItem('zintsomi_fquiz',JSON.stringify({score:familyState.score,idx:familyState.quiz,answered:familyState.answered}));
+      };
+    }
+    box.appendChild(b);
+  });
+}
 var solBoard=[];
 function initSol(){solBoard=[];for(var r=0;r<7;r++)for(var c=0;c<7;c++){var valid=!((r<2||r>4)&&(c<2||c>4));solBoard.push(valid?1:-1)}solBoard[24]=0;familyState.selected=null}
 function renderSolitaire(){famTitle('Peg Solitaire');if(!solBoard.length)initSol();var pegs=solBoard.filter(x=>x===1).length;var html='<div class="family-status">Jump a peg over a neighbour into an empty hole. Goal: one peg left. Pegs: '+pegs+'</div><div class="family-board" style="grid-template-columns:repeat(7,1fr)">';solBoard.forEach(function(v,i){html+='<div class="family-cell '+(familyState.selected===i?'sel':'')+'" onclick="solClick('+i+')" style="visibility:'+(v<0?'hidden':'visible')+'">'+(v===1?'●':'')+'</div>'});famRoot(html+'</div><div class="family-actions"><button class="btn" onclick="initSol();renderSolitaire()">New Board</button></div>')}
 function solClick(i){if(solBoard[i]!==0&&solBoard[i]!==1)return;if(familyState.selected==null){if(solBoard[i]===1)familyState.selected=i;renderSolitaire();return}var s=familyState.selected,dr=Math.floor(i/7)-Math.floor(s/7),dc=i%7-s%7,mid=s+(dr/2)*7+(dc/2);if(solBoard[i]===0&&solBoard[mid]===1&&((Math.abs(dr)===2&&dc===0)||(Math.abs(dc)===2&&dr===0))){solBoard[s]=0;solBoard[mid]=0;solBoard[i]=1}familyState.selected=null;renderSolitaire()}
 var snakePos=1,snakeRoll=0,snakes={98:78,95:56,88:24,62:18,48:26,36:6},ladders={3:22,8:30,28:84,58:77,75:86,80:99};
-function renderSnakes(){famTitle('Snakes & Ladders');var html='<div class="family-status">Position '+snakePos+' · Last roll '+(snakeRoll||'-')+'</div><div class="family-board" style="grid-template-columns:repeat(10,1fr);max-width:620px">';for(var n=100;n>=1;n--){var mark=snakePos===n?'🧍':ladders[n]?'🪜':snakes[n]?'🐍':'';html+='<div class="family-cell" style="font-size:.72rem;flex-direction:column"><span>'+n+'</span><span>'+mark+'</span></div>'}famRoot(html+'</div><div class="family-actions"><button class="btn" onclick="snakeRollGame()">Roll Dice</button><button class="btn btn-out" onclick="snakePos=1;snakeRoll=0;renderSnakes()">Reset</button></div>')}
-function snakeRollGame(){snakeRoll=1+Math.floor(Math.random()*6);snakePos=Math.min(100,snakePos+snakeRoll);if(ladders[snakePos])snakePos=ladders[snakePos];if(snakes[snakePos])snakePos=snakes[snakePos];renderSnakes()}
+var snake2={p1:1,p2:1,turn:1,r1:0,r2:0,winner:0};
+function renderSnakes(){
+  famTitle('Snakes & Ladders — Pass & Play');
+  var s=snake2,p=s.turn===1?s.p1:s.p2,won=s.winner;
+  var statusMsg=won?'🎉 Player '+won+' wins! Reached square 100!':'Player '+s.turn+'\'s turn · Roll the dice';
+  var html='<div class="family-status">P1: Square '+s.p1+' &nbsp;|&nbsp; P2: Square '+s.p2+' &nbsp;·&nbsp; '+statusMsg+'</div>';
+  html+='<div class="family-board" style="grid-template-columns:repeat(10,1fr);max-width:620px">';
+  for(var n=100;n>=1;n--){
+    var marks='';
+    if(s.p1===n) marks+='🟠';
+    if(s.p2===n) marks+='🔵';
+    if(!marks){if(ladders[n])marks='🪜';else if(snakes[n])marks='🐍';}
+    html+='<div class="family-cell" style="font-size:.65rem;flex-direction:column"><span>'+n+'</span><span>'+marks+'</span></div>';
+  }
+  html+='</div>';
+  html+='<div style="display:flex;gap:.5rem;align-items:center;justify-content:center;margin:.8rem 0;font-size:.82rem;color:rgba(255,255,255,.5)">';
+  html+='<span>🟠 P1 (last roll: '+(s.r1||'-')+')</span><span>&nbsp;&nbsp;🔵 P2 (last roll: '+(s.r2||'-')+')</span></div>';
+  html+='<div class="family-actions">';
+  if(!won){html+='<button class="btn" onclick="snakeRollGame()">🎲 Roll — Player '+s.turn+'</button>';}
+  else{html+='<button class="btn" style="background:var(--gold)">Player '+won+' Wins! 🏆</button>';}
+  html+='<button class="btn btn-out" onclick="snake2={p1:1,p2:1,turn:1,r1:0,r2:0,winner:0};renderSnakes()">New Game</button></div>';
+  famRoot(html);
+}
+function snakeRollGame(){
+  if(snake2.winner)return;
+  var roll=1+Math.floor(Math.random()*6);
+  var t=snake2.turn;
+  var pos=(t===1?snake2.p1:snake2.p2)+roll;
+  if(pos>=100){pos=100;snake2.winner=t;}
+  else{if(ladders[pos])pos=ladders[pos];if(snakes[pos])pos=snakes[pos];}
+  if(t===1){snake2.p1=pos;snake2.r1=roll;}else{snake2.p2=pos;snake2.r2=roll;}
+  snake2.turn=t===1?2:1;
+  renderSnakes();
+}
 var chessStart=['rnbqkbnr','pppppppp','........','........','........','........','PPPPPPPP','RNBQKBNR'],chess=[];
 function initChess(){chess=chessStart.join('').split('');familyState.turn='w';familyState.selected=null}
 function renderChess(){famTitle('Chess');if(!chess.length)initChess();renderBoardGame(chess,'chess')}
@@ -12044,52 +12156,6 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 
 // ════════════════════════════════════════════
-// PASSWORD TOGGLE & FORGOT PASSWORD
-// ════════════════════════════════════════════
-function togglePasswordVisibility() {
-  var inp = document.getElementById('auth-password');
-  var icon = document.getElementById('auth-eye-icon');
-  if (!inp) return;
-  if (inp.type === 'password') {
-    inp.type = 'text';
-    icon.className = 'ph ph-eye-slash';
-  } else {
-    inp.type = 'password';
-    icon.className = 'ph ph-eye';
-  }
-}
-
-async function handleForgotPassword() {
-  var email = (document.getElementById('auth-email') || {}).value || '';
-  var msgEl = document.getElementById('auth-msg');
-  if (!email) {
-    if (msgEl) { msgEl.style.display='block'; msgEl.style.color='#F5A040'; msgEl.textContent='Enter your email above first, then click Forgot password.'; }
-    return;
-  }
-  if (msgEl) { msgEl.style.display='block'; msgEl.style.color='rgba(255,255,255,.5)'; msgEl.textContent='Sending reset link\u2026'; }
-  try {
-    var result = await supa.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin });
-    if (result.error) throw result.error;
-    if (msgEl) { msgEl.style.color='#6EE78E'; msgEl.textContent='\u2713 Reset link sent! Check your inbox.'; }
-  } catch(e) {
-    if (msgEl) { msgEl.style.color='rgba(255,100,100,.8)'; msgEl.textContent='Could not send reset link: '+(e.message||e); }
-  }
-}
-
-// Hide "Forgot password?" when user switches to Sign Up mode
-document.addEventListener('DOMContentLoaded', function(){
-  var _orig = window.toggleAuthMode;
-  if (typeof _orig === 'function') {
-    window.toggleAuthMode = function(){
-      _orig();
-      var fl = document.getElementById('auth-forgot-link');
-      var nameRow = document.getElementById('auth-name-row');
-      if (fl && nameRow) fl.style.display = (nameRow.style.display !== 'none') ? 'none' : 'inline';
-    };
-  }
-});
-
-// ════════════════════════════════════════════
 // REAL DAILY STREAK SYSTEM
 // ════════════════════════════════════════════
 function initRealStreak() {
@@ -12168,6 +12234,357 @@ document.addEventListener('DOMContentLoaded', function(){
   if (ov) ov.classList.add('hidden');
 });
 
+</script>
+<!-- ═══════════════════════════════════════════════════
+     ZINTSOMI FEATURE PACK — XP · CONFETTI · DAILY CHALLENGE · UBUNTU STORY CHAIN · WORD OF THE DAY
+═══════════════════════════════════════════════════ -->
+<script>
+// ════════════════════════════════════════════
+// XP + GRIOT RANK SYSTEM
+// ════════════════════════════════════════════
+var ZINTSOMI_RANKS=[
+  {min:0,    en:'Mlilwane',  zu:'UMlilwane',    xh:'UMlilwane',  st:'Mlilwane',  desc:'The spark that starts every fire.'},
+  {min:100,  en:'Ugqozi',    zu:'UGqozi',        xh:'UGqozi',     st:'Ugqozi',    desc:'The voice that wakes the village.'},
+  {min:300,  en:'Inkosi',    zu:'INkosi',        xh:'INkosi',     st:'Morena',    desc:'One who carries stories with wisdom.'},
+  {min:600,  en:'Griot',     zu:'IGreyiti',      xh:'IGreyiti',   st:'Griot',     desc:'The keeper of community memory.'},
+  {min:1000, en:'Imbongi',   zu:'IImbongi',      xh:'Imbongi',    st:'Imbongi',   desc:'The praise poet. The living archive.'},
+  {min:2000, en:'Sangoma of Stories', zu:'USangoma Wezindaba', xh:'USangoma Weendaba', st:'Sangoma ya Dipale', desc:'The highest. You have earned the fire.'}
+];
+var XP_ACTIONS={story:50,quiz:20,game_level:10,daily_visit:5,daily_challenge:75,story_chain:30};
+function getXP(){return parseInt(localStorage.getItem('zintsomi_xp')||'0');}
+function addXP(amount,reason){
+  var xp=getXP()+amount;
+  localStorage.setItem('zintsomi_xp',xp);
+  showXPToast('+'+amount+' XP'+(reason?' · '+reason:''));
+  updateXPBadge();
+  checkRankUp(xp-amount,xp);
+  return xp;
+}
+function getRank(xp){
+  var rank=ZINTSOMI_RANKS[0];
+  for(var i=0;i<ZINTSOMI_RANKS.length;i++){if(xp>=ZINTSOMI_RANKS[i].min)rank=ZINTSOMI_RANKS[i];}
+  return rank;
+}
+function checkRankUp(oldXp,newXp){
+  var oldRank=getRank(oldXp).en,newRank=getRank(newXp).en;
+  if(oldRank!==newRank){var r=getRank(newXp);setTimeout(function(){showRankModal(r);},600);}
+}
+function showXPToast(msg){
+  var t=document.getElementById('xp-toast');
+  if(!t){t=document.createElement('div');t.id='xp-toast';t.style.cssText='position:fixed;bottom:5rem;left:1rem;z-index:99999;background:rgba(14,16,22,.95);border:1px solid rgba(245,118,26,.4);border-radius:100px;color:var(--fire);font-family:var(--mono);font-size:.54rem;letter-spacing:.1em;padding:.45rem 1rem;pointer-events:none;transition:opacity .4s;opacity:0';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';
+  clearTimeout(t._t);t._t=setTimeout(function(){t.style.opacity='0';},2200);
+}
+function updateXPBadge(){
+  var xp=getXP(),rank=getRank(xp);
+  var lang=typeof currentLang!=='undefined'?currentLang:'en';
+  var el=document.getElementById('xp-badge-label');
+  if(el)el.textContent=(rank[lang]||rank.en)+' · '+xp+' XP';
+}
+function showRankModal(rank){
+  var m=document.createElement('div');
+  m.style.cssText='position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:1rem';
+  m.innerHTML='<div style="background:var(--ink);border:1.5px solid var(--gold);border-radius:20px;padding:2.5rem;max-width:380px;text-align:center"><div style="font-size:3rem;margin-bottom:.8rem">🏆</div><div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem">Rank Up!</div><div style="font-family:var(--impact);font-size:2.2rem;color:#fff;letter-spacing:.1em;margin-bottom:.5rem">'+rank.en+'</div><div style="font-family:var(--serif);font-size:1rem;color:rgba(255,255,255,.55);line-height:1.6;margin-bottom:1.5rem">'+rank.desc+'</div><button onclick="this.parentElement.parentElement.remove()" style="background:var(--gold);border:none;border-radius:8px;padding:.7rem 2rem;color:#000;font-family:var(--display);font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">Continue</button></div>';
+  document.body.appendChild(m);
+  zintsomiConfetti();
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var sb=document.getElementById('live-streak-badge');
+  if(sb){
+    var xpDiv=document.createElement('div');
+    xpDiv.style.cssText='border-top:1px solid rgba(255,255,255,.07);padding-top:.35rem;margin-top:.3rem;font-family:var(--mono);font-size:.44rem;letter-spacing:.08em;color:rgba(200,179,42,.7);text-align:center';
+    xpDiv.id='xp-badge-label';
+    xpDiv.title='Your Griot Rank';
+    sb.appendChild(xpDiv);
+    updateXPBadge();
+  }
+  var today=new Date().toDateString();
+  if(localStorage.getItem('zintsomi_xp_visit')!==today){
+    localStorage.setItem('zintsomi_xp_visit',today);
+    setTimeout(function(){addXP(XP_ACTIONS.daily_visit,'Daily visit');},2000);
+  }
+});
+document.addEventListener('DOMContentLoaded',function(){
+  var _dOld=0,_kOld=0,_nOld=0;
+  setInterval(function(){
+    var dEl=document.getElementById('d-score'),kEl=document.getElementById('k-score'),nEl=document.getElementById('n-score');
+    if(dEl){var v=parseInt(dEl.textContent||0);if(v>_dOld){addXP(XP_ACTIONS.game_level,'Diketo level');_dOld=v;}}
+    if(kEl){var v=parseInt(kEl.textContent||0);if(v>_kOld){addXP(XP_ACTIONS.game_level,'Kgati level');_kOld=v;}}
+    if(nEl){var v=parseInt(nEl.textContent||0);if(v>_nOld){addXP(XP_ACTIONS.game_level,'Ncuva level');_nOld=v;}}
+  },800);
+});
+
+// ════════════════════════════════════════════
+// CONFETTI BURST
+// ════════════════════════════════════════════
+function zintsomiConfetti(){
+  var canvas=document.createElement('canvas');
+  canvas.style.cssText='position:fixed;inset:0;width:100%;height:100%;z-index:99997;pointer-events:none';
+  document.body.appendChild(canvas);
+  var ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  var colors=['#F5761A','#E6B32A','#C8F04A','#6EE78E','#B07BFF','#fff'];
+  var pieces=Array.from({length:90},function(){return{x:Math.random()*canvas.width,y:Math.random()*canvas.height*0.4-canvas.height*0.2,vx:(Math.random()-0.5)*7,vy:Math.random()*4+2,size:Math.random()*8+4,angle:Math.random()*360,spin:(Math.random()-0.5)*8,color:colors[Math.floor(Math.random()*colors.length)],life:1};});
+  var startTime=Date.now();
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    var elapsed=(Date.now()-startTime)/1000;
+    if(elapsed>3){canvas.remove();return;}
+    pieces.forEach(function(p){p.x+=p.vx;p.y+=p.vy;p.vy+=0.12;p.angle+=p.spin;p.life=Math.max(0,1-elapsed/3);ctx.save();ctx.globalAlpha=p.life;ctx.translate(p.x,p.y);ctx.rotate(p.angle*Math.PI/180);ctx.fillStyle=p.color;ctx.fillRect(-p.size/2,-p.size/4,p.size,p.size/2);ctx.restore();});
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ════════════════════════════════════════════
+// DAILY CHALLENGE
+// ════════════════════════════════════════════
+var DAILY_CHALLENGES=[
+  {q:"Which African language has the most click consonants?",opts:["isiZulu","!Xóõ (Taa)","isiXhosa","Sesotho"],ans:"!Xóõ (Taa)",exp:"!Xóõ has up to 164 phonemes — more clicks than any other language on earth.",cat:"Language"},
+  {q:"Ubuntu is a Nguni Bantu concept meaning what?",opts:["Strength","I am because we are","The land speaks","Fire cleanses"],ans:"I am because we are",exp:"Ubuntu expresses that a person's humanity is bound up in the humanity of others.",cat:"Philosophy"},
+  {q:"What is the name of the African storyteller tradition?",opts:["Griot","Imbongi","Both are correct","Neither"],ans:"Both are correct",exp:"'Griot' is West African; 'Imbongi' is Nguni. Both are oral historians and praise poets.",cat:"Culture"},
+  {q:"Which instrument is central to Zulu ceremonial music?",opts:["Kora","Isigqi drum","Mbira","Djembe"],ans:"Isigqi drum",exp:"The isigqi drum leads Zulu ceremonies. Kora and djembe are West African; mbira is Zimbabwean.",cat:"Music"},
+  {q:"What does 'Izinganekwane' mean in isiZulu?",opts:["War songs","Folktales","Praise poems","River spirits"],ans:"Folktales",exp:"Izinganekwane are traditional Zulu folktales told around the fire by grandmothers.",cat:"Storytelling"},
+  {q:"The Great Zimbabwe ruins are approximately how old?",opts:["200 years","500 years","900 years","2000 years"],ans:"900 years",exp:"Great Zimbabwe was built between the 11th–15th centuries, peaking around 900 years ago.",cat:"History"},
+  {q:"Which African writing system predates widespread Latin use?",opts:["Ge'ez only","Tifinagh only","Both Ge'ez and Tifinagh","Neither"],ans:"Both Ge'ez and Tifinagh",exp:"Ge'ez (Ethiopia, 5th c. BCE) and Tifinagh (Berber, 3rd c. BCE) both predate Latin in Africa.",cat:"Language"},
+];
+function getDailyChallenge(){var day=Math.floor(Date.now()/86400000);return DAILY_CHALLENGES[day%DAILY_CHALLENGES.length];}
+function isDailyChallengeComplete(){return localStorage.getItem('zintsomi_dc_date')===new Date().toDateString();}
+function openDailyChallenge(){
+  var ch=getDailyChallenge(),done=isDailyChallengeComplete(),savedAns=localStorage.getItem('zintsomi_dc_ans')||'';
+  var ov=document.createElement('div');
+  ov.id='dc-overlay';
+  ov.style.cssText='position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:1rem';
+  var choicesHTML=ch.opts.map(function(opt){
+    var isCorrect=(opt===ch.ans),wasSelected=(opt===savedAns);
+    var cls=done?(isCorrect?'quiz-choice correct':(wasSelected?'quiz-choice wrong':'quiz-choice')):'quiz-choice';
+    return '<button class="'+cls+'" '+(done?'disabled':'onclick="dcAnswer(this)"')+' data-val="'+opt.replace(/"/g,'&quot;')+'">'+(done&&isCorrect?'✓ ':'')+opt+'</button>';
+  }).join('');
+  ov.innerHTML='<div style="background:var(--ink);border:1.5px solid var(--gold);border-radius:20px;max-width:480px;width:100%;overflow:hidden">'
+    +'<div style="background:linear-gradient(135deg,var(--fire-deep),var(--fire));padding:1.2rem 1.4rem;display:flex;justify-content:space-between;align-items:center">'
+    +'<div><div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.7)">Daily Challenge · '+ch.cat+'</div>'
+    +'<div style="font-family:var(--impact);font-size:1.3rem;letter-spacing:.1em;color:#fff">'+new Date().toLocaleDateString('en-ZA',{weekday:'long',day:'numeric',month:'long'})+'</div></div>'
+    +'<button onclick="this.closest(\'#dc-overlay\').remove()" style="background:none;border:none;color:rgba(255,255,255,.6);font-size:1.2rem;cursor:pointer"><i class="ph ph-x"></i></button></div>'
+    +'<div style="padding:1.6rem">'
+    +'<div style="font-family:var(--serif);font-size:1.08rem;color:#fff;line-height:1.7;margin-bottom:1.2rem">'+ch.q+'</div>'
+    +'<div style="display:flex;flex-direction:column;gap:.5rem" id="dc-choices">'+choicesHTML+'</div>'
+    +(done?'<div style="margin-top:1rem;padding:.8rem 1rem;background:rgba(110,231,142,.08);border:1px solid rgba(110,231,142,.2);border-radius:8px;font-size:.88rem;color:rgba(255,255,255,.65);line-height:1.65">'+ch.exp+'</div>':'')
+    +'<div id="dc-msg" style="margin-top:.8rem;font-size:.9rem;min-height:1rem"></div>'
+    +(done?'<div style="text-align:center;margin-top:1rem;font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;color:var(--gold)">✓ Completed · Come back tomorrow for a new challenge</div>':'')
+    +'</div></div>';
+  document.body.appendChild(ov);
+}
+function dcAnswer(btn){
+  if(isDailyChallengeComplete())return;
+  var ch=getDailyChallenge(),choice=btn.getAttribute('data-val'),correct=(choice===ch.ans);
+  localStorage.setItem('zintsomi_dc_date',new Date().toDateString());
+  localStorage.setItem('zintsomi_dc_ans',choice);
+  document.querySelectorAll('#dc-choices button').forEach(function(b){
+    b.disabled=true;
+    var v=b.getAttribute('data-val');
+    if(v===ch.ans)b.classList.add('correct');
+    else if(v===choice)b.classList.add('wrong');
+  });
+  var msg=document.getElementById('dc-msg');
+  if(correct){
+    if(msg)msg.innerHTML='<span style="color:#6EE78E">✓ Correct! +75 XP · </span><span style="opacity:.6;font-size:.85rem">'+ch.exp+'</span>';
+    addXP(XP_ACTIONS.daily_challenge,'Daily Challenge');
+    zintsomiConfetti();
+  } else {
+    if(msg)msg.innerHTML='<span style="color:rgba(255,100,100,.8)">Not quite. Correct: <strong>'+ch.ans+'</strong> · </span><span style="opacity:.6;font-size:.85rem">'+ch.exp+'</span>';
+  }
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var sb=document.getElementById('live-streak-badge');
+  if(sb){sb.style.cursor='pointer';sb.addEventListener('click',function(){openDailyChallenge();});}
+  var gPill=document.querySelector('.npill[onclick*="games"]');
+  if(gPill&&gPill.parentElement){
+    var dcBtn=document.createElement('button');
+    dcBtn.className='npill';
+    dcBtn.style.cssText='color:var(--gold);border-color:rgba(230,179,42,.3)';
+    dcBtn.innerHTML='<i class="ph ph-lightning"></i> Daily';
+    dcBtn.onclick=openDailyChallenge;
+    dcBtn.title='Daily Challenge — new puzzle every day';
+    gPill.parentElement.insertBefore(dcBtn,gPill.nextSibling);
+  }
+});
+
+// ════════════════════════════════════════════
+// UBUNTU STORY CHAIN
+// ════════════════════════════════════════════
+var storyChainData={chain:[],players:['Player 1','Player 2','Player 3','Player 4'],count:2,turn:0};
+var STORY_STARTERS=["Long ago, in a village where the baobab trees whispered secrets to the moon,","The grandmother sat by the fire and said, 'Before the first river found the sea,'","On the night the stars came down to earth to listen,","There was once a child who could speak to the wind,","When the land was still learning its own name,"];
+function openUbuntuStoryChain(){
+  storyChainData={chain:[],players:['Player 1','Player 2','Player 3','Player 4'],count:2,turn:0};
+  var starter=STORY_STARTERS[Math.floor(Math.random()*STORY_STARTERS.length)];
+  var ov=document.createElement('div');
+  ov.id='ubuntu-ov';
+  ov.style.cssText='position:fixed;inset:0;z-index:9400;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto';
+  ov.innerHTML=ubuntuSetupHTML(starter);
+  document.body.appendChild(ov);
+}
+function ubuntuSetupHTML(starter){
+  // Store starter globally so ubuntuBegin can read it without inline string injection
+  window._ubuntuStarter = starter;
+  var nameInputs = [0,1,2,3].map(function(i){
+    return '<input class="sc-pname" data-idx="'+i+'" type="text" placeholder="Player '+(i+1)+' name (optional)" style="display:'+(i<2?'block':'none')+';width:100%;padding:.5rem .8rem;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:6px;color:#fff;font-family:var(--body);font-size:.9rem;outline:none">';
+  }).join('');
+  var playerBtns = [2,3,4].map(function(n){
+    var active = n===2 ? 'background:var(--fire);border-color:var(--fire);' : '';
+    return '<button class="sc-pc quiz-choice" onclick="ubuntuSetCount('+n+')" style="flex:1;padding:.5rem;text-align:center;'+active+'">'+n+'</button>';
+  }).join('');
+  return '<div style="background:var(--ink);border:1.5px solid rgba(245,118,26,.3);border-radius:20px;max-width:520px;width:100%">'
+    +'<div style="background:linear-gradient(135deg,#1a0800,#4d1a00);padding:1.2rem 1.4rem;display:flex;justify-content:space-between;align-items:center">'
+    +'<div><div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,118,26,.6)">Ubuntu Story Chain</div>'
+    +'<div style="font-family:var(--impact);font-size:1.2rem;color:#fff">Family Storytelling Game</div></div>'
+    +'<button onclick="document.getElementById(\'ubuntu-ov\').remove()" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:1.2rem;cursor:pointer"><i class="ph ph-x"></i></button></div>'
+    +'<div style="padding:1.4rem">'
+    +'<label style="font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.35);display:block;margin-bottom:.5rem">Number of players</label>'
+    +'<div style="display:flex;gap:.5rem;margin-bottom:.9rem">'+playerBtns+'</div>'
+    +'<div style="display:flex;flex-direction:column;gap:.4rem;margin-bottom:.9rem">'+nameInputs+'</div>'
+    +'<div style="background:rgba(245,118,26,.06);border:1px solid rgba(245,118,26,.12);border-radius:8px;padding:.9rem 1rem;margin-bottom:1rem">'
+    +'<div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;color:rgba(245,118,26,.5);text-transform:uppercase;margin-bottom:.4rem">Your story begins\u2026</div>'
+    +'<div style="font-family:var(--serif);font-size:.95rem;color:rgba(255,255,255,.7);line-height:1.7;font-style:italic">'+starter+'</div></div>'
+    +'<button onclick="ubuntuBegin()" style="width:100%;background:var(--fire);border:none;border-radius:8px;padding:.75rem;color:#fff;font-family:var(--display);font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">Begin the Story Circle</button>'
+    +'</div></div>';
+}
+function ubuntuSetCount(n){
+  storyChainData.count=n;
+  document.querySelectorAll('#ubuntu-ov .sc-pc').forEach(function(b,i){
+    var active=(i+2===n);
+    b.style.background=active?'var(--fire)':'rgba(255,255,255,.05)';
+    b.style.borderColor=active?'var(--fire)':'rgba(255,255,255,.1)';
+  });
+  document.querySelectorAll('#ubuntu-ov .sc-pname').forEach(function(el,i){
+    el.style.display=i<n?'block':'none';
+  });
+}
+function ubuntuBegin(){
+  var starter=window._ubuntuStarter||'';
+  var names=document.querySelectorAll('#ubuntu-ov .sc-pname');
+  names.forEach(function(el,i){if(el.value.trim())storyChainData.players[i]=el.value.trim();});
+  document.getElementById('ubuntu-ov').innerHTML=ubuntuPlayHTML(starter);
+}
+function ubuntuPlayHTML(starter){
+  window._ubuntuStarter=starter;
+  var d=storyChainData;
+  var currentPlayer=d.players[d.turn%d.count];
+  var chainHTML=d.chain.map(function(s,i){
+    return '<div style="padding:.55rem .8rem;border-left:2px solid rgba(245,118,26,'+(0.25+i*0.08)+');margin-bottom:.45rem"><span style="font-family:var(--mono);font-size:.42rem;color:var(--fire);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:.15rem">'+d.players[i%d.count]+'</span><span style="font-family:var(--serif);font-size:.9rem;color:rgba(255,255,255,.8);line-height:1.65">'+s+'</span></div>';
+  }).join('');
+  var finishBtn = d.chain.length>=4
+    ? '<button onclick="ubuntuEnd()" style="flex:1;background:rgba(230,179,42,.12);border:1px solid var(--gold);border-radius:8px;padding:.65rem;color:var(--gold);font-family:var(--display);font-size:.52rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Finish Story</button>'
+    : '';
+  return '<div style="background:var(--ink);border:1.5px solid rgba(245,118,26,.3);border-radius:20px;max-width:520px;width:100%;max-height:90vh;display:flex;flex-direction:column">'
+    +'<div style="background:linear-gradient(135deg,#1a0800,#4d1a00);padding:1rem 1.4rem;display:flex;justify-content:space-between;align-items:center;flex-shrink:0">'
+    +'<div><div style="font-family:var(--mono);font-size:.44rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(245,118,26,.6)">Ubuntu Story Chain \u00b7 Sentence '+(d.chain.length+1)+'</div>'
+    +'<div style="font-family:var(--impact);font-size:1.1rem;color:#fff">'+currentPlayer+'\u2019s turn</div></div>'
+    +'<button onclick="document.getElementById(\'ubuntu-ov\').remove()" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:1.2rem;cursor:pointer"><i class="ph ph-x"></i></button></div>'
+    +'<div style="padding:1.2rem;overflow-y:auto;flex:1">'
+    +'<div style="background:rgba(255,255,255,.02);border-radius:8px;padding:.9rem;margin-bottom:.9rem;max-height:200px;overflow-y:auto" id="sc-scroll">'
+    +'<div style="font-family:var(--serif);font-size:.9rem;color:rgba(245,118,26,.5);font-style:italic;margin-bottom:.6rem">'+starter+'</div>'
+    +chainHTML+'</div>'
+    +'<div style="font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.4rem">'+currentPlayer+' \u2014 add the next sentence:</div>'
+    +'<textarea id="sc-inp" rows="3" placeholder="Continue in one or two sentences\u2026" style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(245,118,26,.2);border-radius:8px;padding:.65rem .9rem;color:#fff;font-family:var(--serif);font-size:.95rem;line-height:1.65;resize:vertical;outline:none;margin-bottom:.6rem"></textarea>'
+    +'<div style="display:flex;gap:.5rem">'
+    +'<button onclick="ubuntuAdd()" style="flex:2;background:var(--fire);border:none;border-radius:8px;padding:.65rem;color:#fff;font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">Add to Story</button>'
+    +finishBtn
+    +'</div></div></div>';
+}
+function ubuntuAdd(){
+  var starter=window._ubuntuStarter||'';
+  var inp=document.getElementById('sc-inp');
+  if(!inp||!inp.value.trim())return;
+  storyChainData.chain.push(inp.value.trim());
+  storyChainData.turn++;
+  addXP(XP_ACTIONS.story_chain,'Story contribution');
+  document.getElementById('ubuntu-ov').innerHTML=ubuntuPlayHTML(starter);
+  setTimeout(function(){var s=document.getElementById('sc-scroll');if(s)s.scrollTop=s.scrollHeight;},80);
+}
+function ubuntuEnd(){
+  var starter=window._ubuntuStarter||'';
+  var d=storyChainData;
+  var full=starter+' '+d.chain.join(' ');
+  var ov=document.getElementById('ubuntu-ov');
+  ov.innerHTML='<div style="background:var(--ink);border:1.5px solid var(--gold);border-radius:20px;max-width:520px;width:100%;padding:2rem">'
+    +'<div style="font-family:var(--impact);font-size:1.4rem;letter-spacing:.1em;color:var(--gold);text-align:center;margin-bottom:1.2rem">The Story Is Complete \ud83d\udd25</div>'
+    +'<div id="sc-final" style="font-family:var(--serif);font-size:1rem;color:rgba(255,255,255,.85);line-height:1.9;padding:1.2rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;margin-bottom:1.2rem">'+full+'</div>'
+    +'<div style="display:flex;gap:.5rem">'
+    +'<button onclick="if(navigator.clipboard)navigator.clipboard.writeText(document.getElementById(\'sc-final\').textContent)" style="flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.6rem;color:#fff;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer"><i class="ph ph-copy"></i> Copy</button>'
+    +'<button onclick="openUbuntuStoryChain()" style="flex:1;background:var(--fire);border:none;border-radius:8px;padding:.6rem;color:#fff;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">New Story</button>'
+    +'<button onclick="document.getElementById(\'ubuntu-ov\').remove()" style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.6rem;color:rgba(255,255,255,.5);font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Close</button>'
+    +'</div></div>';
+  addXP(30,'Story complete');
+  zintsomiConfetti();
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var fp=document.querySelector('.family-games-panel .game-tile')&&document.querySelector('.family-games-panel .game-tile').parentElement;
+  if(fp){
+    var tile=document.createElement('div');
+    tile.className='game-tile';
+    tile.style.cursor='pointer';
+    tile.onclick=openUbuntuStoryChain;
+    tile.innerHTML='<div class="game-tile-hero" style="background:linear-gradient(135deg,#1a0800,#4d1a00)"><div style="text-align:center;padding:1rem"><span style="font-size:2.4rem">🔥</span><br><span style="font-family:var(--mono);font-size:.44rem;opacity:.5;letter-spacing:.1em;text-transform:uppercase">pass &amp; tell</span></div></div>'
+      +'<div class="game-tile-body"><div class="gt-tag">Storytelling</div><div class="gt-name">Ubuntu Story Chain</div><div class="gt-origin">🌍 African oral tradition · 2–4 players</div><p class="gt-desc">One sentence at a time. Pass the story around the circle. Read it back at the end.</p><div class="gt-stats"><div class="gt-stat"><strong>2–4</strong> Players</div><div class="gt-stat"><strong>+30</strong> XP / turn</div><div class="gt-stat"><strong>∞</strong> Stories</div></div></div>';
+    fp.insertBefore(tile,fp.firstChild);
+  }
+  var gPill=document.querySelector('.npill[onclick*="games"]');
+  if(gPill&&gPill.parentElement){
+    var uBtn=document.createElement('button');
+    uBtn.className='npill';
+    uBtn.style.cssText='color:var(--fire);border-color:rgba(245,118,26,.3)';
+    uBtn.innerHTML='<i class="ph ph-campfire"></i> Story Circle';
+    uBtn.onclick=openUbuntuStoryChain;
+    uBtn.title='Ubuntu Story Chain — family storytelling game';
+    gPill.parentElement.appendChild(uBtn);
+  }
+});
+
+// ════════════════════════════════════════════
+// WORD OF THE DAY
+// ════════════════════════════════════════════
+var WORDS_OF_DAY=[
+  {en:'Ubuntu',zu:'Ubuntu',xh:'Ubuntu',st:'Botho',def:'I am because we are — humanity through community.',ipa:'oo-BOON-too'},
+  {en:'Indaba',zu:'Indaba',xh:'Indaba',st:'Pitso',def:'A gathering to discuss important matters.',ipa:'in-DAH-bah'},
+  {en:'Sawubona',zu:'Sawubona',xh:'Molo',st:'Dumela',def:'I see you — a greeting that acknowledges the full humanity of another.',ipa:'sa-woo-BOH-nah'},
+  {en:'Ubuhle',zu:'Ubuhle',xh:'Ubuhle',st:'Botse',def:'Beauty — in both physical form and character.',ipa:'oo-BOO-hleh'},
+  {en:'Isibindi',zu:'Isibindi',xh:'Isibindi',st:'Bonatla',def:'Courage — literally "the liver," the seat of bravery in Zulu culture.',ipa:'ee-see-BIN-dee'},
+  {en:'Amandla',zu:'Amandla',xh:'Amandla',st:'Maatla',def:'Power or strength — also a rallying cry of solidarity.',ipa:'ah-MAHN-dlah'},
+  {en:'Thabo',zu:'Thabo',xh:'Uvuyo',st:'Thabo',def:'Joy — often used to name children born in happiness.',ipa:'TAH-boh'},
+];
+function getWordOfDay(){var day=Math.floor(Date.now()/86400000);return WORDS_OF_DAY[day%WORDS_OF_DAY.length];}
+function openWordOfDay(){
+  var w=getWordOfDay(),lang=typeof currentLang!=='undefined'?currentLang:'en',word=w[lang]||w.en;
+  var ov=document.createElement('div');
+  ov.id='wod-ov';
+  ov.style.cssText='position:fixed;inset:0;z-index:9300;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;padding:1rem';
+  ov.innerHTML='<div style="background:var(--ink);border:1.5px solid rgba(100,181,232,.25);border-radius:20px;max-width:380px;width:100%;overflow:hidden">'
+    +'<div style="background:linear-gradient(135deg,#041220,#0a2840);padding:1.2rem 1.4rem;display:flex;justify-content:space-between;align-items:center">'
+    +'<div><div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(100,181,232,.6)">Word of the Day</div>'
+    +'<div style="font-family:var(--impact);font-size:1.2rem;color:#fff">'+new Date().toLocaleDateString('en-ZA',{day:'numeric',month:'long'})+'</div></div>'
+    +'<button onclick="document.getElementById(\'wod-ov\').remove()" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:1.2rem;cursor:pointer"><i class="ph ph-x"></i></button></div>'
+    +'<div style="padding:1.8rem;text-align:center">'
+    +'<div style="font-family:var(--impact);font-size:2.8rem;letter-spacing:.12em;color:#fff;margin-bottom:.3rem">'+word+'</div>'
+    +'<div style="font-family:var(--mono);font-size:.54rem;letter-spacing:.1em;color:rgba(100,181,232,.5);margin-bottom:.9rem">/ '+w.ipa+' /</div>'
+    +'<button onclick="if(\'speechSynthesis\'in window){var u=new SpeechSynthesisUtterance(\''+word.replace(/'/g,"\\'")+'.\');u.rate=0.82;window.speechSynthesis.speak(u);}" style="background:rgba(100,181,232,.1);border:1px solid rgba(100,181,232,.2);border-radius:100px;padding:.4rem 1.2rem;color:#64B5E8;font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-bottom:1.2rem"><i class="ph ph-speaker-high"></i> Hear it</button>'
+    +'<div style="font-family:var(--serif);font-size:.95rem;color:rgba(255,255,255,.65);line-height:1.7;text-align:left;background:rgba(255,255,255,.03);border-radius:8px;padding:.9rem 1rem;margin-bottom:1rem">'+w.def+'</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem">'
+    +['en','zu','xh','st'].map(function(l){return '<div style="background:rgba(255,255,255,.04);border-radius:6px;padding:.4rem"><div style="font-size:.42rem;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.2rem">'+{en:'EN',zu:'ZU',xh:'XH',st:'ST'}[l]+'</div><div style="font-size:.78rem;color:rgba(255,255,255,.6)">'+w[l]+'</div></div>';}).join('')
+    +'</div></div></div>';
+  document.body.appendChild(ov);
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var gPill=document.querySelector('.npill[onclick*="games"]');
+  if(gPill&&gPill.parentElement){
+    var wBtn=document.createElement('button');
+    wBtn.className='npill';
+    wBtn.style.cssText='color:#64B5E8;border-color:rgba(100,181,232,.3)';
+    wBtn.innerHTML='<i class="ph ph-translate"></i> Word';
+    wBtn.onclick=openWordOfDay;
+    wBtn.title='Word of the Day — learn in 4 languages';
+    gPill.parentElement.insertBefore(wBtn,gPill);
+  }
+});
 </script>
 </body>
 </html>
