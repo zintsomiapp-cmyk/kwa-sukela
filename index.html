@@ -4905,6 +4905,8 @@ body::after{
             <div class="game-tile" onclick="openFamilyGame('snakes')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#11263a,#2d6b8c)"><i class="ph ph-ladder" style="font-size:3rem;color:#89d8ff"></i></div><div class="game-tile-body"><div class="gt-tag">Dice Race</div><div class="gt-name">Snakes & Ladders</div><div class="gt-origin">Family tabletop classic</div><p class="gt-desc">Roll the dice, climb ladders, avoid snakes, and race to square 100.</p></div></div>
             <div class="game-tile" onclick="openFamilyGame('chess')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#181818,#4b3a24)"><i class="ph ph-crown" style="font-size:3rem;color:#f6d28b"></i></div><div class="game-tile-body"><div class="gt-tag">Strategy</div><div class="gt-name">Chess</div><div class="gt-origin">Local two-player board</div><p class="gt-desc">Play a real chess board with legal piece movement, captures, and pawn promotion.</p></div></div>
             <div class="game-tile" onclick="openFamilyGame('checkers')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#200f0f,#6b2323)"><i class="ph ph-circles-four" style="font-size:3rem;color:#ff9f43"></i></div><div class="game-tile-body"><div class="gt-tag">Tactics</div><div class="gt-name">Checkers</div><div class="gt-origin">Local two-player board</div><p class="gt-desc">Diagonal moves, captures, and king promotion. A fast tactical family match.</p></div></div>
+            <div class="game-tile" onclick="openFamilyGame('mancala')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#0a2010,#1a5c2a)"><div style="font-size:2.8rem;padding:.8rem 0">🫘</div></div><div class="game-tile-body"><div class="gt-tag">Ancient Strategy</div><div class="gt-name">Mancala</div><div class="gt-origin">🌍 African · 2 players · Ages 6+</div><p class="gt-desc">One of the oldest board games on earth. Sow seeds around the board, capture your opponent's pits, and fill your store to win.</p></div></div>
+            <div class="game-tile" onclick="openUbuntuStoryChain()"><div class="game-tile-hero" style="background:linear-gradient(135deg,#1a0800,#4d1a00)"><div style="font-size:2.8rem;padding:.8rem 0">🔥</div></div><div class="game-tile-body"><div class="gt-tag">Storytelling</div><div class="gt-name">Ubuntu Story Chain</div><div class="gt-origin">🌍 African oral tradition · 2–4 players</div><p class="gt-desc">Pass-and-tell family storytelling. One sentence at a time. Read the full story back at the end.</p></div></div>
           </div>
         </div>
       </div>
@@ -5924,29 +5926,64 @@ var dSeq=[],dPlayer=[],dState='idle',dScore=0,dBest=parseInt(localStorage.getIte
 var dEmojis=['◉','◆','●','◈','◇'];
 function startDiketo(){dSeq=[];dPlayer=[];dState='showing';dScore=0;dLevel=1;document.getElementById('d-score').textContent=0;document.getElementById('d-best').textContent=dBest;document.getElementById('d-level').textContent=1;buildDiketoRound()}
 function buildDiketoRound(){
-  var len=2+dLevel;while(dSeq.length<len)dSeq.push(Math.floor(Math.random()*5));
+  var len=2+dLevel;dSeq=[];
+  for(var x=0;x<len;x++)dSeq.push(Math.floor(Math.random()*5));
   var el=document.getElementById('diketo-seq');el.innerHTML='';
-  dSeq.forEach(function(v){var d=document.createElement('div');d.className='dseq-item';d.textContent=dEmojis[v];el.appendChild(d)});
+  dSeq.forEach(function(v,si){
+    var d=document.createElement('div');d.className='dseq-item';
+    d.textContent=dEmojis[v];d.setAttribute('data-si',si);
+    el.appendChild(d);
+  });
   document.getElementById('d-msg').textContent='Watch carefully...';
-  var idx=0,items=el.querySelectorAll('.dseq-item');
+  var flashIdx=0,items=el.querySelectorAll('.dseq-item');
   function flash(){
-    if(idx>0)items[idx-1].classList.remove('active');
-    if(idx>=items.length){setTimeout(function(){dState='player';dPlayer=[];document.getElementById('d-msg').textContent='Tap in order!'},350);return}
-    items[idx].classList.add('active');idx++;setTimeout(flash,Math.max(300,620-dLevel*20));
+    if(flashIdx>0)items[flashIdx-1].classList.remove('active');
+    if(flashIdx>=items.length){
+      setTimeout(function(){
+        dState='player';dPlayer=[];
+        document.getElementById('d-msg').textContent='Tap each stone in the correct order!';
+        var live=document.getElementById('diketo-seq').querySelectorAll('.dseq-item');
+        live.forEach(function(item,si){
+          item.style.cursor='pointer';
+          item.onclick=function(){ diketoTap(si); };
+        });
+      },350);return;
+    }
+    items[flashIdx].classList.add('active');flashIdx++;
+    setTimeout(flash,Math.max(300,620-dLevel*20));
   }
   setTimeout(flash,500);
 }
-function diketoTap(){
+function diketoTap(tappedIdx){
   if(dState!=='player')return;
   var items=document.getElementById('diketo-seq').querySelectorAll('.dseq-item');
   var pos=dPlayer.length;
+  if(tappedIdx!==pos){
+    items[tappedIdx].classList.add('wrong');
+    if(items[pos])items[pos].classList.add('wrong');
+    dState='idle';
+    document.getElementById('d-msg').textContent='Wrong stone! Game over. Score: '+dScore;
+    items.forEach(function(it){it.onclick=null;});
+    setTimeout(function(){
+      dScore=0;dLevel=1;dSeq=[];dPlayer=[];
+      document.getElementById('d-score').textContent=0;
+      document.getElementById('d-level').textContent=1;
+      document.getElementById('d-msg').textContent='Press Start to try again';
+    },1800);
+    return;
+  }
   items[pos].classList.add('correct');
   dPlayer.push(dSeq[pos]);
   if(dPlayer.length===dSeq.length){
-    dScore+=dLevel*10;dBest=Math.max(dScore,dBest);localStorage.setItem('zintsomi_best_diketo',dBest);dLevel++;
-    document.getElementById('d-score').textContent=dScore;document.getElementById('d-best').textContent=dBest;document.getElementById('d-level').textContent=dLevel;
+    dScore+=dLevel*10;dBest=Math.max(dScore,dBest);
+    localStorage.setItem('zintsomi_best_diketo',dBest);dLevel++;
+    document.getElementById('d-score').textContent=dScore;
+    document.getElementById('d-best').textContent=dBest;
+    document.getElementById('d-level').textContent=dLevel;
     dState='showing';dPlayer=[];
-    setTimeout(function(){document.getElementById('d-msg').textContent='Well done! Next round...';buildDiketoRound()},700);
+    items.forEach(function(it){it.onclick=null;});
+    document.getElementById('d-msg').textContent='Perfect! Next round...';
+    setTimeout(function(){ buildDiketoRound(); },800);
   }
 }
 
@@ -5958,26 +5995,47 @@ function buildKgati(){
   var len=2+Math.min(kLevel,5);kAns=[];kSel=[];
   for(var i=0;i<len;i++)kAns.push(Math.floor(Math.random()*kMoves.length));
   var pat=document.getElementById('kgati-pattern');pat.innerHTML='';
-  kMoves.forEach(function(o){
-    var b=document.createElement('div');b.className='kp-item';b.textContent=o;
-    b.onclick=function(){kgatiSel(o,b)};pat.appendChild(b);
-  });
-  document.getElementById('k-msg').textContent='Memorise: '+kAns.map(function(a){return kMoves[a]}).join(' → ');
-  setTimeout(function(){document.getElementById('k-msg').textContent='Now select the sequence!'},Math.max(1500,2000+kLevel*200));
+  var seqDisplay=document.createElement('div');
+  seqDisplay.style.cssText='font-family:var(--mono);font-size:.9rem;color:var(--fire);letter-spacing:.1em;padding:.5rem 0;text-align:center';
+  seqDisplay.textContent=kAns.map(function(a){return kMoves[a];}).join(' > ');
+  pat.appendChild(seqDisplay);
+  document.getElementById('k-msg').textContent='Memorise the sequence!';
+  var delay=Math.max(1500,2000+kLevel*300);
+  setTimeout(function(){
+    pat.innerHTML='';
+    document.getElementById('k-msg').textContent='Now tap in order! ('+kAns.length+' moves)';
+    kMoves.forEach(function(o){
+      var b=document.createElement('div');b.className='kp-item';b.textContent=o;
+      b.onclick=function(){kgatiSel(o,b);};
+      pat.appendChild(b);
+    });
+  },delay);
 }
-function kgatiSel(move,el){
-  el.classList.add('sel');kSel.push(move);
+function kgatiSel(move,btn){
+  if(kSel.length>=kAns.length)return;
+  var pos=kSel.length;
+  kSel.push(move);
+  if(move!==kMoves[kAns[pos]]){
+    btn.classList.add('wrong');
+    kLives--;document.getElementById('k-lives').textContent=kLives;
+    document.getElementById('k-msg').textContent=kLives>0?'Wrong! Correct was: '+kMoves[kAns[pos]]:'Game over! Score: '+kScore;
+    document.querySelectorAll('#kgati-pattern .kp-item').forEach(function(b){b.onclick=null;});
+    if(kLives>0){setTimeout(buildKgati,1200);}
+    return;
+  }
+  btn.style.background='rgba(110,231,142,.25)';
+  btn.style.borderColor='#6EE78E';
   if(kSel.length===kAns.length){
-    var ok=kSel.every(function(m,i){return m===kMoves[kAns[i]]});
-    if(ok){
-      var j=document.getElementById('kgati-jumper');j.classList.add('jump');setTimeout(function(){j.classList.remove('jump')},280);
-      kScore+=kLevel*15;kBest=Math.max(kScore,kBest);localStorage.setItem('zintsomi_best_kgati',kBest);kLevel++;document.getElementById('k-score').textContent=kScore;document.getElementById('k-level').textContent=kLevel;
-      document.getElementById('k-msg').textContent='✓ Perfect! Next level!';setTimeout(buildKgati,900);
-    }else{
-      kLives--;document.getElementById('k-lives').textContent=kLives;
-      document.getElementById('k-msg').textContent=kLives>0?'✗ Wrong — try again!':'Game over!';
-      if(kLives>0)setTimeout(buildKgati,1100);
-    }
+    var j=document.getElementById('kgati-jumper');
+    if(j){j.classList.add('jump');setTimeout(function(){j.classList.remove('jump');},280);}
+    kScore+=kLevel*15;kBest=Math.max(kScore,kBest);
+    localStorage.setItem('zintsomi_best_kgati',kBest);kLevel++;
+    document.getElementById('k-score').textContent=kScore;
+    document.getElementById('k-best').textContent=kBest;
+    document.getElementById('k-level').textContent=kLevel;
+    document.getElementById('k-msg').textContent='Perfect! Next level!';
+    document.querySelectorAll('#kgati-pattern .kp-item').forEach(function(b){b.onclick=null;});
+    setTimeout(buildKgati,900);
   }
 }
 
@@ -6081,7 +6139,7 @@ function openFamilyGame(type){
     familyState.quiz=saved.idx||0;
     familyState.answered=saved.answered||{};
   }
-  ({quiz:renderFamilyQuiz,solitaire:renderSolitaire,snakes:renderSnakes,chess:renderChess,checkers:renderCheckers}[type]||renderFamilyQuiz)();
+  ({quiz:renderFamilyQuiz,solitaire:renderSolitaire,snakes:renderSnakes,chess:renderChess,checkers:renderCheckers,mancala:function(){if(!mancalaBoard.length)initMancala();renderMancala();}}[type]||renderFamilyQuiz)();
 }
 function closeFamilyGame(){document.getElementById('family-overlay').classList.remove('open')}
 function famTitle(t){document.getElementById('family-title').textContent=t}
@@ -6113,9 +6171,67 @@ function renderFamilyQuiz(){
   });
 }
 var solBoard=[];
-function initSol(){solBoard=[];for(var r=0;r<7;r++)for(var c=0;c<7;c++){var valid=!((r<2||r>4)&&(c<2||c>4));solBoard.push(valid?1:-1)}solBoard[24]=0;familyState.selected=null}
-function renderSolitaire(){famTitle('Peg Solitaire');if(!solBoard.length)initSol();var pegs=solBoard.filter(x=>x===1).length;var html='<div class="family-status">Jump a peg over a neighbour into an empty hole. Goal: one peg left. Pegs: '+pegs+'</div><div class="family-board" style="grid-template-columns:repeat(7,1fr)">';solBoard.forEach(function(v,i){html+='<div class="family-cell '+(familyState.selected===i?'sel':'')+'" onclick="solClick('+i+')" style="visibility:'+(v<0?'hidden':'visible')+'">'+(v===1?'●':'')+'</div>'});famRoot(html+'</div><div class="family-actions"><button class="btn" onclick="initSol();renderSolitaire()">New Board</button></div>')}
-function solClick(i){if(solBoard[i]!==0&&solBoard[i]!==1)return;if(familyState.selected==null){if(solBoard[i]===1)familyState.selected=i;renderSolitaire();return}var s=familyState.selected,dr=Math.floor(i/7)-Math.floor(s/7),dc=i%7-s%7,mid=s+(dr/2)*7+(dc/2);if(solBoard[i]===0&&solBoard[mid]===1&&((Math.abs(dr)===2&&dc===0)||(Math.abs(dc)===2&&dr===0))){solBoard[s]=0;solBoard[mid]=0;solBoard[i]=1}familyState.selected=null;renderSolitaire()}
+function initSol(){
+  solBoard=[];
+  for(var r=0;r<7;r++)for(var c=0;c<7;c++){
+    var valid=!((r<2||r>4)&&(c<2||c>4));
+    solBoard.push(valid?1:-1);
+  }
+  solBoard[24]=0;familyState.selected=null;
+}
+function solHasMoves(){
+  for(var i=0;i<solBoard.length;i++){
+    if(solBoard[i]!==1)continue;
+    var r=Math.floor(i/7),c=i%7;
+    var dirs=[[-2,0],[2,0],[0,-2],[0,2]];
+    for(var d=0;d<dirs.length;d++){
+      var nr=r+dirs[d][0],nc=c+dirs[d][1],mr=r+dirs[d][0]/2,mc=c+dirs[d][1]/2;
+      if(nr<0||nr>6||nc<0||nc>6)continue;
+      var ni=nr*7+nc,mi=mr*7+mc;
+      if(solBoard[ni]===0&&solBoard[mi]===1)return true;
+    }
+  }
+  return false;
+}
+function renderSolitaire(){
+  famTitle('Peg Solitaire');
+  if(!solBoard.length)initSol();
+  var pegs=solBoard.filter(function(x){return x===1;}).length;
+  var won=pegs===1,stuck=!won&&!solHasMoves();
+  var msg=won?'You won! One peg remaining!':stuck?'No moves left. Pegs: '+pegs:'Pegs: '+pegs+' - Jump over a neighbour to remove it';
+  var html='<div class="family-status">'+msg+'</div>';
+  html+='<div class="family-board" style="grid-template-columns:repeat(7,1fr);max-width:320px">';
+  solBoard.forEach(function(v,i){
+    var isSel=familyState.selected===i;
+    var canLand=false;
+    if(familyState.selected!==null&&v===0){
+      var s=familyState.selected,dr=Math.floor(i/7)-Math.floor(s/7),dc=i%7-s%7,mid=s+(dr/2)*7+(dc/2);
+      if(mid>=0&&mid<49&&solBoard[mid]===1&&((Math.abs(dr)===2&&dc===0)||(Math.abs(dc)===2&&dr===0)))canLand=true;
+    }
+    var style='visibility:'+(v<0?'hidden':'visible')+';background:'+(isSel?'rgba(245,118,26,.4)':canLand?'rgba(110,231,142,.2)':'')+'';
+    html+='<div class="family-cell '+(isSel?'sel':'')+'" onclick="solClick('+i+')" style="'+style+'">';
+    if(v===1)html+='<span style="font-size:1.1rem">'+(isSel?'🟠':'⚫')+'</span>';
+    html+='</div>';
+  });
+  html+='</div>';
+  html+='<div class="family-actions">';
+  if(won)html+='<button class="btn" style="background:var(--gold)" onclick="if(typeof zintsomiConfetti===\'function\')zintsomiConfetti()">Celebrate!</button>';
+  html+='<button class="btn btn-out" onclick="initSol();renderSolitaire()">New Board</button>';
+  html+='</div>';
+  famRoot(html);
+}
+function solClick(i){
+  if(solBoard[i]!==0&&solBoard[i]!==1)return;
+  if(familyState.selected==null){
+    if(solBoard[i]===1){familyState.selected=i;renderSolitaire();}
+    return;
+  }
+  var s=familyState.selected,dr=Math.floor(i/7)-Math.floor(s/7),dc=i%7-s%7,mid=s+(dr/2)*7+(dc/2);
+  if(solBoard[i]===0&&mid>=0&&mid<49&&solBoard[mid]===1&&((Math.abs(dr)===2&&dc===0)||(Math.abs(dc)===2&&dr===0))){
+    solBoard[s]=0;solBoard[mid]=0;solBoard[i]=1;
+  }
+  familyState.selected=null;renderSolitaire();
+}
 var snakePos=1,snakeRoll=0,snakes={98:78,95:56,88:24,62:18,48:26,36:6},ladders={3:22,8:30,28:84,58:77,75:86,80:99};
 var snake2={p1:1,p2:1,turn:1,r1:0,r2:0,winner:0};
 function renderSnakes(){
@@ -6152,18 +6268,218 @@ function snakeRollGame(){
   renderSnakes();
 }
 var chessStart=['rnbqkbnr','pppppppp','........','........','........','........','PPPPPPPP','RNBQKBNR'],chess=[];
-function initChess(){chess=chessStart.join('').split('');familyState.turn='w';familyState.selected=null}
-function renderChess(){famTitle('Chess');if(!chess.length)initChess();renderBoardGame(chess,'chess')}
-var pieceIcon={K:'♔',Q:'♕',R:'♖',B:'♗',N:'♘',P:'♙',k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'};
-function renderBoardGame(board,kind){var title=kind==='chess'?'Turn: '+(familyState.turn==='w'?'White':'Black'):'Turn: '+(familyState.turn==='r'?'Red':'Black');var html='<div class="family-status">'+title+'</div><div class="family-board" style="grid-template-columns:repeat(8,1fr)">';for(var i=0;i<64;i++){var r=Math.floor(i/8),c=i%8,v=board[i],dark=(r+c)%2;html+='<div class="family-cell '+(dark?'dark':'light')+' '+(familyState.selected===i?'sel':'')+'" onclick="'+(kind==='chess'?'chessClick':'checkClick')+'('+i+')">'+(pieceIcon[v]||(v==='.'?'':v||''))+'</div>'}famRoot(html+'</div><div class="family-actions"><button class="btn" onclick="'+(kind==='chess'?'initChess();renderChess()':'initCheckers();renderCheckers()')+'">New Game</button></div>')}
-function chessClick(i){var p=chess[i];if(familyState.selected==null){if(p&&p!=='.'&&((familyState.turn==='w')===(/[A-Z]/.test(p))))familyState.selected=i;renderChess();return}var s=familyState.selected,sp=chess[s];if(isChessMove(s,i,sp)){chess[i]=(sp==='P'&&i<8)?'Q':(sp==='p'&&i>55)?'q':sp;chess[s]='.';familyState.turn=familyState.turn==='w'?'b':'w'}familyState.selected=null;renderChess()}
+function initChess(){chess=chessStart.join('').split('');familyState.turn='w';familyState.selected=null;familyState.chessStatus='';}
+function renderChess(){
+  famTitle('Chess - 2 Player');
+  if(!chess.length)initChess();
+  var status=familyState.chessStatus||('Turn: '+(familyState.turn==='w'?'White':'Black'));
+  var html='<div class="family-status">'+status+'</div>';
+  html+='<div class="family-board" style="grid-template-columns:repeat(8,1fr)">';
+  for(var i=0;i<64;i++){
+    var r=Math.floor(i/8),c=i%8,v=chess[i],dark=(r+c)%2;
+    var isSel=familyState.selected===i;
+    var icon=pieceIcon[v]||(v==='.'||!v?'':'');
+    html+='<div class="family-cell '+(dark?'dark':'light')+(isSel?' sel':'')+'" onclick="chessClick('+i+')">'+icon+'</div>';
+  }
+  html+='</div>';
+  html+='<div class="family-actions"><button class="btn btn-out" onclick="chess=[];familyState.chessStatus=\'\';initChess();renderChess()">New Game</button></div>';
+  famRoot(html);
+}
+function isInCheck(board,color){
+  var king=color==='w'?'K':'k',kPos=-1;
+  for(var x=0;x<64;x++){if(board[x]===king){kPos=x;break;}}
+  if(kPos<0)return false;
+  var savedChess=chess;
+  for(var x=0;x<64;x++){
+    var piece=board[x];
+    if(!piece||piece==='.')continue;
+    var isEnemy=color==='w'?/[a-z]/.test(piece):/[A-Z]/.test(piece);
+    if(!isEnemy)continue;
+    chess=board;
+    var can=isChessMove(x,kPos,piece);
+    chess=savedChess;
+    if(can)return true;
+  }
+  return false;
+}
+function chessHasLegal(color){
+  for(var s=0;s<64;s++){
+    var sp=chess[s];
+    if(!sp||sp==='.')continue;
+    if((color==='w')!==(/[A-Z]/.test(sp)))continue;
+    for(var t=0;t<64;t++){
+      if(!isChessMove(s,t,sp))continue;
+      var saved=chess.slice();
+      chess[t]=(sp==='P'&&t<8)?'Q':(sp==='p'&&t>55)?'q':sp;
+      chess[s]='.';
+      var inCk=isInCheck(chess,color);
+      chess=saved;
+      if(!inCk)return true;
+    }
+  }
+  return false;
+}
+function chessClick(i){
+  if(familyState.chessStatus&&familyState.chessStatus.indexOf('wins')>=0)return;
+  var p=chess[i];
+  if(familyState.selected==null){
+    if(p&&p!=='.'&&((familyState.turn==='w')===(/[A-Z]/.test(p)))){familyState.selected=i;renderChess();}
+    return;
+  }
+  var s=familyState.selected,sp=chess[s];
+  if(isChessMove(s,i,sp)){
+    var saved=chess.slice();
+    chess[i]=(sp==='P'&&i<8)?'Q':(sp==='p'&&i>55)?'q':sp;
+    chess[s]='.';
+    if(isInCheck(chess,familyState.turn)){chess=saved;familyState.selected=null;renderChess();return;}
+    familyState.turn=familyState.turn==='w'?'b':'w';
+    var inCk=isInCheck(chess,familyState.turn),hasLeg=chessHasLegal(familyState.turn);
+    if(!hasLeg){
+      familyState.chessStatus=inCk?(familyState.turn==='w'?'Checkmate! Black wins':'Checkmate! White wins'):'Stalemate - Draw';
+      if(inCk&&typeof zintsomiConfetti==='function')zintsomiConfetti();
+    } else {
+      familyState.chessStatus=inCk?'Check! '+(familyState.turn==='w'?'White':'Black')+' is in check!':'';
+    }
+  }
+  familyState.selected=null;renderChess();
+}
 function clearLine(s,i,step){for(var x=s+step;x!==i;x+=step)if(chess[x]!=='.')return false;return true}
 function isChessMove(s,i,p){var t=chess[i];if(t!=='.'&&(/[A-Z]/.test(t)===/[A-Z]/.test(p)))return false;var sr=Math.floor(s/8),sc=s%8,r=Math.floor(i/8),c=i%8,dr=r-sr,dc=c-sc,adR=Math.abs(dr),adC=Math.abs(dc),white=/[A-Z]/.test(p),dir=white?-1:1;if(p.toLowerCase()==='p')return (dc===0&&t==='.'&&dr===dir)||(dc===0&&t==='.'&&dr===2*dir&&((white&&sr===6)||(!white&&sr===1))&&chess[s+dir*8]==='.')||(adC===1&&dr===dir&&t!=='.');if(p.toLowerCase()==='n')return (adR===2&&adC===1)||(adR===1&&adC===2);if(p.toLowerCase()==='k')return adR<=1&&adC<=1;if(p.toLowerCase()==='b')return adR===adC&&clearLine(s,i,dr>0?(dc>0?9:7):(dc>0?-7:-9));if(p.toLowerCase()==='r')return (dr===0||dc===0)&&clearLine(s,i,dr===0?(dc>0?1:-1):(dr>0?8:-8));if(p.toLowerCase()==='q')return (adR===adC&&clearLine(s,i,dr>0?(dc>0?9:7):(dc>0?-7:-9)))||((dr===0||dc===0)&&clearLine(s,i,dr===0?(dc>0?1:-1):(dr>0?8:-8)));return false}
-var checkers=[];function initCheckers(){checkers=Array(64).fill('');for(var i=0;i<64;i++){var r=Math.floor(i/8),c=i%8;if((r+c)%2){if(r<3)checkers[i]='b';if(r>4)checkers[i]='r'}}familyState.turn='r';familyState.selected=null}
-function renderCheckers(){famTitle('Checkers');if(!checkers.length)initCheckers();renderBoardGame(checkers,'checkers')}
-function checkClick(i){var p=checkers[i];if(familyState.selected==null){if(p&&p.toLowerCase()===familyState.turn)familyState.selected=i;renderCheckers();return}var s=familyState.selected,sp=checkers[s],sr=Math.floor(s/8),sc=s%8,r=Math.floor(i/8),c=i%8,dr=r-sr,dc=c-sc,dir=sp.toLowerCase()==='r'?-1:1,king=sp===sp.toUpperCase(),ok=false;if(!checkers[i]&&Math.abs(dc)===1&&(dr===dir||king&&Math.abs(dr)===1))ok=true;if(!checkers[i]&&Math.abs(dc)===2&&(dr===2*dir||king&&Math.abs(dr)===2)){var mid=s+(dr/2)*8+(dc/2);if(checkers[mid]&&checkers[mid].toLowerCase()!==sp.toLowerCase()){checkers[mid]='';ok=true}}if(ok){checkers[i]=((sp==='r'&&r===0)||(sp==='b'&&r===7))?sp.toUpperCase():sp;checkers[s]='';familyState.turn=familyState.turn==='r'?'b':'r'}familyState.selected=null;renderCheckers()}
+var checkers=[];
+function initCheckers(){
+  checkers=Array(64).fill('');
+  for(var i=0;i<64;i++){var r=Math.floor(i/8),c=i%8;if((r+c)%2){if(r<3)checkers[i]='b';if(r>4)checkers[i]='r';}}
+  familyState.turn='r';familyState.selected=null;
+}
+function checkersWinner(){
+  var r=checkers.filter(function(p){return p&&p.toLowerCase()==='r';}).length;
+  var b=checkers.filter(function(p){return p&&p.toLowerCase()==='b';}).length;
+  if(!r)return 'Black wins!';if(!b)return 'Red wins!';return null;
+}
+function renderCheckers(){
+  famTitle('Checkers - 2 Player');
+  if(!checkers.length)initCheckers();
+  var winner=checkersWinner();
+  var status=winner||('Turn: '+(familyState.turn==='r'?'Red':'Black'));
+  var html='<div class="family-status">'+status+'</div>';
+  html+='<div class="family-board" style="grid-template-columns:repeat(8,1fr)">';
+  for(var i=0;i<64;i++){
+    var r=Math.floor(i/8),c=i%8,v=checkers[i],dark=(r+c)%2;
+    var isSel=familyState.selected===i;
+    var glyph=v==='r'?'🔴':v==='R'?'🟠':v==='b'?'⚫':v==='B'?'⬜':'';
+    html+='<div class="family-cell '+(dark?'dark':'light')+(isSel?' sel':'')+'" onclick="checkClick('+i+')">'+(dark?glyph:'')+'</div>';
+  }
+  html+='</div>';
+  html+='<div class="family-actions">';
+  if(winner)html+='<button class="btn" style="background:var(--gold)" onclick="if(typeof zintsomiConfetti===\'function\')zintsomiConfetti()">Celebrate!</button>';
+  html+='<button class="btn btn-out" onclick="initCheckers();renderCheckers()">New Game</button>';
+  html+='</div>';
+  famRoot(html);
+}
+function checkClick(i){
+  if(checkersWinner())return;
+  var p=checkers[i];
+  if(familyState.selected==null){if(p&&p.toLowerCase()===familyState.turn){familyState.selected=i;renderCheckers();}return;}
+  var s=familyState.selected,sp=checkers[s],sr=Math.floor(s/8),sc=s%8,r=Math.floor(i/8),c=i%8,dr=r-sr,dc=c-sc;
+  var dir=sp.toLowerCase()==='r'?-1:1,king=sp!==''&&sp===sp.toUpperCase(),ok=false;
+  if(!checkers[i]&&Math.abs(dc)===1&&(dr===dir||(king&&Math.abs(dr)===1)))ok=true;
+  if(!checkers[i]&&Math.abs(dc)===2&&(dr===2*dir||(king&&Math.abs(dr)===2))){
+    var mid=s+(dr/2)*8+(dc/2);
+    if(checkers[mid]&&checkers[mid].toLowerCase()!==sp.toLowerCase()){checkers[mid]='';ok=true;}
+  }
+  if(ok){
+    checkers[i]=((sp==='r'&&r===0)||(sp==='b'&&r===7))?sp.toUpperCase():sp;
+    checkers[s]='';
+    familyState.turn=familyState.turn==='r'?'b':'r';
+    if(checkersWinner()&&typeof zintsomiConfetti==='function')zintsomiConfetti();
+  }
+  familyState.selected=null;renderCheckers();
+}
 
 // ════ AUDIO ENGINE ════
+// ════ MANCALA - Authentic African Board Game ════
+var mancalaBoard=[],mancalaTurn=1,mancalaMsg='',mancalaOver=false;
+function initMancala(){
+  mancalaBoard=[4,4,4,4,4,4,0,4,4,4,4,4,4,0];
+  mancalaTurn=1;mancalaMsg="Player 1's turn - pick a pit";mancalaOver=false;
+  familyState.selected=null;
+}
+function mancalaPitClick(pit){
+  if(mancalaOver)return;
+  var b=mancalaBoard,turn=mancalaTurn;
+  var validP1=turn===1&&pit>=0&&pit<=5&&b[pit]>0;
+  var validP2=turn===2&&pit>=7&&pit<=12&&b[pit]>0;
+  if(!validP1&&!validP2){mancalaMsg='Pick one of your own pits!';renderMancala();return;}
+  var seeds=b[pit];b[pit]=0;var cur=pit;
+  while(seeds>0){
+    cur=(cur+1)%14;
+    if(turn===1&&cur===13)continue;
+    if(turn===2&&cur===6)continue;
+    b[cur]++;seeds--;
+  }
+  // Capture rule
+  var inOwnPits=(turn===1&&cur>=0&&cur<=5)||(turn===2&&cur>=7&&cur<=12);
+  if(inOwnPits&&b[cur]===1){
+    var opp=12-cur;
+    if(b[opp]>0){var store=turn===1?6:13;b[store]+=b[opp]+1;b[opp]=0;b[cur]=0;}
+  }
+  var extra=(turn===1&&cur===6)||(turn===2&&cur===13);
+  var p1Empty=b.slice(0,6).every(function(x){return x===0;});
+  var p2Empty=b.slice(7,13).every(function(x){return x===0;});
+  if(p1Empty||p2Empty){
+    for(var x=0;x<6;x++){b[6]+=b[x];b[x]=0;}
+    for(var x=7;x<13;x++){b[13]+=b[x];b[x]=0;}
+    mancalaOver=true;
+    mancalaMsg=b[6]>b[13]?'Player 1 wins! ('+b[6]+' vs '+b[13]+')':b[13]>b[6]?'Player 2 wins! ('+b[13]+' vs '+b[6]+')':'Draw! ('+b[6]+' each)';
+    if(typeof zintsomiConfetti==='function')zintsomiConfetti();
+  } else {
+    mancalaTurn=extra?turn:(turn===1?2:1);
+    mancalaMsg=(extra?'Bonus turn! ':'')+' Player '+mancalaTurn+"'s turn";
+  }
+  renderMancala();
+}
+function renderMancala(){
+  famTitle('Mancala - Umlabalaba');
+  if(!mancalaBoard.length)initMancala();
+  var b=mancalaBoard;
+  var html='<div class="family-status">'+mancalaMsg+'</div>';
+  html+='<div style="display:grid;grid-template-columns:56px 1fr 56px;gap:.4rem;align-items:center;max-width:400px;margin:0 auto">';
+  // P2 store left
+  html+='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(100,181,232,.1);border:2px solid rgba(100,181,232,.25);border-radius:10px;padding:.7rem .3rem;min-height:110px">';
+  html+='<div style="font-family:var(--mono);font-size:.42rem;color:rgba(100,181,232,.55);text-transform:uppercase;margin-bottom:.3rem">P2</div>';
+  html+='<div style="font-size:1.5rem;font-weight:700;color:#64B5E8">'+b[13]+'</div></div>';
+  // Centre grid
+  html+='<div style="display:flex;flex-direction:column;gap:.35rem">';
+  // P2 pits top (12 to 7)
+  html+='<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:.25rem">';
+  for(var i=12;i>=7;i--){
+    var act=mancalaTurn===2&&!mancalaOver&&b[i]>0;
+    html+='<div onclick="mancalaPitClick('+i+')" style="background:'+(act?'rgba(100,181,232,.2)':'rgba(255,255,255,.04)')+';border:1px solid '+(act?'rgba(100,181,232,.4)':'rgba(255,255,255,.07)')+';border-radius:7px;padding:.45rem .1rem;text-align:center;cursor:'+(act?'pointer':'default')+'">';
+    html+='<div style="font-size:.95rem;font-weight:600;color:'+(act?'#64B5E8':'rgba(255,255,255,.45)')+'">'+b[i]+'</div>';
+    html+='<div style="font-size:.42rem;color:rgba(255,255,255,.18);font-family:var(--mono)">'+(13-i)+'</div></div>';
+  }
+  html+='</div>';
+  // P1 pits bottom (0 to 5)
+  html+='<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:.25rem">';
+  for(var i=0;i<=5;i++){
+    var act2=mancalaTurn===1&&!mancalaOver&&b[i]>0;
+    html+='<div onclick="mancalaPitClick('+i+')" style="background:'+(act2?'rgba(245,118,26,.2)':'rgba(255,255,255,.04)')+';border:1px solid '+(act2?'rgba(245,118,26,.4)':'rgba(255,255,255,.07)')+';border-radius:7px;padding:.45rem .1rem;text-align:center;cursor:'+(act2?'pointer':'default')+'">';
+    html+='<div style="font-size:.95rem;font-weight:600;color:'+(act2?'var(--fire)':'rgba(255,255,255,.45)')+'">'+b[i]+'</div>';
+    html+='<div style="font-size:.42rem;color:rgba(255,255,255,.18);font-family:var(--mono)">'+(i+1)+'</div></div>';
+  }
+  html+='</div></div>';
+  // P1 store right
+  html+='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(245,118,26,.1);border:2px solid rgba(245,118,26,.25);border-radius:10px;padding:.7rem .3rem;min-height:110px">';
+  html+='<div style="font-family:var(--mono);font-size:.42rem;color:rgba(245,118,26,.55);text-transform:uppercase;margin-bottom:.3rem">P1</div>';
+  html+='<div style="font-size:1.5rem;font-weight:700;color:var(--fire)">'+b[6]+'</div></div>';
+  html+='</div>';
+  html+='<div style="font-family:var(--mono);font-size:.46rem;color:rgba(255,255,255,.25);text-align:center;margin-top:.4rem">P2 top (blue) | P1 bottom (orange) | Sow seeds anticlockwise</div>';
+  html+='<div class="family-actions">';
+  if(mancalaOver)html+='<button class="btn" style="background:var(--gold)" onclick="initMancala();renderMancala()">Play Again</button>';
+  html+='<button class="btn btn-out" onclick="initMancala();renderMancala()">New Game</button>';
+  html+='</div>';
+  famRoot(html);
+}
 var AudioCtx=window.AudioContext||window.webkitAudioContext;
 var aCtx=null;
 function getAC(){if(!aCtx)aCtx=new AudioCtx();if(aCtx.state==='suspended')aCtx.resume();return aCtx}
