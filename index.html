@@ -13283,5 +13283,739 @@ document.addEventListener('DOMContentLoaded',function(){
   }
 });
 </script>
+<script>
+/* ═══════════════════════════════════════════════════
+   ZINTSOMI ONLINE MULTIPLAYER SYSTEM
+   Supabase Realtime Broadcast · All turn-based games
+═══════════════════════════════════════════════════ */
+// ════════════════════════════════════════════════════════════
+// MULTIPLAYER ENGINE
+// Architecture:
+//   - game_rooms table: lobby & matchmaking
+//   - Supabase Realtime channel per room: broadcast game moves
+//   - Presence: know when opponent disconnects
+// ════════════════════════════════════════════════════════════
+
+var MP = {
+  room: null,          // current room object from DB
+  channel: null,       // realtime channel
+  role: null,          // 'host' or 'guest'
+  opponentId: null,
+  opponentName: null,
+  gameType: null,
+  myTurn: false,
+  active: false,
+  onMove: null,        // callback(moveData) — set by each game
+  onOpponentLeft: null
+};
+
+// ── SQL for Supabase (run once in dashboard) ──────────────────
+// CREATE TABLE IF NOT EXISTS game_rooms (
+//   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+//   game_type text NOT NULL,
+//   host_id uuid REFERENCES profiles(id),
+//   host_name text,
+//   guest_id uuid REFERENCES profiles(id),
+//   guest_name text,
+//   status text DEFAULT 'waiting',   -- waiting | playing | finished
+//   created_at timestamptz DEFAULT now()
+// );
+// ALTER TABLE game_rooms ENABLE ROW LEVEL SECURITY;
+// CREATE POLICY "All authenticated users can read/write game_rooms"
+//   ON game_rooms FOR ALL TO authenticated USING (true) WITH CHECK (true);
+
+// ── Room helpers ─────────────────────────────────────────────
+async function mpCreateRoom(gameType) {
+  if (!currentUser) { openAuthModal(); return null; }
+  var name = (currentUser.profile && currentUser.profile.full_name) || currentUser.email;
+  var { data, error } = await supa.from('game_rooms').insert({
+    game_type: gameType,
+    host_id: currentUser.id,
+    host_name: name,
+    status: 'waiting'
+  }).select().single();
+  if (error) { console.error('mpCreateRoom:', error); return null; }
+  return data;
+}
+
+async function mpJoinRoom(roomId) {
+  if (!currentUser) { openAuthModal(); return null; }
+  var name = (currentUser.profile && currentUser.profile.full_name) || currentUser.email;
+  var { data, error } = await supa.from('game_rooms')
+    .update({ guest_id: currentUser.id, guest_name: name, status: 'playing' })
+    .eq('id', roomId).eq('status', 'waiting').select().single();
+  if (error) { console.error('mpJoinRoom:', error); return null; }
+  return data;
+}
+
+async function mpGetOpenRooms(gameType) {
+  var { data } = await supa.from('game_rooms')
+    .select('*').eq('game_type', gameType).eq('status', 'waiting')
+    .order('created_at', { ascending: false }).limit(10);
+  return data || [];
+}
+
+async function mpCloseRoom(roomId) {
+  await supa.from('game_rooms').update({ status: 'finished' }).eq('id', roomId);
+}
+
+// ── Channel ──────────────────────────────────────────────────
+function mpConnect(roomId, onReady) {
+  if (MP.channel) { MP.channel.unsubscribe(); MP.channel = null; }
+
+  MP.channel = supa.channel('game:' + roomId, {
+    config: { broadcast: { self: false }, presence: { key: currentUser.id } }
+  });
+
+  MP.channel
+    .on('broadcast', { event: 'move' }, function(payload) {
+      if (MP.onMove) MP.onMove(payload.payload);
+    })
+    .on('broadcast', { event: 'chat' }, function(payload) {
+      mpShowChat(payload.payload.name, payload.payload.msg);
+    })
+    .on('broadcast', { event: 'resign' }, function() {
+      mpShowToast(MP.opponentName + ' resigned. You win!');
+      if (MP.onOpponentLeft) MP.onOpponentLeft('resign');
+    })
+    .on('presence', { event: 'leave' }, function(payload) {
+      if (payload.leftPresences && payload.leftPresences[0] &&
+          payload.leftPresences[0].key === MP.opponentId) {
+        mpShowToast(MP.opponentName + ' disconnected.');
+        if (MP.onOpponentLeft) MP.onOpponentLeft('disconnect');
+      }
+    })
+    .subscribe(function(status) {
+      if (status === 'SUBSCRIBED') {
+        MP.channel.track({ user_id: currentUser.id });
+        if (onReady) onReady();
+      }
+    });
+}
+
+function mpSendMove(moveData) {
+  if (!MP.channel) return;
+  MP.channel.send({ type: 'broadcast', event: 'move', payload: moveData });
+}
+
+function mpSendChat(msg) {
+  if (!MP.channel) return;
+  var name = (currentUser.profile && currentUser.profile.full_name) || 'You';
+  MP.channel.send({ type: 'broadcast', event: 'chat', payload: { name: name, msg: msg } });
+  mpShowChat(name, msg, true);
+}
+
+function mpResign() {
+  if (!MP.channel) return;
+  MP.channel.send({ type: 'broadcast', event: 'resign', payload: {} });
+  mpLeave();
+}
+
+function mpLeave() {
+  if (MP.channel) { MP.channel.unsubscribe(); MP.channel = null; }
+  if (MP.room) { mpCloseRoom(MP.room.id); }
+  MP.active = false; MP.room = null; MP.role = null;
+  MP.myTurn = false; MP.onMove = null;
+}
+
+// ── Toast / chat ─────────────────────────────────────────────
+function mpShowToast(msg) {
+  var t = document.getElementById('mp-toast');
+  if (!t) {
+    t = document.createElement('div'); t.id = 'mp-toast';
+    t.style.cssText = 'position:fixed;top:4.5rem;left:50%;transform:translateX(-50%);z-index:99990;background:rgba(14,16,22,.97);border:1px solid rgba(245,118,26,.4);border-radius:100px;color:#fff;font-family:var(--mono);font-size:.54rem;letter-spacing:.08em;padding:.45rem 1.2rem;pointer-events:none;transition:opacity .4s;white-space:nowrap';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg; t.style.opacity = '1';
+  clearTimeout(t._t); t._t = setTimeout(function() { t.style.opacity = '0'; }, 3000);
+}
+
+function mpShowChat(name, msg, isMine) {
+  var box = document.getElementById('mp-chat-log');
+  if (!box) return;
+  var el = document.createElement('div');
+  el.style.cssText = 'font-size:.78rem;line-height:1.5;padding:.25rem 0;border-bottom:.5px solid rgba(255,255,255,.06);color:' + (isMine ? 'var(--fire)' : '#64B5E8');
+  el.textContent = (isMine ? 'You' : name) + ': ' + msg;
+  box.appendChild(el);
+  box.scrollTop = box.scrollHeight;
+}
+
+// ════════════════════════════════════════════════════════════
+// MULTIPLAYER LOBBY MODAL
+// ════════════════════════════════════════════════════════════
+function openMultiplayerLobby(gameType, gameLabel, onStartCallback) {
+  if (!currentUser) {
+    mpShowToast('Log in to play online');
+    openAuthModal();
+    return;
+  }
+
+  var ov = document.createElement('div');
+  ov.id = 'mp-lobby-ov';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9700;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:1rem';
+
+  function renderLobby(rooms, loading) {
+    var playerName = (currentUser.profile && currentUser.profile.full_name) || currentUser.email;
+    var roomRows = loading
+      ? '<div style="color:rgba(255,255,255,.35);font-size:.88rem;text-align:center;padding:1rem">Loading rooms...</div>'
+      : rooms.length === 0
+        ? '<div style="color:rgba(255,255,255,.3);font-size:.84rem;text-align:center;padding:1rem">No open rooms — create one!</div>'
+        : rooms.map(function(r) {
+            return '<div style="display:flex;align-items:center;justify-content:space-between;padding:.6rem .8rem;background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);border-radius:8px;margin-bottom:.4rem">'
+              + '<div><div style="font-size:.88rem;color:#fff;font-weight:500">' + (r.host_name || 'Player') + '</div>'
+              + '<div style="font-family:var(--mono);font-size:.44rem;color:rgba(255,255,255,.3);margin-top:.15rem">Waiting · ' + gameLabel + '</div></div>'
+              + '<button onclick="mpJoinAndStart(\'' + r.id + '\',\'' + (r.host_name||'Opponent').replace(/'/g,"\\'") + '\',\'' + gameType + '\',mpLobbyStartCb)" '
+              + 'style="background:var(--fire);border:none;border-radius:7px;padding:.4rem .9rem;color:#fff;font-family:var(--mono);font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Join</button>'
+              + '</div>';
+          }).join('');
+
+    ov.innerHTML = '<div style="background:var(--ink);border:1.5px solid rgba(245,118,26,.25);border-radius:20px;max-width:440px;width:100%;overflow:hidden">'
+      + '<div style="background:linear-gradient(135deg,rgba(245,118,26,.15),transparent);padding:1.2rem 1.4rem;display:flex;justify-content:space-between;align-items:center">'
+      + '<div><div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(245,118,26,.6)">Online Multiplayer</div>'
+      + '<div style="font-family:var(--impact);font-size:1.4rem;letter-spacing:.08em;color:#fff">' + gameLabel + '</div></div>'
+      + '<button onclick="document.getElementById(\'mp-lobby-ov\').remove()" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:1.2rem;cursor:pointer">✕</button></div>'
+      + '<div style="padding:1.2rem 1.4rem">'
+      + '<div style="font-family:var(--mono);font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.7rem">Playing as: <span style="color:var(--gold)">' + playerName + '</span></div>'
+      + '<button onclick="mpHostAndWait(\'' + gameType + '\',\'' + gameLabel + '\',mpLobbyStartCb)" '
+      + 'style="width:100%;background:var(--fire);border:none;border-radius:10px;padding:.7rem;color:#fff;font-family:var(--display);font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-bottom:1rem">'
+      + '+ Create Room &amp; Wait for Opponent</button>'
+      + '<div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:.5rem">Open Rooms</div>'
+      + '<div id="mp-room-list">' + roomRows + '</div>'
+      + '<button onclick="mpRefreshLobby(\'' + gameType + '\',\'' + gameLabel + '\',mpLobbyStartCb)" '
+      + 'style="margin-top:.7rem;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:7px;padding:.4rem .8rem;color:rgba(255,255,255,.4);font-family:var(--mono);font-size:.48rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Refresh</button>'
+      + '</div></div>';
+  }
+
+  // Store callback globally so inline onclick can reach it
+  window.mpLobbyStartCb = onStartCallback;
+
+  renderLobby([], true);
+  document.body.appendChild(ov);
+
+  mpGetOpenRooms(gameType).then(function(rooms) {
+    // Filter out own rooms
+    var filtered = rooms.filter(function(r) { return r.host_id !== currentUser.id; });
+    renderLobby(filtered, false);
+  });
+}
+
+function mpRefreshLobby(gameType, gameLabel, cb) {
+  var list = document.getElementById('mp-room-list');
+  if (list) list.innerHTML = '<div style="color:rgba(255,255,255,.3);font-size:.84rem;text-align:center;padding:.8rem">Refreshing...</div>';
+  window.mpLobbyStartCb = cb;
+  mpGetOpenRooms(gameType).then(function(rooms) {
+    var filtered = rooms.filter(function(r) { return r.host_id !== currentUser.id; });
+    if (!list) return;
+    if (filtered.length === 0) {
+      list.innerHTML = '<div style="color:rgba(255,255,255,.3);font-size:.84rem;text-align:center;padding:1rem">No open rooms — create one!</div>';
+    } else {
+      list.innerHTML = filtered.map(function(r) {
+        return '<div style="display:flex;align-items:center;justify-content:space-between;padding:.6rem .8rem;background:rgba(255,255,255,.04);border:.5px solid rgba(255,255,255,.08);border-radius:8px;margin-bottom:.4rem">'
+          + '<div><div style="font-size:.88rem;color:#fff;font-weight:500">' + (r.host_name||'Player') + '</div>'
+          + '<div style="font-family:var(--mono);font-size:.44rem;color:rgba(255,255,255,.3);margin-top:.15rem">Waiting · ' + gameLabel + '</div></div>'
+          + '<button onclick="mpJoinAndStart(\'' + r.id + '\',\'' + (r.host_name||'Opponent').replace(/'/g,"\\'") + '\',\'' + gameType + '\',mpLobbyStartCb)" '
+          + 'style="background:var(--fire);border:none;border-radius:7px;padding:.4rem .9rem;color:#fff;font-family:var(--mono);font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Join</button>'
+          + '</div>';
+      }).join('');
+    }
+  });
+}
+
+async function mpHostAndWait(gameType, gameLabel, cb) {
+  var ov = document.getElementById('mp-lobby-ov');
+  if (ov) ov.innerHTML = '<div style="background:var(--ink);border:1.5px solid rgba(245,118,26,.25);border-radius:20px;max-width:440px;width:100%;padding:2.5rem;text-align:center">'
+    + '<div style="font-size:2rem;margin-bottom:.8rem">⏳</div>'
+    + '<div style="font-family:var(--impact);font-size:1.4rem;color:#fff;margin-bottom:.5rem">Waiting for opponent...</div>'
+    + '<div style="font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.3);margin-bottom:1.5rem">Share the game name with a friend: <strong style="color:var(--gold)">' + gameLabel + '</strong></div>'
+    + '<div id="mp-waiting-dots" style="font-size:1.5rem;letter-spacing:.3rem">•••</div>'
+    + '<button onclick="mpCancelHost()" style="margin-top:1.5rem;background:rgba(255,255,255,.06);border:.5px solid rgba(255,255,255,.1);border-radius:8px;padding:.5rem 1.2rem;color:rgba(255,255,255,.4);font-family:var(--mono);font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Cancel</button>'
+    + '</div>';
+
+  var room = await mpCreateRoom(gameType);
+  if (!room) { if (ov) ov.remove(); return; }
+
+  MP.room = room;
+  MP.role = 'host';
+  MP.gameType = gameType;
+
+  // Animate dots
+  var dotEl = document.getElementById('mp-waiting-dots');
+  var dotAnim = setInterval(function() {
+    if (!dotEl || !dotEl.isConnected) { clearInterval(dotAnim); return; }
+    dotEl.textContent = dotEl.textContent === '•••' ? '• •' : '•••';
+  }, 600);
+
+  // Poll for guest joining
+  var pollInterval = setInterval(async function() {
+    if (!MP.room) { clearInterval(pollInterval); clearInterval(dotAnim); return; }
+    var { data } = await supa.from('game_rooms').select('*').eq('id', room.id).single();
+    if (data && data.status === 'playing' && data.guest_id) {
+      clearInterval(pollInterval); clearInterval(dotAnim);
+      MP.opponentId = data.guest_id;
+      MP.opponentName = data.guest_name || 'Opponent';
+      MP.myTurn = true; // host goes first
+      MP.active = true;
+      mpConnect(room.id, function() {
+        if (ov) ov.remove();
+        mpShowToast(MP.opponentName + ' joined! Your turn first.');
+        if (cb) cb('host', MP.opponentName);
+      });
+    }
+  }, 1500);
+
+  window._mpPollInterval = pollInterval;
+}
+
+function mpCancelHost() {
+  if (window._mpPollInterval) clearInterval(window._mpPollInterval);
+  if (MP.room) mpCloseRoom(MP.room.id);
+  MP.room = null;
+  var ov = document.getElementById('mp-lobby-ov');
+  if (ov) ov.remove();
+}
+
+async function mpJoinAndStart(roomId, hostName, gameType, cb) {
+  var room = await mpJoinRoom(roomId);
+  if (!room) { mpShowToast('Room no longer available'); return; }
+
+  MP.room = room;
+  MP.role = 'guest';
+  MP.gameType = gameType;
+  MP.opponentId = room.host_id;
+  MP.opponentName = hostName;
+  MP.myTurn = false; // host goes first
+  MP.active = true;
+
+  mpConnect(roomId, function() {
+    var ov = document.getElementById('mp-lobby-ov');
+    if (ov) ov.remove();
+    mpShowToast('Joined ' + hostName + "'s game! They go first.");
+    if (cb) cb('guest', hostName);
+  });
+}
+
+// ════════════════════════════════════════════════════════════
+// MULTIPLAYER STATUS BAR (shown inside game modals)
+// ════════════════════════════════════════════════════════════
+function mpStatusBar() {
+  var myName = (currentUser && currentUser.profile && currentUser.profile.full_name) || 'You';
+  return '<div id="mp-status-bar" style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.03);border:.5px solid rgba(255,255,255,.07);border-radius:8px;padding:.5rem .8rem;margin-bottom:.6rem;flex-wrap:wrap;gap:.4rem">'
+    + '<div style="display:flex;align-items:center;gap:.5rem">'
+    + '<span style="width:8px;height:8px;border-radius:50%;background:var(--fire);display:inline-block"></span>'
+    + '<span style="font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.5)">' + myName + (MP.role==='host'?' (Host)':' (Guest)') + '</span>'
+    + '</div>'
+    + '<div style="font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.35)">' + (MP.myTurn ? '<span style="color:var(--fire)">Your turn</span>' : MP.opponentName + "'s turn") + '</div>'
+    + '<div style="display:flex;align-items:center;gap:.5rem">'
+    + '<span style="width:8px;height:8px;border-radius:50%;background:#64B5E8;display:inline-block"></span>'
+    + '<span style="font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.5)">' + MP.opponentName + '</span>'
+    + '</div>'
+    + '</div>'
+    + '<div style="display:flex;gap:.4rem;margin-bottom:.5rem" id="mp-action-bar">'
+    + '<button onclick="mpChatToggle()" style="background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.08);border-radius:6px;padding:.3rem .7rem;color:rgba(255,255,255,.4);font-family:var(--mono);font-size:.46rem;letter-spacing:.06em;text-transform:uppercase;cursor:pointer"><i class="ph ph-chat"></i> Chat</button>'
+    + '<button onclick="if(confirm(\'Resign from this game?\'))mpResign()" style="background:rgba(255,100,100,.08);border:.5px solid rgba(255,100,100,.2);border-radius:6px;padding:.3rem .7rem;color:rgba(255,100,100,.6);font-family:var(--mono);font-size:.46rem;letter-spacing:.06em;text-transform:uppercase;cursor:pointer">Resign</button>'
+    + '</div>'
+    + '<div id="mp-chat-panel" style="display:none;background:rgba(0,0,0,.3);border:.5px solid rgba(255,255,255,.07);border-radius:8px;padding:.6rem;margin-bottom:.5rem">'
+    + '<div id="mp-chat-log" style="max-height:100px;overflow-y:auto;margin-bottom:.4rem;font-size:.78rem"></div>'
+    + '<div style="display:flex;gap:.4rem">'
+    + '<input id="mp-chat-input" type="text" placeholder="Message..." style="flex:1;background:rgba(255,255,255,.05);border:.5px solid rgba(255,255,255,.1);border-radius:6px;padding:.35rem .6rem;color:#fff;font-family:var(--body);font-size:.82rem;outline:none">'
+    + '<button onclick="var v=document.getElementById(\'mp-chat-input\');if(v&&v.value.trim()){mpSendChat(v.value.trim());v.value=\'\';}" style="background:var(--fire);border:none;border-radius:6px;padding:.35rem .7rem;color:#fff;font-family:var(--mono);font-size:.46rem;cursor:pointer">Send</button>'
+    + '</div></div>';
+}
+
+function mpChatToggle() {
+  var panel = document.getElementById('mp-chat-panel');
+  if (panel) panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+
+function mpUpdateStatusBar() {
+  var bar = document.getElementById('mp-status-bar');
+  if (!bar) return;
+  var myName = (currentUser && currentUser.profile && currentUser.profile.full_name) || 'You';
+  bar.querySelector('div:nth-child(2)').innerHTML = MP.myTurn
+    ? '<span style="color:var(--fire)">Your turn</span>'
+    : MP.opponentName + "'s turn";
+}
+
+// ════════════════════════════════════════════════════════════
+// ONLINE CHESS
+// ════════════════════════════════════════════════════════════
+function openOnlineChess() {
+  openMultiplayerLobby('chess', 'Chess', function(role, oppName) {
+    // Reopen family overlay with chess in online mode
+    document.getElementById('family-overlay').classList.add('open');
+    chess = []; familyState.chessStatus = '';
+    initChess();
+    MP.onMove = function(data) {
+      // Apply opponent's move
+      chess[data.to] = data.piece;
+      chess[data.from] = '.';
+      familyState.turn = familyState.turn === 'w' ? 'b' : 'w';
+      MP.myTurn = true;
+      var inCk = isInCheck(chess, familyState.turn);
+      var hasLeg = chessHasLegal(familyState.turn);
+      if (!hasLeg) {
+        familyState.chessStatus = inCk
+          ? (familyState.turn === 'w' ? 'Checkmate! Black wins' : 'Checkmate! White wins')
+          : 'Stalemate - Draw';
+        if (inCk && typeof zintsomiConfetti === 'function') zintsomiConfetti();
+      } else {
+        familyState.chessStatus = inCk ? 'Check! ' + (familyState.turn === 'w' ? 'White' : 'Black') + ' is in check!' : '';
+      }
+      renderOnlineChess();
+    };
+    MP.onOpponentLeft = function() {
+      famTitle('Chess — Opponent left');
+      mpShowToast('Opponent left. You win by default!');
+    };
+    renderOnlineChess();
+  });
+}
+
+function renderOnlineChess() {
+  famTitle('Chess — Online vs ' + MP.opponentName);
+  if (!chess.length) initChess();
+  var status = familyState.chessStatus || (MP.myTurn ? 'Your turn' : MP.opponentName + "'s turn");
+  var html = mpStatusBar();
+  html += '<div class="family-status">' + status + '</div>';
+  html += '<div class="family-board" style="grid-template-columns:repeat(8,1fr)">';
+
+  // Flip board for guest (black)
+  var indices = [];
+  for (var i = 0; i < 64; i++) indices.push(i);
+  if (MP.role === 'guest') indices.reverse();
+
+  indices.forEach(function(i) {
+    var r = Math.floor(i / 8), c = i % 8, v = chess[i], dark = (r + c) % 2;
+    var isSel = familyState.selected === i;
+    var icon = pieceIcon[v] || (v === '.' || !v ? '' : '');
+    html += '<div class="family-cell ' + (dark ? 'dark' : 'light') + (isSel ? ' sel' : '') + '" onclick="onlineChessClick(' + i + ')">' + icon + '</div>';
+  });
+  html += '</div>';
+  famRoot(html);
+}
+
+function onlineChessClick(i) {
+  if (!MP.active || !MP.myTurn) { mpShowToast("It's " + MP.opponentName + "'s turn"); return; }
+  if (familyState.chessStatus && familyState.chessStatus.indexOf('wins') >= 0) return;
+  // Determine my color
+  var myColor = MP.role === 'host' ? 'w' : 'b';
+  var p = chess[i];
+  if (familyState.selected == null) {
+    if (p && p !== '.' && ((myColor === 'w') === (/[A-Z]/.test(p)))) {
+      familyState.selected = i; renderOnlineChess();
+    }
+    return;
+  }
+  var s = familyState.selected, sp = chess[s];
+  if (isChessMove(s, i, sp)) {
+    var saved = chess.slice();
+    chess[i] = (sp === 'P' && i < 8) ? 'Q' : (sp === 'p' && i > 55) ? 'q' : sp;
+    chess[s] = '.';
+    if (isInCheck(chess, myColor)) { chess = saved; familyState.selected = null; renderOnlineChess(); return; }
+    familyState.turn = familyState.turn === 'w' ? 'b' : 'w';
+    MP.myTurn = false;
+    // Broadcast move
+    mpSendMove({ from: s, to: i, piece: chess[i] });
+    // Check status
+    var inCk = isInCheck(chess, familyState.turn);
+    var hasLeg = chessHasLegal(familyState.turn);
+    if (!hasLeg) {
+      familyState.chessStatus = inCk
+        ? (familyState.turn === 'w' ? 'Checkmate! Black wins' : 'Checkmate! White wins')
+        : 'Stalemate - Draw';
+      if (inCk && typeof zintsomiConfetti === 'function') zintsomiConfetti();
+    } else {
+      familyState.chessStatus = inCk ? 'Check! ' + (familyState.turn === 'w' ? 'White' : 'Black') + ' is in check!' : '';
+    }
+  }
+  familyState.selected = null; renderOnlineChess();
+}
+
+// ════════════════════════════════════════════════════════════
+// ONLINE CHECKERS
+// ════════════════════════════════════════════════════════════
+function openOnlineCheckers() {
+  openMultiplayerLobby('checkers', 'Checkers', function(role, oppName) {
+    document.getElementById('family-overlay').classList.add('open');
+    initCheckers();
+    MP.onMove = function(data) {
+      checkers[data.to] = data.piece;
+      checkers[data.from] = '';
+      if (data.mid !== undefined) checkers[data.mid] = '';
+      familyState.turn = familyState.turn === 'r' ? 'b' : 'r';
+      MP.myTurn = true;
+      renderOnlineCheckers();
+    };
+    MP.onOpponentLeft = function() { mpShowToast('Opponent left. You win!'); };
+    renderOnlineCheckers();
+  });
+}
+
+function renderOnlineCheckers() {
+  famTitle('Checkers — Online vs ' + MP.opponentName);
+  var winner = checkersWinner();
+  var status = winner || (MP.myTurn ? 'Your turn' : MP.opponentName + "'s turn");
+  var html = mpStatusBar();
+  html += '<div class="family-status">' + status + '</div>';
+  html += '<div class="family-board" style="grid-template-columns:repeat(8,1fr)">';
+  var indices = [];
+  for (var i = 0; i < 64; i++) indices.push(i);
+  if (MP.role === 'guest') indices.reverse();
+  indices.forEach(function(i) {
+    var r = Math.floor(i / 8), c = i % 8, v = checkers[i], dark = (r + c) % 2;
+    var isSel = familyState.selected === i;
+    var glyph = v === 'r' ? '🔴' : v === 'R' ? '🟠' : v === 'b' ? '⚫' : v === 'B' ? '⬜' : '';
+    html += '<div class="family-cell ' + (dark ? 'dark' : 'light') + (isSel ? ' sel' : '') + '" onclick="onlineCheckClick(' + i + ')">' + (dark ? glyph : '') + '</div>';
+  });
+  html += '</div>';
+  html += '<div class="family-actions"><button class="btn btn-out" onclick="mpResign()">Resign</button></div>';
+  famRoot(html);
+}
+
+function onlineCheckClick(i) {
+  if (!MP.active || !MP.myTurn) { mpShowToast("It's " + MP.opponentName + "'s turn"); return; }
+  if (checkersWinner()) return;
+  var myColor = MP.role === 'host' ? 'r' : 'b';
+  var p = checkers[i];
+  if (familyState.selected == null) {
+    if (p && p.toLowerCase() === myColor) { familyState.selected = i; renderOnlineCheckers(); }
+    return;
+  }
+  var s = familyState.selected, sp = checkers[s];
+  var sr = Math.floor(s / 8), sc = s % 8, r = Math.floor(i / 8), c = i % 8;
+  var dr = r - sr, dc = c - sc;
+  var dir = sp.toLowerCase() === 'r' ? -1 : 1, king = sp !== '' && sp === sp.toUpperCase(), ok = false, midIdx;
+  if (!checkers[i] && Math.abs(dc) === 1 && (dr === dir || (king && Math.abs(dr) === 1))) ok = true;
+  if (!checkers[i] && Math.abs(dc) === 2 && (dr === 2 * dir || (king && Math.abs(dr) === 2))) {
+    var mid = s + (dr / 2) * 8 + (dc / 2);
+    if (checkers[mid] && checkers[mid].toLowerCase() !== sp.toLowerCase()) { checkers[mid] = ''; midIdx = mid; ok = true; }
+  }
+  if (ok) {
+    checkers[i] = ((sp === 'r' && r === 0) || (sp === 'b' && r === 7)) ? sp.toUpperCase() : sp;
+    checkers[s] = '';
+    familyState.turn = familyState.turn === 'r' ? 'b' : 'r';
+    MP.myTurn = false;
+    mpSendMove({ from: s, to: i, piece: checkers[i], mid: midIdx });
+    if (checkersWinner() && typeof zintsomiConfetti === 'function') zintsomiConfetti();
+  }
+  familyState.selected = null; renderOnlineCheckers();
+}
+
+// ════════════════════════════════════════════════════════════
+// ONLINE MANCALA
+// ════════════════════════════════════════════════════════════
+function openOnlineMancala() {
+  openMultiplayerLobby('mancala', 'Mancala', function(role, oppName) {
+    document.getElementById('family-overlay').classList.add('open');
+    initMancala();
+    // Host = P1 (orange, bottom), Guest = P2 (blue, top)
+    MP.myTurn = role === 'host';
+    mancalaTurn = 1;
+    MP.onMove = function(data) {
+      // Opponent made their move — apply full board state they sent
+      mancalaBoard = data.board;
+      mancalaTurn = data.nextTurn;
+      mancalaMsg = data.msg;
+      mancalaOver = data.over;
+      // Extra turn: if nextTurn is still opponent's side, they go again
+      var opponentSide = MP.role === 'host' ? 2 : 1;
+      MP.myTurn = mancalaTurn !== opponentSide;
+      renderOnlineMancala();
+      if (data.over && typeof zintsomiConfetti === 'function') zintsomiConfetti();
+    };
+    MP.onOpponentLeft = function() { mpShowToast('Opponent left. You win!'); };
+    renderOnlineMancala();
+  });
+}
+
+function onlineMancalaPitClick(pit) {
+  if (!MP.active || !MP.myTurn) { mpShowToast("It's " + MP.opponentName + "'s turn"); return; }
+  if (mancalaOver) return;
+  var myPlayerNum = MP.role === 'host' ? 1 : 2;
+  // Validate pit belongs to this player
+  var validP1 = myPlayerNum === 1 && pit >= 0 && pit <= 5 && mancalaBoard[pit] > 0;
+  var validP2 = myPlayerNum === 2 && pit >= 7 && pit <= 12 && mancalaBoard[pit] > 0;
+  if (!validP1 && !validP2) { mpShowToast('Pick one of your pits!'); return; }
+
+  // Run the same Mancala logic
+  var b = mancalaBoard, turn = myPlayerNum;
+  var seeds = b[pit]; b[pit] = 0; var cur = pit;
+  while (seeds > 0) {
+    cur = (cur + 1) % 14;
+    if (turn === 1 && cur === 13) continue;
+    if (turn === 2 && cur === 6) continue;
+    b[cur]++; seeds--;
+  }
+  var inOwnPits = (turn === 1 && cur >= 0 && cur <= 5) || (turn === 2 && cur >= 7 && cur <= 12);
+  if (inOwnPits && b[cur] === 1) {
+    var opp = 12 - cur;
+    if (b[opp] > 0) { var store = turn === 1 ? 6 : 13; b[store] += b[opp] + 1; b[opp] = 0; b[cur] = 0; }
+  }
+  var extra = (turn === 1 && cur === 6) || (turn === 2 && cur === 13);
+  var p1Empty = b.slice(0, 6).every(function(x) { return x === 0; });
+  var p2Empty = b.slice(7, 13).every(function(x) { return x === 0; });
+  var over = false;
+  if (p1Empty || p2Empty) {
+    for (var x = 0; x < 6; x++) { b[6] += b[x]; b[x] = 0; }
+    for (var x = 7; x < 13; x++) { b[13] += b[x]; b[x] = 0; }
+    over = true;
+    mancalaOver = true;
+    mancalaMsg = b[6] > b[13] ? 'Player 1 wins! (' + b[6] + ' vs ' + b[13] + ')' : b[13] > b[6] ? 'Player 2 wins! (' + b[13] + ' vs ' + b[6] + ')' : 'Draw!';
+    if (typeof zintsomiConfetti === 'function') zintsomiConfetti();
+  } else {
+    mancalaTurn = extra ? turn : (turn === 1 ? 2 : 1);
+    mancalaMsg = (extra ? 'Bonus turn! ' : '') + 'Player ' + mancalaTurn + "'s turn";
+    MP.myTurn = extra; // extra turn means I go again
+  }
+  // Broadcast full board state so opponent is perfectly in sync
+  mpSendMove({ board: mancalaBoard.slice(), nextTurn: mancalaTurn, msg: mancalaMsg, over: over });
+  renderOnlineMancala();
+}
+
+function renderOnlineMancala() {
+  famTitle('Mancala — Online vs ' + MP.opponentName);
+  var b = mancalaBoard;
+  var myNum = MP.role === 'host' ? 1 : 2;
+  var html = mpStatusBar();
+  html += '<div class="family-status">' + mancalaMsg + '</div>';
+  html += '<div style="display:grid;grid-template-columns:56px 1fr 56px;gap:.4rem;align-items:center;max-width:400px;margin:0 auto">';
+  // Left store = P2
+  html += '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(100,181,232,.1);border:2px solid rgba(100,181,232,.25);border-radius:10px;padding:.7rem .3rem;min-height:110px">';
+  html += '<div style="font-family:var(--mono);font-size:.42rem;color:rgba(100,181,232,.55);text-transform:uppercase;margin-bottom:.3rem">' + (myNum === 2 ? 'You' : MP.opponentName) + '</div>';
+  html += '<div style="font-size:1.5rem;font-weight:700;color:#64B5E8">' + b[13] + '</div></div>';
+  // Centre pits
+  html += '<div style="display:flex;flex-direction:column;gap:.35rem">';
+  // P2 pits top
+  html += '<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:.25rem">';
+  for (var i = 12; i >= 7; i--) {
+    var act = MP.myTurn && !mancalaOver && myNum === 2 && b[i] > 0;
+    html += '<div onclick="onlineMancalaPitClick(' + i + ')" style="background:' + (act ? 'rgba(100,181,232,.2)' : 'rgba(255,255,255,.04)') + ';border:1px solid ' + (act ? 'rgba(100,181,232,.4)' : 'rgba(255,255,255,.07)') + ';border-radius:7px;padding:.45rem .1rem;text-align:center;cursor:' + (act ? 'pointer' : 'default') + '">';
+    html += '<div style="font-size:.95rem;font-weight:600;color:' + (act ? '#64B5E8' : 'rgba(255,255,255,.45)') + '">' + b[i] + '</div>';
+    html += '<div style="font-size:.42rem;color:rgba(255,255,255,.18);font-family:var(--mono)">' + (13 - i) + '</div></div>';
+  }
+  html += '</div>';
+  // P1 pits bottom
+  html += '<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:.25rem">';
+  for (var i = 0; i <= 5; i++) {
+    var act2 = MP.myTurn && !mancalaOver && myNum === 1 && b[i] > 0;
+    html += '<div onclick="onlineMancalaPitClick(' + i + ')" style="background:' + (act2 ? 'rgba(245,118,26,.2)' : 'rgba(255,255,255,.04)') + ';border:1px solid ' + (act2 ? 'rgba(245,118,26,.4)' : 'rgba(255,255,255,.07)') + ';border-radius:7px;padding:.45rem .1rem;text-align:center;cursor:' + (act2 ? 'pointer' : 'default') + '">';
+    html += '<div style="font-size:.95rem;font-weight:600;color:' + (act2 ? 'var(--fire)' : 'rgba(255,255,255,.45)') + '">' + b[i] + '</div>';
+    html += '<div style="font-size:.42rem;color:rgba(255,255,255,.18);font-family:var(--mono)">' + (i + 1) + '</div></div>';
+  }
+  html += '</div></div>';
+  // Right store = P1
+  html += '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(245,118,26,.1);border:2px solid rgba(245,118,26,.25);border-radius:10px;padding:.7rem .3rem;min-height:110px">';
+  html += '<div style="font-family:var(--mono);font-size:.42rem;color:rgba(245,118,26,.55);text-transform:uppercase;margin-bottom:.3rem">' + (myNum === 1 ? 'You' : MP.opponentName) + '</div>';
+  html += '<div style="font-size:1.5rem;font-weight:700;color:var(--fire)">' + b[6] + '</div></div>';
+  html += '</div>';
+  html += '<div style="font-family:var(--mono);font-size:.46rem;color:rgba(255,255,255,.25);text-align:center;margin-top:.4rem">';
+  html += myNum === 1 ? 'You are P1 (orange, bottom)' : 'You are P2 (blue, top)';
+  html += '</div>';
+  famRoot(html);
+}
+
+// ════════════════════════════════════════════════════════════
+// ONLINE SNAKES & LADDERS
+// ════════════════════════════════════════════════════════════
+function openOnlineSnakes() {
+  openMultiplayerLobby('snakes', 'Snakes & Ladders', function(role, oppName) {
+    document.getElementById('family-overlay').classList.add('open');
+    snake2 = { p1: 1, p2: 1, turn: 1, r1: 0, r2: 0, winner: 0 };
+    MP.myTurn = role === 'host'; // P1 = host
+    MP.onMove = function(data) {
+      snake2 = data.state;
+      var myNum = MP.role === 'host' ? 1 : 2;
+      MP.myTurn = snake2.turn === myNum;
+      renderOnlineSnakes();
+      if (data.state.winner && typeof zintsomiConfetti === 'function') zintsomiConfetti();
+    };
+    MP.onOpponentLeft = function() { mpShowToast('Opponent left. You win!'); };
+    renderOnlineSnakes();
+  });
+}
+
+function onlineSnakeRoll() {
+  if (!MP.active || !MP.myTurn) { mpShowToast("It's " + MP.opponentName + "'s turn"); return; }
+  if (snake2.winner) return;
+  var myNum = MP.role === 'host' ? 1 : 2;
+  var roll = 1 + Math.floor(Math.random() * 6);
+  var pos = (myNum === 1 ? snake2.p1 : snake2.p2) + roll;
+  if (pos >= 100) pos = 100;
+  else { if (ladders[pos]) pos = ladders[pos]; if (snakes[pos]) pos = snakes[pos]; }
+  if (myNum === 1) { snake2.p1 = pos; snake2.r1 = roll; }
+  else { snake2.p2 = pos; snake2.r2 = roll; }
+  if (pos >= 100) snake2.winner = myNum;
+  else snake2.turn = myNum === 1 ? 2 : 1;
+  MP.myTurn = false;
+  mpSendMove({ state: snake2 });
+  renderOnlineSnakes();
+  if (snake2.winner && typeof zintsomiConfetti === 'function') zintsomiConfetti();
+}
+
+function renderOnlineSnakes() {
+  famTitle('Snakes & Ladders — Online vs ' + MP.opponentName);
+  var myNum = MP.role === 'host' ? 1 : 2;
+  var s = snake2;
+  var statusMsg = s.winner
+    ? (s.winner === myNum ? 'You win!' : MP.opponentName + ' wins!')
+    : (MP.myTurn ? 'Your turn — roll!' : MP.opponentName + "'s turn");
+  var html = mpStatusBar();
+  html += '<div class="family-status">' + statusMsg + '</div>';
+  html += '<div style="display:flex;gap:.8rem;justify-content:center;margin:.5rem 0;font-family:var(--mono);font-size:.52rem">';
+  html += '<span>You (P' + myNum + '): Square ' + (myNum === 1 ? s.p1 : s.p2) + ' (last roll: ' + (myNum === 1 ? s.r1 : s.r2) + ')</span>';
+  html += '<span style="color:rgba(255,255,255,.35)">' + MP.opponentName + ': Square ' + (myNum === 1 ? s.p2 : s.p1) + '</span>';
+  html += '</div>';
+  html += '<div class="family-board" style="grid-template-columns:repeat(10,1fr);max-width:580px">';
+  for (var n = 100; n >= 1; n--) {
+    var marks = '';
+    if (s.p1 === n) marks += '🟠';
+    if (s.p2 === n) marks += '🔵';
+    if (!marks) { if (ladders[n]) marks = '🪜'; else if (snakes[n]) marks = '🐍'; }
+    html += '<div class="family-cell" style="font-size:.62rem;flex-direction:column"><span>' + n + '</span><span>' + marks + '</span></div>';
+  }
+  html += '</div>';
+  html += '<div class="family-actions">';
+  if (!s.winner && MP.myTurn) html += '<button class="btn" onclick="onlineSnakeRoll()">🎲 Roll</button>';
+  html += '</div>';
+  famRoot(html);
+}
+
+// ════════════════════════════════════════════════════════════
+// WIRE ONLINE BUTTONS INTO GAME TILES
+// ════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+  // Add "Play Online" button to each multiplayer-capable game tile
+  var tiles = document.querySelectorAll('.game-tile');
+  var onlineGames = {
+    'chess':    { fn: 'openOnlineChess()',    label: 'Online Chess' },
+    'checkers': { fn: 'openOnlineCheckers()', label: 'Online Checkers' },
+    'mancala':  { fn: 'openOnlineMancala()',  label: 'Online Mancala' },
+    'snakes':   { fn: 'openOnlineSnakes()',   label: 'Online Snakes' }
+  };
+
+  tiles.forEach(function(tile) {
+    var onclick = tile.getAttribute('onclick') || '';
+    var match = onclick.match(/openFamilyGame\('(\w+)'\)/);
+    if (!match) return;
+    var type = match[1];
+    if (!onlineGames[type]) return;
+
+    var cfg = onlineGames[type];
+    // Add online badge and button to tile body
+    var body = tile.querySelector('.game-tile-body');
+    if (!body) return;
+    var onlineBtn = document.createElement('button');
+    onlineBtn.className = 'btn';
+    onlineBtn.style.cssText = 'margin-top:.6rem;width:100%;font-size:.52rem;padding:.4rem;background:rgba(100,181,232,.12);border:1px solid rgba(100,181,232,.3);color:#64B5E8';
+    onlineBtn.innerHTML = '<i class="ph ph-wifi-high"></i> Play Online';
+    onlineBtn.onclick = function(e) {
+      e.stopPropagation();
+      window[cfg.fn.replace('()', '')]();
+    };
+    body.appendChild(onlineBtn);
+  });
+});
+
+</script>
 </body>
 </html>
