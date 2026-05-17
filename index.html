@@ -14017,5 +14017,733 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 </script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ZINTSOMI NEW GAMES: Word Hunt · Proverb Puzzle · Griot's Journey · Inkosi Says
+═══════════════════════════════════════════════════════════════ -->
+<script>
+// ════════════════════════════════════════════════════════════
+// 1. WORD HUNT — Isizulu Edition  (Wordle-style, 4 languages)
+// ════════════════════════════════════════════════════════════
+var WH = {
+  words: [
+    {en:'STORY',zu:'INDAB',xh:'IBALI',st:'PALE_',def:'A narrative — the vessel of memory and wisdom.'},
+    {en:'FLAME',zu:'UMLIL',xh:'UMLIL',st:'MOLLO',def:'Fire — in Zintsomi tradition, the gathering place of stories.'},
+    {en:'ELDER',zu:'UMDAL',xh:'UMDAL',st:'MOGOL',def:'The keeper of wisdom. The one the young sit before.'},
+    {en:'WATER',zu:'AMANW',xh:'AMANW',st:'METSI',def:'Water — life source, cleansing, and the river of time.'},
+    {en:'EARTH',zu:'UMHLA',xh:'UMHLA',st:'LEFAT',def:'The ground that holds ancestors and feeds the living.'},
+    {en:'DANCE',zu:'UKUMD',xh:'UKUMD',st:'METS_',def:'Movement as language — the body\'s story.'},
+    {en:'BRAVE',zu:'ISIB_',xh:'ISIB_',st:'BONAL',def:'Isibindi — courage, literally the liver. Seat of bravery.'},
+    {en:'PEACE',zu:'UKUTH',xh:'UXOLO',st:'KHOTS',def:'The state a storyteller builds between enemies.'},
+    {en:'VOICE',zu:'IZWI_',xh:'IZWI_',st:'LENTS',def:'The storyteller\'s primary instrument — vessel of power.'},
+    {en:'DREAM',zu:'IPHUP',xh:'IPHUP',st:'SEPON',def:'Iziphupho — the ancestors speak through dreams.'},
+    {en:'GRIEF',zu:'USIZI',xh:'USIZI',st:'MAHAL',def:'The weight stories help communities carry together.'},
+    {en:'UNITY',zu:'UBUMB',xh:'UBUMB',st:'BOPAN',def:'Ubuntu in action — the strength of the bound sticks.'},
+    {en:'DRUMS',zu:'IZIGQ',xh:'IZIGQ',st:'MERUF',def:'Isigqi — the heartbeat of ceremony and celebration.'},
+    {en:'CHIEF',zu:'INKOS',xh:'INKOS',st:'KHOSI',def:'The leader who holds community stories as sacred trust.'},
+    {en:'PRIDE',zu:'ISITH',xh:'ISITH',st:'BOIKM',def:'The dignified knowledge of where you come from.'},
+  ],
+  bank: [
+    'STORY','FLAME','ELDER','WATER','EARTH','BRAVE','PEACE','VOICE','DREAM','GRIEF','UNITY','DRUMS','CHIEF','PRIDE',
+    'GRACE','HEART','LIGHT','POWER','TRUTH','FAITH','ROOTS','RIVER','NIGHT','BLOOD','TEARS','SONGS','HANDS','WINDS',
+    'BONES','SEEDS','GUARD','QUEEN','KINGS','FIRES','OATHS','WORDS','NAMES','STARS','PATHS','WOMEN','MEN__','GIRLS',
+  ],
+  state: null,
+  ROWS: 6, COLS: 5,
+};
+
+function whGetDailyWord() {
+  var lang = typeof currentLang !== 'undefined' ? currentLang : 'en';
+  var day  = Math.floor(Date.now() / 86400000);
+  var w    = WH.words[day % WH.words.length];
+  var raw  = (w[lang] || w.en).toUpperCase().replace(/_/g,'').slice(0,5);
+  while (raw.length < 5) raw += 'A';
+  return { word: raw, def: w.def, lang: lang };
+}
+
+function openWordHunt() {
+  if (!currentUser) { openAuthModal(); return; }
+  var saved   = JSON.parse(localStorage.getItem('zintsomi_wh') || 'null');
+  var today   = new Date().toDateString();
+  var daily   = whGetDailyWord();
+  if (saved && saved.date === today && saved.word === daily.word) {
+    WH.state = saved;
+  } else {
+    WH.state = { date: today, word: daily.word, def: daily.def, lang: daily.lang,
+      guesses: [], currentGuess: '', status: 'playing' };
+  }
+  whRender();
+}
+
+function whRender() {
+  var s = WH.state;
+  var ov = document.getElementById('wh-overlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'wh-overlay';
+    ov.style.cssText = 'position:fixed;inset:0;z-index:9600;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto';
+    document.body.appendChild(ov);
+  }
+  var langLabel = {en:'English',zu:'isiZulu',xh:'isiXhosa',st:'Sesotho'}[s.lang] || 'English';
+  var html = '<div style="background:var(--ink);border:1px solid rgba(255,255,255,.08);border-radius:20px;max-width:420px;width:100%;overflow:hidden">';
+  // Header
+  html += '<div style="padding:1rem 1.4rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center">';
+  html += '<div><div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:var(--fire)">Word Hunt · '+langLabel+'</div>';
+  html += '<div style="font-family:var(--impact);font-size:1.3rem;letter-spacing:.08em;color:#fff">Daily Word</div></div>';
+  html += '<button onclick="document.getElementById(\'wh-overlay\').remove()" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:1.3rem;cursor:pointer">✕</button></div>';
+  // Grid
+  html += '<div style="padding:1.2rem 1.4rem">';
+  html += '<div style="display:grid;grid-template-rows:repeat(6,1fr);gap:.35rem;margin-bottom:1rem">';
+  for (var r = 0; r < WH.ROWS; r++) {
+    html += '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:.35rem">';
+    var guess = s.guesses[r] || null;
+    var isCurrentRow = (r === s.guesses.length && s.status === 'playing');
+    for (var c = 0; c < WH.COLS; c++) {
+      var letter = '', bg = 'rgba(255,255,255,.05)', border = 'rgba(255,255,255,.12)', color = '#fff';
+      if (guess) {
+        letter = guess.letters[c];
+        bg     = guess.colors[c] === 'correct' ? '#538d4e' : guess.colors[c] === 'present' ? '#b59f3b' : '#3a3a3c';
+        border = bg; color = '#fff';
+      } else if (isCurrentRow) {
+        letter = (s.currentGuess[c] || '');
+        border = letter ? 'rgba(255,255,255,.4)' : 'rgba(255,255,255,.12)';
+      }
+      html += '<div style="aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:'+bg+';border:2px solid '+border+';border-radius:6px;font-family:var(--impact);font-size:1.3rem;letter-spacing:.04em;color:'+color+';transition:background .3s">';
+      html += letter + '</div>';
+    }
+    html += '</div>';
+  }
+  html += '</div>';
+  // Keyboard
+  var rows = [['Q','W','E','R','T','Y','U','I','O','P'],['A','S','D','F','G','H','J','K','L'],['ENTER','Z','X','C','V','B','N','M','⌫']];
+  // Build used-letter color map
+  var letterColors = {};
+  s.guesses.forEach(function(g) {
+    g.letters.forEach(function(l, i) {
+      var cur = letterColors[l];
+      var next = g.colors[i];
+      if (!cur || (next === 'correct') || (next === 'present' && cur === 'absent')) letterColors[l] = next;
+    });
+  });
+  html += '<div style="display:flex;flex-direction:column;gap:.3rem">';
+  rows.forEach(function(row) {
+    html += '<div style="display:flex;gap:.25rem;justify-content:center">';
+    row.forEach(function(k) {
+      var kbg = letterColors[k] === 'correct' ? '#538d4e' : letterColors[k] === 'present' ? '#b59f3b' : letterColors[k] === 'absent' ? '#3a3a3c' : 'rgba(255,255,255,.1)';
+      var wide = (k === 'ENTER' || k === '⌫') ? 'min-width:52px;' : 'min-width:32px;';
+      html += '<button onclick="whKey(\''+k+'\')" style="'+wide+'height:44px;background:'+kbg+';border:none;border-radius:5px;color:#fff;font-family:var(--mono);font-size:'+(k.length>1?'.45rem':'.7rem')+';font-weight:700;cursor:pointer;letter-spacing:.04em;padding:0 .2rem">'+k+'</button>';
+    });
+    html += '</div>';
+  });
+  html += '</div>';
+  // Status message
+  if (s.status !== 'playing') {
+    var won = s.status === 'won';
+    html += '<div style="margin-top:.9rem;padding:.8rem 1rem;background:'+(won?'rgba(83,141,78,.15)':'rgba(255,80,80,.08)')+';border:1px solid '+(won?'rgba(83,141,78,.4)':'rgba(255,80,80,.2)')+';border-radius:10px;text-align:center">';
+    html += '<div style="font-family:var(--impact);font-size:1.1rem;color:'+(won?'#6EE78E':'rgba(255,100,100,.8)')+';margin-bottom:.3rem">'+(won?'Correct! ':'The word was: <strong>'+s.word+'</strong>')+'</div>';
+    html += '<div style="font-family:var(--serif);font-size:.88rem;color:rgba(255,255,255,.55);line-height:1.65;font-style:italic">'+s.def+'</div>';
+    html += '</div>';
+    if (won && typeof addXP === 'function') addXP(50, 'Word Hunt');
+  }
+  html += '<div style="font-family:var(--mono);font-size:.44rem;color:rgba(255,255,255,.2);text-align:center;margin-top:.6rem">New word every day · Uses active language setting</div>';
+  html += '</div></div>';
+  ov.innerHTML = html;
+  // keyboard listener
+  ov._keydown = ov._keydown || function(e) {
+    if (!document.getElementById('wh-overlay')) { document.removeEventListener('keydown', ov._keydown); return; }
+    if (e.key === 'Enter') whKey('ENTER');
+    else if (e.key === 'Backspace') whKey('⌫');
+    else if (/^[a-zA-Z]$/.test(e.key)) whKey(e.key.toUpperCase());
+  };
+  document.removeEventListener('keydown', ov._keydown);
+  document.addEventListener('keydown', ov._keydown);
+}
+
+function whKey(k) {
+  var s = WH.state;
+  if (!s || s.status !== 'playing') return;
+  if (k === '⌫') { s.currentGuess = s.currentGuess.slice(0,-1); whRender(); return; }
+  if (k === 'ENTER') {
+    if (s.currentGuess.length < WH.COLS) { whToast('Not enough letters'); return; }
+    // Evaluate
+    var g = s.currentGuess.split('');
+    var colors = Array(WH.COLS).fill('absent');
+    var wordArr = s.word.split('');
+    var used = Array(WH.COLS).fill(false);
+    // First pass: correct
+    g.forEach(function(l,i){ if(l===wordArr[i]){colors[i]='correct';used[i]=true;} });
+    // Second pass: present
+    g.forEach(function(l,i){
+      if(colors[i]==='correct')return;
+      for(var j=0;j<WH.COLS;j++){
+        if(!used[j]&&wordArr[j]===l){colors[i]='present';used[j]=true;break;}
+      }
+    });
+    s.guesses.push({letters:g, colors:colors});
+    if (s.currentGuess === s.word) { s.status='won'; if(typeof zintsomiConfetti==='function')zintsomiConfetti(); }
+    else if (s.guesses.length >= WH.ROWS) s.status='lost';
+    s.currentGuess = '';
+    localStorage.setItem('zintsomi_wh', JSON.stringify(s));
+    whRender();
+    return;
+  }
+  if (s.currentGuess.length < WH.COLS) { s.currentGuess += k; whRender(); }
+}
+function whToast(msg) {
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;top:5rem;left:50%;transform:translateX(-50%);z-index:9999;background:#fff;color:#000;font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.08em;padding:.5rem 1.2rem;border-radius:8px;pointer-events:none';
+  t.textContent = msg; document.body.appendChild(t);
+  setTimeout(function(){t.remove();},1200);
+}
+
+// ════════════════════════════════════════════════════════════
+// 2. PROVERB PUZZLE — Drag-to-sort African proverbs
+// ════════════════════════════════════════════════════════════
+var PP = {
+  proverbs: [
+    {words:['Umuntu','ngumuntu','ngabantu'],lang:'isiZulu',meaning:'A person is a person through other people — Ubuntu.'},
+    {words:['Inkosi','yinkosi','ngabantu'],lang:'isiZulu',meaning:'A chief is a chief through people — leadership serves.'},
+    {words:['Izandla','ziyagezana'],lang:'isiZulu',meaning:'Hands wash each other — we need one another.'},
+    {words:['Ubuntu','ngumuntu','ngabantu','bonke'],lang:'isiZulu',meaning:'Humanity is found in community with all people.'},
+    {words:['Intaka','yakha','ngoboya','bezinye'],lang:'isiZulu',meaning:'A bird builds with the feathers of others — use what community offers.'},
+    {words:['Umntu','ngumntu','ngabantu'],lang:'isiXhosa',meaning:'A person is a person through other people.'},
+    {words:['Motho','ke','motho','ka','batho'],lang:'Sesotho',meaning:'A person is a person because of other people.'},
+    {words:['Feta','kgomo','o tshware','motho'],lang:'Sesotho',meaning:'Pass the cattle — hold on to people. People matter more than wealth.'},
+    {words:['Ntwa','kgolo','ke','ya','molomo'],lang:'Sesotho',meaning:'The greatest battle is fought with words — dialogue over violence.'},
+    {words:['Molapo','ha','o','ke','nakeng'],lang:'Sesotho',meaning:'A river is not praised in times of drought — remember your blessings.'},
+    {words:['Bana','ba','motho','ba','ntsha','tsebe','ya','nku'],lang:'Sesotho',meaning:'A parent\'s children bring out the sheep\'s ear — family reveals character.'},
+    {words:['Thenga','ngendlebe','uyophetha','ngomqala'],lang:'isiZulu',meaning:'Buy with the ear — you\'ll pay with your throat. Listen before you speak.'},
+    {words:['Isandla','sihlamba','esinye'],lang:'isiZulu',meaning:'One hand washes the other — reciprocity is the foundation of community.'},
+  ],
+  state: { idx:0, tiles:[], placed:[], timer:0, score:0, best:parseInt(localStorage.getItem('zintsomi_pp_best')||'0'), status:'idle', interval:null }
+};
+
+function openProverbPuzzle() {
+  if (!currentUser) { openAuthModal(); return; }
+  var s = PP.state;
+  s.idx = Math.floor(Math.random() * PP.proverbs.length);
+  ppStartRound();
+}
+
+function ppStartRound() {
+  var s = PP.state;
+  var p = PP.proverbs[s.idx];
+  s.tiles  = p.words.map(function(w,i){return{word:w,origIdx:i};});
+  // shuffle
+  for (var i=s.tiles.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=s.tiles[i];s.tiles[i]=s.tiles[j];s.tiles[j]=tmp;}
+  s.placed = Array(p.words.length).fill(null);
+  s.timer  = 30 + p.words.length * 5;
+  s.status = 'playing';
+  clearInterval(s.interval);
+  s.interval = setInterval(function(){
+    s.timer--;
+    var el = document.getElementById('pp-timer');
+    if (el) el.textContent = s.timer+'s';
+    if (s.timer <= 0) { clearInterval(s.interval); s.status='lost'; ppRender(); }
+  }, 1000);
+  ppRender();
+}
+
+function ppRender() {
+  var s = PP.state;
+  var p = PP.proverbs[s.idx];
+  var ov = document.getElementById('pp-overlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'pp-overlay';
+    ov.style.cssText = 'position:fixed;inset:0;z-index:9601;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto';
+    document.body.appendChild(ov);
+  }
+  var html = '<div style="background:var(--ink);border:1px solid rgba(255,255,255,.08);border-radius:20px;max-width:480px;width:100%;overflow:hidden">';
+  html += '<div style="padding:1rem 1.4rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center">';
+  html += '<div><div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:var(--fire)">Proverb Puzzle · '+p.lang+'</div>';
+  html += '<div style="font-family:var(--impact);font-size:1.2rem;letter-spacing:.06em;color:#fff">Arrange the words</div></div>';
+  html += '<div style="display:flex;gap:1rem;align-items:center">';
+  html += '<div style="font-family:var(--mono);font-size:.8rem;color:'+(s.timer<=10?'rgba(255,80,80,.9)':'var(--fire)')+'" id="pp-timer">'+s.timer+'s</div>';
+  html += '<button onclick="document.getElementById(\'pp-overlay\').remove();clearInterval(PP.state.interval)" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:1.2rem;cursor:pointer">✕</button></div></div>';
+  html += '<div style="padding:1.2rem 1.4rem">';
+  // Answer slots
+  html += '<div style="font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.5rem">Drop words here in order:</div>';
+  html += '<div style="display:flex;flex-wrap:wrap;gap:.4rem;min-height:52px;padding:.5rem;border:1.5px dashed rgba(255,255,255,.12);border-radius:10px;margin-bottom:1rem" id="pp-slots">';
+  s.placed.forEach(function(w,i){
+    html += '<div onclick="ppRemove('+i+')" style="padding:.4rem .9rem;background:'+(w?'rgba(245,118,26,.2)':'rgba(255,255,255,.04)')+';border:1px solid '+(w?'rgba(245,118,26,.4)':'rgba(255,255,255,.1)')+';border-radius:8px;font-family:var(--mono);font-size:.75rem;color:'+(w?'var(--fire)':'rgba(255,255,255,.2)')+';cursor:'+(w?'pointer':'default')+';min-width:50px;text-align:center;transition:.15s">';
+    html += (w || (i+1)+'.') + '</div>';
+  });
+  html += '</div>';
+  // Tile bank
+  html += '<div style="font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.5rem">Word bank — tap to place:</div>';
+  html += '<div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem">';
+  s.tiles.forEach(function(t,i){
+    if (s.placed.indexOf(t.word) >= 0) return;
+    html += '<button onclick="ppPlace('+i+')" style="padding:.4rem .9rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:8px;font-family:var(--mono);font-size:.78rem;color:#fff;cursor:pointer;transition:.15s">'+t.word+'</button>';
+  });
+  html += '</div>';
+  // Controls
+  html += '<div style="display:flex;gap:.5rem">';
+  html += '<button onclick="ppCheck()" style="flex:2;background:var(--fire);border:none;border-radius:8px;padding:.65rem;color:#fff;font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Check Answer</button>';
+  html += '<button onclick="ppStartRound()" style="flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.65rem;color:rgba(255,255,255,.5);font-family:var(--display);font-size:.52rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer">New Proverb</button>';
+  html += '</div>';
+  if (s.status === 'won') {
+    html += '<div style="margin-top:.9rem;padding:.9rem 1rem;background:rgba(83,141,78,.12);border:1px solid rgba(83,141,78,.35);border-radius:10px">';
+    html += '<div style="font-family:var(--impact);font-size:1.1rem;color:#6EE78E;margin-bottom:.4rem">Correct! +40 XP</div>';
+    html += '<div style="font-family:var(--serif);font-size:.9rem;color:rgba(255,255,255,.6);line-height:1.65;font-style:italic">'+p.meaning+'</div></div>';
+  } else if (s.status === 'lost' || s.status === 'wrong') {
+    var correct = p.words.join(' ');
+    html += '<div style="margin-top:.9rem;padding:.9rem 1rem;background:rgba(255,80,80,.07);border:1px solid rgba(255,80,80,.2);border-radius:10px">';
+    html += '<div style="font-family:var(--mono);font-size:.52rem;color:rgba(255,100,100,.8);margin-bottom:.3rem">'+(s.status==='lost'?'Time\'s up!':'Not quite.')+'</div>';
+    html += '<div style="font-family:var(--mono);font-size:.7rem;color:#fff;margin-bottom:.4rem">'+correct+'</div>';
+    html += '<div style="font-family:var(--serif);font-size:.85rem;color:rgba(255,255,255,.55);line-height:1.6;font-style:italic">'+p.meaning+'</div></div>';
+  }
+  html += '<div style="font-family:var(--mono);font-size:.44rem;color:rgba(255,255,255,.2);text-align:center;margin-top:.6rem">Best: '+s.best+' pts · Score: '+s.score+' pts</div>';
+  html += '</div></div>';
+  ov.innerHTML = html;
+}
+
+function ppPlace(tileIdx) {
+  var s = PP.state;
+  if (s.status !== 'playing') return;
+  var slot = s.placed.indexOf(null);
+  if (slot < 0) return;
+  s.placed[slot] = s.tiles[tileIdx].word;
+  ppRender();
+}
+function ppRemove(slotIdx) {
+  var s = PP.state;
+  if (s.status !== 'playing') return;
+  s.placed[slotIdx] = null;
+  ppRender();
+}
+function ppCheck() {
+  var s = PP.state;
+  if (s.placed.indexOf(null) >= 0) { whToast('Place all words first'); return; }
+  var p = PP.proverbs[s.idx];
+  var correct = p.words.every(function(w,i){ return s.placed[i]===w; });
+  clearInterval(s.interval);
+  if (correct) {
+    var pts = Math.ceil(s.timer * 2);
+    s.score += pts;
+    s.best = Math.max(s.score, s.best);
+    localStorage.setItem('zintsomi_pp_best', s.best);
+    s.status = 'won';
+    if (typeof addXP === 'function') addXP(40,'Proverb Puzzle');
+    if (typeof zintsomiConfetti === 'function') zintsomiConfetti();
+    // auto next after 2.5s
+    setTimeout(function(){
+      s.idx = (s.idx + 1) % PP.proverbs.length;
+      ppStartRound();
+    }, 2500);
+  } else {
+    s.status = 'wrong';
+  }
+  ppRender();
+}
+
+// ════════════════════════════════════════════════════════════
+// 3. GRIOT'S JOURNEY — Text RPG across 6 African villages
+// ════════════════════════════════════════════════════════════
+var GJ = {
+  villages: [
+    { name:'Entabeni',    icon:'🏔️', desc:'The mountain village. Home of the sky-watchers and star-readers.',   color:'#6B8E23', challenge:'quiz' },
+    { name:'Ngodini',     icon:'🌊', desc:'The river village. Where stories flow like water — endlessly.',       color:'#1E90FF', challenge:'riddle' },
+    { name:'Savannah',    icon:'🌾', desc:'The grassland village. Wide open — and full of tricksters.',          color:'#DAA520', challenge:'quiz' },
+    { name:'Izinyosi',    icon:'🌳', desc:'The forest village. The bees know every secret of every tree.',       color:'#228B22', challenge:'riddle' },
+    { name:'Qhugqwala',   icon:'🔥', desc:'The fire village. Where the great storytellers are trained.',          color:'#DC143C', challenge:'quiz' },
+    { name:'Maropeng',    icon:'💎', desc:'The Cradle of Humankind. The origin of all stories, all people.',     color:'#9B59B6', challenge:'final' },
+  ],
+  riddles: [
+    { q:'I have no voice but I tell stories. I have no hands but I build worlds. What am I?', a:'A book', opts:['A book','A drum','A river','The wind'] },
+    { q:'The more you take, the more you leave behind. What am I?', a:'Footsteps', opts:['Footsteps','Sand','Time','Stories'] },
+    { q:'I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?', a:'An echo', opts:['An echo','A drum','A shadow','A name'] },
+    { q:'I have cities, but no houses live there. I have mountains, but no trees grow there. I have water, but no fish swim. What am I?', a:'A map', opts:['A map','A dream','A story','A mirror'] },
+    { q:'What can run but never walks, has a mouth but never talks, has a head but never weeps, has a bed but never sleeps?', a:'A river', opts:['A river','A road','The wind','A snake'] },
+    { q:'The old woman sits in the corner and fills the whole house. What is she?', a:'A fire', opts:['A fire','A story','A grandmother','The moon'] },
+  ],
+  state: null,
+};
+
+function gjLoad() {
+  var saved = localStorage.getItem('zintsomi_gj');
+  if (saved) {
+    try { return JSON.parse(saved); } catch(e) {}
+  }
+  return { village: 0, completed: [], score: 0, rank: 'Mlilwane', lives: 3, artifacts: [] };
+}
+function gjSave() { localStorage.setItem('zintsomi_gj', JSON.stringify(GJ.state)); }
+
+function openGriotsJourney() {
+  if (!currentUser) { openAuthModal(); return; }
+  GJ.state = gjLoad();
+  gjRender();
+}
+
+function gjRender() {
+  var s = GJ.state;
+  var ov = document.getElementById('gj-overlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'gj-overlay';
+    ov.style.cssText = 'position:fixed;inset:0;z-index:9602;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto';
+    document.body.appendChild(ov);
+  }
+  var allDone = s.completed.length >= GJ.villages.length;
+  var html = '<div style="background:var(--ink);border:1px solid rgba(255,255,255,.08);border-radius:20px;max-width:500px;width:100%;overflow:hidden">';
+  // Header
+  html += '<div style="background:linear-gradient(135deg,#1a0a00,#3d1400);padding:1.2rem 1.4rem;display:flex;justify-content:space-between;align-items:center">';
+  html += '<div><div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,118,26,.6)">Griot\'s Journey</div>';
+  html += '<div style="font-family:var(--impact);font-size:1.3rem;letter-spacing:.08em;color:#fff">'+s.rank+'</div></div>';
+  html += '<div style="display:flex;gap:1rem;align-items:center">';
+  html += '<span style="font-family:var(--mono);font-size:.6rem;color:var(--fire)">⭐ '+s.score+'</span>';
+  html += '<span style="font-family:var(--mono);font-size:.6rem;color:rgba(255,100,100,.8)">♥ '+s.lives+'</span>';
+  html += '<button onclick="document.getElementById(\'gj-overlay\').remove()" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:1.2rem;cursor:pointer">✕</button></div></div>';
+  html += '<div style="padding:1.2rem 1.4rem">';
+
+  if (allDone) {
+    // Win screen
+    html += '<div style="text-align:center;padding:1rem 0">';
+    html += '<div style="font-size:3rem;margin-bottom:.6rem">🏆</div>';
+    html += '<div style="font-family:var(--impact);font-size:1.8rem;color:var(--gold);letter-spacing:.1em;margin-bottom:.5rem">Sangoma of Stories</div>';
+    html += '<div style="font-family:var(--serif);font-size:1rem;color:rgba(255,255,255,.6);line-height:1.8;margin-bottom:1.2rem">You have walked all six villages. You have answered the riddles, faced the challenges, and collected the artifacts. You are no longer a student of stories — you are their keeper.</div>';
+    html += '<div style="font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.35)">Total score: '+s.score+' · Artifacts: '+s.artifacts.join(', ')+'</div>';
+    html += '<button onclick="GJ.state={village:0,completed:[],score:0,rank:\'Mlilwane\',lives:3,artifacts:[]};gjSave();gjRender()" style="margin-top:1.2rem;background:var(--fire);border:none;border-radius:8px;padding:.7rem 2rem;color:#fff;font-family:var(--display);font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">New Journey</button>';
+    html += '</div>';
+  } else {
+    // Village map
+    html += '<div style="font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.8rem">Choose your next village:</div>';
+    html += '<div style="display:flex;flex-direction:column;gap:.45rem;margin-bottom:1rem">';
+    GJ.villages.forEach(function(v, i) {
+      var done = s.completed.indexOf(i) >= 0;
+      var isNext = (i === s.completed.length);
+      var locked = i > s.completed.length;
+      html += '<div onclick="'+(locked?'':isNext||done?'gjEnterVillage('+i+')':'gjEnterVillage('+i+')')+'" style="display:flex;align-items:center;gap:.8rem;padding:.7rem 1rem;background:'+(done?'rgba(83,141,78,.1)':isNext?'rgba(245,118,26,.1)':'rgba(255,255,255,.03)')+';border:1px solid '+(done?'rgba(83,141,78,.3)':isNext?'rgba(245,118,26,.3)':'rgba(255,255,255,.06)')+';border-radius:10px;cursor:'+(locked?'default':'pointer')+';transition:.15s">';
+      html += '<div style="font-size:1.6rem">'+(locked?'🔒':v.icon)+'</div>';
+      html += '<div style="flex:1"><div style="font-family:var(--display);font-size:.72rem;font-weight:700;color:'+(done?'#6EE78E':isNext?'var(--fire)':'rgba(255,255,255,.4)')+'">'+v.name+(done?' ✓':'')+'</div>';
+      html += '<div style="font-family:var(--mono);font-size:.46rem;color:rgba(255,255,255,.3)">'+v.desc+'</div></div>';
+      if (done) { var art = s.artifacts[s.completed.indexOf(i)]; html += '<div style="font-size:1.2rem">'+art+'</div>'; }
+      if (isNext) html += '<div style="font-family:var(--mono);font-size:.46rem;color:var(--fire)">ENTER →</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+    if (s.lives <= 0) {
+      html += '<div style="padding:.7rem 1rem;background:rgba(255,80,80,.08);border:1px solid rgba(255,80,80,.2);border-radius:8px;text-align:center;font-family:var(--mono);font-size:.55rem;color:rgba(255,100,100,.8)">No lives left. Rest and return tomorrow.</div>';
+    }
+  }
+  html += '</div></div>';
+  ov.innerHTML = html;
+}
+
+function gjEnterVillage(i) {
+  var s = GJ.state;
+  if (s.lives <= 0) return;
+  var v = GJ.villages[i];
+  if (v.challenge === 'final') { gjFinalChallenge(i); return; }
+  if (v.challenge === 'riddle') { gjRiddleChallenge(i); return; }
+  gjQuizChallenge(i);
+}
+
+function gjQuizChallenge(villageIdx) {
+  var s = GJ.state;
+  var v = GJ.villages[villageIdx];
+  // Pick 3 random questions from FAMILY_QUIZ
+  var pool = FAMILY_QUIZ.slice().sort(function(){return Math.random()-.5;}).slice(0,3);
+  var qIdx = 0, correct = 0;
+  function showQ() {
+    var ov = document.getElementById('gj-overlay');
+    if (qIdx >= pool.length) {
+      // Done — evaluate
+      if (correct >= 2) {
+        var artifacts = ['📜','🥁','🪶','🌿','🔮','🏺','⚗️','🎭'];
+        var art = artifacts[villageIdx % artifacts.length];
+        if (s.completed.indexOf(villageIdx) < 0) { s.completed.push(villageIdx); s.artifacts.push(art); s.score += 50; }
+        gjSave();
+        if (typeof addXP === 'function') addXP(30,'Village cleared');
+        if (typeof zintsomiConfetti === 'function') zintsomiConfetti();
+        gjRender();
+      } else {
+        s.lives--; gjSave();
+        var ov2 = document.getElementById('gj-overlay');
+        ov2.querySelector('.gj-content').innerHTML = '<div style="text-align:center;padding:1rem"><div style="font-size:2rem;margin-bottom:.6rem">💔</div><div style="font-family:var(--impact);font-size:1.2rem;color:rgba(255,100,100,.8);margin-bottom:.5rem">Not enough correct</div><div style="font-family:var(--serif);color:rgba(255,255,255,.5);margin-bottom:1rem">You got '+correct+'/3. You need at least 2 to pass this village.</div><button onclick="gjRender()" style="background:var(--fire);border:none;border-radius:8px;padding:.6rem 1.5rem;color:#fff;font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Back to Map</button></div>';
+      }
+      return;
+    }
+    var q = pool[qIdx];
+    var html2 = '<div class="gj-content"><div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(245,118,26,.6);margin-bottom:.4rem">'+v.icon+' '+v.name+' · Question '+(qIdx+1)+'/'+pool.length+'</div>';
+    html2 += '<div style="font-family:var(--serif);font-size:1rem;color:#fff;line-height:1.7;margin-bottom:1.1rem">'+q[0]+'</div>';
+    html2 += '<div style="display:flex;flex-direction:column;gap:.4rem">';
+    q[2].forEach(function(opt) {
+      html2 += '<button onclick="gjAnswer(this,\''+opt.replace(/'/g,"\\'")+'\')" data-answer="'+opt.replace(/"/g,'&quot;')+'" data-correct="'+q[1].replace(/"/g,'&quot;')+'" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.65rem 1rem;color:#fff;font-family:var(--body);font-size:.9rem;text-align:left;cursor:pointer;transition:.15s">'+opt+'</button>';
+    });
+    html2 += '</div></div>';
+    var existing = ov.querySelector('.gj-content');
+    if (existing) existing.outerHTML = html2;
+    else ov.querySelector('[style*="padding:1.2rem"]').innerHTML = html2;
+  }
+  window.gjAnswer = function(btn, chosen) {
+    var q = pool[qIdx];
+    var isCorrect = chosen === q[1];
+    if (isCorrect) { btn.style.background='rgba(83,141,78,.4)'; btn.style.borderColor='#6EE78E'; correct++; }
+    else { btn.style.background='rgba(255,80,80,.2)'; btn.style.borderColor='rgba(255,80,80,.5)'; }
+    document.querySelectorAll('#gj-overlay button[data-correct]').forEach(function(b){ b.disabled=true; if(b.getAttribute('data-answer')===q[1])b.style.background='rgba(83,141,78,.3)'; });
+    qIdx++;
+    setTimeout(showQ, 1000);
+  };
+  // Wrap overlay content
+  var ov = document.getElementById('gj-overlay');
+  ov.querySelector('[style*="padding:1.2rem"]').innerHTML = '<div class="gj-content"></div>';
+  showQ();
+}
+
+function gjRiddleChallenge(villageIdx) {
+  var s = GJ.state;
+  var v = GJ.villages[villageIdx];
+  var riddle = GJ.riddles[villageIdx % GJ.riddles.length];
+  var ov = document.getElementById('gj-overlay');
+  var html2 = '<div class="gj-content">';
+  html2 += '<div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(245,118,26,.6);margin-bottom:.6rem">'+v.icon+' '+v.name+' · Riddle Gate</div>';
+  html2 += '<div style="font-family:var(--serif);font-size:1.05rem;color:#fff;line-height:1.8;margin-bottom:1.1rem;font-style:italic">"'+riddle.q+'"</div>';
+  html2 += '<div style="display:flex;flex-direction:column;gap:.4rem">';
+  riddle.opts.forEach(function(opt) {
+    html2 += '<button onclick="gjRiddleAnswer(\''+opt.replace(/'/g,"\\'")+'\')" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.65rem 1rem;color:#fff;font-family:var(--body);font-size:.9rem;text-align:left;cursor:pointer;transition:.15s">'+opt+'</button>';
+  });
+  html2 += '</div></div>';
+  ov.querySelector('[style*="padding:1.2rem"]').innerHTML = html2;
+  window.gjRiddleAnswer = function(chosen) {
+    var isCorrect = chosen === riddle.a;
+    var area = ov.querySelector('.gj-content');
+    if (isCorrect) {
+      var artifacts = ['📜','🥁','🪶','🌿','🔮','🏺'];
+      var art = artifacts[villageIdx % artifacts.length];
+      if (s.completed.indexOf(villageIdx) < 0) { s.completed.push(villageIdx); s.artifacts.push(art); s.score += 60; }
+      gjSave();
+      if (typeof addXP === 'function') addXP(30,'Riddle solved');
+      if (typeof zintsomiConfetti === 'function') zintsomiConfetti();
+      area.innerHTML = '<div style="text-align:center;padding:1rem"><div style="font-size:2rem;margin-bottom:.5rem">'+art+'</div><div style="font-family:var(--impact);font-size:1.2rem;color:#6EE78E;margin-bottom:.4rem">Correct!</div><div style="font-family:var(--serif);color:rgba(255,255,255,.55);margin-bottom:.8rem">The answer was: <strong>'+riddle.a+'</strong></div><button onclick="gjRender()" style="background:var(--fire);border:none;border-radius:8px;padding:.6rem 1.4rem;color:#fff;font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Continue →</button></div>';
+    } else {
+      s.lives--; gjSave();
+      area.innerHTML = '<div style="text-align:center;padding:1rem"><div style="font-size:2rem;margin-bottom:.5rem">❌</div><div style="font-family:var(--impact);font-size:1.2rem;color:rgba(255,100,100,.8);margin-bottom:.4rem">Wrong answer</div><div style="font-family:var(--serif);color:rgba(255,255,255,.55);margin-bottom:.8rem">The answer was: <strong>'+riddle.a+'</strong></div><button onclick="gjRender()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.6rem 1.4rem;color:rgba(255,255,255,.6);font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Back to Map</button></div>';
+    }
+  };
+}
+
+function gjFinalChallenge(villageIdx) {
+  var s = GJ.state;
+  var v = GJ.villages[villageIdx];
+  var ov = document.getElementById('gj-overlay');
+  // 5-question final gauntlet mixing quiz + riddle
+  var pool = FAMILY_QUIZ.slice().sort(function(){return Math.random()-.5;}).slice(0,5);
+  var qIdx = 0, correct = 0;
+  function showFinal() {
+    if (qIdx >= pool.length) {
+      if (correct >= 4) {
+        if (s.completed.indexOf(villageIdx) < 0) { s.completed.push(villageIdx); s.artifacts.push('👑'); s.score += 150; s.rank = 'Sangoma of Stories'; }
+        gjSave();
+        if (typeof addXP === 'function') addXP(100,'Final village cleared');
+        if (typeof zintsomiConfetti === 'function') zintsomiConfetti();
+        gjRender();
+      } else {
+        s.lives--; gjSave();
+        var area2 = ov.querySelector('.gj-content');
+        area2.innerHTML = '<div style="text-align:center;padding:1rem"><div style="font-size:2rem;margin-bottom:.5rem">💔</div><div style="font-family:var(--impact);font-size:1.1rem;color:rgba(255,100,100,.8);margin-bottom:.4rem">Not enough correct ('+correct+'/5)</div><div style="font-family:var(--serif);color:rgba(255,255,255,.5);margin-bottom:.8rem">You need 4 correct to pass Maropeng. Rest and return.</div><button onclick="gjRender()" style="background:var(--fire);border:none;border-radius:8px;padding:.6rem 1.4rem;color:#fff;font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Back to Map</button></div>';
+      }
+      return;
+    }
+    var q = pool[qIdx];
+    var area = ov.querySelector('.gj-content');
+    var h = '<div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(155,89,182,.7);margin-bottom:.4rem">'+v.icon+' Maropeng · Final Challenge '+(qIdx+1)+'/'+pool.length+'</div>';
+    h += '<div style="font-family:var(--serif);font-size:1rem;color:#fff;line-height:1.7;margin-bottom:1rem">'+q[0]+'</div>';
+    h += '<div style="display:flex;flex-direction:column;gap:.4rem">';
+    q[2].forEach(function(opt) {
+      h += '<button onclick="gjFinalAnswer(this,\''+opt.replace(/'/g,"\\'")+'\')" data-a="'+q[1].replace(/"/g,'&quot;')+'" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.65rem 1rem;color:#fff;font-family:var(--body);font-size:.9rem;text-align:left;cursor:pointer">'+opt+'</button>';
+    });
+    h += '</div>';
+    area.innerHTML = h;
+  }
+  window.gjFinalAnswer = function(btn, chosen) {
+    var q = pool[qIdx];
+    var isCorrect = chosen === q[1];
+    if (isCorrect) { btn.style.background='rgba(83,141,78,.4)'; correct++; }
+    else { btn.style.background='rgba(255,80,80,.2)'; }
+    document.querySelectorAll('#gj-overlay button[data-a]').forEach(function(b){b.disabled=true;if(b.getAttribute('data-a')===q[1])b.style.background='rgba(83,141,78,.3)';});
+    qIdx++;
+    setTimeout(showFinal, 900);
+  };
+  ov.querySelector('[style*="padding:1.2rem"]').innerHTML = '<div class="gj-content"></div>';
+  showFinal();
+}
+
+// ════════════════════════════════════════════════════════════
+// 4. INKOSI SAYS — Simon Says with African commands
+// ════════════════════════════════════════════════════════════
+var IS = {
+  commands: [
+    'greet your elder','grind the grain','draw water from the river','beat the drum','dance for the ancestors',
+    'call the children home','tend the fire','carry the basket','herd the cattle','plant the seed',
+    'weave the mat','tell a story','sing to the moon','bow to the chief','sharpen the spear',
+    'feed the baby','milk the cow','build the fire','sweep the yard','praise the village',
+    'climb the mountain','cross the river','gather the harvest','light the torch','honour the elders',
+    'bless the food','summon the council','wake the village','wash the pots','call the rain',
+  ],
+  state: { status:'idle', score:0, best:parseInt(localStorage.getItem('zintsomi_is_best')||'0'), lives:3, speed:2000, cmdEl:null }
+};
+
+function openInkosiSays() {
+  var s = IS.state;
+  s.status='idle'; s.score=0; s.lives=3; s.speed=2000;
+  var ov = document.getElementById('is-overlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'is-overlay';
+    ov.style.cssText = 'position:fixed;inset:0;z-index:9603;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:1rem';
+    document.body.appendChild(ov);
+  }
+  isRender();
+}
+
+function isRender() {
+  var s = IS.state;
+  var ov = document.getElementById('is-overlay');
+  if (!ov) return;
+  var html = '<div style="background:var(--ink);border:1px solid rgba(255,255,255,.08);border-radius:20px;max-width:420px;width:100%;overflow:hidden">';
+  html += '<div style="background:linear-gradient(135deg,#0a0a1a,#1a0a3a);padding:1rem 1.4rem;display:flex;justify-content:space-between;align-items:center">';
+  html += '<div><div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(155,89,182,.7)">Inkosi Says</div>';
+  html += '<div style="font-family:var(--impact);font-size:1.2rem;letter-spacing:.08em;color:#fff">The King Commands</div></div>';
+  html += '<button onclick="clearTimeout(IS._t);document.getElementById(\'is-overlay\').remove()" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:1.2rem;cursor:pointer">✕</button></div>';
+  html += '<div style="padding:1.4rem;text-align:center">';
+  if (s.status === 'idle') {
+    html += '<div style="font-size:3rem;margin-bottom:.8rem">👑</div>';
+    html += '<div style="font-family:var(--serif);font-size:1rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:1.2rem">Tap the button ONLY when the King says "Inkosi says..." first. If he gives a command without saying Inkosi says — do NOT tap!</div>';
+    html += '<div style="font-family:var(--mono);font-size:.52rem;color:rgba(255,255,255,.3);margin-bottom:1.2rem">Best: '+s.best+' pts</div>';
+    html += '<button onclick="isStart()" style="background:var(--fire);border:none;border-radius:8px;padding:.75rem 2.5rem;color:#fff;font-family:var(--display);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer">Begin</button>';
+  } else if (s.status === 'playing') {
+    html += '<div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem">';
+    html += '<div><div style="font-family:var(--mono);font-size:.46rem;color:rgba(255,255,255,.3);text-transform:uppercase">Score</div><div style="font-family:var(--impact);font-size:1.6rem;color:var(--fire)">'+s.score+'</div></div>';
+    html += '<div><div style="font-family:var(--mono);font-size:.46rem;color:rgba(255,255,255,.3);text-transform:uppercase">Lives</div><div style="font-family:var(--impact);font-size:1.6rem;color:rgba(255,100,100,.8)">'+('♥'.repeat(s.lives))+'</div></div>';
+    html += '<div><div style="font-family:var(--mono);font-size:.46rem;color:rgba(255,255,255,.3);text-transform:uppercase">Best</div><div style="font-family:var(--impact);font-size:1.6rem;color:rgba(255,255,255,.3)">'+s.best+'</div></div>';
+    html += '</div>';
+    html += '<div id="is-cmd" style="font-family:var(--serif);font-size:1.15rem;color:#fff;line-height:1.7;min-height:72px;margin-bottom:1.2rem;padding:.6rem;border-radius:10px;border:1px solid rgba(255,255,255,.07)">Waiting...</div>';
+    html += '<button id="is-tap-btn" onclick="isTap()" style="width:100%;padding:1.2rem;background:rgba(155,89,182,.2);border:2px solid rgba(155,89,182,.4);border-radius:12px;color:#fff;font-family:var(--impact);font-size:1.4rem;letter-spacing:.06em;cursor:pointer;transition:.15s;margin-bottom:.6rem">👑 TAP</button>';
+    html += '<div id="is-feedback" style="font-family:var(--mono);font-size:.55rem;min-height:1.2rem;color:rgba(255,255,255,.4)"></div>';
+  } else {
+    // game over
+    html += '<div style="padding:.5rem 0">';
+    html += '<div style="font-size:2.5rem;margin-bottom:.6rem">💀</div>';
+    html += '<div style="font-family:var(--impact);font-size:1.5rem;color:rgba(255,100,100,.8);margin-bottom:.3rem">Game Over</div>';
+    html += '<div style="font-family:var(--mono);font-size:.6rem;color:rgba(255,255,255,.35);margin-bottom:.8rem">Score: '+s.score+' · Best: '+s.best+'</div>';
+    if (s.score > 0 && typeof addXP === 'function') addXP(Math.min(s.score * 2, 40), 'Inkosi Says');
+    html += '<div style="display:flex;gap:.5rem;justify-content:center">';
+    html += '<button onclick="IS.state.status=\'idle\';IS.state.score=0;IS.state.lives=3;IS.state.speed=2000;isRender()" style="background:var(--fire);border:none;border-radius:8px;padding:.6rem 1.4rem;color:#fff;font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Try Again</button>';
+    html += '<button onclick="clearTimeout(IS._t);document.getElementById(\'is-overlay\').remove()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.6rem 1.4rem;color:rgba(255,255,255,.5);font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Exit</button>';
+    html += '</div></div>';
+  }
+  html += '</div></div>';
+  ov.innerHTML = html;
+  if (s.status === 'playing') isNextCommand();
+}
+
+function isStart() {
+  IS.state.status = 'playing';
+  IS.state.score  = 0;
+  IS.state.lives  = 3;
+  IS.state.speed  = 2000;
+  IS._inkosi      = false;
+  isRender();
+}
+
+function isNextCommand() {
+  var s = IS.state;
+  if (s.status !== 'playing') return;
+  var cmd = IS.commands[Math.floor(Math.random() * IS.commands.length)];
+  var inkosi = Math.random() > 0.38; // 62% chance it IS inkosi says
+  IS._inkosi = inkosi;
+  IS._tapped = false;
+  var prefix = inkosi ? '👑 Inkosi says...' : '🗣️ ';
+  var el = document.getElementById('is-cmd');
+  if (el) {
+    el.textContent = prefix + cmd;
+    el.style.color = inkosi ? '#fff' : 'rgba(255,255,255,.75)';
+    el.style.background = inkosi ? 'rgba(155,89,182,.1)' : 'transparent';
+  }
+  var fb = document.getElementById('is-feedback');
+  if (fb) fb.textContent = '';
+  // Auto-advance after speed ms
+  IS._t = setTimeout(function() {
+    if (!IS._tapped) {
+      if (inkosi) {
+        // Should have tapped but didn't
+        isWrongAction('You should have tapped!');
+      } else {
+        // Correctly didn\'t tap
+        s.score++;
+        s.speed = Math.max(800, s.speed - 50);
+        var fb2 = document.getElementById('is-feedback');
+        if (fb2) { fb2.textContent = '✓ Good — you held still'; fb2.style.color='#6EE78E'; }
+        setTimeout(isNextCommand, 400);
+      }
+    }
+  }, s.speed);
+}
+
+function isTap() {
+  var s = IS.state;
+  if (s.status !== 'playing' || IS._tapped) return;
+  IS._tapped = true;
+  clearTimeout(IS._t);
+  if (IS._inkosi) {
+    // Correct tap
+    s.score++;
+    s.best = Math.max(s.score, s.best);
+    localStorage.setItem('zintsomi_is_best', s.best);
+    s.speed = Math.max(700, s.speed - 60);
+    var fb = document.getElementById('is-feedback');
+    if (fb) { fb.textContent = '✓ Correct!'; fb.style.color='#6EE78E'; }
+    // Brief flash on tap button
+    var btn = document.getElementById('is-tap-btn');
+    if (btn) { btn.style.background='rgba(83,141,78,.4)'; setTimeout(function(){if(btn)btn.style.background='rgba(155,89,182,.2)';},200); }
+    setTimeout(isNextCommand, 500);
+  } else {
+    isWrongAction('Inkosi did NOT say!');
+  }
+}
+
+function isWrongAction(msg) {
+  var s = IS.state;
+  s.lives--;
+  var fb = document.getElementById('is-feedback');
+  if (fb) { fb.textContent = '✗ '+msg; fb.style.color='rgba(255,100,100,.9)'; }
+  var btn = document.getElementById('is-tap-btn');
+  if (btn) { btn.style.background='rgba(255,80,80,.25)'; setTimeout(function(){if(btn)btn.style.background='rgba(155,89,182,.2)';},300); }
+  if (s.lives <= 0) {
+    s.best = Math.max(s.score, s.best);
+    localStorage.setItem('zintsomi_is_best', s.best);
+    s.status = 'lost';
+    setTimeout(function(){isRender();}, 600);
+  } else {
+    setTimeout(isNextCommand, 700);
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// WIRE GAME TILES — add to family games panel on DOMContentLoaded
+// ════════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+  var fp = document.querySelector('.family-games-panel');
+  if (!fp) return;
+  var newGames = [
+    { fn: openWordHunt,       emoji:'🔤', tag:'Language',   name:'Word Hunt',         origin:'4 languages · Daily word',      desc:'Wordle-style guessing in isiZulu, isiXhosa, Sesotho, and English. New word every day.' },
+    { fn: openProverbPuzzle,  emoji:'🧩', tag:'Puzzle',     name:'Proverb Puzzle',    origin:'African proverbs · Timed',      desc:'Rearrange the scrambled words of an African proverb before the clock runs out.' },
+    { fn: openGriotsJourney,  emoji:'🗺️', tag:'Adventure',  name:"Griot's Journey",   origin:'6 villages · RPG · Progress',   desc:'Travel through 6 African villages. Answer quiz challenges and riddles. Become the Sangoma of Stories.' },
+    { fn: openInkosiSays,     emoji:'👑', tag:'Reflex',     name:'Inkosi Says',       origin:'Speed · Lives · Cultural',      desc:'Tap only when Inkosi commands it. Speed increases every round. How long can you last?' },
+  ];
+  newGames.forEach(function(g) {
+    var tile = document.createElement('div');
+    tile.className = 'game-tile';
+    tile.style.cursor = 'pointer';
+    tile.onclick = g.fn;
+    tile.innerHTML = '<div class="game-tile-hero" style="background:linear-gradient(135deg,#0d0d1a,#1a1a3a);display:flex;align-items:center;justify-content:center;min-height:80px"><span style="font-size:2.6rem">'+g.emoji+'</span></div>'
+      + '<div class="game-tile-body"><div class="gt-tag">'+g.tag+'</div><div class="gt-name">'+g.name+'</div><div class="gt-origin">'+g.origin+'</div><p class="gt-desc">'+g.desc+'</p></div>';
+    fp.appendChild(tile);
+  });
+});
+
+</script>
 </body>
 </html>
