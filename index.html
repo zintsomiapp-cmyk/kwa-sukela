@@ -229,7 +229,7 @@ body::after{
 
 /* ═══ INTRO SCREEN ═══ */
 #intro{
-  position:fixed;inset:0;z-index:9999;
+  position:fixed;inset:0;z-index:9999;pointer-events:none;
   background:transparent;
   display:flex;align-items:center;justify-content:center;flex-direction:column;
   transition:opacity 1.4s cubic-bezier(.16,1,.3,1);
@@ -3094,7 +3094,7 @@ body::after{
 </style>
 <style>
 /* ═══ LANGUAGE TOGGLE ═══ */
-#lang-toggle{position:fixed;top:1rem;right:1rem;z-index:9999;display:flex;gap:.3rem;background:rgba(14,16,22,.85);border:1px solid rgba(245,118,26,.25);border-radius:100px;padding:.25rem .4rem;backdrop-filter:blur(12px)}
+#lang-toggle{position:fixed;top:1rem;right:1rem;z-index:500;display:flex;gap:.3rem;background:rgba(14,16,22,.85);border:1px solid rgba(245,118,26,.25);border-radius:100px;padding:.25rem .4rem;backdrop-filter:blur(12px)}
 .lang-btn{font-family:var(--mono,monospace);font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;padding:.22rem .55rem;border-radius:100px;border:1px solid transparent;background:none;color:rgba(255,255,255,.38);cursor:pointer;transition:all .18s}
 .lang-btn.active,.lang-btn:hover{background:rgba(245,118,26,.22);border-color:var(--fire,#F5761A);color:var(--fire,#F5761A)}
 
@@ -3120,7 +3120,7 @@ body::after{
 .ob-skip:hover{color:rgba(255,255,255,.5)}
 
 /* ═══ REAL STREAK BADGE ═══ */
-#live-streak-badge{position:fixed;bottom:1.2rem;left:1rem;z-index:9998;background:rgba(14,16,22,.88);border:1px solid rgba(245,118,26,.3);border-radius:.8rem;padding:.5rem .85rem;display:flex;align-items:center;gap:.5rem;backdrop-filter:blur(10px);cursor:pointer;transition:all .2s}
+#live-streak-badge{position:fixed;bottom:1.2rem;left:1rem;z-index:500;background:rgba(14,16,22,.88);border:1px solid rgba(245,118,26,.3);border-radius:.8rem;padding:.5rem .85rem;display:flex;align-items:center;gap:.5rem;backdrop-filter:blur(10px);cursor:pointer;transition:all .2s}
 #live-streak-badge:hover{border-color:var(--fire,#F5761A);transform:translateY(-2px)}
 .lsb-fire{font-size:1.2rem}
 .lsb-count{font-family:var(--display,'Bebas Neue'),sans-serif;font-size:1.1rem;color:var(--fire,#F5761A);line-height:1}
@@ -4906,6 +4906,24 @@ body::after{
           <div class="sec-lbl">Family Games</div>
           <h2 class="sec-title" style="font-size:clamp(2rem,4vw,3.4rem);margin-bottom:.3rem">Table Games for <span style="color:var(--gold)">Everyone</span></h2>
           <p class="sec-sub" style="margin-bottom:1.4rem">A shared family corner: 100 quiz questions with answers, classic solitaire, snakes & ladders, chess, and checkers. Built for local play first; multiplayer/cloud leaderboards can come later.</p>
+
+          <!-- ── WHO'S ONLINE ──────────────────────────────── -->
+          <div id="online-panel" style="margin-top:1.6rem;padding:1rem 1.2rem;background:rgba(255,255,255,.03);border:1px solid rgba(100,181,232,.15);border-radius:12px">
+            <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem">
+              <span style="width:8px;height:8px;border-radius:50%;background:#6EE78E;box-shadow:0 0 6px #6EE78E;flex-shrink:0;animation:pulse-green 2s infinite"></span>
+              <span style="font-family:var(--mono);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45)">Who's Online</span>
+              <span id="online-count" style="margin-left:auto;font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.25)">—</span>
+            </div>
+            <div id="online-list" style="display:flex;flex-wrap:wrap;gap:.5rem;min-height:2rem">
+              <span style="font-size:.78rem;color:rgba(255,255,255,.2);font-style:italic">Loading online players...</span>
+            </div>
+          </div>
+          <style>
+            @keyframes pulse-green{0%,100%{opacity:1}50%{opacity:.4}}
+            .online-chip{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .7rem;border-radius:100px;background:rgba(110,231,142,.07);border:1px solid rgba(110,231,142,.2);font-size:.78rem;color:rgba(255,255,255,.75);cursor:pointer;transition:all .2s}
+            .online-chip:hover{background:rgba(110,231,142,.15);border-color:rgba(110,231,142,.45);color:#fff}
+            .online-chip .oc-dot{width:6px;height:6px;border-radius:50%;background:#6EE78E;flex-shrink:0}
+          </style>
           <div class="games-grid">
             <div class="game-tile" onclick="openFamilyGame('quiz')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#241414,#5c1e12)"><i class="ph ph-question" style="font-size:3rem;color:var(--gold)"></i></div><div class="game-tile-body"><div class="gt-tag">100 Questions</div><div class="gt-name">Family Quiz Bowl</div><div class="gt-origin">Storytelling · Culture · Science · Maths</div><p class="gt-desc">Real multiple-choice questions with instant answers and explanations. Rotate through 100 prompts.</p></div></div>
             <div class="game-tile" onclick="openFamilyGame('solitaire')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#102018,#1f5a38)"><i class="ph ph-diamonds-four" style="font-size:3rem;color:#6EE78E"></i></div><div class="game-tile-body"><div class="gt-tag">Solo Logic</div><div class="gt-name">Peg Solitaire</div><div class="gt-origin">Classic board puzzle</div><p class="gt-desc">Jump pegs into empty spaces until only one remains. Simple rules, deep strategy.</p></div></div>
@@ -5839,6 +5857,28 @@ function replayIntro(){
   setTimeout(function(){ requestAnimationFrame(introLoop); }, 50);
 }
 
+function getTimeGreeting() {
+  var h = new Date().getHours();
+  if (h >= 5  && h < 12) return '\uD83C\uDF05 Good morning';
+  if (h >= 12 && h < 17) return '\u2600\uFE0F Good afternoon';
+  if (h >= 17 && h < 21) return '\uD83C\uDF06 Good evening';
+  return '\uD83E\uDD89 Night owl';
+}
+
+function showWelcomeToast(profile) {
+  var firstName = (profile && profile.full_name) ? profile.full_name.split(' ')[0] : null;
+  var greeting  = getTimeGreeting();
+  var msg = firstName
+    ? greeting + ', ' + firstName + '! Welcome back \uD83D\uDD25'
+    : greeting + '! Welcome to Zintsomi \uD83D\uDD25';
+  var t = document.createElement('div');
+  t.style.cssText = 'position:fixed;top:1.4rem;left:50%;transform:translateX(-50%) translateY(-80px);z-index:999999;background:rgba(14,16,22,.96);border:1px solid rgba(245,118,26,.45);border-radius:100px;color:#fff;font-family:var(--sans,sans-serif);font-size:.85rem;font-weight:600;padding:.6rem 1.4rem;pointer-events:none;transition:transform .5s cubic-bezier(.34,1.56,.64,1),opacity .5s;opacity:0;white-space:nowrap;box-shadow:0 4px 24px rgba(245,118,26,.18)';
+  document.body.appendChild(t);
+  t.textContent = msg;
+  requestAnimationFrame(function(){ t.style.transform='translateX(-50%) translateY(0)'; t.style.opacity='1'; });
+  setTimeout(function(){ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(-30px)'; setTimeout(function(){ t.remove(); }, 600); }, 4000);
+}
+
 function endIntro(){
   cancelAnimationFrame(introAnimId);
   document.getElementById('intro').classList.add('hide');
@@ -5849,6 +5889,11 @@ function endIntro(){
   // Show replay button on the home world hero
   var rb = document.getElementById('home-replay-btn');
   if(rb) rb.style.display='inline-flex';
+  // Welcome back / time-of-day greeting
+  setTimeout(function(){
+    var profile = currentUser && currentUser.profile ? currentUser.profile : null;
+    showWelcomeToast(profile);
+  }, 800);
 }
 
 document.getElementById('skip-btn').onclick=function(){endIntro()};
@@ -15299,5 +15344,153 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 })();
+
+// ════════════════════════════════════════════════════════════
+// WHO'S ONLINE + INVITE TO GAME
+// Uses Supabase Realtime Presence on a shared lobby channel
+// ════════════════════════════════════════════════════════════
+var lobbyChannel = null;
+var onlineUsers  = {};   // { userId: { name, ts } }
+
+function initOnlinePresence() {
+  if (!currentUser || !supa) return;
+  if (lobbyChannel) { lobbyChannel.unsubscribe(); }
+
+  var myName = (currentUser.profile && currentUser.profile.full_name)
+    ? currentUser.profile.full_name
+    : (currentUser.email || 'Player');
+
+  lobbyChannel = supa.channel('zintsomi-lobby', {
+    config: { presence: { key: currentUser.id } }
+  });
+
+  lobbyChannel
+    .on('presence', { event: 'sync' }, function() {
+      var state = lobbyChannel.presenceState();
+      onlineUsers = {};
+      Object.keys(state).forEach(function(key) {
+        var arr = state[key];
+        if (arr && arr.length) {
+          var u = arr[0];
+          if (u.user_id !== currentUser.id) {
+            onlineUsers[u.user_id] = { name: u.name, id: u.user_id };
+          }
+        }
+      });
+      renderOnlinePanel();
+    })
+    .subscribe(function(status) {
+      if (status === 'SUBSCRIBED') {
+        lobbyChannel.track({ user_id: currentUser.id, name: myName });
+      }
+    });
+}
+
+function renderOnlinePanel() {
+  var list  = document.getElementById('online-list');
+  var count = document.getElementById('online-count');
+  if (!list) return;
+  var keys = Object.keys(onlineUsers);
+  if (count) count.textContent = keys.length + ' online';
+  if (!keys.length) {
+    list.innerHTML = '<span style="font-size:.78rem;color:rgba(255,255,255,.2);font-style:italic">No one else online right now</span>';
+    return;
+  }
+  list.innerHTML = keys.map(function(uid) {
+    var u = onlineUsers[uid];
+    return '<div class="online-chip" onclick="promptInvite(' + JSON.stringify(u.id) + ',' + JSON.stringify(u.name) + ')">'
+      + '<span class="oc-dot"></span>'
+      + '<span>' + escapeHtml(u.name) + '</span>'
+      + '<span style="font-size:.65rem;color:rgba(100,181,232,.7);margin-left:.2rem">Invite ↗</span>'
+      + '</div>';
+  }).join('');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function promptInvite(uid, uname) {
+  if (!currentUser) { openAuthModal(); return; }
+  var games = ['chess','checkers','mancala','snakes'];
+  var labels = { chess:'Chess ♟', checkers:'Checkers ⚫', mancala:'Mancala 🫘', snakes:'Snakes & Ladders 🎲' };
+  var ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:1rem';
+  var box = '<div style="background:#0e1016;border:1px solid rgba(100,181,232,.25);border-radius:16px;padding:1.6rem;max-width:320px;width:100%;text-align:center">'
+    + '<div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.12em;color:rgba(100,181,232,.6);margin-bottom:.5rem;text-transform:uppercase">Invite to Game</div>'
+    + '<div style="font-size:1.05rem;color:#fff;font-weight:600;margin-bottom:1.2rem">Challenge <span style="color:var(--fire)">' + escapeHtml(uname) + '</span> to...</div>'
+    + games.map(function(g){
+        return '<button onclick="sendGameInvite(' + JSON.stringify(uid) + ',' + JSON.stringify(uname) + ',' + JSON.stringify(g) + ');this.closest('[data-invite-ov]').remove()" '
+          + 'style="display:block;width:100%;margin:.35rem 0;padding:.7rem;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#fff;font-size:.88rem;cursor:pointer;transition:background .15s" '
+          + 'onmouseover="this.style.background='rgba(245,118,26,.12)'" onmouseout="this.style.background='rgba(255,255,255,.04)'">'
+          + labels[g] + '</button>';
+      }).join('')
+    + '<button onclick="this.closest('[data-invite-ov]').remove()" style="margin-top:.8rem;font-size:.75rem;color:rgba(255,255,255,.3);background:none;border:none;cursor:pointer">Cancel</button>'
+    + '</div>';
+  ov.setAttribute('data-invite-ov','');
+  ov.innerHTML = box;
+  ov.addEventListener('click', function(e){ if(e.target===ov) ov.remove(); });
+  document.body.appendChild(ov);
+}
+
+function sendGameInvite(toUid, toName, gameType) {
+  if (!lobbyChannel) return;
+  var myName = (currentUser.profile && currentUser.profile.full_name) || currentUser.email;
+  lobbyChannel.send({
+    type: 'broadcast',
+    event: 'game-invite',
+    payload: { from: currentUser.id, fromName: myName, to: toUid, game: gameType }
+  });
+  mpShowToast && mpShowToast('Invite sent to ' + toName + '!');
+}
+
+// Listen for incoming invites
+function listenForInvites() {
+  if (!lobbyChannel || !currentUser) return;
+  lobbyChannel.on('broadcast', { event: 'game-invite' }, function(ev) {
+    var p = ev.payload;
+    if (p.to !== currentUser.id) return;
+    var ov = document.createElement('div');
+    ov.style.cssText = 'position:fixed;bottom:6rem;left:50%;transform:translateX(-50%);z-index:99999;background:#0e1016;border:1px solid rgba(110,231,142,.35);border-radius:14px;padding:1rem 1.4rem;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.5);min-width:260px';
+    var labels = { chess:'Chess ♟', checkers:'Checkers ⚫', mancala:'Mancala 🫘', snakes:'Snakes & Ladders 🎲' };
+    ov.innerHTML = '<div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:.4rem">Game Invite 🎮</div>'
+      + '<div style="color:#fff;font-weight:600;margin-bottom:.9rem"><span style="color:var(--fire)">' + escapeHtml(p.fromName) + '</span> wants to play ' + (labels[p.game]||p.game) + '</div>'
+      + '<div style="display:flex;gap:.5rem;justify-content:center">'
+      + '<button onclick="acceptInvite(' + JSON.stringify(p.from) + ',' + JSON.stringify(p.fromName) + ',' + JSON.stringify(p.game) + ');this.closest('div[style]').remove()" style="padding:.5rem 1.2rem;border-radius:8px;border:none;background:#6EE78E;color:#000;font-weight:700;cursor:pointer">Accept</button>'
+      + '<button onclick="this.closest('div[style]').remove()" style="padding:.5rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:none;color:rgba(255,255,255,.5);cursor:pointer">Decline</button>'
+      + '</div>';
+    document.body.appendChild(ov);
+    setTimeout(function(){ if(ov.parentNode) ov.remove(); }, 20000);
+  });
+}
+
+function acceptInvite(fromId, fromName, gameType) {
+  // Open the family game in online mode as guest
+  openFamilyGame && openFamilyGame(gameType);
+  setTimeout(function(){
+    // Auto-join first open room by that host
+    mpGetOpenRooms && mpGetOpenRooms(gameType).then(function(rooms){
+      var room = rooms && rooms.find(function(r){ return r.host_id === fromId; });
+      if (room) mpJoinRoom && mpJoinRoom(room.id);
+      else mpShowToast && mpShowToast('Room not found — ask them to create one');
+    });
+  }, 600);
+}
+
+// Boot presence when user logs in
+(function() {
+  var origUpdate = window.updateNavForUser;
+  window.updateNavForUser = function(profile) {
+    if (origUpdate) origUpdate(profile);
+    if (profile) {
+      setTimeout(function() {
+        initOnlinePresence();
+        setTimeout(listenForInvites, 1500);
+      }, 500);
+    }
+  };
+})();
+
+
 </body>
 </html>
