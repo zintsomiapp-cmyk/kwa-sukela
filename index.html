@@ -3094,6 +3094,11 @@ body::after{
 </style>
 <style>
 /* ═══ LANGUAGE TOGGLE ═══ */
+.pd-item{display:flex;align-items:center;gap:.6rem;width:100%;padding:.5rem .75rem;border-radius:8px;border:none;background:none;color:rgba(255,255,255,.7);font-family:var(--sans,sans-serif);font-size:.8rem;cursor:pointer;text-align:left;transition:background .15s,color .15s}
+.pd-item:hover{background:rgba(255,255,255,.07);color:#fff}
+.pd-item i{font-size:1rem;flex-shrink:0}
+.pd-danger{color:rgba(255,100,100,.7)}.pd-danger:hover{background:rgba(255,80,80,.1);color:#ff7070}
+.pd-logout{color:rgba(245,118,26,.7)}.pd-logout:hover{background:rgba(245,118,26,.1);color:var(--fire,#F5761A)}
 #lang-toggle{position:fixed;top:1rem;right:1rem;z-index:500;display:flex;gap:.3rem;background:rgba(14,16,22,.85);border:1px solid rgba(245,118,26,.25);border-radius:100px;padding:.25rem .4rem;backdrop-filter:blur(12px)}
 .lang-btn{font-family:var(--mono,monospace);font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;padding:.22rem .55rem;border-radius:100px;border:1px solid transparent;background:none;color:rgba(255,255,255,.38);cursor:pointer;transition:all .18s}
 .lang-btn.active,.lang-btn:hover{background:rgba(245,118,26,.22);border-color:var(--fire,#F5761A);color:var(--fire,#F5761A)}
@@ -3142,7 +3147,7 @@ body::after{
 
 <!-- ═══ LIVE STREAK BADGE ═══ -->
 <div id="live-streak-badge" title="Your daily learning streak">
-  <span class="lsb-fire">🔥</span>
+  <i class="ph ph-flame" style="font-size:1.1rem;color:var(--fire)"></i>
   <div>
     <div class="lsb-count" id="lsb-num">0</div>
     <div class="lsb-label">Day Streak</div>
@@ -3157,7 +3162,7 @@ body::after{
     <div class="ob-sub" id="ob-sub">Africa's Storytelling World. Let's get you started in 3 quick steps.</div>
     <div class="ob-steps">
       <div class="ob-step" id="ob-s1" onclick="obComplete(1)">
-        <span class="ob-step-icon">🌍</span>
+        <span class="ob-step-icon"><i class="ph ph-globe-hemisphere-west"></i></span>
         <div class="ob-step-text">
           <div class="ob-step-label" id="ob-l1">Choose your language</div>
           <div class="ob-step-desc" id="ob-d1">Pick isiZulu, isiXhosa, Sesotho or English above</div>
@@ -3173,7 +3178,7 @@ body::after{
         <div class="ob-step-check" id="ob-c2"></div>
       </div>
       <div class="ob-step" id="ob-s3" onclick="obComplete(3)">
-        <span class="ob-step-icon">🔥</span>
+        <span class="ob-step-icon"><i class="ph ph-flame"></i></span>
         <div class="ob-step-text">
           <div class="ob-step-label" id="ob-l3">Start your streak</div>
           <div class="ob-step-desc" id="ob-d3">Come back daily to grow your fire</div>
@@ -3219,9 +3224,33 @@ body::after{
         <button class="npill" onclick="showWorld('subscribe')" style="color:#B088E8;border-color:rgba(123,79,208,.3)" id="pill-subscribe"><i class="ph ph-star"></i> Subscribe</button>
         <button class="npill" onclick="showWorld('admin')" style="color:#ff6b6b;border-color:rgba(255,107,107,.35);display:none" id="pill-admin"><i class="ph ph-shield-star"></i> Admin</button>
       </div>
-      <div class="nav-auth-wrap">
-        <span id="auth-nav-name" style="font-family:var(--mono);font-size:.54rem;letter-spacing:.05em;color:rgba(255,255,255,.35);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+      <div class="nav-auth-wrap" style="position:relative">
+        <!-- Logged-out state -->
         <button id="auth-nav-btn" class="btn" style="padding:.32rem .8rem;font-size:.5rem;white-space:nowrap" onclick="openAuthModal()">Log In</button>
+        <!-- Logged-in state (hidden until auth) -->
+        <div id="profile-nav-wrap" style="display:none;align-items:center;gap:.5rem">
+          <div id="profile-avatar-circle" onclick="toggleProfileMenu()" title="Profile menu"
+            style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--fire-deep,#a84200),var(--fire,#F5761A));border:2px solid rgba(245,118,26,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-family:var(--mono);font-size:.7rem;font-weight:700;color:#fff;user-select:none;transition:border-color .2s">
+            <span id="profile-avatar-initials">?</span>
+          </div>
+          <button id="profile-burger" onclick="toggleProfileMenu()" title="Profile menu"
+            style="background:none;border:none;cursor:pointer;padding:.2rem .3rem;color:rgba(255,255,255,.55);display:flex;flex-direction:column;gap:4px;transition:color .2s"
+            onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,.55)'">
+            <span style="display:block;width:18px;height:2px;background:currentColor;border-radius:2px;transition:all .2s"></span>
+            <span style="display:block;width:18px;height:2px;background:currentColor;border-radius:2px;transition:all .2s"></span>
+            <span style="display:block;width:14px;height:2px;background:currentColor;border-radius:2px;transition:all .2s"></span>
+          </button>
+        </div>
+        <!-- Profile dropdown menu -->
+        <div id="profile-dropdown" style="display:none;position:absolute;top:calc(100% + .6rem);right:0;min-width:200px;background:rgba(10,14,26,.97);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:.4rem;box-shadow:0 12px 40px rgba(0,0,0,.6);z-index:9999;backdrop-filter:blur(16px)">
+          <div id="pd-user-name" style="padding:.55rem .75rem .3rem;font-family:var(--mono);font-size:.52rem;letter-spacing:.06em;color:rgba(255,255,255,.35);text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:.3rem"></div>
+          <button class="pd-item" onclick="openEditProfile()"><i class="ph ph-pencil-simple"></i> Edit Profile</button>
+          <button class="pd-item" onclick="openProfileSettings()"><i class="ph ph-gear"></i> Settings</button>
+          <button class="pd-item" id="pd-premium-btn"><i class="ph ph-star"></i> Upgrade to Premium</button>
+          <div style="height:1px;background:rgba(255,255,255,.06);margin:.3rem 0"></div>
+          <button class="pd-item pd-danger" onclick="confirmDeleteProfile()"><i class="ph ph-trash"></i> Delete Account</button>
+          <button class="pd-item pd-logout" onclick="logOut();closeProfileMenu()"><i class="ph ph-sign-out"></i> Log Out</button>
+        </div>
       </div>
     </div>
   </nav>
@@ -3299,7 +3328,7 @@ body::after{
           <div class="story-name">Your Story</div>
         </div>
         <div class="story-bubble" onclick="openStory(0)">
-          <div class="story-ring"><div class="story-inner">🔥</div></div>
+          <div class="story-ring"><div class="story-inner"><i class="ph ph-flame"></i></div></div>
           <div class="story-name">Why We Tell Stories</div>
         </div>
         <div class="story-bubble" onclick="openStory(1)">
@@ -3351,7 +3380,7 @@ body::after{
           <div class="story-name">USipho Gumede</div>
         </div>
         <div class="story-bubble" onclick="openStory(13)">
-          <div class="story-ring"><div class="story-inner">🌍</div></div>
+          <div class="story-ring"><div class="story-inner"><i class="ph ph-globe-hemisphere-west"></i></div></div>
           <div class="story-name">We Are One</div>
         </div>
       </div>
@@ -3817,7 +3846,7 @@ body::after{
 
         <!-- VR ACCESS PLANS -->
         <div style="margin-bottom:3rem">
-          <div style="font-family:var(--impact);font-size:1.4rem;letter-spacing:.08em;color:var(--acid);text-transform:uppercase;margin-bottom:.4rem">🥽 VR Story Village</div>
+          <div style="font-family:var(--impact);font-size:1.4rem;letter-spacing:.08em;color:var(--acid);text-transform:uppercase;margin-bottom:.4rem"><i class="ph ph-vr-headset"></i> VR Story Village</div>
           <div style="font-size:.82rem;color:rgba(255,255,255,.35);margin-bottom:1.5rem">Time-limited immersive access — 8 story pods in 6 African languages</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
             <div style="background:rgba(200,240,74,.06);border:1.5px solid rgba(200,240,74,.2);border-radius:16px;padding:1.8rem;text-align:center">
@@ -3838,7 +3867,7 @@ body::after{
 
         <!-- COURSE PRICING -->
         <div>
-          <div style="font-family:var(--impact);font-size:1.4rem;letter-spacing:.08em;color:var(--gold);text-transform:uppercase;margin-bottom:.4rem">📚 Individual Courses</div>
+          <div style="font-family:var(--impact);font-size:1.4rem;letter-spacing:.08em;color:var(--gold);text-transform:uppercase;margin-bottom:.4rem"><i class="ph ph-books"></i> Individual Courses</div>
           <div style="font-size:.82rem;color:rgba(255,255,255,.35);margin-bottom:1.5rem">Buy any course once — lifetime access, certificate on completion</div>
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem">
             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
@@ -3898,7 +3927,7 @@ body::after{
             </div>
             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
               <div>
-                <div style="font-size:1.4rem;margin-bottom:.5rem">🌍</div>
+                <div style="font-size:1.4rem;margin-bottom:.5rem"><i class="ph ph-globe-hemisphere-west"></i></div>
                 <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Speak isiZulu Through Storytelling</div>
                 <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">16 weeks · Oral immersion · Conversational fluency</div>
               </div>
@@ -3920,7 +3949,7 @@ body::after{
             </div>
             <div style="background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;justify-content:space-between">
               <div>
-                <div style="font-size:1.4rem;margin-bottom:.5rem">📖</div>
+                <div style="font-size:1.4rem;margin-bottom:.5rem"><i class="ph ph-book-open-text"></i></div>
                 <div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">Basics of Storytelling</div>
                 <div style="font-size:.75rem;color:rgba(255,255,255,.35);line-height:1.7">8 modules · Foundation course — from oral tradition to performance</div>
               </div>
@@ -4364,8 +4393,8 @@ body::after{
         <!-- Mode selector -->
         <div class="vr-mode-bar">
           <button class="vr-mode-pill active" id="mode-cinema" onclick="setVRMode('cinema')">🎬 Cinema</button>
-          <button class="vr-mode-pill" id="mode-vr" onclick="setVRMode('vr')">🥽 VR Split</button>
-          <button class="vr-mode-pill" id="mode-book" onclick="setVRMode('book')">📖 Book Shelf</button>
+          <button class="vr-mode-pill" id="mode-vr" onclick="setVRMode('vr')"><i class="ph ph-eye"></i> VR Split</button>
+          <button class="vr-mode-pill" id="mode-book" onclick="setVRMode('book')"><i class="ph ph-books"></i> Book Shelf</button>
         </div>
 
         <!-- Scene label -->
@@ -4423,16 +4452,16 @@ body::after{
 
         <!-- Tabs: Story | Books | Instructions -->
         <div class="vr-story-tabs">
-          <button class="vr-stab active" onclick="switchVRTab('story',this)">📖 Story</button>
-          <button class="vr-stab" onclick="switchVRTab('audio',this)">🎵 Audio</button>
-          <button class="vr-stab" onclick="switchVRTab('books',this)">📚 Books</button>
-          <button class="vr-stab" onclick="switchVRTab('howto',this)">🥽 How to Use VR</button>
-          <button class="vr-stab" onclick="switchVRTab('izibongo',this)">🪄 Izibongo AI</button>
-          <button class="vr-stab" onclick="switchVRTab('community',this)">🌍 Community Voices</button>
-          <button class="vr-stab" onclick="switchVRTab('fireside',this)">🔥 Fireside 360°</button>
-          <button class="vr-stab" onclick="switchVRTab('theatre',this)">🎭 Ancestor Theatre</button>
-          <button class="vr-stab" onclick="switchVRTab('map',this)">🗺 Story Map</button>
-          <button class="vr-stab" onclick="switchVRTab('school',this)">🏫 School Mode</button>
+          <button class="vr-stab active" onclick="switchVRTab('story',this)"><i class="ph ph-book-open-text"></i> Story</button>
+          <button class="vr-stab" onclick="switchVRTab('audio',this)"><i class="ph ph-music-notes"></i> Audio</button>
+          <button class="vr-stab" onclick="switchVRTab('books',this)"><i class="ph ph-books"></i> Books</button>
+          <button class="vr-stab" onclick="switchVRTab('howto',this)"><i class="ph ph-eye"></i> How to Use VR</button>
+          <button class="vr-stab" onclick="switchVRTab('izibongo',this)"><i class="ph ph-sparkle"></i> Izibongo AI</button>
+          <button class="vr-stab" onclick="switchVRTab('community',this)"><i class="ph ph-users-three"></i> Community Voices</button>
+          <button class="vr-stab" onclick="switchVRTab('fireside',this)"><i class="ph ph-flame"></i> Fireside 360°</button>
+          <button class="vr-stab" onclick="switchVRTab('theatre',this)"><i class="ph ph-mask-happy"></i> Ancestor Theatre</button>
+          <button class="vr-stab" onclick="switchVRTab('map',this)"><i class="ph ph-map-trifold"></i> Story Map</button>
+          <button class="vr-stab" onclick="switchVRTab('school',this)"><i class="ph ph-chalkboard-teacher"></i> School Mode</button>
         </div>
 
         <!-- STORY TAB -->
@@ -4464,7 +4493,7 @@ body::after{
         <!-- BOOKS TAB — Dr Sasa\'s titles in VR -->
         <div class="vr-tab-pane" id="vr-tab-books">
           <p style="font-family:var(--mono);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,240,74,.6);margin-bottom:1rem">
-            📚 Dr Sasa\'s Library — touch a book to read
+            <i class="ph ph-books"></i> Dr Sasa's Library — touch a book to read
           </p>
           <div class="vr-bookshelf" id="vr-bookshelf">
             <!-- Books injected by JS -->
@@ -4480,7 +4509,7 @@ body::after{
               <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.7">1. Open on your phone<br>2. Choose a story<br>3. Tap 🥽 VR Split mode<br>4. Insert phone into Google Cardboard<br>5. Look around — tilt to explore</div>
             </div>
             <div style="background:rgba(245,118,26,.06);border:1px solid rgba(245,118,26,.15);border-radius:12px;padding:1rem">
-              <div style="font-size:1.5rem;margin-bottom:.5rem">🥽</div>
+              <div style="font-size:1.5rem;margin-bottom:.5rem"><i class="ph ph-eye"></i></div>
               <div style="font-family:var(--display);font-size:.7rem;font-weight:700;color:var(--fire);margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Meta Quest / WebXR</div>
               <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.7">1. Open site in Quest Browser<br>2. Choose a story<br>3. Tap 🥽 VR Split<br>4. Enter immersive mode<br>5. Use controllers to turn pages</div>
             </div>
@@ -4490,7 +4519,7 @@ body::after{
               <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.7">1. Click 🎬 Cinema mode<br>2. Fullscreen for best effect<br>3. Drag the scene to rotate<br>4. Read the story alongside</div>
             </div>
             <div style="background:rgba(100,181,232,.05);border:1px solid rgba(100,181,232,.15);border-radius:12px;padding:1rem">
-              <div style="font-size:1.5rem;margin-bottom:.5rem">🌍</div>
+              <div style="font-size:1.5rem;margin-bottom:.5rem"><i class="ph ph-globe-hemisphere-west"></i></div>
               <div style="font-family:var(--display);font-size:.7rem;font-weight:700;color:var(--blue-soft);margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.08em">Affordable Options</div>
               <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.7">Google Cardboard from<br><strong style="color:var(--acid)">R59 — R250</strong> at most tech stores<br>Works with any Android<br>or iPhone 7+</div>
             </div>
@@ -4501,7 +4530,7 @@ body::after{
         <!-- IZIBONGO AI TAB — FIRST IN AFRICA -->
         <div class="vr-tab-pane" id="vr-tab-izibongo">
           <div class="vr-izibongo-wrap">
-            <div class="vr-izibongo-title">🪄 Izibongo ya Gama Lakho</div>
+            <div class="vr-izibongo-title"><i class="ph ph-sparkle"></i> Izibongo ya Gama Lakho</div>
             <div class="vr-izibongo-sub">
               Type your name. The AI composes your personal <em>izibongo</em> — a praise poem in isiZulu — 
               in the tradition of the ancestors. <strong style="color:var(--gold)">First in Africa.</strong>
@@ -4544,7 +4573,7 @@ body::after{
             <div id="vr-community-feeds">
               <!-- Seed community voices -->
               <div class="vr-voice-card" onclick="playCommunityVoice(0)">
-                <div class="vr-voice-avatar">🌍</div>
+                <div class="vr-voice-avatar"><i class="ph ph-globe-hemisphere-west"></i></div>
                 <div class="vr-voice-meta">
                   <div class="vr-voice-name">Nandi from Durban</div>
                   <div class="vr-voice-lang">isiZulu · 2:14</div>
@@ -4552,7 +4581,7 @@ body::after{
                 <div class="vr-voice-play">▶</div>
               </div>
               <div class="vr-voice-card" onclick="playCommunityVoice(1)">
-                <div class="vr-voice-avatar">🌿</div>
+                <div class="vr-voice-avatar"><i class="ph ph-leaf"></i></div>
                 <div class="vr-voice-meta">
                   <div class="vr-voice-name">Sipho from Johannesburg</div>
                   <div class="vr-voice-lang">isiZulu · English · 3:42</div>
@@ -4560,7 +4589,7 @@ body::after{
                 <div class="vr-voice-play">▶</div>
               </div>
               <div class="vr-voice-card" onclick="playCommunityVoice(2)">
-                <div class="vr-voice-avatar">🔥</div>
+                <div class="vr-voice-avatar"><i class="ph ph-flame"></i></div>
                 <div class="vr-voice-meta">
                   <div class="vr-voice-name">Thabo from Soweto</div>
                   <div class="vr-voice-lang">Sesotho · 1:58</div>
@@ -4579,11 +4608,11 @@ body::after{
         <!-- ══ FIRESIDE 360° TAB ══ -->
         <div class="vr-tab-pane" id="vr-tab-fireside">
           <div style="margin-bottom:.6rem">
-            <div style="font-family:var(--display);font-size:.8rem;font-weight:700;color:#fff;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.2rem">🔥 Living Fireside — 360° African Night</div>
+            <div style="font-family:var(--display);font-size:.8rem;font-weight:700;color:#fff;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.2rem"><i class="ph ph-flame"></i> Living Fireside — 360° African Night</div>
             <div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3)">Put your phone in cardboard glasses · Tilt to look around the fire</div>
           </div>
           <div class="vr-scene-selector">
-            <button class="vr-scene-pill active" id="fs-pill-fire" onclick="setFiresideScene('fire',this)">🔥 Fireside</button>
+            <button class="vr-scene-pill active" id="fs-pill-fire" onclick="setFiresideScene('fire',this)"><i class="ph ph-flame"></i> Fireside</button>
             <button class="vr-scene-pill" id="fs-pill-stars" onclick="setFiresideScene('stars',this)">✨ Star Night</button>
             <button class="vr-scene-pill" id="fs-pill-dawn" onclick="setFiresideScene('dawn',this)">🌅 African Dawn</button>
             <button class="vr-scene-pill" id="fs-pill-storm" onclick="setFiresideScene('storm',this)">⛈ Storm</button>
@@ -4596,8 +4625,8 @@ body::after{
             <div class="vr-firetext-overlay" id="vr-firetext-overlay"></div>
           </div>
           <div style="display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap">
-            <button onclick="toggleFiresideStereo()" style="background:rgba(200,240,74,.1);border:1px solid rgba(200,240,74,.25);border-radius:6px;padding:.38rem .8rem;font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:var(--acid);cursor:pointer" id="fs-stereo-btn">🥽 Enable Stereo Split</button>
-            <button onclick="firesideNextLine()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.38rem .8rem;font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);cursor:pointer">📖 Next Story Line</button>
+            <button onclick="toggleFiresideStereo()" style="background:rgba(200,240,74,.1);border:1px solid rgba(200,240,74,.25);border-radius:6px;padding:.38rem .8rem;font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:var(--acid);cursor:pointer" id="fs-stereo-btn"><i class="ph ph-eye"></i> Enable Stereo Split</button>
+            <button onclick="firesideNextLine()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.38rem .8rem;font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);cursor:pointer"><i class="ph ph-book-open-text"></i> Next Story Line</button>
             <button onclick="firesideSpeak()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.38rem .8rem;font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);cursor:pointer">🔊 Speak It</button>
           </div>
         </div>
@@ -4605,7 +4634,7 @@ body::after{
         <!-- ══ ANCESTOR THEATRE TAB ══ -->
         <div class="vr-tab-pane" id="vr-tab-theatre">
           <div style="margin-bottom:.5rem">
-            <div style="font-family:var(--display);font-size:.8rem;font-weight:700;color:#fff;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.2rem">🎭 Ancestor Theatre — 360° Shadow Puppets</div>
+            <div style="font-family:var(--display);font-size:.8rem;font-weight:700;color:#fff;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.2rem"><i class="ph ph-mask-happy"></i> Ancestor Theatre — 360° Shadow Puppets</div>
             <div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3)">Tilt left/right to reveal different story threads · Stereo VR ready</div>
           </div>
           <div class="vr-lang-row">
@@ -4627,7 +4656,7 @@ body::after{
             <div style="position:absolute;bottom:.3rem;left:50%;transform:translateX(-50%);z-index:4;font-family:var(--mono);font-size:.38rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(200,240,74,.5);white-space:nowrap">● STEREO VR READY</div>
           </div>
           <div style="display:flex;gap:.5rem;margin-top:.5rem;flex-wrap:wrap">
-            <button onclick="toggleTheatreStereo()" style="background:rgba(200,240,74,.1);border:1px solid rgba(200,240,74,.25);border-radius:6px;padding:.38rem .8rem;font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:var(--acid);cursor:pointer" id="th-stereo-btn">🥽 Enable Stereo Split</button>
+            <button onclick="toggleTheatreStereo()" style="background:rgba(200,240,74,.1);border:1px solid rgba(200,240,74,.25);border-radius:6px;padding:.38rem .8rem;font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:var(--acid);cursor:pointer" id="th-stereo-btn"><i class="ph ph-eye"></i> Enable Stereo Split</button>
             <button onclick="theatreNextScene()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.38rem .8rem;font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);cursor:pointer">▶ Next Scene</button>
             <button onclick="theatreSpeak()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.38rem .8rem;font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6);cursor:pointer">🔊 Speak</button>
           </div>
@@ -4636,7 +4665,7 @@ body::after{
         <!-- ══ STORY MAP TAB ══ -->
         <div class="vr-tab-pane" id="vr-tab-map">
           <div style="margin-bottom:.6rem">
-            <div style="font-family:var(--display);font-size:.8rem;font-weight:700;color:#fff;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.2rem">🗺 Story Journey Map — Float Above Africa</div>
+            <div style="font-family:var(--display);font-size:.8rem;font-weight:700;color:#fff;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.2rem"><i class="ph ph-map-trifold"></i> Story Journey Map — Float Above Africa</div>
             <div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:.5rem">Tap a glowing node to enter that region's story</div>
           </div>
           <div class="vr-map-wrap">
@@ -4648,7 +4677,7 @@ body::after{
             <div style="font-family:var(--serif);font-size:1rem;font-weight:700;color:#fff;margin-bottom:.3rem" id="vr-map-story-title">Story Title</div>
             <div style="font-size:.8rem;color:rgba(255,255,255,.5);line-height:1.7" id="vr-map-story-body">Story text...</div>
             <div style="display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap">
-              <button onclick="mapEnterVR()" style="background:var(--acid);color:#000;border:none;border-radius:6px;padding:.4rem .9rem;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">🥽 Enter in VR</button>
+              <button onclick="mapEnterVR()" style="background:var(--acid);color:#000;border:none;border-radius:6px;padding:.4rem .9rem;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer"><i class="ph ph-eye"></i> Enter in VR</button>
               <button onclick="mapSpeak()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:.4rem .9rem;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.6);cursor:pointer">🔊 Hear It</button>
             </div>
           </div>
@@ -4658,7 +4687,7 @@ body::after{
         <div class="vr-tab-pane" id="vr-tab-school">
           <div class="vr-school-wrap">
             <div class="vr-school-header">
-              <div class="vr-school-icon">🏫</div>
+              <div class="vr-school-icon"><i class="ph ph-chalkboard-teacher" style="font-size:2rem"></i></div>
               <div>
                 <div class="vr-school-title">School Group Mode</div>
                 <div class="vr-school-sub">Teacher shares a room code. Up to 30 students sync to the same story. Teacher controls play, pause, and quiz from one screen.</div>
@@ -4930,8 +4959,8 @@ body::after{
             <div class="game-tile" onclick="openFamilyGame('snakes')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#11263a,#2d6b8c)"><i class="ph ph-ladder" style="font-size:3rem;color:#89d8ff"></i></div><div class="game-tile-body"><div class="gt-tag">Dice Race</div><div class="gt-name">Snakes & Ladders</div><div class="gt-origin">Family tabletop classic</div><p class="gt-desc">Roll the dice, climb ladders, avoid snakes, and race to square 100.</p></div></div>
             <div class="game-tile" onclick="openFamilyGame('chess')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#181818,#4b3a24)"><i class="ph ph-crown" style="font-size:3rem;color:#f6d28b"></i></div><div class="game-tile-body"><div class="gt-tag">Strategy</div><div class="gt-name">Chess</div><div class="gt-origin">Local two-player board</div><p class="gt-desc">Play a real chess board with legal piece movement, captures, and pawn promotion.</p></div></div>
             <div class="game-tile" onclick="openFamilyGame('checkers')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#200f0f,#6b2323)"><i class="ph ph-circles-four" style="font-size:3rem;color:#ff9f43"></i></div><div class="game-tile-body"><div class="gt-tag">Tactics</div><div class="gt-name">Checkers</div><div class="gt-origin">Local two-player board</div><p class="gt-desc">Diagonal moves, captures, and king promotion. A fast tactical family match.</p></div></div>
-            <div class="game-tile" onclick="openFamilyGame('mancala')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#0a2010,#1a5c2a)"><div style="font-size:2.8rem;padding:.8rem 0">🫘</div></div><div class="game-tile-body"><div class="gt-tag">Ancient Strategy</div><div class="gt-name">Mancala</div><div class="gt-origin">🌍 African · 2 players · Ages 6+</div><p class="gt-desc">One of the oldest board games on earth. Sow seeds around the board, capture your opponent's pits, and fill your store to win.</p></div></div>
-            <div class="game-tile" onclick="openUbuntuStoryChain()"><div class="game-tile-hero" style="background:linear-gradient(135deg,#1a0800,#4d1a00)"><div style="font-size:2.8rem;padding:.8rem 0">🔥</div></div><div class="game-tile-body"><div class="gt-tag">Storytelling</div><div class="gt-name">Ubuntu Story Chain</div><div class="gt-origin">🌍 African oral tradition · 2–4 players</div><p class="gt-desc">Pass-and-tell family storytelling. One sentence at a time. Read the full story back at the end.</p></div></div>
+            <div class="game-tile" onclick="openFamilyGame('mancala')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#0a2010,#1a5c2a)"><div style="font-size:2.8rem;padding:.8rem 0">🫘</div></div><div class="game-tile-body"><div class="gt-tag">Ancient Strategy</div><div class="gt-name">Mancala</div><div class="gt-origin"><i class="ph ph-globe-hemisphere-west"></i> African · 2 players · Ages 6+</div><p class="gt-desc">One of the oldest board games on earth. Sow seeds around the board, capture your opponent's pits, and fill your store to win.</p></div></div>
+            <div class="game-tile" onclick="openUbuntuStoryChain()"><div class="game-tile-hero" style="background:linear-gradient(135deg,#1a0800,#4d1a00)"><div style="font-size:2.8rem;padding:.8rem 0">🔥</div></div><div class="game-tile-body"><div class="gt-tag">Storytelling</div><div class="gt-name">Ubuntu Story Chain</div><div class="gt-origin"><i class="ph ph-globe-hemisphere-west"></i> African oral tradition · 2–4 players</div><p class="gt-desc">Pass-and-tell family storytelling. One sentence at a time. Read the full story back at the end.</p></div></div>
           </div>
         </div>
       </div>
@@ -5442,19 +5471,153 @@ function isPremium() {
 }
 
 function updateNavForUser(profile) {
-  const btn = document.getElementById('auth-nav-btn');
-  const nameEl = document.getElementById('auth-nav-name');
-  const adminPill = document.getElementById('pill-admin');
+  var btn       = document.getElementById('auth-nav-btn');
+  var wrap      = document.getElementById('profile-nav-wrap');
+  var initials  = document.getElementById('profile-avatar-initials');
+  var pdName    = document.getElementById('pd-user-name');
+  var pdPremBtn = document.getElementById('pd-premium-btn');
+  var adminPill = document.getElementById('pill-admin');
   if (!btn) return;
   if (profile) {
-    btn.textContent = 'Log Out';
-    btn.onclick = function(){ logOut(); };
-    if (nameEl) nameEl.textContent = (profile.full_name || profile.email || '') + (profile.is_premium ? ' ⭐' : '') + (profile.is_admin ? ' 🔑' : '');
-    if (adminPill) adminPill.style.display = profile.is_admin ? 'flex' : 'none';
+    btn.style.display = 'none';
+    if (wrap) wrap.style.display = 'flex';
+    var name  = profile.full_name || profile.email || '';
+    var parts = name.trim().split(' ');
+    var ini   = parts.length >= 2 ? (parts[0][0]+(parts[parts.length-1][0])).toUpperCase() : name.slice(0,2).toUpperCase();
+    if (initials) initials.textContent = ini;
+    if (pdName)   pdName.textContent   = name;
+    if (pdPremBtn) pdPremBtn.style.display = profile.is_premium ? 'none' : 'flex';
+    if (adminPill) adminPill.style.display  = profile.is_admin  ? 'flex' : 'none';
+    var circle = document.getElementById('profile-avatar-circle');
+    if (circle && profile.is_admin)   circle.style.border = '2px solid #ff6b6b';
+    else if (circle && profile.is_premium) circle.style.border = '2px solid #E6B32A';
+    checkProfileComplete(profile);
   } else {
-    btn.textContent = 'Log In';
-    btn.onclick = function(){ openAuthModal(); };
-    if (nameEl) nameEl.textContent = '';
+    btn.style.display = '';
+    if (wrap) wrap.style.display = 'none';
+  }
+}
+
+function toggleProfileMenu() {
+  var dd = document.getElementById('profile-dropdown');
+  if (!dd) return;
+  var open = dd.style.display === 'block';
+  dd.style.display = open ? 'none' : 'block';
+  if (!open) {
+    setTimeout(function(){
+      document.addEventListener('click', function closeDD(e){
+        var dd2 = document.getElementById('profile-dropdown');
+        var bb  = document.getElementById('profile-burger');
+        var av  = document.getElementById('profile-avatar-circle');
+        if (dd2 && !dd2.contains(e.target) && bb && !bb.contains(e.target) && av && !av.contains(e.target)) {
+          closeProfileMenu();
+          document.removeEventListener('click', closeDD);
+        }
+      });
+    }, 50);
+  }
+}
+
+function closeProfileMenu() {
+  var dd = document.getElementById('profile-dropdown');
+  if (dd) dd.style.display = 'none';
+}
+
+function checkProfileComplete(profile) {
+  if (sessionStorage.getItem('zintsomi_profile_prompted')) return;
+  var missing = [];
+  if (!profile.full_name || profile.full_name === profile.email) missing.push('display name');
+  if (!profile.bio)       missing.push('short bio');
+  if (!missing.length)    return;
+  sessionStorage.setItem('zintsomi_profile_prompted','1');
+  setTimeout(function(){
+    var ov = document.createElement('div');
+    ov.style.cssText='position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:99998;background:rgba(10,14,26,.97);border:1px solid rgba(100,181,232,.3);border-radius:14px;padding:1rem 1.3rem;max-width:320px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.5);display:flex;gap:.9rem;align-items:flex-start';
+    ov.innerHTML='<i class="ph ph-user-circle-dashed" style="font-size:2rem;color:rgba(100,181,232,.7);flex-shrink:0;margin-top:.1rem"></i>'
+      +'<div><div style="font-weight:600;color:#fff;font-size:.88rem;margin-bottom:.25rem">Finish setting up your profile</div>'
+      +'<div style="font-size:.75rem;color:rgba(255,255,255,.45);margin-bottom:.7rem">Add your '+missing.join(' & ')+' so the community knows you.</div>'
+      +'<div style="display:flex;gap:.5rem">'
+      +'<button onclick="openEditProfile();this.closest(\'[style*=fixed]\').remove()" style="padding:.4rem .9rem;border-radius:8px;border:none;background:rgba(100,181,232,.2);color:#64B5E8;font-size:.75rem;cursor:pointer;font-weight:600">Set up now</button>'
+      +'<button onclick="this.closest(\'[style*=fixed]\').remove()" style="padding:.4rem .7rem;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:none;color:rgba(255,255,255,.35);font-size:.75rem;cursor:pointer">Later</button>'
+      +'</div></div>'
+      +'<button onclick="this.parentElement.remove()" style="background:none;border:none;color:rgba(255,255,255,.25);cursor:pointer;font-size:1rem;padding:0;line-height:1;margin-left:.5rem;flex-shrink:0"><i class="ph ph-x"></i></button>';
+    document.body.appendChild(ov);
+    setTimeout(function(){ if(ov.parentNode) ov.remove(); }, 12000);
+  }, 2500);
+}
+
+function openEditProfile() {
+  closeProfileMenu();
+  var profile = (currentUser && currentUser.profile) ? currentUser.profile : {};
+  var safeVal = function(v){ return (v||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); };
+  var ov = document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;padding:1rem';
+  ov.innerHTML='<div style="background:#0e1016;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:1.6rem;width:100%;max-width:380px">'
+    +'<div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem">'
+    +'<i class="ph ph-user-circle" style="font-size:1.4rem;color:var(--fire,#F5761A)"></i>'
+    +'<span style="font-family:var(--mono);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5)">Edit Profile</span>'
+    +'<button onclick="this.parentNode.parentNode.remove()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:1.1rem"><i class="ph ph-x"></i></button>'
+    +'</div>'
+    +'<label style="display:block;margin-bottom:.9rem"><span style="font-size:.72rem;color:rgba(255,255,255,.4);display:block;margin-bottom:.3rem">Display Name</span>'
+    +'<input id="ep-name" type="text" value="'+safeVal(profile.full_name)+'" placeholder="Your full name" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:.55rem .75rem;color:#fff;font-size:.88rem;outline:none"></label>'
+    +'<label style="display:block;margin-bottom:.9rem"><span style="font-size:.72rem;color:rgba(255,255,255,.4);display:block;margin-bottom:.3rem">Short Bio</span>'
+    +'<textarea id="ep-bio" rows="2" placeholder="A sentence about yourself..." style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:.55rem .75rem;color:#fff;font-size:.88rem;outline:none;resize:vertical">'+safeVal(profile.bio)+'</textarea></label>'
+    +'<div id="ep-msg" style="font-size:.75rem;color:#6EE78E;display:none;margin-bottom:.6rem"></div>'
+    +'<div style="display:flex;gap:.5rem;justify-content:flex-end">'
+    +'<button onclick="this.parentNode.parentNode.remove()" style="padding:.5rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:none;color:rgba(255,255,255,.45);font-size:.8rem;cursor:pointer">Cancel</button>'
+    +'<button onclick="saveEditProfile(this)" style="padding:.5rem 1.2rem;border-radius:8px;border:none;background:var(--fire,#F5761A);color:#fff;font-size:.8rem;font-weight:700;cursor:pointer">Save</button>'
+    +'</div></div>';
+  document.body.appendChild(ov);
+  ov.addEventListener('click',function(e){if(e.target===ov)ov.remove();});
+}
+
+async function saveEditProfile(btn) {
+  if (!currentUser) return;
+  var name = document.getElementById('ep-name').value.trim();
+  var bio  = document.getElementById('ep-bio').value.trim();
+  var msg  = document.getElementById('ep-msg');
+  if (!name) { if(msg){msg.style.color='#F1948A';msg.textContent='Name cannot be empty.';msg.style.display='block';} return; }
+  btn.disabled=true; btn.textContent='Saving...';
+  try {
+    await supa.from('profiles').update({ full_name: name, bio: bio }).eq('id', currentUser.id);
+    currentUser.profile.full_name = name;
+    currentUser.profile.bio = bio;
+    updateNavForUser(currentUser.profile);
+    if(msg){msg.style.color='#6EE78E';msg.textContent='Saved!';msg.style.display='block';}
+    setTimeout(function(){ var ov=document.querySelector('[style*="inset:0"][style*="99998"]'); if(ov) ov.remove(); },900);
+  } catch(e) {
+    if(msg){msg.style.color='#F1948A';msg.textContent='Could not save. Try again.';msg.style.display='block';}
+    btn.disabled=false; btn.textContent='Save';
+  }
+}
+
+function openProfileSettings() { closeProfileMenu(); showWorld && showWorld('subscribe'); }
+
+function confirmDeleteProfile() {
+  closeProfileMenu();
+  var ov = document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;padding:1rem';
+  ov.innerHTML='<div style="background:#0e1016;border:1px solid rgba(255,80,80,.25);border-radius:16px;padding:1.6rem;max-width:340px;width:100%;text-align:center">'
+    +'<i class="ph ph-warning" style="font-size:2.5rem;color:#ff7070;margin-bottom:.7rem;display:block"></i>'
+    +'<div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:.4rem">Delete your account?</div>'
+    +'<div style="font-size:.8rem;color:rgba(255,255,255,.45);margin-bottom:1.2rem">This permanently removes your profile, progress, and posts. This cannot be undone.</div>'
+    +'<div style="display:flex;gap:.6rem;justify-content:center">'
+    +'<button onclick="this.parentNode.parentNode.remove()" style="padding:.55rem 1.2rem;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:none;color:rgba(255,255,255,.5);font-size:.82rem;cursor:pointer">Cancel</button>'
+    +'<button onclick="deleteAccount(this)" style="padding:.55rem 1.2rem;border-radius:8px;border:none;background:#c0392b;color:#fff;font-size:.82rem;font-weight:700;cursor:pointer"><i class="ph ph-trash"></i> Delete Permanently</button>'
+    +'</div></div>';
+  document.body.appendChild(ov);
+  ov.addEventListener('click',function(e){if(e.target===ov)ov.remove();});
+}
+
+async function deleteAccount(btn) {
+  btn.disabled=true; btn.innerHTML='<i class="ph ph-spinner"></i> Deleting...';
+  try {
+    await supa.from('profiles').delete().eq('id', currentUser.id);
+    await supa.auth.signOut();
+    location.reload();
+  } catch(e) {
+    btn.disabled=false; btn.innerHTML='<i class="ph ph-trash"></i> Delete Permanently';
+    alert('Could not delete. Please contact support.');
   }
 }
 
@@ -6303,7 +6466,7 @@ function renderSnakes(){
   html+='<div style="display:flex;gap:.5rem;align-items:center;justify-content:center;margin:.8rem 0;font-size:.82rem;color:rgba(255,255,255,.5)">';
   html+='<span>🟠 P1 (last roll: '+(s.r1||'-')+')</span><span>&nbsp;&nbsp;🔵 P2 (last roll: '+(s.r2||'-')+')</span></div>';
   html+='<div class="family-actions">';
-  if(!won){html+='<button class="btn" onclick="snakeRollGame()">🎲 Roll — Player '+s.turn+'</button>';}
+  if(!won){html+='<button class="btn" onclick="snakeRollGame()"><i class="ph ph-dice-five"></i> Roll — Player '+s.turn+'</button>';}
   else{html+='<button class="btn" style="background:var(--gold)">Player '+won+' Wins! 🏆</button>';}
   html+='<button class="btn btn-out" onclick="snake2={p1:1,p2:1,turn:1,r1:0,r2:0,winner:0};renderSnakes()">New Game</button></div>';
   famRoot(html);
@@ -7434,12 +7597,12 @@ function openNotes(topic,subject){
   var overlay=document.getElementById('notes-overlay'),data=NOTES[topic];
   document.getElementById('nm-title').textContent=topic;
   if(!data){
-    document.getElementById('nm-body').innerHTML='<div style="padding:2rem;text-align:center"><p style="color:rgba(255,255,255,.6);font-style:normal;font-family:var(--serif);font-size:1.1rem">Full notes for <strong>'+topic+'</strong> are being prepared by Dr Sasa\'s team. Check back soon!</p><div class="tip-box" style="margin:1.5rem 0"><div class="tip-icon">👩‍🏫</div><div><div class="tip-lbl">Dr Sasa says</div><div class="tip-text">Work through past papers and your formula sheet while these notes are finalised. The DBE website has papers from 2015-2024.</div></div></div></div>';
+    document.getElementById('nm-body').innerHTML='<div style="padding:2rem;text-align:center"><p style="color:rgba(255,255,255,.6);font-style:normal;font-family:var(--serif);font-size:1.1rem">Full notes for <strong>'+topic+'</strong> are being prepared by Dr Sasa\'s team. Check back soon!</p><div class="tip-box" style="margin:1.5rem 0"><div class="tip-icon"><i class="ph ph-chalkboard-teacher"></i></div><div><div class="tip-lbl">Dr Sasa says</div><div class="tip-text">Work through past papers and your formula sheet while these notes are finalised. The DBE website has papers from 2015-2024.</div></div></div></div>';
     overlay.classList.add('open');return;
   }
   var html='';
   data.secs.forEach(function(s){html+='<div class="nm-section"><div class="nm-section-title '+s.cl+'">'+s.t+'</div>'+s.body+'</div>'});
-  if(data.tip)html+='<div class="tip-box"><div class="tip-icon">👩‍🏫</div><div><div class="tip-lbl">Dr Sasa\'s Exam Tip</div><div class="tip-text">'+data.tip.tx+'</div></div></div>';
+  if(data.tip)html+='<div class="tip-box"><div class="tip-icon"><i class="ph ph-chalkboard-teacher"></i></div><div><div class="tip-lbl">Dr Sasa\'s Exam Tip</div><div class="tip-text">'+data.tip.tx+'</div></div></div>';
   document.getElementById('nm-body').innerHTML=html;
   overlay.classList.add('open');
 }
@@ -8863,7 +9026,7 @@ function enterVillageVR(){
 }
 
 function showVRCardboardTip(){
-  alert('🥽 VR Cardboard Mode\n\nTo experience the village in VR:\n1. Open this site on your phone\n2. Tap "Enter VR"\n3. Place your phone in a Google Cardboard headset\n4. Tilt your head to look around the village\n\nGoogle Cardboard headsets start from R50 at most tech stores.');
+  alert('VR Cardboard Mode\n\nTo experience the village in VR:\n1. Open this site on your phone\n2. Tap "Enter VR"\n3. Place your phone in a Google Cardboard headset\n4. Tilt your head to look around the village\n\nGoogle Cardboard headsets start from R50 at most tech stores.');
 }
 
 window.initVillageCanvas = function initVillageCanvas(){
@@ -11385,7 +11548,7 @@ async function adminLoadBooks() {
       if(statEl) statEl.textContent = data.length;
       list.innerHTML = data.map(function(b) {
         return '<div class="book-admin-item">'
-          + '<div class="book-admin-cover" style="background:'+(b.cover_url?'url('+b.cover_url+') center/cover':'rgba(230,179,42,.15)')+'">'+(b.cover_url?'':'📖')+'</div>'
+          + '<div class="book-admin-cover" style="background:'+(b.cover_url?'url('+b.cover_url+') center/cover':'rgba(230,179,42,.15)')+'">'+(b.cover_url?'':'<i class="ph ph-book-open-text"></i>')+'</div>'
           + '<div class="book-admin-info"><div class="book-admin-title">'+b.title+'</div>'
           + '<div class="book-admin-price">R'+b.price_rands+' · '+b.book_type+'</div></div>'
           + '<div style="display:flex;gap:.4rem">'
@@ -11413,7 +11576,7 @@ function renderShopBooks(books) {
   if (!shopEl || !books || books.length===0) return;
   shopEl.innerHTML = books.map(function(b) {
     return '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;overflow:hidden;cursor:pointer" onclick="buyBook('+b.id+',\''+b.title+'\','+b.price_rands+')">'
-      + '<div style="height:160px;background:'+(b.cover_url?'url('+b.cover_url+') center/cover':'linear-gradient(135deg,#1A0A00,#2A1000)')+';display:grid;place-items:center;font-size:2rem">'+( b.cover_url?'':'📖')+'</div>'
+      + '<div style="height:160px;background:'+(b.cover_url?'url('+b.cover_url+') center/cover':'linear-gradient(135deg,#1A0A00,#2A1000)')+';display:grid;place-items:center;font-size:2rem">'+( b.cover_url?'':("<i class=\"ph ph-book-open-text\"></i>"))+'</div>'
       + '<div style="padding:1rem">'
       + '<div style="font-family:var(--display);font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.3rem">'+b.title+'</div>'
       + '<div style="font-size:.72rem;color:rgba(255,255,255,.4);margin-bottom:.6rem">'+b.author+'</div>'
@@ -11617,7 +11780,7 @@ function selectVRPlan(plan) {
   if (planEl) planEl.classList.add('selected');
   var cta = document.getElementById('vr-pw-cta-btn');
   var p = VR_PRICES[plan];
-  if (cta && p) cta.textContent = '🥽 Unlock VR Village — ' + p.label;
+  if (cta && p) cta.textContent = '<i class="ph ph-eye"></i> Unlock VR Village — ' + p.label;
 }
 
 function openVRPaywall() {
@@ -11752,7 +11915,7 @@ function showCoursePurchasePrompt(courseIdx) {
   overlay.innerHTML = '<div style="background:linear-gradient(135deg,#0A0300,#1A0800);'
     + 'border:1px solid rgba(245,118,26,.25);border-radius:20px;width:100%;max-width:420px;overflow:hidden;">'
     + '<div style="background:rgba(245,118,26,.1);padding:1.8rem 2rem;text-align:center;border-bottom:1px solid rgba(245,118,26,.15)">'
-    + '<div style="font-size:2.5rem;margin-bottom:.6rem">' + (course.icon || '📖') + '</div>'
+    + '<div style="font-size:2.5rem;margin-bottom:.6rem">' + (course.icon || '<i class="ph ph-book-open-text"></i>') + '</div>'
     + '<div style="font-family:var(--impact);font-size:1.6rem;color:#fff;letter-spacing:.06em;text-transform:uppercase;line-height:.9">'
     + course.title + '</div>'
     + '<div style="font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.35);letter-spacing:.12em;text-transform:uppercase;margin-top:.5rem">'
@@ -11835,7 +11998,7 @@ function purchaseCourse(courseIdx) {
     <!-- Hero -->
     <div class="admin-hero">
       <div class="ctr">
-        <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:#ff6b6b;margin-bottom:.5rem">🔑 Admin Panel</div>
+        <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;color:#ff6b6b;margin-bottom:.5rem"><i class="ph ph-shield-star"></i> Admin Panel</div>
         <h1 style="font-family:var(--impact);font-size:clamp(2.5rem,5vw,5rem);letter-spacing:.06em;color:#fff;line-height:.9">ZINTSOMI<br><span style="color:#ff6b6b">STUDIO</span></h1>
         <p style="font-size:.85rem;color:rgba(255,255,255,.4);margin-top:.6rem">Dr Sasa\'s command centre — manage videos, books, thoughts, and shop</p>
       </div>
@@ -12036,7 +12199,7 @@ function purchaseCourse(courseIdx) {
   <div id="vr-paywall">
     <div class="vr-pw-inner">
       <div class="vr-pw-hero">
-        <span class="vr-pw-icon">🥽</span>
+        <span class="vr-pw-icon"><i class="ph ph-vr-headset"></i></span>
         <div class="vr-pw-title">VR <em>Story</em><br>Village</div>
         <p class="vr-pw-sub">Immersive African storytelling in 6 languages.<br>8 story pods · Stereoscopic VR · Izibongo AI · Dr Sasa's books</p>
       </div>
@@ -12053,7 +12216,7 @@ function purchaseCourse(courseIdx) {
           <div class="vr-pw-plan-desc">Full VR Village access for 6 months · All 8 story pods</div>
         </div>
         <button class="vr-pw-cta" id="vr-pw-cta-btn" onclick="purchaseVRAccess()">
-          🥽 Unlock VR Village — R1,100/year
+          <i class="ph ph-vr-headset"></i> Unlock VR Village — R1,100/year
         </button>
         <button class="vr-pw-close" onclick="closeVRPaywall()">
           No thanks — go back
@@ -12262,7 +12425,7 @@ function toggleFiresideStereo(){
   var divider=document.getElementById('vr-fireside-divider');
   var btn=document.getElementById('fs-stereo-btn');
   if(divider) divider.style.display=fsStereo?'block':'none';
-  if(btn) btn.textContent=fsStereo?'🥽 Stereo ON':'🥽 Enable Stereo Split';
+  if(btn) btn.textContent=fsStereo?'<i class="ph ph-eye"></i> Stereo ON':'<i class="ph ph-eye"></i> Enable Stereo Split';
 }
 
 function firesideNextLine(){
@@ -12500,7 +12663,7 @@ function toggleTheatreStereo(){
   var divider=document.getElementById('vr-theatre-divider');
   var btn=document.getElementById('th-stereo-btn');
   if(divider) divider.style.display=thStereo?'block':'none';
-  if(btn) btn.textContent=thStereo?'🎭 Stereo ON':'🥽 Enable Stereo Split';
+  if(btn) btn.textContent=thStereo?'<i class="ph ph-mask-happy"></i> Stereo ON':'<i class="ph ph-eye"></i> Enable Stereo Split';
 }
 
 function theatreNextScene(){
@@ -13322,8 +13485,8 @@ document.addEventListener('DOMContentLoaded',function(){
     tile.className='game-tile';
     tile.style.cursor='pointer';
     tile.onclick=openUbuntuStoryChain;
-    tile.innerHTML='<div class="game-tile-hero" style="background:linear-gradient(135deg,#1a0800,#4d1a00)"><div style="text-align:center;padding:1rem"><span style="font-size:2.4rem">🔥</span><br><span style="font-family:var(--mono);font-size:.44rem;opacity:.5;letter-spacing:.1em;text-transform:uppercase">pass &amp; tell</span></div></div>'
-      +'<div class="game-tile-body"><div class="gt-tag">Storytelling</div><div class="gt-name">Ubuntu Story Chain</div><div class="gt-origin">🌍 African oral tradition · 2–4 players</div><p class="gt-desc">One sentence at a time. Pass the story around the circle. Read it back at the end.</p><div class="gt-stats"><div class="gt-stat"><strong>2–4</strong> Players</div><div class="gt-stat"><strong>+30</strong> XP / turn</div><div class="gt-stat"><strong>∞</strong> Stories</div></div></div>';
+    tile.innerHTML='<div class="game-tile-hero" style="background:linear-gradient(135deg,#1a0800,#4d1a00)"><div style="text-align:center;padding:1rem"><i class="ph ph-flame" style="font-size:2.4rem;color:var(--fire)"></i><br><span style="font-family:var(--mono);font-size:.44rem;opacity:.5;letter-spacing:.1em;text-transform:uppercase">pass &amp; tell</span></div></div>'
+      +'<div class="game-tile-body"><div class="gt-tag">Storytelling</div><div class="gt-name">Ubuntu Story Chain</div><div class="gt-origin"><i class="ph ph-globe-hemisphere-west"></i> African oral tradition · 2–4 players</div><p class="gt-desc">One sentence at a time. Pass the story around the circle. Read it back at the end.</p><div class="gt-stats"><div class="gt-stat"><strong>2–4</strong> Players</div><div class="gt-stat"><strong>+30</strong> XP / turn</div><div class="gt-stat"><strong>∞</strong> Stories</div></div></div>';
     fp.insertBefore(tile,fp.firstChild);
   }
   var gPill=document.querySelector('.npill[onclick*="games"]');
@@ -14091,7 +14254,7 @@ function renderOnlineSnakes() {
   }
   html += '</div>';
   html += '<div class="family-actions">';
-  if (!s.winner && MP.myTurn) html += '<button class="btn" onclick="onlineSnakeRoll()">🎲 Roll</button>';
+  if (!s.winner && MP.myTurn) html += '<button class="btn" onclick="onlineSnakeRoll()"><i class="ph ph-dice-five"></i> Roll</button>';
   html += '</div>';
   famRoot(html);
 }
@@ -14508,7 +14671,7 @@ function gjRender() {
   html += '<div><div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,118,26,.6)">Griot\'s Journey</div>';
   html += '<div style="font-family:var(--impact);font-size:1.3rem;letter-spacing:.08em;color:#fff">'+s.rank+'</div></div>';
   html += '<div style="display:flex;gap:1rem;align-items:center">';
-  html += '<span style="font-family:var(--mono);font-size:.6rem;color:var(--fire)">⭐ '+s.score+'</span>';
+  html += '<span style="font-family:var(--mono);font-size:.6rem;color:var(--fire)"><i class="ph ph-star-fill"></i> '+s.score+'</span>';
   html += '<span style="font-family:var(--mono);font-size:.6rem;color:rgba(255,100,100,.8)">♥ '+s.lives+'</span>';
   html += '<button onclick="document.getElementById(\'gj-overlay\').remove()" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:1.2rem;cursor:pointer">✕</button></div></div>';
   html += '<div style="padding:1.2rem 1.4rem">';
@@ -14909,7 +15072,7 @@ function openDrSasa() {
   ov.style.cssText = 'position:fixed;inset:0;z-index:9700;background:rgba(0,0,0,.88);display:flex;align-items:flex-end;justify-content:center;padding:1rem';
   ov.innerHTML = '<div style="background:var(--ink);border:1px solid rgba(245,118,26,.2);border-radius:20px 20px 16px 16px;max-width:520px;width:100%;display:flex;flex-direction:column;max-height:80vh">'
     + '<div style="padding:.9rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:.8rem;flex-shrink:0">'
-    + '<div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--fire-deep),var(--fire));display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">🔥</div>'
+    + '<div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--fire-deep),var(--fire));display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0"><i class=\"ph ph-flame\" style=\"color:#fff\"></i></div>'
     + '<div><div style="font-family:var(--display);font-size:.75rem;font-weight:700;color:#fff">Dr Sasa</div><div style="font-family:var(--mono);font-size:.46rem;color:rgba(255,255,255,.35);letter-spacing:.08em">AI Tutor · Zintsomi Storytelling College</div></div>'
     + '<button onclick="document.getElementById(\'ds-overlay\').style.display=\'none\'" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,.4);font-size:1.2rem;cursor:pointer">✕</button></div>'
     + '<div id="ds-messages" style="flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.7rem">'
@@ -15043,7 +15206,7 @@ function aaSubmit() {
       + '<div><div style="font-family:var(--mono);font-size:.46rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(245,118,26,.6);margin-bottom:.4rem">To improve</div>'
       + r.improvements.map(function(s){ return '<div style="font-size:.85rem;color:rgba(255,255,255,.65);line-height:1.6;margin-bottom:.3rem;padding-left:.6rem;border-left:2px solid rgba(245,118,26,.3)">'+s+'</div>'; }).join('')
       + '</div></div>'
-      + '<div style="padding:.8rem 1rem;background:rgba(245,118,26,.06);border:1px solid rgba(245,118,26,.15);border-radius:10px;font-family:var(--serif);font-size:.9rem;color:rgba(255,255,255,.65);line-height:1.65;font-style:italic">🔥 Dr Sasa says: '+r.drSasaSays+'</div>'
+      + '<div style="padding:.8rem 1rem;background:rgba(245,118,26,.06);border:1px solid rgba(245,118,26,.15);border-radius:10px;font-family:var(--serif);font-size:.9rem;color:rgba(255,255,255,.65);line-height:1.65;font-style:italic"><i class="ph ph-flame" style="color:var(--fire)"></i> Dr Sasa says: '+r.drSasaSays+'</div>'
       + '<div style="display:flex;gap:.5rem;margin-top:.9rem">'
       + '<button onclick="openAssignmentMarker()" style="flex:1;background:var(--fire);border:none;border-radius:8px;padding:.6rem;color:#fff;font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Submit Another</button>'
       + '<button onclick="document.getElementById(\'aa-overlay\').remove()" style="flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:.6rem;color:rgba(255,255,255,.5);font-family:var(--display);font-size:.55rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Close</button>'
@@ -15128,7 +15291,7 @@ function ssGenerate() {
     var proverb = parts[1] ? parts[1].replace(']','').trim() : '';
     var html = '<div style="padding:1rem;background:rgba(245,118,26,.06);border:1px solid rgba(245,118,26,.15);border-radius:10px;margin-bottom:.8rem">'
       + '<div style="font-family:var(--serif);font-size:1rem;color:#fff;line-height:1.85;margin-bottom:'+(proverb?'.7rem':'0')+'">'+story+'</div>';
-    if (proverb) html += '<div style="font-family:var(--mono);font-size:.5rem;color:rgba(245,118,26,.6);letter-spacing:.08em;font-style:italic">🌍 '+proverb+'</div>';
+    if (proverb) html += '<div style="font-family:var(--mono);font-size:.5rem;color:rgba(245,118,26,.6);letter-spacing:.08em;font-style:italic"><i class="ph ph-globe-hemisphere-west"></i> '+proverb+'</div>';
     html += '</div>';
     html += '<div style="display:flex;gap:.5rem">';
     html += '<button onclick="if(navigator.share){navigator.share({title:\'My Zintsomi Story Opening\',text:'+JSON.stringify(story)+'})}else{navigator.clipboard&&navigator.clipboard.writeText('+JSON.stringify(story)+')}" style="flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:.55rem;color:#fff;font-family:var(--display);font-size:.52rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer">Share ↗</button>';
@@ -15221,7 +15384,7 @@ function pagOpenCountry(id) {
   modal.id = 'pag-q';
   modal.style.cssText = 'position:fixed;inset:0;z-index:9710;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:1rem';
   modal.innerHTML = '<div style="background:var(--ink);border:1px solid rgba(255,255,255,.1);border-radius:16px;max-width:440px;width:100%;padding:1.4rem">'
-    + '<div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.15em;text-transform:uppercase;color:var(--fire);margin-bottom:.4rem">🌍 '+c.name+'</div>'
+    + '<div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.15em;text-transform:uppercase;color:var(--fire);margin-bottom:.4rem"><i class="ph ph-globe-hemisphere-west"></i> '+c.name+'</div>'
     + q_html + '</div>';
   document.body.appendChild(modal);
 }
@@ -15246,7 +15409,7 @@ function pagAnswer(chosen, id) {
       var qDiv = document.getElementById('pag-q');
       if (qDiv) {
         var inner = qDiv.querySelector('div > div:last-child');
-        qDiv.querySelector('div').innerHTML = '<div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.15em;text-transform:uppercase;color:var(--fire);margin-bottom:.6rem">🌍 '+c.name+' — Unlocked!</div>'
+        qDiv.querySelector('div').innerHTML = '<div style="font-family:var(--mono);font-size:.46rem;letter-spacing:.15em;text-transform:uppercase;color:var(--fire);margin-bottom:.6rem"><i class="ph ph-globe-hemisphere-west"></i> '+c.name+' — Unlocked!</div>'
           + '<div style="padding:.8rem 1rem;background:rgba(110,231,142,.08);border:1px solid rgba(110,231,142,.2);border-radius:10px;margin-bottom:.9rem"><div style="font-family:var(--serif);font-size:.92rem;color:rgba(255,255,255,.7);line-height:1.7">'+c.story+'</div></div>'
           + '<button onclick="document.getElementById(\'pag-q\').remove();openPanAfricanMap()" style="width:100%;background:var(--fire);border:none;border-radius:8px;padding:.65rem;color:#fff;font-family:var(--display);font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer">Back to Map</button>';
       }
@@ -15266,7 +15429,7 @@ document.addEventListener('DOMContentLoaded', function() {
   chatBtn.title = 'Ask Dr Sasa — AI Tutor';
   chatBtn.onclick = openDrSasa;
   chatBtn.style.cssText = 'position:fixed;bottom:1.5rem;right:1.5rem;z-index:9600;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--fire-deep),var(--fire));border:none;cursor:pointer;font-size:1.5rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(245,118,26,.4);transition:transform .2s';
-  chatBtn.innerHTML = '🔥';
+  chatBtn.innerHTML = '<i class="ph-bold ph-chats" style="font-size:1.3rem;color:#fff"></i>';
   chatBtn.onmouseover = function(){ this.style.transform='scale(1.1)'; };
   chatBtn.onmouseout  = function(){ this.style.transform='scale(1)'; };
   document.body.appendChild(chatBtn);
@@ -15413,7 +15576,7 @@ function escapeHtml(s) {
 function promptInvite(uid, uname) {
   if (!currentUser) { openAuthModal(); return; }
   var games = ['chess','checkers','mancala','snakes'];
-  var labels = { chess:'Chess ♟', checkers:'Checkers ⚫', mancala:'Mancala 🫘', snakes:'Snakes & Ladders 🎲' };
+  var labels = { chess:'Chess', checkers:'Checkers', mancala:'Mancala', snakes:'Snakes & Ladders' };
   var ov = document.createElement('div');
   ov.style.cssText = 'position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;padding:1rem';
   var box = '<div style="background:#0e1016;border:1px solid rgba(100,181,232,.25);border-radius:16px;padding:1.6rem;max-width:320px;width:100%;text-align:center">'
@@ -15452,12 +15615,12 @@ function listenForInvites() {
     if (p.to !== currentUser.id) return;
     var ov = document.createElement('div');
     ov.style.cssText = 'position:fixed;bottom:6rem;left:50%;transform:translateX(-50%);z-index:99999;background:#0e1016;border:1px solid rgba(110,231,142,.35);border-radius:14px;padding:1rem 1.4rem;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.5);min-width:260px';
-    var labels = { chess:'Chess ♟', checkers:'Checkers ⚫', mancala:'Mancala 🫘', snakes:'Snakes & Ladders 🎲' };
-    ov.innerHTML = '<div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:.4rem">Game Invite 🎮</div>'
+    var labels = { chess:'Chess', checkers:'Checkers', mancala:'Mancala', snakes:'Snakes & Ladders' };
+    ov.innerHTML = '<div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:.4rem">Game Invite <i class="ph ph-game-controller"></i></div>'
       + '<div style="color:#fff;font-weight:600;margin-bottom:.9rem"><span style="color:var(--fire)">' + escapeHtml(p.fromName) + '</span> wants to play ' + (labels[p.game]||p.game) + '</div>'
       + '<div style="display:flex;gap:.5rem;justify-content:center">'
-      + '<button onclick="acceptInvite(' + JSON.stringify(p.from) + ',' + JSON.stringify(p.fromName) + ',' + JSON.stringify(p.game) + ');this.closest('div[style]').remove()" style="padding:.5rem 1.2rem;border-radius:8px;border:none;background:#6EE78E;color:#000;font-weight:700;cursor:pointer">Accept</button>'
-      + '<button onclick="this.closest('div[style]').remove()" style="padding:.5rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:none;color:rgba(255,255,255,.5);cursor:pointer">Decline</button>'
+      + '<button onclick="acceptInvite(' + JSON.stringify(p.from) + ',' + JSON.stringify(p.fromName) + ',' + JSON.stringify(p.game) + ');this.parentNode.parentNode.remove()" style="padding:.5rem 1.2rem;border-radius:8px;border:none;background:#6EE78E;color:#000;font-weight:700;cursor:pointer">Accept</button>'
+      + '<button onclick="this.parentNode.parentNode.remove()" style="padding:.5rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:none;color:rgba(255,255,255,.5);cursor:pointer">Decline</button>'
       + '</div>';
     document.body.appendChild(ov);
     setTimeout(function(){ if(ov.parentNode) ov.remove(); }, 20000);
