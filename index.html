@@ -3220,6 +3220,9 @@ body::after{
         <button class="npill courses-pill" onclick="showWorld('courses')"><i class="ph ph-books"></i> Courses</button>
         <button class="npill" onclick="showWorld('audio')"><i class="ph ph-music-note"></i> Audio</button>
         <button class="npill blog-pill" onclick="showWorld('blog')"><i class="ph ph-pencil-line"></i> Dr Sasa</button>
+        <button class="npill" onclick="showWorld('battle')"><i class="ph ph-swords"></i> Battle</button>
+        <button class="npill" onclick="showWorld('ubuntu')"><i class="ph ph-hand-heart"></i> Ubuntu</button>
+        <button class="npill" onclick="showWorld('unstuck')"><i class="ph ph-lightning"></i> Unstuck</button>
         <button class="npill" onclick="showWorld('youtube')" style="color:#FF4444;border-color:rgba(255,68,68,.3)" id="pill-youtube"><i class="ph ph-youtube-logo"></i> YouTube</button>
         <button class="npill" onclick="showWorld('subscribe')" style="color:#B088E8;border-color:rgba(123,79,208,.3)" id="pill-subscribe"><i class="ph ph-star"></i> Subscribe</button>
         <button class="npill" onclick="showWorld('admin')" style="color:#ff6b6b;border-color:rgba(255,107,107,.35);display:none" id="pill-admin"><i class="ph ph-shield-star"></i> Admin</button>
@@ -4839,7 +4842,10 @@ body::after{
       <div class="world-card reveal stagger-4" onclick="showWorld('tree')"><div class="wc-bg-glyph"><i class="ph ph-tree"></i></div><div class="wc-icon"><i class="ph ph-tree"></i></div><div class="wc-name">Ancestor Tree</div><div class="wc-sub">A living tree growing with every story, game and lesson contributed.</div><div class="wc-tag">Community · Living World</div></div>
       <div class="world-card reveal stagger-5" onclick="showWorld('schools')"><div class="wc-bg-glyph"><i class="ph ph-graduation-cap"></i></div><div class="wc-icon"><i class="ph ph-graduation-cap"></i></div><div class="wc-name">Schools Hub</div><div class="wc-sub">Grade 10–12 study support. Notes are original and supplementary — for full CAPS-aligned textbooks visit siyavula.com (open, free).</div><div class="wc-tag">Grade 12 Priority · Free</div></div>
       <div class="world-card reveal stagger-6" onclick="showWorld('courses')" style="border-bottom:3px solid var(--courses)"><div class="wc-bg-glyph"><i class="ph ph-books"></i></div><div class="wc-icon"><i class="ph ph-books"></i></div><div class="wc-name">Storytelling Courses</div><div class="wc-sub">7 full storytelling courses. Learn at your own pace. Certificate of attendance on completion.</div><div class="wc-tag" style="color:#B088E8">Certificate of Attendance · Self-Paced</div></div>
-      <div class="world-card reveal stagger-6" onclick="showWorld('audio')"><div class="wc-bg-glyph"><i class="ph ph-music-note"></i></div><div class="wc-icon"><i class="ph ph-music-note"></i></div><div class="wc-name">Audio Archive</div><div class="wc-sub">Umemolo songs, izinganekwane, lullabies, folklore. Upload your own voice to Community Voices.</div><div class="wc-tag">Coming Soon · Contribute</div></div>
+      <div class="world-card reveal stagger-6" onclick="showWorld('battle')"><div class="wc-bg-glyph"><i class="ph ph-swords"></i></div><div class="wc-icon"><i class="ph ph-swords"></i></div><div class="wc-name">Story Battles</div><div class="wc-sub">Two storytellers. One prompt. Community votes. 24 hours. Winner earns Griot XP.</div><div class="wc-tag">Competitive · Social · Daily</div></div>
+      <div class="world-card reveal stagger-1" onclick="showWorld('ubuntu')"><div class="wc-bg-glyph"><i class="ph ph-hand-heart"></i></div><div class="wc-icon"><i class="ph ph-hand-heart"></i></div><div class="wc-name">Ubuntu Mode</div><div class="wc-sub">Stuck? Find a peer tutor first. AI second. Real help from real people in your community.</div><div class="wc-tag">Peer Learning · Community First</div></div>
+      <div class="world-card reveal stagger-2" onclick="showWorld('unstuck')"><div class="wc-bg-glyph"><i class="ph ph-lightning"></i></div><div class="wc-icon"><i class="ph ph-lightning"></i></div><div class="wc-name">Unstuck AI</div><div class="wc-sub">Paste any essay topic. Get 3 angles, a structure, and an ancestor proverb that fits. Never stare at a blank page again.</div><div class="wc-tag">Grade 8–Varsity · Essays · Exams</div></div>
+      <div class="world-card reveal stagger-3" onclick="showWorld('audio')"><div class="wc-bg-glyph"><i class="ph ph-music-note"></i></div><div class="wc-icon"><i class="ph ph-music-note"></i></div><div class="wc-name">Audio Archive</div><div class="wc-sub">Umemolo songs, izinganekwane, lullabies, folklore. Upload your own voice to Community Voices.</div><div class="wc-tag">Coming Soon · Contribute</div></div>
       <div class="world-card reveal stagger-1" onclick="showWorld('vrvillage')" style="border-bottom:3px solid var(--acid)"><div class="wc-bg-glyph"><i class="ph ph-eyeglasses"></i></div><div class="wc-icon"><i class="ph ph-eyeglasses"></i></div><div class="wc-name">VR Story Village</div><div class="wc-sub">8 immersive story pods. Wear your VR glasses and step inside an African night filled with ancestral stories.</div><div class="wc-tag" style="color:var(--acid)">Google Cardboard · WebXR · Free</div></div>
     </div>
     <div class="ndebele"></div>
@@ -11994,6 +12000,158 @@ function purchaseCourse(courseIdx) {
 </script>
 
   <!-- ═══ ADMIN WORLD ═══ -->
+
+  <!-- ══════════════ STORY BATTLE WORLD ══════════════ -->
+  <div class="world" id="battle-world">
+    <div style="background:linear-gradient(180deg,#0a0006 0%,#130010 100%);min-height:100vh;padding-bottom:4rem">
+      <div class="ctr" style="padding-top:2.5rem">
+        <div class="sec-lbl" style="color:rgba(200,80,255,.4);justify-content:center;margin-bottom:.5rem"><i class="ph ph-swords"></i> Arena</div>
+        <h2 style="font-family:var(--impact);font-size:clamp(2.8rem,6vw,5rem);text-align:center;letter-spacing:.06em;color:#fff;margin-bottom:.3rem">Story <span style="color:#C850FF">Battles</span></h2>
+        <p style="text-align:center;color:rgba(255,255,255,.4);font-size:.9rem;margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto">Two writers. One prompt. 24 hours. The community decides who wins. Winners earn Griot XP and a spot in the VR Fireside.</p>
+
+        <!-- ACTIVE BATTLE CARD -->
+        <div id="battle-active-card" style="background:rgba(200,80,255,.06);border:1px solid rgba(200,80,255,.2);border-radius:20px;padding:1.6rem;margin-bottom:1.5rem">
+          <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1rem">
+            <i class="ph ph-timer" style="color:#C850FF;font-size:1.2rem"></i>
+            <span id="battle-timer" style="font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;color:#C850FF;text-transform:uppercase">Loading battle...</span>
+            <span id="battle-countdown" style="margin-left:auto;font-family:var(--mono);font-size:.65rem;color:rgba(255,255,255,.35)"></span>
+          </div>
+          <div id="battle-prompt-display" style="font-size:1.1rem;font-weight:700;color:#fff;line-height:1.5;margin-bottom:1.4rem;padding:.9rem 1rem;background:rgba(255,255,255,.04);border-radius:10px;border-left:3px solid #C850FF"></div>
+          <!-- TWO ENTRIES SIDE BY SIDE -->
+          <div id="battle-entries" style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem"></div>
+          <!-- SUBMISSION FORM (shown if user hasn't entered) -->
+          <div id="battle-submit-wrap">
+            <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:.5rem">Your Entry — max 300 words</div>
+            <textarea id="battle-entry-text" rows="6" placeholder="Begin your story here..." style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);border:1px solid rgba(200,80,255,.2);border-radius:10px;padding:.8rem;color:#fff;font-size:.88rem;font-family:var(--sans,sans-serif);resize:vertical;outline:none;line-height:1.7"></textarea>
+            <div style="display:flex;align-items:center;gap:.7rem;margin-top:.7rem">
+              <span id="battle-word-count" style="font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.25)">0 / 300 words</span>
+              <button onclick="submitBattleEntry()" style="margin-left:auto;padding:.55rem 1.4rem;border-radius:10px;border:none;background:#C850FF;color:#fff;font-weight:700;font-size:.82rem;cursor:pointer">Enter Battle <i class="ph ph-swords"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LEADERBOARD -->
+        <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:1.2rem">
+          <div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:1rem"><i class="ph ph-trophy"></i> Battle Leaderboard</div>
+          <div id="battle-leaderboard"></div>
+        </div>
+
+        <!-- PAST BATTLES -->
+        <div style="margin-top:1.5rem">
+          <div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:1rem"><i class="ph ph-clock-counter-clockwise"></i> Past Battles</div>
+          <div id="past-battles-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ UBUNTU MODE WORLD ══════════════ -->
+  <div class="world" id="ubuntu-world">
+    <div style="background:linear-gradient(180deg,#000a06 0%,#001208 100%);min-height:100vh;padding-bottom:4rem">
+      <div class="ctr" style="padding-top:2.5rem">
+        <div class="sec-lbl" style="color:rgba(110,231,142,.4);justify-content:center;margin-bottom:.5rem"><i class="ph ph-hand-heart"></i> Community</div>
+        <h2 style="font-family:var(--impact);font-size:clamp(2.8rem,6vw,5rem);text-align:center;letter-spacing:.06em;color:#fff;margin-bottom:.3rem">Ubuntu <span style="color:#6EE78E">Mode</span></h2>
+        <p style="text-align:center;color:rgba(255,255,255,.4);font-size:.9rem;margin-bottom:.5rem;max-width:520px;margin-left:auto;margin-right:auto">"Umuntu ngumuntu ngabantu" — A person is a person through other people. Ask your community first. AI is always here as backup.</p>
+
+        <!-- ASK A QUESTION -->
+        <div style="background:rgba(110,231,142,.05);border:1px solid rgba(110,231,142,.15);border-radius:20px;padding:1.6rem;margin-bottom:1.5rem">
+          <div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;color:rgba(110,231,142,.6);text-transform:uppercase;margin-bottom:.8rem"><i class="ph ph-question"></i> What do you need help with?</div>
+          <div style="display:flex;gap:.5rem;margin-bottom:.8rem;flex-wrap:wrap">
+            <button class="ubuntu-tag active" onclick="setUbuntuTag(this,'essay')">Essay Help</button>
+            <button class="ubuntu-tag" onclick="setUbuntuTag(this,'maths')">Maths</button>
+            <button class="ubuntu-tag" onclick="setUbuntuTag(this,'science')">Science</button>
+            <button class="ubuntu-tag" onclick="setUbuntuTag(this,'story')">Storytelling</button>
+            <button class="ubuntu-tag" onclick="setUbuntuTag(this,'career')">Career Advice</button>
+            <button class="ubuntu-tag" onclick="setUbuntuTag(this,'life')">Life Advice</button>
+          </div>
+          <textarea id="ubuntu-question" rows="3" placeholder="Describe what you're stuck on..." style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);border:1px solid rgba(110,231,142,.15);border-radius:10px;padding:.75rem;color:#fff;font-size:.88rem;resize:vertical;outline:none;font-family:var(--sans,sans-serif);line-height:1.6"></textarea>
+          <div style="display:flex;gap:.7rem;margin-top:.7rem">
+            <button onclick="postUbuntuQuestion()" style="padding:.55rem 1.2rem;border-radius:10px;border:none;background:#6EE78E;color:#000;font-weight:700;font-size:.82rem;cursor:pointer"><i class="ph ph-users-three"></i> Ask the Community</button>
+            <button onclick="askUbuntuAI()" style="padding:.55rem 1.2rem;border-radius:10px;border:1px solid rgba(110,231,142,.2);background:none;color:#6EE78E;font-size:.82rem;cursor:pointer"><i class="ph ph-robot"></i> Ask Dr Sasa Instead</button>
+          </div>
+        </div>
+
+        <!-- DR SASA AI ANSWER -->
+        <div id="ubuntu-ai-answer" style="display:none;background:rgba(245,118,26,.05);border:1px solid rgba(245,118,26,.15);border-radius:16px;padding:1.2rem;margin-bottom:1.5rem">
+          <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.7rem">
+            <i class="ph ph-robot" style="color:var(--fire);font-size:1.1rem"></i>
+            <span style="font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;color:rgba(245,118,26,.6);text-transform:uppercase">Dr Sasa AI</span>
+          </div>
+          <div id="ubuntu-ai-text" style="color:rgba(255,255,255,.8);font-size:.88rem;line-height:1.8;white-space:pre-wrap"></div>
+        </div>
+
+        <!-- COMMUNITY QUESTIONS FEED -->
+        <div>
+          <div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:1rem"><i class="ph ph-chat-circle-dots"></i> Community Questions</div>
+          <div id="ubuntu-feed"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ UNSTUCK AI WORLD ══════════════ -->
+  <div class="world" id="unstuck-world">
+    <div style="background:linear-gradient(180deg,#000814 0%,#001428 100%);min-height:100vh;padding-bottom:4rem">
+      <div class="ctr" style="padding-top:2.5rem">
+        <div class="sec-lbl" style="color:rgba(100,181,232,.4);justify-content:center;margin-bottom:.5rem"><i class="ph ph-lightning"></i> AI Study Tool</div>
+        <h2 style="font-family:var(--impact);font-size:clamp(2.8rem,6vw,5rem);text-align:center;letter-spacing:.06em;color:#fff;margin-bottom:.3rem"><span style="color:#64B5E8">Unstuck</span> AI</h2>
+        <p style="text-align:center;color:rgba(255,255,255,.4);font-size:.9rem;margin-bottom:2rem;max-width:520px;margin-left:auto;margin-right:auto">Paste your essay topic, exam question, or assignment. Get 3 strong angles, a structure, a proverb that fits — and never stare at a blank page again.</p>
+
+        <!-- MODE TABS -->
+        <div style="display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap">
+          <button class="unstuck-tab active" onclick="setUnstuckMode(this,'essay')"><i class="ph ph-article"></i> Essay / Assignment</button>
+          <button class="unstuck-tab" onclick="setUnstuckMode(this,'exam')"><i class="ph ph-exam"></i> Exam Question</button>
+          <button class="unstuck-tab" onclick="setUnstuckMode(this,'present')"><i class="ph ph-presentation-chart"></i> Presentation</button>
+          <button class="unstuck-tab" onclick="setUnstuckMode(this,'story')"><i class="ph ph-book-open-text"></i> Story / Creative</button>
+          <button class="unstuck-tab" onclick="setUnstuckMode(this,'boss')"><i class="ph ph-skull"></i> Boss Battle Mode</button>
+        </div>
+
+        <!-- INPUT PANEL -->
+        <div style="background:rgba(100,181,232,.05);border:1px solid rgba(100,181,232,.15);border-radius:20px;padding:1.6rem;margin-bottom:1.5rem">
+          <div id="unstuck-mode-label" style="font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;color:rgba(100,181,232,.6);text-transform:uppercase;margin-bottom:.6rem">Essay / Assignment Topic</div>
+          <textarea id="unstuck-input" rows="4" placeholder="e.g. 'Discuss the role of women in the Zulu Kingdom' or paste your full question..." style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);border:1px solid rgba(100,181,232,.15);border-radius:10px;padding:.75rem;color:#fff;font-size:.9rem;resize:vertical;outline:none;font-family:var(--sans,sans-serif);line-height:1.65"></textarea>
+          <div style="display:flex;gap:.7rem;margin-top:.8rem;flex-wrap:wrap;align-items:center">
+            <select id="unstuck-grade" style="padding:.45rem .8rem;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);font-size:.78rem;cursor:pointer">
+              <option value="gr8">Grade 8</option><option value="gr9">Grade 9</option><option value="gr10">Grade 10</option>
+              <option value="gr11">Grade 11</option><option value="gr12" selected>Grade 12</option>
+              <option value="first">First Year Varsity</option><option value="varsity">Varsity (3rd+)</option>
+            </select>
+            <button onclick="runUnstuck()" style="padding:.55rem 1.4rem;border-radius:10px;border:none;background:#64B5E8;color:#000;font-weight:700;font-size:.82rem;cursor:pointer;margin-left:auto"><i class="ph ph-lightning"></i> Unstuck Me</button>
+          </div>
+        </div>
+
+        <!-- BOSS BATTLE PANEL (hidden by default) -->
+        <div id="boss-battle-panel" style="display:none;background:rgba(200,80,255,.06);border:1px solid rgba(200,80,255,.2);border-radius:20px;padding:1.6rem;margin-bottom:1.5rem">
+          <div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;color:#C850FF;text-transform:uppercase;margin-bottom:.8rem"><i class="ph ph-skull"></i> Boss Battle Mode — Turn Your Deadline Into a Quest</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1rem">
+            <div><div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-bottom:.3rem">Assignment Title</div><input id="boss-title" type="text" placeholder="e.g. History Essay" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);border:1px solid rgba(200,80,255,.2);border-radius:8px;padding:.5rem .7rem;color:#fff;font-size:.82rem;outline:none"></div>
+            <div><div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-bottom:.3rem">Due Date</div><input id="boss-due" type="date" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);border:1px solid rgba(200,80,255,.2);border-radius:8px;padding:.5rem .7rem;color:#fff;font-size:.82rem;outline:none"></div>
+          </div>
+          <button onclick="generateBossBattle()" style="padding:.55rem 1.2rem;border-radius:10px;border:none;background:#C850FF;color:#fff;font-weight:700;font-size:.82rem;cursor:pointer"><i class="ph ph-skull"></i> Generate My Quest</button>
+          <div id="boss-quest-display" style="margin-top:1rem"></div>
+        </div>
+
+        <!-- RESULTS PANEL -->
+        <div id="unstuck-result" style="display:none">
+          <div id="unstuck-angles" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-bottom:1.2rem"></div>
+          <div id="unstuck-structure" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.2rem;margin-bottom:1rem">
+            <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:.7rem"><i class="ph ph-list-numbers"></i> Suggested Structure</div>
+            <div id="unstuck-structure-text" style="color:rgba(255,255,255,.75);font-size:.88rem;line-height:1.8;white-space:pre-wrap"></div>
+          </div>
+          <div id="unstuck-proverb-box" style="background:rgba(245,118,26,.06);border:1px solid rgba(245,118,26,.15);border-radius:14px;padding:1.2rem">
+            <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;color:rgba(245,118,26,.6);text-transform:uppercase;margin-bottom:.5rem"><i class="ph ph-quotes"></i> Ancestor Wisdom for this Topic</div>
+            <div id="unstuck-proverb-text" style="color:rgba(255,255,255,.8);font-size:.95rem;font-style:italic;line-height:1.7"></div>
+          </div>
+        </div>
+
+        <!-- LOADING STATE -->
+        <div id="unstuck-loading" style="display:none;text-align:center;padding:3rem">
+          <div id="unstuck-thinking" style="font-family:var(--mono);font-size:.65rem;color:rgba(100,181,232,.5);letter-spacing:.1em"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="world" id="admin-world">
     <!-- Hero -->
     <div class="admin-hero">
@@ -15639,6 +15797,505 @@ function acceptInvite(fromId, fromName, gameType) {
     });
   }, 600);
 }
+
+
+// ════════════════════════════════════════════════════════════════
+// STORY BATTLES
+// Tables needed:
+//   story_battles  (id, prompt, created_at, ends_at, status)
+//   battle_entries (id, battle_id, user_id, user_name, text, votes, created_at)
+//   battle_votes   (battle_id, user_id)  -- to prevent double voting
+// ════════════════════════════════════════════════════════════════
+var BATTLE = {
+  current: null,
+  userEntry: null,
+  userVoted: false,
+  countdownInterval: null
+};
+
+var BATTLE_PROMPTS = [
+  'A child discovers their grandmother was a famous griot — but the stories she told were all lies.',
+  'The last river in Africa wakes up one morning with the ability to speak.',
+  'Two clans have been at war for 100 years. A storyteller must end it with one tale.',
+  'A city boy visits his rural grandfather and finds a door in the baobab tree.',
+  'The night before her matric exam, a student is visited by her ancestors.',
+  'A young woman inherits her mother\'s voice — literally. Everything she says becomes true.',
+  'The village that forgot how to sing must remember before the rains stop coming.',
+  'An AI tries to learn Ubuntu and fails. A child teaches it why.'
+];
+
+async function initBattleWorld() {
+  if (!supa) return;
+  try {
+    // Load most recent active battle
+    var { data: battles } = await supa
+      .from('story_battles')
+      .select('*')
+      .eq('status', 'active')
+      .order('created_at', { ascending: false })
+      .limit(1);
+
+    if (battles && battles.length) {
+      BATTLE.current = battles[0];
+    } else {
+      // Create a new battle if none active
+      await createNewBattle();
+      return;
+    }
+    await loadBattleEntries();
+    renderBattlePrompt();
+    startBattleCountdown();
+    await loadBattleLeaderboard();
+    await loadPastBattles();
+  } catch(e) {
+    renderBattleFallback();
+  }
+}
+
+async function createNewBattle() {
+  if (!supa) return;
+  var prompt = BATTLE_PROMPTS[Math.floor(Math.random() * BATTLE_PROMPTS.length)];
+  var endsAt = new Date(Date.now() + 24*60*60*1000).toISOString();
+  try {
+    var { data } = await supa.from('story_battles')
+      .insert({ prompt: prompt, ends_at: endsAt, status: 'active' })
+      .select().single();
+    BATTLE.current = data;
+    renderBattlePrompt();
+    startBattleCountdown();
+  } catch(e) {
+    renderBattleFallback();
+  }
+}
+
+function renderBattleFallback() {
+  // Works without Supabase — demo mode
+  BATTLE.current = {
+    id: 'demo',
+    prompt: BATTLE_PROMPTS[0],
+    ends_at: new Date(Date.now() + 20*60*60*1000).toISOString()
+  };
+  renderBattlePrompt();
+  startBattleCountdown();
+  document.getElementById('battle-entries').innerHTML =
+    '<div style="grid-column:span 2;text-align:center;color:rgba(255,255,255,.25);font-size:.82rem;padding:2rem">Be the first to enter this battle!</div>';
+}
+
+function renderBattlePrompt() {
+  var pd = document.getElementById('battle-prompt-display');
+  var bt = document.getElementById('battle-timer');
+  if (pd && BATTLE.current) pd.textContent = BATTLE.current.prompt;
+  if (bt) bt.textContent = 'Today\'s Battle Prompt';
+}
+
+function startBattleCountdown() {
+  if (BATTLE.countdownInterval) clearInterval(BATTLE.countdownInterval);
+  if (!BATTLE.current) return;
+  function tick() {
+    var el = document.getElementById('battle-countdown');
+    if (!el) { clearInterval(BATTLE.countdownInterval); return; }
+    var diff = new Date(BATTLE.current.ends_at) - Date.now();
+    if (diff <= 0) { el.textContent = 'Voting closed'; clearInterval(BATTLE.countdownInterval); return; }
+    var h = Math.floor(diff/3600000);
+    var m = Math.floor((diff%3600000)/60000);
+    var s = Math.floor((diff%60000)/1000);
+    el.textContent = h+'h '+m+'m '+s+'s remaining';
+  }
+  tick();
+  BATTLE.countdownInterval = setInterval(tick, 1000);
+}
+
+async function loadBattleEntries() {
+  if (!BATTLE.current || !supa) return;
+  try {
+    var { data: entries } = await supa
+      .from('battle_entries')
+      .select('*')
+      .eq('battle_id', BATTLE.current.id)
+      .order('votes', { ascending: false })
+      .limit(2);
+
+    var container = document.getElementById('battle-entries');
+    if (!container) return;
+    if (!entries || !entries.length) {
+      container.innerHTML = '<div style="grid-column:span 2;text-align:center;color:rgba(255,255,255,.25);font-size:.82rem;padding:2rem">Be the first to enter this battle!</div>';
+      return;
+    }
+
+    // Check if current user already entered or voted
+    if (currentUser) {
+      BATTLE.userEntry = entries.find(function(e){ return e.user_id === currentUser.id; });
+      if (BATTLE.userEntry) {
+        document.getElementById('battle-submit-wrap').style.display = 'none';
+      }
+      var { data: vote } = await supa.from('battle_votes')
+        .select('id').eq('battle_id', BATTLE.current.id).eq('user_id', currentUser.id).maybeSingle();
+      BATTLE.userVoted = !!vote;
+    }
+
+    container.innerHTML = entries.map(function(e, i) {
+      var isWinner = i === 0 && entries.length > 1;
+      var canVote = currentUser && !BATTLE.userVoted && (!BATTLE.userEntry || BATTLE.userEntry.id !== e.id);
+      return '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(200,80,255,'+(isWinner?.2:.1)+');border-radius:14px;padding:1.2rem;display:flex;flex-direction:column;gap:.7rem">'
+        + '<div style="display:flex;align-items:center;gap:.5rem">'
+        + (isWinner ? '<i class="ph ph-crown" style="color:#E6B32A;font-size:.9rem"></i>' : '<i class="ph ph-user-circle" style="color:rgba(255,255,255,.3);font-size:.9rem"></i>')
+        + '<span style="font-family:var(--mono);font-size:.52rem;color:rgba(255,255,255,.4)">' + (e.user_name || 'Anonymous Griot') + '</span>'
+        + '<span style="margin-left:auto;font-family:var(--mono);font-size:.52rem;color:#C850FF">' + (e.votes||0) + ' votes</span>'
+        + '</div>'
+        + '<div style="font-size:.85rem;color:rgba(255,255,255,.75);line-height:1.75;font-family:var(--body,serif);flex:1">' + e.text.slice(0,280) + (e.text.length>280?'…':'') + '</div>'
+        + (canVote ? '<button onclick="voteBattleEntry(\''+e.id+'\')" style="padding:.4rem .9rem;border-radius:8px;border:1px solid rgba(200,80,255,.3);background:rgba(200,80,255,.08);color:#C850FF;font-size:.75rem;font-weight:700;cursor:pointer;width:100%"><i class="ph ph-thumbs-up"></i> Vote This Story</button>' : '')
+        + '</div>';
+    }).join('');
+  } catch(e) { console.warn('Battle entries error', e); }
+}
+
+async function submitBattleEntry() {
+  if (!currentUser) { openAuthModal(); return; }
+  if (!BATTLE.current) return;
+  var text = (document.getElementById('battle-entry-text')||{}).value || '';
+  var words = text.trim().split(/\s+/).filter(Boolean);
+  if (words.length < 20) { mpShowToast && mpShowToast('Write at least 20 words!'); return; }
+  if (words.length > 300) { mpShowToast && mpShowToast('Max 300 words'); return; }
+  var btn = document.querySelector('[onclick="submitBattleEntry()"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
+  try {
+    await supa.from('battle_entries').insert({
+      battle_id: BATTLE.current.id,
+      user_id: currentUser.id,
+      user_name: (currentUser.profile && currentUser.profile.full_name) || 'Anonymous Griot',
+      text: text,
+      votes: 0
+    });
+    // Award XP
+    awardXP && awardXP(50, 'Battle Entry');
+    document.getElementById('battle-submit-wrap').style.display = 'none';
+    await loadBattleEntries();
+    mpShowToast && mpShowToast('Entry submitted! May the community choose wisely.');
+  } catch(e) {
+    if (btn) { btn.disabled = false; btn.textContent = 'Enter Battle'; }
+    mpShowToast && mpShowToast('Could not submit. Try again.');
+  }
+}
+
+async function voteBattleEntry(entryId) {
+  if (!currentUser) { openAuthModal(); return; }
+  if (BATTLE.userVoted) { mpShowToast && mpShowToast('You already voted in this battle'); return; }
+  try {
+    await supa.from('battle_votes').insert({ battle_id: BATTLE.current.id, user_id: currentUser.id });
+    await supa.from('battle_entries').update({ votes: supa.rpc ? undefined : 1 }).eq('id', entryId);
+    // Use RPC if available, fallback to manual increment
+    await supa.rpc('increment_battle_vote', { entry_id: entryId }).catch(async function() {
+      var { data: e } = await supa.from('battle_entries').select('votes').eq('id', entryId).single();
+      await supa.from('battle_entries').update({ votes: (e.votes||0)+1 }).eq('id', entryId);
+    });
+    BATTLE.userVoted = true;
+    awardXP && awardXP(10, 'Community Vote');
+    await loadBattleEntries();
+    mpShowToast && mpShowToast('Vote cast! The community has spoken.');
+  } catch(e) { mpShowToast && mpShowToast('Could not vote. Try again.'); }
+}
+
+// Word count on textarea
+var battleTA = document.getElementById('battle-entry-text');
+if (battleTA) {
+  battleTA.addEventListener('input', function() {
+    var w = this.value.trim().split(/\s+/).filter(Boolean).length;
+    var el = document.getElementById('battle-word-count');
+    if (el) { el.textContent = w + ' / 300 words'; el.style.color = w > 300 ? '#ff7070' : 'rgba(255,255,255,.25)'; }
+  });
+}
+
+async function loadBattleLeaderboard() {
+  if (!supa) return;
+  try {
+    var { data } = await supa.from('battle_entries')
+      .select('user_name, votes')
+      .order('votes', { ascending: false })
+      .limit(5);
+    var el = document.getElementById('battle-leaderboard');
+    if (!el || !data) return;
+    el.innerHTML = data.map(function(e, i) {
+      var medals = ['#E6B32A','#aaa','#cd7f32','rgba(255,255,255,.3)','rgba(255,255,255,.2)'];
+      return '<div style="display:flex;align-items:center;gap:.7rem;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.05)">'
+        + '<span style="font-family:var(--mono);font-size:.65rem;color:'+medals[i]+';width:1.2rem">' + (i+1) + '</span>'
+        + '<span style="flex:1;font-size:.85rem;color:rgba(255,255,255,.7)">' + (e.user_name||'Griot') + '</span>'
+        + '<span style="font-family:var(--mono);font-size:.6rem;color:#C850FF">' + (e.votes||0) + ' votes</span>'
+        + '</div>';
+    }).join('');
+  } catch(e) {}
+}
+
+async function loadPastBattles() {
+  if (!supa) return;
+  try {
+    var { data } = await supa.from('story_battles')
+      .select('id, prompt, created_at, status')
+      .neq('status','active')
+      .order('created_at', { ascending: false })
+      .limit(3);
+    var el = document.getElementById('past-battles-list');
+    if (!el || !data || !data.length) { if(el) el.innerHTML = '<p style="color:rgba(255,255,255,.25);font-size:.82rem">No past battles yet — this one is the first!</p>'; return; }
+    el.innerHTML = data.map(function(b) {
+      return '<div style="padding:.9rem 1rem;background:rgba(255,255,255,.03);border-radius:10px;margin-bottom:.6rem;border:1px solid rgba(255,255,255,.06)">'
+        + '<div style="font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.5">' + b.prompt + '</div>'
+        + '<div style="font-family:var(--mono);font-size:.48rem;color:rgba(255,255,255,.2);margin-top:.4rem">' + new Date(b.created_at).toLocaleDateString('en-ZA',{day:'numeric',month:'short',year:'numeric'}) + '</div>'
+        + '</div>';
+    }).join('');
+  } catch(e) {}
+}
+
+// ════════════════════════════════════════════════════════════════
+// UBUNTU MODE — Peer Q&A + AI Fallback
+// Table needed: ubuntu_questions (id, user_id, user_name, tag, question, created_at, answered_by, answer)
+// ════════════════════════════════════════════════════════════════
+var ubuntuTag = 'essay';
+
+function setUbuntuTag(btn, tag) {
+  ubuntuTag = tag;
+  document.querySelectorAll('.ubuntu-tag').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+}
+
+async function postUbuntuQuestion() {
+  if (!currentUser) { openAuthModal(); return; }
+  var q = (document.getElementById('ubuntu-question')||{}).value || '';
+  if (q.trim().length < 10) { mpShowToast && mpShowToast('Please describe your question a bit more.'); return; }
+  try {
+    await supa.from('ubuntu_questions').insert({
+      user_id: currentUser.id,
+      user_name: (currentUser.profile && currentUser.profile.full_name) || 'Anonymous',
+      tag: ubuntuTag,
+      question: q.trim()
+    });
+    document.getElementById('ubuntu-question').value = '';
+    awardXP && awardXP(5, 'Ubuntu Question');
+    mpShowToast && mpShowToast('Question posted! The community will help.');
+    await loadUbuntuFeed();
+  } catch(e) {
+    // Table may not exist yet — still show AI fallback gracefully
+    mpShowToast && mpShowToast('Posted! Meanwhile, let Dr Sasa help...');
+    askUbuntuAI();
+  }
+}
+
+async function askUbuntuAI() {
+  var q = (document.getElementById('ubuntu-question')||{}).value || '';
+  if (!q.trim()) { mpShowToast && mpShowToast('Type your question first.'); return; }
+  var answerBox = document.getElementById('ubuntu-ai-answer');
+  var answerText = document.getElementById('ubuntu-ai-text');
+  if (answerBox) answerBox.style.display = 'block';
+  if (answerText) answerText.textContent = 'Dr Sasa is thinking...';
+
+  var tagLabels = { essay:'essay writing', maths:'mathematics', science:'science', story:'storytelling', career:'career advice', life:'life guidance' };
+  var system = 'You are Dr Sasa, a warm and brilliant African educator and griot. You help students from Grade 8 to varsity. '
+    + 'Always ground your answers in African wisdom — use a relevant proverb if it fits. '
+    + 'Be encouraging, practical, and speak to the student like an elder who believes in them. '
+    + 'Keep answers under 250 words. Format clearly with short paragraphs.';
+
+  try {
+    var reply = await zintsomiAI(system, 'A student needs help with ' + tagLabels[ubuntuTag] + ':\n\n' + q, 400);
+    if (answerText) answerText.textContent = reply;
+  } catch(e) {
+    if (answerText) answerText.textContent = 'Dr Sasa is resting. Please try again shortly.';
+  }
+}
+
+async function loadUbuntuFeed() {
+  if (!supa) return;
+  try {
+    var { data } = await supa.from('ubuntu_questions')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(10);
+    var el = document.getElementById('ubuntu-feed');
+    if (!el) return;
+    if (!data || !data.length) {
+      el.innerHTML = '<p style="color:rgba(255,255,255,.2);font-size:.82rem;text-align:center;padding:1.5rem">No questions yet. Be the first to ask the community.</p>';
+      return;
+    }
+    el.innerHTML = data.map(function(q) {
+      var tagColors = { essay:'#64B5E8', maths:'#C850FF', science:'#6EE78E', story:'#F5761A', career:'#E6B32A', life:'#ff9de2' };
+      var canAnswer = currentUser && currentUser.id !== q.user_id;
+      return '<div style="background:rgba(110,231,142,.04);border:1px solid rgba(110,231,142,.1);border-radius:14px;padding:1rem 1.2rem;margin-bottom:.8rem">'
+        + '<div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem">'
+        + '<span style="padding:.2rem .6rem;border-radius:100px;background:rgba(255,255,255,.05);font-family:var(--mono);font-size:.46rem;color:'+(tagColors[q.tag]||'#fff')+';text-transform:uppercase">' + (q.tag||'general') + '</span>'
+        + '<span style="font-family:var(--mono);font-size:.48rem;color:rgba(255,255,255,.25)">' + (q.user_name||'Anonymous') + '</span>'
+        + '<span style="margin-left:auto;font-family:var(--mono);font-size:.44rem;color:rgba(255,255,255,.18)">' + new Date(q.created_at).toLocaleDateString('en-ZA',{day:'numeric',month:'short'}) + '</span>'
+        + '</div>'
+        + '<div style="font-size:.88rem;color:rgba(255,255,255,.75);line-height:1.65;margin-bottom:.7rem">' + q.question + '</div>'
+        + (q.answer ? '<div style="background:rgba(110,231,142,.08);border-radius:8px;padding:.7rem .9rem;font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.6;border-left:2px solid #6EE78E"><i class="ph ph-check-circle" style="color:#6EE78E"></i> <strong>Community Answer:</strong> ' + q.answer + '</div>' : '')
+        + (canAnswer && !q.answer ? '<button onclick="openUbuntuAnswerBox(\''+q.id+'\')" style="margin-top:.5rem;padding:.35rem .8rem;border-radius:8px;border:1px solid rgba(110,231,142,.2);background:rgba(110,231,142,.06);color:#6EE78E;font-size:.72rem;cursor:pointer"><i class="ph ph-hand-heart"></i> Help Answer</button>' : '')
+        + '</div>';
+    }).join('');
+  } catch(e) {}
+}
+
+function openUbuntuAnswerBox(qId) {
+  var existing = document.getElementById('ubuntu-answer-' + qId);
+  if (existing) { existing.remove(); return; }
+  var btn = document.querySelector('[onclick="openUbuntuAnswerBox(\''+qId+'\')"]');
+  if (!btn) return;
+  var box = document.createElement('div');
+  box.id = 'ubuntu-answer-' + qId;
+  box.style.cssText = 'margin-top:.6rem';
+  box.innerHTML = '<textarea rows="3" id="ubuntu-ans-text-'+qId+'" placeholder="Share your knowledge..." style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);border:1px solid rgba(110,231,142,.2);border-radius:8px;padding:.6rem .8rem;color:#fff;font-size:.82rem;outline:none;resize:vertical;font-family:var(--sans,sans-serif)"></textarea>'
+    + '<button onclick="submitUbuntuAnswer(\''+qId+'\')" style="margin-top:.4rem;padding:.4rem .9rem;border-radius:8px;border:none;background:#6EE78E;color:#000;font-size:.75rem;font-weight:700;cursor:pointer">Post Answer</button>';
+  btn.parentNode.insertBefore(box, btn.nextSibling);
+}
+
+async function submitUbuntuAnswer(qId) {
+  if (!currentUser) { openAuthModal(); return; }
+  var text = (document.getElementById('ubuntu-ans-text-'+qId)||{}).value || '';
+  if (text.trim().length < 10) return;
+  try {
+    await supa.from('ubuntu_questions').update({ answer: text.trim(), answered_by: currentUser.id }).eq('id', qId);
+    awardXP && awardXP(20, 'Ubuntu Answer');
+    mpShowToast && mpShowToast('Answer shared! You\'re building Ubuntu.');
+    await loadUbuntuFeed();
+  } catch(e) { mpShowToast && mpShowToast('Could not post. Try again.'); }
+}
+
+// ════════════════════════════════════════════════════════════════
+// UNSTUCK AI — Essay Angles, Structure, Ancestor Proverb
+// ════════════════════════════════════════════════════════════════
+var unstuckMode = 'essay';
+
+function setUnstuckMode(btn, mode) {
+  unstuckMode = mode;
+  document.querySelectorAll('.unstuck-tab').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  var label = document.getElementById('unstuck-mode-label');
+  var labels = { essay:'Essay / Assignment Topic', exam:'Exam Question', present:'Presentation Topic', story:'Story Prompt or Idea', boss:'Assignment Details for Boss Battle' };
+  if (label) label.textContent = labels[mode] || 'Your Question';
+  var bossPanel = document.getElementById('boss-battle-panel');
+  var inputPanel = bossPanel && bossPanel.previousElementSibling;
+  if (bossPanel) bossPanel.style.display = mode === 'boss' ? 'block' : 'none';
+}
+
+async function runUnstuck() {
+  if (unstuckMode === 'boss') { generateBossBattle(); return; }
+  var input = (document.getElementById('unstuck-input')||{}).value || '';
+  if (input.trim().length < 8) { mpShowToast && mpShowToast('Tell me more about your topic.'); return; }
+  var grade = (document.getElementById('unstuck-grade')||{}).value || 'gr12';
+  var gradeLabels = { gr8:'Grade 8', gr9:'Grade 9', gr10:'Grade 10', gr11:'Grade 11', gr12:'Grade 12 / Matric', first:'First Year University', varsity:'Third Year University and above' };
+  var gradeLabel = gradeLabels[grade];
+
+  document.getElementById('unstuck-result').style.display = 'none';
+  document.getElementById('unstuck-loading').style.display = 'block';
+  var thinkEl = document.getElementById('unstuck-thinking');
+  var thinkMsgs = ['Consulting the ancestors...', 'Pulling wisdom from the baobab...', 'Dr Sasa is thinking...', 'Mapping your angles...'];
+  var ti = 0;
+  var thinkInt = setInterval(function(){ if(thinkEl) thinkEl.textContent = thinkMsgs[ti++ % thinkMsgs.length]; }, 1200);
+
+  var modeInstructions = {
+    essay: 'Give 3 compelling argument angles for this essay topic, then a clear essay structure (intro, body paragraphs, conclusion), then one perfect African proverb that connects to the topic.',
+    exam: 'Break down this exam question: what it is really asking, 3 key points to hit, common mistakes to avoid, and one African proverb of wisdom for the student.',
+    present: 'Give 3 powerful angles for this presentation, a clear slide-by-slide structure (5-7 slides), and one African proverb to open with.',
+    story: 'Give 3 creative directions this story could go, a 5-act African storytelling structure, and the ancestor wisdom that this story teaches.'
+  };
+
+  var system = 'You are Dr Sasa, a brilliant African educator and storytelling griot helping a ' + gradeLabel + ' student. '
+    + 'Respond in this EXACT JSON format, nothing else:\n'
+    + '{"angle1":{"title":"...","detail":"..."},"angle2":{"title":"...","detail":"..."},"angle3":{"title":"...","detail":"..."},"structure":"...","proverb":"...","proverb_meaning":"..."}';
+
+  try {
+    var raw = await zintsomiAI(system, modeInstructions[unstuckMode] + '\n\nTopic: ' + input, 800);
+    var clean = raw.replace(/```json|```/g,'').trim();
+    var obj = JSON.parse(clean);
+    clearInterval(thinkInt);
+    document.getElementById('unstuck-loading').style.display = 'none';
+    document.getElementById('unstuck-result').style.display = 'block';
+
+    var angleColors = ['#64B5E8','#C850FF','#6EE78E'];
+    document.getElementById('unstuck-angles').innerHTML = ['angle1','angle2','angle3'].map(function(k, i) {
+      var a = obj[k] || {};
+      return '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-top:3px solid '+angleColors[i]+';border-radius:14px;padding:1.2rem">'
+        + '<div style="font-family:var(--mono);font-size:.48rem;letter-spacing:.1em;color:'+angleColors[i]+';text-transform:uppercase;margin-bottom:.4rem">Angle ' + (i+1) + '</div>'
+        + '<div style="font-weight:700;color:#fff;font-size:.95rem;margin-bottom:.5rem">' + (a.title||'') + '</div>'
+        + '<div style="font-size:.82rem;color:rgba(255,255,255,.6);line-height:1.65">' + (a.detail||'') + '</div>'
+        + '</div>';
+    }).join('');
+    document.getElementById('unstuck-structure-text').textContent = obj.structure || '';
+    document.getElementById('unstuck-proverb-text').innerHTML = '"' + (obj.proverb||'') + '"'
+      + (obj.proverb_meaning ? '<br><span style="font-size:.78rem;color:rgba(255,255,255,.4);font-style:normal;margin-top:.4rem;display:block">' + obj.proverb_meaning + '</span>' : '');
+    awardXP && awardXP(15, 'Unstuck AI Used');
+  } catch(e) {
+    clearInterval(thinkInt);
+    document.getElementById('unstuck-loading').style.display = 'none';
+    mpShowToast && mpShowToast('Dr Sasa is resting. Try again in a moment.');
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+// BOSS BATTLE MODE — Deadline as a Quest
+// ════════════════════════════════════════════════════════════════
+async function generateBossBattle() {
+  var title = (document.getElementById('boss-title')||{}).value || '';
+  var due   = (document.getElementById('boss-due')||{}).value || '';
+  if (!title.trim()) { mpShowToast && mpShowToast('Enter the assignment name first.'); return; }
+
+  var daysLeft = due ? Math.ceil((new Date(due) - Date.now()) / 86400000) : 3;
+  var display = document.getElementById('boss-quest-display');
+  if (display) display.innerHTML = '<div style="color:rgba(200,80,255,.5);font-family:var(--mono);font-size:.55rem">Generating your quest...</div>';
+
+  var system = 'You are a quest master turning a student\'s assignment into a fun RPG-style quest with checkpoints. '
+    + 'Respond ONLY in this JSON format:\n'
+    + '{"boss_name":"...","boss_description":"...","checkpoints":[{"day":1,"task":"...","xp":50},{"day":2,"task":"...","xp":75},{"day":3,"task":"...","xp":100}],"final_reward":"...","battle_cry":"..."}';
+
+  try {
+    var raw = await zintsomiAI(system, 'Assignment: "' + title + '". Days until due: ' + daysLeft + '. Create a ' + daysLeft + '-checkpoint quest.', 600);
+    var obj = JSON.parse(raw.replace(/```json|```/g,'').trim());
+
+    var checkpointHTML = (obj.checkpoints||[]).map(function(cp, i) {
+      return '<div style="display:flex;gap:.7rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,.05)">'
+        + '<div style="width:28px;height:28px;border-radius:50%;background:rgba(200,80,255,.15);border:1px solid rgba(200,80,255,.3);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.6rem;color:#C850FF;flex-shrink:0">' + (i+1) + '</div>'
+        + '<div style="flex:1"><div style="font-size:.82rem;color:rgba(255,255,255,.8);line-height:1.5">Day ' + (cp.day||i+1) + ': ' + cp.task + '</div>'
+        + '<div style="font-family:var(--mono);font-size:.46rem;color:#C850FF;margin-top:.2rem">+' + (cp.xp||50) + ' XP on completion</div></div>'
+        + '</div>';
+    }).join('');
+
+    if (display) display.innerHTML = '<div style="margin-top:1rem">'
+      + '<div style="text-align:center;padding:1rem 0;border-bottom:1px solid rgba(200,80,255,.15);margin-bottom:.8rem">'
+      + '<div style="font-family:var(--impact);font-size:1.6rem;color:#C850FF;letter-spacing:.06em">' + (obj.boss_name||'THE ASSIGNMENT') + '</div>'
+      + '<div style="font-size:.8rem;color:rgba(255,255,255,.45);margin-top:.3rem">' + (obj.boss_description||'') + '</div>'
+      + '<div style="font-family:var(--mono);font-size:.58rem;color:rgba(200,80,255,.6);margin-top:.6rem;font-style:italic">"' + (obj.battle_cry||'') + '"</div>'
+      + '</div>'
+      + checkpointHTML
+      + '<div style="margin-top:.8rem;padding:.8rem;background:rgba(230,179,42,.06);border:1px solid rgba(230,179,42,.2);border-radius:10px;font-size:.8rem;color:rgba(230,179,42,.8);text-align:center">'
+      + '<i class="ph ph-trophy"></i> Final Reward: ' + (obj.final_reward||'Victory') + '</div>'
+      + '</div>';
+    awardXP && awardXP(10, 'Boss Battle Created');
+  } catch(e) {
+    if (display) display.innerHTML = '<div style="color:rgba(255,80,80,.5);font-size:.8rem">Could not generate quest. Try again.</div>';
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+// HOOK INTO showWorld — init features when world is opened
+// ════════════════════════════════════════════════════════════════
+var _origShowWorld = window.showWorld;
+window.showWorld = function(id) {
+  if (_origShowWorld) _origShowWorld(id);
+  if (id === 'battle') {
+    setTimeout(initBattleWorld, 100);
+  }
+  if (id === 'ubuntu') {
+    setTimeout(loadUbuntuFeed, 100);
+  }
+};
+
+// CSS for new feature tabs and tags
+(function() {
+  var s = document.createElement('style');
+  s.textContent = [
+    '.ubuntu-tag{padding:.35rem .8rem;border-radius:100px;border:1px solid rgba(110,231,142,.2);background:rgba(110,231,142,.05);color:rgba(255,255,255,.45);font-size:.72rem;cursor:pointer;transition:all .15s;font-family:var(--mono,monospace)}',
+    '.ubuntu-tag.active,.ubuntu-tag:hover{background:rgba(110,231,142,.15);border-color:rgba(110,231,142,.4);color:#6EE78E}',
+    '.unstuck-tab{padding:.45rem 1rem;border-radius:100px;border:1px solid rgba(100,181,232,.2);background:rgba(100,181,232,.05);color:rgba(255,255,255,.4);font-size:.72rem;cursor:pointer;transition:all .15s;font-family:var(--mono,monospace);display:inline-flex;align-items:center;gap:.4rem}',
+    '.unstuck-tab.active,.unstuck-tab:hover{background:rgba(100,181,232,.15);border-color:rgba(100,181,232,.4);color:#64B5E8}',
+  ].join('\n');
+  document.head.appendChild(s);
+})();
+
 
 // Boot presence when user logs in
 (function() {
