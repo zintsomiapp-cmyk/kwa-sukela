@@ -3297,10 +3297,10 @@ body::after{
 
     <!-- Social Links -->
     <div class="blog-social-links">
-      <a class="bsl-link ig" href="https://www.instagram.com/zintsomistorytellingcollege" target="_blank" rel="noopener"><i class="ph ph-instagram-logo"></i> Instagram</a>
+      <a class="bsl-link ig" href="#" onclick="mpShowToast&&mpShowToast('Instagram coming soon — follow us at @zintsomistorytellingcollege');return false;" target="_blank" rel="noopener"><i class="ph ph-instagram-logo"></i> Instagram</a>
       <a class="bsl-link yt" href="https://www.youtube.com/@zintsomistorytellingcollege" target="_blank" rel="noopener"><i class="ph ph-youtube-logo"></i> YouTube</a>
-      <a class="bsl-link tt" href="https://www.tiktok.com/@zintsomistorytellingcollege" target="_blank" rel="noopener"><i class="ph ph-tiktok-logo"></i> TikTok</a>
-      <a class="bsl-link fb" href="https://www.facebook.com/zintsomistorytellingcollege" target="_blank" rel="noopener"><i class="ph ph-facebook-logo"></i> Facebook</a>
+      <a class="bsl-link tt" href="#" onclick="mpShowToast&&mpShowToast('TikTok coming soon — @zintsomistorytellingcollege');return false;" target="_blank" rel="noopener"><i class="ph ph-tiktok-logo"></i> TikTok</a>
+      <a class="bsl-link fb" href="#" onclick="mpShowToast&&mpShowToast('Facebook coming soon — Zintsomi Storytelling College');return false;" target="_blank" rel="noopener"><i class="ph ph-facebook-logo"></i> Facebook</a>
     </div>
 
     <!-- Blog Tabs -->
@@ -3458,7 +3458,7 @@ body::after{
       <!-- Non-admin viewer notice (shown to everyone else) -->
       <div class="blog-viewer-notice" id="blog-viewer-notice" style="display:none">
         <span style="font-size:1.4rem"><i class="ph ph-pencil-line"></i></span>
-        <span>You're reading <em>Dr Sasa\'s</em> feed. Log in to like and comment. Only Dr Sasa can post here.</span>
+        <span>You're reading the community feed. Log in to post, like, and comment.</span>
       </div>
 
       <!-- FEED POSTS -->
@@ -4979,7 +4979,11 @@ body::after{
             <div class="game-tile" onclick="openFamilyGame('chess')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#181818,#4b3a24)"><i class="ph ph-crown" style="font-size:3rem;color:#f6d28b"></i></div><div class="game-tile-body"><div class="gt-tag">Strategy</div><div class="gt-name">Chess</div><div class="gt-origin">Local two-player board</div><p class="gt-desc">Play a real chess board with legal piece movement, captures, and pawn promotion.</p></div></div>
             <div class="game-tile" onclick="openFamilyGame('checkers')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#200f0f,#6b2323)"><i class="ph ph-circles-four" style="font-size:3rem;color:#ff9f43"></i></div><div class="game-tile-body"><div class="gt-tag">Tactics</div><div class="gt-name">Checkers</div><div class="gt-origin">Local two-player board</div><p class="gt-desc">Diagonal moves, captures, and king promotion. A fast tactical family match.</p></div></div>
             <div class="game-tile" onclick="openFamilyGame('mancala')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#0a2010,#1a5c2a)"><div style="font-size:2.8rem;padding:.8rem 0">🫘</div></div><div class="game-tile-body"><div class="gt-tag">Ancient Strategy</div><div class="gt-name">Mancala</div><div class="gt-origin"><i class="ph ph-globe-hemisphere-west"></i> African · 2 players · Ages 6+</div><p class="gt-desc">One of the oldest board games on earth. Sow seeds around the board, capture your opponent's pits, and fill your store to win.</p></div></div>
-            <div class="game-tile" onclick="openUbuntuStoryChain()"><div class="game-tile-hero" style="background:linear-gradient(135deg,#1a0800,#4d1a00)"><div style="font-size:2.8rem;padding:.8rem 0">🔥</div></div><div class="game-tile-body"><div class="gt-tag">Storytelling</div><div class="gt-name">Ubuntu Story Chain</div><div class="gt-origin"><i class="ph ph-globe-hemisphere-west"></i> African oral tradition · 2–4 players</div><p class="gt-desc">Pass-and-tell family storytelling. One sentence at a time. Read the full story back at the end.</p></div></div>
+            <div class="game-tile" onclick="openUbuntuStoryChain()"><div class="game-tile-hero" style="background:linear-gradient(135deg,#1a0800,#4d1a00)"><i class="ph ph-campfire" style="font-size:3rem;color:var(--fire)"></i></div><div class="game-tile-body"><div class="gt-tag">Storytelling</div><div class="gt-name">Ubuntu Story Chain</div><div class="gt-origin"><i class="ph ph-globe-hemisphere-west"></i> African oral tradition · 2–4 players</div><p class="gt-desc">Pass-and-tell family storytelling. One sentence at a time. Read the full story back at the end.</p></div></div>
+            <div class="game-tile" onclick="openFamilyGame('trivia')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#001a0e,#004d2e)"><i class="ph ph-lightning" style="font-size:3rem;color:#6EE78E"></i></div><div class="game-tile-body"><div class="gt-tag">Culture · History</div><div class="gt-name">African Trivia Blitz</div><div class="gt-origin"><i class="ph ph-globe-hemisphere-west"></i> African knowledge · All ages</div><p class="gt-desc">Fast-fire questions about African culture, history, animals, geography, and language. Compete with the family — who knows Africa best?</p></div></div>
+            <div class="game-tile" onclick="openFamilyGame('wordchain')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#0d0020,#3a006b)"><i class="ph ph-text-a" style="font-size:3rem;color:#C850FF"></i></div><div class="game-tile-body"><div class="gt-tag">Language · 2+ players</div><div class="gt-name">Word Chain</div><div class="gt-origin"><i class="ph ph-globe-hemisphere-west"></i> Multi-language · Ages 8+</div><p class="gt-desc">Say a word. Next player says a word starting with the last letter. African words score double. Miss or repeat — you're out. Last one standing wins.</p></div></div>
+            <div class="game-tile" onclick="openFamilyGame('proverb')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#1a1000,#5c3d00)"><i class="ph ph-quotes" style="font-size:3rem;color:#E6B32A"></i></div><div class="game-tile-body"><div class="gt-tag">Wisdom · Memory</div><div class="gt-name">Proverb Match</div><div class="gt-origin"><i class="ph ph-globe-hemisphere-west"></i> African proverbs · Ages 10+</div><p class="gt-desc">Match the proverb to its meaning. First half of the saying appears — you pick the correct ending. Learn 30 real African proverbs while playing.</p></div></div>
+            <div class="game-tile" onclick="openFamilyGame('numpattern')"><div class="game-tile-hero" style="background:linear-gradient(135deg,#001828,#004d7a)"><i class="ph ph-chart-line" style="font-size:3rem;color:#64B5E8"></i></div><div class="game-tile-body"><div class="gt-tag">Maths · Patterns</div><div class="gt-name">Number Patterns</div><div class="gt-origin">Grade 4–12 · All levels</div><p class="gt-desc">Spot the pattern, fill the gap. Arithmetic, geometric, Fibonacci, and African counting systems. 5 levels from easy to Grade 12 challenge.</p></div></div>
           </div>
         </div>
       </div>
@@ -6376,7 +6380,18 @@ function openFamilyGame(type){
     familyState.quiz=saved.idx||0;
     familyState.answered=saved.answered||{};
   }
-  ({quiz:renderFamilyQuiz,solitaire:renderSolitaire,snakes:renderSnakes,chess:renderChess,checkers:renderCheckers,mancala:function(){if(!mancalaBoard.length)initMancala();renderMancala();}}[type]||renderFamilyQuiz)();
+  ({
+    quiz:renderFamilyQuiz,
+    solitaire:renderSolitaire,
+    snakes:renderSnakes,
+    chess:renderChess,
+    checkers:renderCheckers,
+    mancala:function(){if(!mancalaBoard.length)initMancala();renderMancala();},
+    trivia:renderFamilyTrivia,
+    wordchain:renderWordChain,
+    proverb:renderProverbMatch,
+    numpattern:renderNumPattern
+  }[type]||renderFamilyQuiz)();
 }
 function closeFamilyGame(){document.getElementById('family-overlay').classList.remove('open')}
 function famTitle(t){document.getElementById('family-title').textContent=t}
@@ -7302,11 +7317,39 @@ function treeHover(e){
   else pop.style.display='none';
 }
 function growLeaf(){
-  var name=prompt('Enter your name to add your leaf to the Ancestor Tree:');if(!name)return;
+  if (!currentUser) { openAuthModal(); return; }
+  var displayName = (currentUser.profile && currentUser.profile.full_name) || currentUser.email || '';
+  var ov = document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;z-index:9800;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:1rem';
+  ov.innerHTML='<div style="background:#0e1016;border:1px solid rgba(100,181,232,.2);border-radius:16px;padding:1.6rem;max-width:360px;width:100%">'
+    +'<div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1rem"><i class="ph ph-leaf" style="color:#6EE78E;font-size:1.2rem"></i><span style="font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;color:rgba(255,255,255,.4);text-transform:uppercase">Add Your Leaf to the Ancestor Tree</span></div>'
+    +'<div style="font-size:.85rem;color:rgba(255,255,255,.5);margin-bottom:1rem;line-height:1.6">Your leaf will carry your name and grow this living community tree. Every story told, every lesson completed adds to the tree.</div>'
+    +'<div style="font-size:.72rem;color:rgba(255,255,255,.3);margin-bottom:.4rem">Your name on the leaf</div>'
+    +'<input id="leaf-name-input" type="text" value="'+displayName+'" placeholder="Your name..." maxlength="40" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);border:1px solid rgba(110,231,142,.2);border-radius:8px;padding:.6rem .8rem;color:#fff;font-size:.88rem;outline:none;margin-bottom:.5rem">'
+    +'<div style="font-size:.72rem;color:rgba(255,255,255,.3);margin-bottom:.4rem">A message from your leaf (optional)</div>'
+    +'<input id="leaf-msg-input" type="text" placeholder="e.g. I tell stories of the Drakensberg" maxlength="60" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);border:1px solid rgba(110,231,142,.2);border-radius:8px;padding:.6rem .8rem;color:#fff;font-size:.88rem;outline:none;margin-bottom:1rem">'
+    +'<div style="display:flex;gap:.5rem;justify-content:flex-end">'
+    +'<button onclick="this.parentNode.parentNode.parentNode.remove()" style="padding:.5rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:none;color:rgba(255,255,255,.4);font-size:.8rem;cursor:pointer">Cancel</button>'
+    +'<button onclick="plantLeaf(this)" style="padding:.5rem 1.2rem;border-radius:8px;border:none;background:#6EE78E;color:#000;font-size:.8rem;font-weight:700;cursor:pointer"><i class="ph ph-leaf"></i> Plant My Leaf</button>'
+    +'</div></div>';
+  document.body.appendChild(ov);
+  ov.addEventListener('click',function(e){if(e.target===ov)ov.remove();});
+  setTimeout(function(){var inp=document.getElementById('leaf-name-input');if(inp)inp.focus();},100);
+}
+
+function plantLeaf(btn) {
+  var name = (document.getElementById('leaf-name-input')||{}).value || '';
+  var msg  = (document.getElementById('leaf-msg-input')||{}).value || '';
+  if (!name.trim()) { mpShowToast&&mpShowToast('Please enter your name'); return; }
   var tc=treeCanvas,cx=tc.width/2,cy=tc.height*.55;
   var a=Math.random()*Math.PI*2,d=50+Math.random()*110;
-  treeLeaves.push({x:cx+Math.cos(a)*d,y:cy-75-Math.random()*d*.8,sz:5,glow:true,name:name+' · Just now',hue:90+Math.random()*60,al:1});
+  var label = name.trim() + (msg.trim() ? ' — ' + msg.trim() : '') + ' · Just now';
+  treeLeaves.push({x:cx+Math.cos(a)*d,y:cy-75-Math.random()*d*.8,sz:5,glow:true,name:label,hue:90+Math.random()*60,al:1});
   document.getElementById('leaf-count').textContent=treeLeaves.length;
+  btn.closest('[style*=inset]').remove();
+  awardXP&&awardXP(15,'Ancestor Tree Leaf');
+  addNotification('<i class="ph ph-leaf" style="color:#6EE78E"></i>','Your leaf was planted!','The Ancestor Tree grows with your contribution.');
+  mpShowToast&&mpShowToast('Your leaf now lives on the Ancestor Tree. Ubuntu.');
 }
 
 // ════ SCHOOLS ════
@@ -7895,6 +7938,13 @@ var COURSES = [
     ]
   }];
 var completedModules = [[],[],[],[],[],[],[],[],[]]; // 9 courses
+
+function closeCourseDetail() {
+  // Scroll back to course tabs at top of courses world
+  var layout = document.getElementById('course-layout');
+  var tabs   = document.getElementById('course-tabs');
+  if (tabs) tabs.scrollIntoView({ behavior:'smooth', block:'start' });
+}
 
 function selectCourse(idx){
   if(idx < 0 || idx >= COURSES.length) idx = 0;
@@ -9643,8 +9693,8 @@ function updateBlogUI() {
   var notice    = document.getElementById('blog-viewer-notice');
   if (!compose) return;
 
-  if (isDrSasa()) {
-    // Admin — show compose panel, hide notice
+  if (currentUser) {
+    // All logged-in users can post to the community wall
     compose.classList.add('show');
     if (notice) notice.style.display = 'none';
   } else {
@@ -9816,7 +9866,7 @@ function postComment(btn, postId) {
 
 // ── PUBLISH POST (Dr Sasa only) ──
 function publishPost() {
-  if (!isDrSasa()) { alert('Only Dr Sasa can post here.'); return; }
+  if (!currentUser) { openAuthModal(); return; }
   var text = document.getElementById('compose-text').value.trim();
   var mediaUrl  = window._bcMediaUrl || null;
   var mediaKind = window._bcMediaKind || null;
@@ -10210,7 +10260,7 @@ var STORY_LIBRARY = [
 // ════════════════════════════════════════════
 function openStory(idx) {
   if (idx === 'new') {
-    alert('Story submission coming soon — subscribe to participate.');
+    mpShowToast && mpShowToast('Story submissions open to Premium subscribers — join to contribute!');
     return;
   }
   var story = STORY_LIBRARY[idx];
@@ -12024,7 +12074,7 @@ function purchaseCourse(courseIdx) {
 
   <!-- ══════════════ ANCESTOR'S RIDDLE WORLD ══════════════ -->
   <div class="world" id="riddle-world">
-    <div class="world-header"><button class="world-back" onclick="showWorld('home')"><i class="ph ph-arrow-left"></i></button><h2 class="world-title"><i class="ph ph-scroll"></i> Ancestor's Riddle</h2><button class="help-btn" onclick="openHelp('riddle')"><i class="ph ph-question"></i> How it works</button></div>
+    <div class="world-header"><button class="world-back" onclick="closeCourseDetail?closeCourseDetail():showWorld('courses')"><i class="ph ph-arrow-left"></i></button><h2 class="world-title"><i class="ph ph-scroll"></i> Ancestor's Riddle</h2><button class="help-btn" onclick="openHelp('riddle')"><i class="ph ph-question"></i> How it works</button></div>
     <div class="world-body" style="max-width:540px;margin:0 auto;padding:1.2rem">
       <div style="text-align:center;margin-bottom:1.5rem">
         <div id="riddle-date" style="font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;color:rgba(255,255,255,.25);text-transform:uppercase;margin-bottom:.5rem"></div>
@@ -13831,7 +13881,7 @@ function openWordOfDay(){
     +'<div style="padding:1.8rem;text-align:center">'
     +'<div style="font-family:var(--impact);font-size:2.8rem;letter-spacing:.12em;color:#fff;margin-bottom:.3rem">'+word+'</div>'
     +'<div style="font-family:var(--mono);font-size:.54rem;letter-spacing:.1em;color:rgba(100,181,232,.5);margin-bottom:.9rem">/ '+w.ipa+' /</div>'
-    +'<button onclick="if(\'speechSynthesis\'in window){var u=new SpeechSynthesisUtterance(\''+word.replace(/'/g,"\\'")+'.\');u.rate=0.82;window.speechSynthesis.speak(u);}" style="background:rgba(100,181,232,.1);border:1px solid rgba(100,181,232,.2);border-radius:100px;padding:.4rem 1.2rem;color:#64B5E8;font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-bottom:1.2rem"><i class="ph ph-speaker-high"></i> Hear it</button>'
+    +'<div style="font-family:var(--mono);font-size:.52rem;color:rgba(100,181,232,.45);margin-bottom:1.2rem;padding:.35rem 1rem;background:rgba(100,181,232,.06);border-radius:100px;display:inline-block;letter-spacing:.06em">/ '+w.ipa+' / &nbsp;·&nbsp; IPA pronunciation guide</div>'
     +'<div style="font-family:var(--serif);font-size:.95rem;color:rgba(255,255,255,.65);line-height:1.7;text-align:left;background:rgba(255,255,255,.03);border-radius:8px;padding:.9rem 1rem;margin-bottom:1rem">'+w.def+'</div>'
     +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem">'
     +['en','zu','xh','st'].map(function(l){return '<div style="background:rgba(255,255,255,.04);border-radius:6px;padding:.4rem"><div style="font-size:.42rem;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.2rem">'+{en:'EN',zu:'ZU',xh:'XH',st:'ST'}[l]+'</div><div style="font-size:.78rem;color:rgba(255,255,255,.6)">'+w[l]+'</div></div>';}).join('')
@@ -15971,30 +16021,32 @@ var BATTLE_PROMPTS = [
 ];
 
 async function initBattleWorld() {
+  // Always show a prompt immediately — don't wait for DB
+  renderBattleFallback();
   if (!supa) return;
   try {
-    // Load most recent active battle
-    var { data: battles } = await supa
+    var { data: battles, error } = await supa
       .from('story_battles')
       .select('*')
       .eq('status', 'active')
       .order('created_at', { ascending: false })
       .limit(1);
 
+    if (error) throw error;
+
     if (battles && battles.length) {
       BATTLE.current = battles[0];
+      renderBattlePrompt();
+      startBattleCountdown();
+      await loadBattleEntries();
+      await loadBattleLeaderboard();
+      await loadPastBattles();
     } else {
-      // Create a new battle if none active
       await createNewBattle();
-      return;
     }
-    await loadBattleEntries();
-    renderBattlePrompt();
-    startBattleCountdown();
-    await loadBattleLeaderboard();
-    await loadPastBattles();
   } catch(e) {
-    renderBattleFallback();
+    // Table not created yet — fallback already shown, just log
+    console.warn('Battle DB not ready:', e.message);
   }
 }
 
@@ -17471,11 +17523,11 @@ function openHelp(worldId) {
     + '<i class="ph '+help.icon+'" style="font-size:1.1rem;color:'+help.color+'"></i></div>'
     + '<div><div style="font-family:var(--impact);font-size:1.05rem;letter-spacing:.04em;color:#fff">' + help.title + '</div>'
     + '<div style="font-family:var(--mono);font-size:.44rem;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.1em;margin-top:.1rem">How it works</div></div>'
-    + '<button onclick="this.closest('[style*=inset]').remove()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:1.1rem;flex-shrink:0"><i class="ph ph-x"></i></button>'
+    + '<button onclick="this.parentNode.parentNode.parentNode.remove()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:1.1rem;flex-shrink:0"><i class="ph ph-x"></i></button>'
     + '</div>'
     + sectionsHTML
     + '<div style="margin-top:1.2rem;padding:.8rem;background:rgba(255,255,255,.03);border-radius:10px;font-size:.75rem;color:rgba(255,255,255,.25);text-align:center">'
-    + 'Still stuck? Ask the community in <button onclick="this.closest('[style*=inset]').remove();showWorld('ubuntu')" style="background:none;border:none;color:rgba(110,231,142,.6);cursor:pointer;font-size:.75rem;text-decoration:underline;padding:0">Ubuntu Mode</button>'
+    + 'Still stuck? Ask the community in <button onclick="this.parentNode.parentNode.parentNode.remove();showWorld('ubuntu')" style="background:none;border:none;color:rgba(110,231,142,.6);cursor:pointer;font-size:.75rem;text-decoration:underline;padding:0">Ubuntu Mode</button>'
     + ' or message us at <span style="color:rgba(255,255,255,.35)">support@zintsomistorytellingcollege.co.za</span></div>'
     + '</div>';
   document.body.appendChild(ov);
@@ -17488,6 +17540,418 @@ function openHelp(worldId) {
   s.textContent = '.help-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.28rem .65rem;border-radius:100px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:rgba(255,255,255,.35);font-size:.65rem;cursor:pointer;font-family:var(--mono,monospace);letter-spacing:.04em;transition:all .15s;flex-shrink:0}.help-btn:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7)}';
   document.head.appendChild(s);
 })();
+
+
+
+// ════════════════════════════════════════════════════════════════
+// AFRICAN TRIVIA BLITZ — Family Games
+// ════════════════════════════════════════════════════════════════
+var FAMILY_TRIVIA = [
+  {q:'Which African country has the most pyramids?',a:'Sudan',o:['Egypt','Sudan','Ethiopia','Libya'],f:'Sudan (Nubia) has over 200 pyramids — more than Egypt.'},
+  {q:'What is the name of Nelson Mandela's autobiography?',a:'Long Walk to Freedom',o:['Free at Last','Long Walk to Freedom','Ubuntu Story','The African Dream'],f:'Published in 1994, the same year he became president.'},
+  {q:'Which African animal is the fastest on land?',a:'Cheetah',o:['Lion','Cheetah','Leopard','Wildebeest'],f:'The cheetah can reach 110–120 km/h.'},
+  {q:'What is the largest country in Africa by area?',a:'Algeria',o:['Sudan','Algeria','DR Congo','Libya'],f:'Algeria is Africa's largest country since South Sudan split from Sudan.'},
+  {q:'Which river flows through Egypt?',a:'Nile',o:['Congo','Niger','Nile','Zambezi'],f:'The Nile flows northward through Egypt into the Mediterranean Sea.'},
+  {q:'What does "Simba" mean in Swahili?',a:'Lion',o:['King','Brave','Lion','Fire'],f:'Simba means lion — hence the name in The Lion King.'},
+  {q:'Victoria Falls is on the border of which two countries?',a:'Zambia and Zimbabwe',o:['Tanzania and Kenya','Zambia and Zimbabwe','Mozambique and Malawi','Angola and Namibia'],f:'Victoria Falls is called Mosi-oa-Tunya — The Smoke That Thunders.'},
+  {q:'Which country is home to the Zulu people?',a:'South Africa',o:['Zimbabwe','Mozambique','South Africa','Swaziland'],f:'The Zulu are the largest ethnic group in South Africa.'},
+  {q:'What is the official name of the Rainbow Nation?',a:'Republic of South Africa',o:['Union of South Africa','Republic of South Africa','Federation of South Africa','Kingdom of South Africa'],f:'Rainbow Nation is a term coined by Archbishop Desmond Tutu.'},
+  {q:'Which African country was the first to gain independence in sub-Saharan Africa?',a:'Ghana',o:['Nigeria','Ghana','Kenya','Senegal'],f:'Ghana gained independence from Britain on 6 March 1957 under Kwame Nkrumah.'},
+  {q:'What is the name of South Africa's parliament building?',a:'National Assembly',o:['The Dome','Union Buildings','National Assembly','Parliament House'],f:'Parliament sits in Cape Town; the Union Buildings are the executive seat in Pretoria.'},
+  {q:'Which ocean lies to the east of Africa?',a:'Indian Ocean',o:['Atlantic Ocean','Indian Ocean','Pacific Ocean','Southern Ocean'],f:'The Indian Ocean lies to Africa's east; the Atlantic to the west.'},
+  {q:'The word "Sahara" means what in Arabic?',a:'Desert',o:['Sand','Hot','Desert','Dry land'],f:'Sahara literally means desert — so "Sahara Desert" is redundant.'},
+  {q:'Which African city is known as the "City of Gold"?',a:'Johannesburg',o:['Nairobi','Lagos','Johannesburg','Accra'],f:'Johannesburg (eGoli) was built on the gold rush of 1886.'},
+  {q:'Who wrote the African novel "Things Fall Apart"?',a:'Chinua Achebe',o:['Wole Soyinka','Ngugi wa Thiong'o','Chinua Achebe','Chimamanda Adichie'],f:'Published in 1958, it is among the most widely read African novels.'},
+  {q:'What is the national flower of South Africa?',a:'King Protea',o:['Jacaranda','King Protea','Impala Lily','Blue Agapanthus'],f:'The King Protea (Protea cynaroides) is South Africa's national flower.'},
+  {q:'Which African country is called "The Pearl of Africa"?',a:'Uganda',o:['Rwanda','Uganda','Tanzania','Kenya'],f:'Winston Churchill called Uganda "the Pearl of Africa" in 1908.'},
+  {q:'What is the Swahili word for "freedom"?',a:'Uhuru',o:['Amani','Uhuru','Nguvu','Furaha'],f:'Uhuru is also Kenya's word for independence — gained in 1963.'},
+  {q:'Which African country has 11 official languages?',a:'South Africa',o:['Nigeria','Ethiopia','South Africa','Cameroon'],f:'South Africa has the most official languages of any country in Africa.'},
+  {q:'Which creature appears on the South African coat of arms?',a:'Secretary Bird',o:['Springbok','Secretary Bird','Elephant','Protea'],f:'The Secretary Bird (Sagittarius serpentarius) appears prominently on the South African coat of arms.'},
+  {q:'What is the tallest mountain in Africa?',a:'Mount Kilimanjaro',o:['Mount Kenya','Mount Kilimanjaro','Drakensberg','Mount Elgon'],f:'Kilimanjaro in Tanzania stands at 5,895 m above sea level.'},
+  {q:'What language is spoken by the most people in Africa?',a:'Arabic',o:['Swahili','Hausa','French','Arabic'],f:'Arabic is spoken by over 150 million Africans, mainly in North Africa.'},
+  {q:'Which African country hosted the 2010 FIFA World Cup?',a:'South Africa',o:['Egypt','Morocco','Nigeria','South Africa'],f:'South Africa became the first African country to host the FIFA World Cup.'},
+  {q:'The Sahara Desert covers roughly how much of Africa?',a:'25%',o:['10%','25%','40%','60%'],f:'The Sahara covers about 25% of Africa — roughly the size of the United States.'},
+  {q:'Which African animal is known as "the river horse"?',a:'Hippopotamus',o:['Manatee','Hippopotamus','Crocodile','Nile Perch'],f:'Hippopotamus comes from the Greek for "river horse."'},
+  {q:'What is the monetary unit of Nigeria?',a:'Naira',o:['Cedi','Rand','Naira','Shilling'],f:'Nigeria introduced the Naira in 1973, replacing the Nigerian pound.'},
+  {q:'Which famous ancient wonder is in Africa?',a:'Great Pyramid of Giza',o:['Hanging Gardens','Great Pyramid of Giza','Colossus of Rhodes','Temple of Artemis'],f:'The Great Pyramid of Giza is the only ancient wonder still largely intact.'},
+  {q:'What does "Sawubona" mean in isiZulu?',a:'I see you',o:['Good morning','I love you','I see you','Thank you'],f:'Sawubona acknowledges the full humanity and dignity of the person you greet.'},
+  {q:'Which South African Nobel Peace Prize winner was born in 1929?',a:'Nelson Mandela',o:['Desmond Tutu','Nelson Mandela','Albert Luthuli','F.W. de Klerk'],f:'Nelson Mandela was born on 18 July 1929 in Mvezo, Eastern Cape.'},
+  {q:'What is the capital city of Kenya?',a:'Nairobi',o:['Mombasa','Nairobi','Kisumu','Nakuru'],f:'Nairobi is also one of Africa's largest financial hubs.'},
+  {q:'Which African lake is the largest by surface area?',a:'Lake Victoria',o:['Lake Tanganyika','Lake Malawi','Lake Victoria','Lake Chad'],f:'Lake Victoria borders Uganda, Kenya, and Tanzania — the second largest freshwater lake on Earth.'},
+  {q:'The Maasai people are from which region?',a:'East Africa',o:['West Africa','North Africa','East Africa','Southern Africa'],f:'The Maasai are a Nilotic people living in Kenya and Tanzania.'},
+  {q:'What is "lobola" in Zulu culture?',a:'Bride wealth paid to the bride's family',o:['A wedding dance','A funeral ritual','Bride wealth paid to the bride's family','A type of food'],f:'Lobola is a gift of gratitude from the groom's family to the bride's family — it builds bonds between families.'},
+  {q:'Which African country is famous for rooibos tea?',a:'South Africa',o:['Kenya','Ethiopia','South Africa','Zimbabwe'],f:'Rooibos grows only in the Cederberg region of the Western Cape, South Africa.'},
+  {q:'What does "Ubuntu" mean?',a:'I am because we are',o:['I am strong','I am because we are','Family first','Respect elders'],f:'Ubuntu — "Umuntu ngumuntu ngabantu" — is one of Africa's greatest philosophical gifts to humanity.'},
+  {q:'Which bird is on the South African coat of arms?',a:'Blue Crane',o:['Hadeda','Martial Eagle','Blue Crane','Secretary Bird'],f:'The Blue Crane (indwe) is South Africa's national bird and appears on the coat of arms.'},
+  {q:'What is the name of Africa's largest rainforest?',a:'Congo Rainforest',o:['Amazon','Daintree','Congo Rainforest','Bwindi'],f:'The Congo Rainforest is the second largest tropical rainforest on Earth after the Amazon.'},
+  {q:'Which African writer won the Nobel Prize in Literature in 1986?',a:'Wole Soyinka',o:['Chinua Achebe','Ngozi Adichie','Wole Soyinka','Ben Okri'],f:'Wole Soyinka of Nigeria was the first African to win the Nobel Prize in Literature.'},
+  {q:'The Great Rift Valley runs through which continent?',a:'Africa',o:['Asia','South America','Africa','Australia'],f:'The Great Rift Valley stretches over 6,000 km from the Afar Triangle to Mozambique.'},
+  {q:'Which is the only country in the world whose name comes from a river?',a:'Nigeria',o:['Congo','Senegal','Nigeria','Gambia'],f:'Nigeria is named after the Niger River — "Nia Gir" means great river in Tuareg.'},
+  {q:'Whose face appeared on the old South African R10 note?',a:'Jan Smuts',o:['Nelson Mandela','Jan van Riebeeck','Desmond Tutu','Jan Smuts'],f:'South Africa's banknotes now feature the "Big Five" animals instead of historical figures.'},
+  {q:'What is the largest city in Africa by population?',a:'Lagos',o:['Cairo','Lagos','Kinshasa','Johannesburg'],f:'Lagos, Nigeria has over 15 million people in the city proper and is Africa's largest metropolis.'},
+  {q:'Which African country is called "The Land of a Thousand Hills"?',a:'Rwanda',o:['Burundi','Uganda','Rwanda','Ethiopia'],f:'Rwanda's nickname describes its extraordinarily hilly landscape.'},
+  {q:'What does "Kwa-Sukela" mean?',a:'Place of sweetness',o:['Place of fire','Place of stories','Place of sweetness','Place of learning'],f:'Kwa-Sukela is the heart name of Zintsomi Storytelling College — a place where stories are sweet.'},
+  {q:'What is the IsiZulu word for "thank you"?',a:'Ngiyabonga',o:['Sawubona','Ngiyabonga','Hamba kahle','Yebo'],f:'Ngiyabonga — from the root "bonga" which also means to praise and to give thanks.'},
+  {q:'Which African country has the most pyramids — more than Egypt?',a:'Sudan',o:['Libya','Ethiopia','Sudan','Chad'],f:'Sudan (ancient Nubia) has over 200 pyramids, more than all of Egypt.'},
+  {q:'What is the name of the traditional Zulu homestead?',a:'Umuzi',o:['Kraal','Umuzi','Umkhaya','Isigodi'],f:'An umuzi is a traditional Zulu homestead — a circle of huts around a central cattle enclosure.'},
+  {q:'Which African country invented the mobile money system M-Pesa?',a:'Kenya',o:['Nigeria','Ghana','Kenya','South Africa'],f:'M-Pesa launched in Kenya in 2007 and revolutionised financial access across Africa.'},
+  {q:'The baobab tree can store how much water?',a:'Up to 120,000 litres',o:['1,000 litres','10,000 litres','Up to 120,000 litres','500 litres'],f:'The baobab's massive trunk can store enormous amounts of water, sustaining wildlife and communities during droughts.'},
+  {q:'What is the traditional African game played with seeds in pits called?',a:'Mancala',o:['Morabaraba','Mancala','Induku','Diketo'],f:'Mancala is one of the oldest board games in the world, originating in Africa over 7,000 years ago.'},
+
+];
+
+var FT = { idx:0, score:0, answered:false };
+
+function renderFamilyTrivia() {
+  var el = document.getElementById('family-title');
+  if (el) el.textContent = 'African Trivia Blitz';
+  FT.answered = false;
+  var q = FAMILY_TRIVIA[FT.idx % FAMILY_TRIVIA.length];
+  var root = document.getElementById('family-root');
+  if (!root) return;
+  root.innerHTML = '<div style="padding:1.2rem">'
+    + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">'
+    + '<div style="font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.3)">Question '+(FT.idx+1)+' · Score: <span style="color:#6EE78E">'+FT.score+'</span></div>'
+    + '<button onclick="FT.idx=0;FT.score=0;renderFamilyTrivia()" style="background:none;border:1px solid rgba(255,255,255,.1);border-radius:8px;color:rgba(255,255,255,.35);font-size:.7rem;padding:.25rem .7rem;cursor:pointer">Reset</button>'
+    + '</div>'
+    + '<div style="font-size:1.05rem;font-weight:700;color:#fff;line-height:1.6;margin-bottom:1.2rem;padding:1rem;background:rgba(255,255,255,.04);border-radius:12px;border-left:3px solid #6EE78E">' + q.q + '</div>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem" id="ft-opts">'
+    + q.o.map(function(opt){
+        return '<button onclick="answerFT(this)" data-ans="'+opt.replace(/"/g,'&quot;')+ '" style="padding:.7rem .8rem;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:rgba(255,255,255,.8);font-size:.82rem;cursor:pointer;text-align:left;line-height:1.4;transition:all .15s">'+opt+'</button>';
+      }).join('')
+    + '</div>'
+    + '<div id="ft-feedback" style="display:none;margin-top:1rem;padding:.9rem 1.1rem;border-radius:12px;font-size:.85rem;line-height:1.6"></div>'
+    + '</div>';
+}
+
+function answerFT(btn) {
+  if (FT.answered) return;
+  FT.answered = true;
+  var ans = btn.dataset.ans;
+  var q = FAMILY_TRIVIA[FT.idx % FAMILY_TRIVIA.length];
+  var correct = ans === q.a;
+  if (correct) FT.score++;
+  var opts = document.getElementById('ft-opts').querySelectorAll('button');
+  opts.forEach(function(b) {
+    b.disabled = true;
+    if (b.dataset.ans === q.a) { b.style.background='rgba(110,231,142,.2)'; b.style.borderColor='#6EE78E'; b.style.color='#6EE78E'; }
+    else if (b === btn && !correct) { b.style.background='rgba(255,80,80,.15)'; b.style.borderColor='rgba(255,80,80,.4)'; b.style.color='#ff9090'; }
+  });
+  var fb = document.getElementById('ft-feedback');
+  fb.style.display = 'block';
+  fb.style.background = correct ? 'rgba(110,231,142,.08)' : 'rgba(255,100,100,.08)';
+  fb.style.border = '1px solid '+(correct?'rgba(110,231,142,.2)':'rgba(255,100,100,.15)');
+  fb.innerHTML = (correct?'<i class="ph ph-check-circle" style="color:#6EE78E"></i> Correct! ':'<i class="ph ph-x-circle" style="color:#ff7070"></i> Not quite — ') + q.f
+    + '<br><button onclick="FT.idx++;renderFamilyTrivia()" style="margin-top:.8rem;padding:.4rem 1rem;border-radius:8px;border:none;background:'+(correct?'#6EE78E':'rgba(255,255,255,.1)')+';color:'+(correct?'#000':'#fff')+';font-size:.78rem;font-weight:700;cursor:pointer">Next Question</button>';
+}
+
+// ════════════════════════════════════════════════════════════════
+// WORD CHAIN — Family Game
+// ════════════════════════════════════════════════════════════════
+var AFRICAN_WORDS = ['ubuntu','indaba','baba','mama','simba','amandla','sawubona','thabo','pitso','ujamaa','uhuru','asante','harambee','impi','lobola','isibindi','ubuhle','mzansi','enkosi','pamberi','limpopo','drakensberg','soweto','pretoria','durban','mthembu','dlamini','mokoena','ndlovu','khumalo'];
+var WC = { players:[], current:0, usedWords:[], lastLetter:'', score:[], lives:[] };
+
+function renderWordChain() {
+  var el = document.getElementById('family-title');
+  if (el) el.textContent = 'Word Chain';
+  var root = document.getElementById('family-root');
+  if (!root) return;
+  root.innerHTML = '<div style="padding:1.2rem">'
+    + '<div style="font-size:.88rem;color:rgba(255,255,255,.5);margin-bottom:1.2rem;line-height:1.6">Each player says a word starting with the last letter of the previous word. African words score double! No repeating — miss and lose a life.</div>'
+    + '<div style="margin-bottom:1rem">'
+    + '<div style="font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.3);margin-bottom:.4rem">Number of players</div>'
+    + '<div style="display:flex;gap:.5rem">'
+    + [2,3,4].map(function(n){ return '<button onclick="startWordChain('+n+')" style="padding:.5rem 1.2rem;border-radius:8px;border:1px solid rgba(200,80,255,.25);background:rgba(200,80,255,.06);color:#C850FF;font-size:.82rem;font-weight:700;cursor:pointer">'+n+' Players</button>'; }).join('')
+    + '</div></div>'
+    + '<div style="padding:.8rem;background:rgba(255,255,255,.03);border-radius:10px;font-size:.8rem;color:rgba(255,255,255,.3)">'
+    + '<strong style="color:rgba(255,255,255,.5)">African bonus words (2x score):</strong> ubuntu, indaba, amandla, sawubona, mzansi, lobola, impi, isibindi, harambee, uhuru…'
+    + '</div></div>';
+}
+
+function startWordChain(num) {
+  WC.players = [];
+  WC.score = [];
+  WC.lives = [];
+  WC.usedWords = [];
+  WC.lastLetter = '';
+  WC.current = 0;
+  for (var i=0; i<num; i++) { WC.players.push('Player '+(i+1)); WC.score.push(0); WC.lives.push(3); }
+  renderWordChainGame();
+}
+
+function renderWordChainGame() {
+  var root = document.getElementById('family-root');
+  if (!root) return;
+  var p = WC.players[WC.current];
+  var lastWord = WC.usedWords[WC.usedWords.length-1] || '';
+  var required = WC.lastLetter ? 'Must start with: <strong style="color:#C850FF;font-size:1.2rem">'+WC.lastLetter.toUpperCase()+'</strong>' : 'Start with any word!';
+  var scoreboard = WC.players.map(function(pl,i){
+    var hearts = '♥'.repeat(WC.lives[i]) + '♡'.repeat(3-WC.lives[i]);
+    return '<div style="display:flex;align-items:center;gap:.5rem;padding:.4rem 0">'
+      + '<span style="font-size:.8rem;font-weight:600;color:'+(i===WC.current?'#C850FF':'rgba(255,255,255,.5)')+'">'+pl+'</span>'
+      + '<span style="flex:1;font-family:var(--mono);font-size:.6rem;color:'+(i===WC.current?'#C850FF':'rgba(255,255,255,.25)')+'"> '+hearts+'</span>'
+      + '<span style="font-family:var(--mono);font-size:.65rem;color:#E6B32A">'+WC.score[i]+' pts</span>'
+      + '</div>';
+  }).join('');
+
+  root.innerHTML = '<div style="padding:1.2rem">'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">'
+    + '<div style="background:rgba(255,255,255,.03);border-radius:10px;padding:.8rem">'+scoreboard+'</div>'
+    + '<div style="background:rgba(200,80,255,.05);border:1px solid rgba(200,80,255,.2);border-radius:10px;padding:.8rem;text-align:center">'
+    + (lastWord ? '<div style="font-family:var(--impact);font-size:1.4rem;color:#fff;letter-spacing:.06em">'+lastWord.toUpperCase()+'</div><div style="font-family:var(--mono);font-size:.44rem;color:rgba(255,255,255,.3)">last word</div>' : '<div style="font-size:.82rem;color:rgba(255,255,255,.3)">No word yet</div>')
+    + '</div></div>'
+    + '<div style="font-size:.95rem;font-weight:600;color:#fff;margin-bottom:.6rem"><i class="ph ph-arrow-right" style="color:#C850FF"></i> '+p+''s turn — '+required+'</div>'
+    + '<div style="display:flex;gap:.6rem;margin-bottom:.8rem">'
+    + '<input id="wc-input" type="text" placeholder="Type a word..." maxlength="30" style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(200,80,255,.25);border-radius:8px;padding:.6rem .8rem;color:#fff;font-size:.95rem;outline:none;text-transform:lowercase" onkeydown="if(event.key==='Enter')submitWordChain()">'
+    + '<button onclick="submitWordChain()" style="padding:.6rem 1.2rem;border-radius:8px;border:none;background:#C850FF;color:#fff;font-weight:700;cursor:pointer">Go</button>'
+    + '</div>'
+    + '<div id="wc-msg" style="font-size:.8rem;min-height:1.2rem;color:rgba(255,255,255,.4)"></div>'
+    + '<div style="margin-top:.8rem"><div style="font-family:var(--mono);font-size:.46rem;color:rgba(255,255,255,.2);margin-bottom:.3rem">Words used ('+WC.usedWords.length+')</div>'
+    + '<div style="font-size:.75rem;color:rgba(255,255,255,.25);line-height:1.8">'+WC.usedWords.slice(-10).join(' → ')+'</div></div>'
+    + '</div>';
+  setTimeout(function(){ var inp=document.getElementById('wc-input'); if(inp) inp.focus(); }, 100);
+}
+
+function submitWordChain() {
+  var inp = document.getElementById('wc-input');
+  var word = (inp ? inp.value.trim().toLowerCase() : '');
+  var msg = document.getElementById('wc-msg');
+  if (!word) return;
+  if (word.length < 2) { if(msg) msg.textContent='Word too short!'; return; }
+  if (WC.lastLetter && word[0] !== WC.lastLetter) { if(msg) msg.textContent='Must start with "'+WC.lastLetter.toUpperCase()+'"!'; return; }
+  if (WC.usedWords.includes(word)) { if(msg) msg.style.color='#ff7070'; if(msg) msg.textContent='"'+word+'" already used!'; loseWCLife(); return; }
+  // Valid word
+  var isAfrican = AFRICAN_WORDS.includes(word);
+  var pts = isAfrican ? 2 : 1;
+  WC.score[WC.current] += pts;
+  WC.usedWords.push(word);
+  WC.lastLetter = word[word.length-1];
+  if(msg) { msg.style.color = isAfrican ? '#E6B32A' : '#6EE78E'; msg.textContent = isAfrican ? '+2 pts — African bonus word!' : '+1 pt'; }
+  // Next player
+  WC.current = (WC.current + 1) % WC.players.filter(function(_,i){ return WC.lives[i]>0; }).length;
+  setTimeout(renderWordChainGame, 800);
+}
+
+function loseWCLife() {
+  WC.lives[WC.current]--;
+  if (WC.lives[WC.current] <= 0) {
+    WC.players.splice(WC.current,1); WC.score.splice(WC.current,1); WC.lives.splice(WC.current,1);
+    if (WC.players.length === 1) { endWordChain(); return; }
+    WC.current = WC.current % WC.players.length;
+  }
+  setTimeout(renderWordChainGame, 1000);
+}
+
+function endWordChain() {
+  var root = document.getElementById('family-root');
+  var winner = WC.players[0] || 'Player 1';
+  if (root) root.innerHTML = '<div style="padding:1.6rem;text-align:center">'
+    + '<i class="ph ph-trophy" style="font-size:3rem;color:#E6B32A;display:block;margin-bottom:.6rem"></i>'
+    + '<div style="font-family:var(--impact);font-size:2rem;color:#E6B32A;margin-bottom:.4rem">'+winner+' Wins!</div>'
+    + '<div style="font-size:.88rem;color:rgba(255,255,255,.45);margin-bottom:.5rem">'+WC.usedWords.length+' words played</div>'
+    + '<div style="font-size:.82rem;color:rgba(255,255,255,.3);margin-bottom:1.2rem">'+WC.usedWords.join(' → ')+'</div>'
+    + '<button onclick="renderWordChain()" style="padding:.6rem 1.4rem;border-radius:100px;border:none;background:#C850FF;color:#fff;font-weight:700;cursor:pointer">Play Again</button>'
+    + '</div>';
+}
+
+// ════════════════════════════════════════════════════════════════
+// PROVERB MATCH — Family Game
+// ════════════════════════════════════════════════════════════════
+var PROVERBS_GAME = [
+  {start:'If you want to go fast, go alone;',end:'if you want to go far, go together.',origin:'African proverb',meaning:'Collective effort outlasts individual speed.'},
+  {start:'Until the lion learns to write,',end:'every story will glorify the hunter.',origin:'African proverb',meaning:'History is told by those with power — until the oppressed find their voice.'},
+  {start:'A child who is not embraced by the village',end:'will burn it down to feel its warmth.',origin:'African proverb',meaning:'Community belonging prevents destruction.'},
+  {start:'Rain does not fall on one roof alone.',end:'',origin:'Zulu proverb',meaning:'Hardship and blessing are shared by community.'},
+  {start:'The axe forgets,',end:'but the tree remembers.',origin:'African proverb',meaning:'Those who cause harm forget; those who are harmed do not.'},
+  {start:'Speak softly and carry a big stick;',end:'you will go far.',origin:'West African proverb',meaning:'Calm strength is more powerful than loud aggression.'},
+  {start:'A tree is straightened',end:'while it is young.',origin:'African proverb',meaning:'Children must be taught values early.'},
+  {start:'Knowledge is like a garden:',end:'if it is not cultivated, it cannot be harvested.',origin:'African proverb',meaning:'Learning requires constant effort.'},
+  {start:'The forest would be very silent',end:'if no bird sang except those that sang best.',origin:'African proverb',meaning:'All voices matter, not just the most gifted.'},
+  {start:'He who tells the stories',end:'rules the world.',origin:'Hopi & African tradition',meaning:'Narrative shapes culture, identity, and power.'},
+  {start:'No matter how long the night,',end:'the day is sure to come.',origin:'Congolese proverb',meaning:'Hardship is temporary; hope is permanent.'},
+  {start:'When spider webs unite,',end:'they can tie up a lion.',origin:'Ethiopian proverb',meaning:'Unity creates strength beyond what any individual possesses.'},
+  {start:'A person is a person',end:'through other people.',origin:'Ubuntu — Nguni Bantu',meaning:'Identity and humanity are formed in relationship with others.'},
+  {start:'Wisdom is like a baobab tree:',end:'no one person can embrace it.',origin:'Akan proverb',meaning:'Wisdom is too vast for one person — it is held by community.'},
+  {start:'The one who tells the stories',end:'rules the world.',origin:'African oral tradition',meaning:'Stories shape how we see reality.'},
+  {start:'Where you will sit when you are old',end:'shows where you stood in youth.',origin:'Yoruba proverb',meaning:'Your present choices determine your future position.'},
+  {start:'Sticks in a bundle',end:'are unbreakable.',origin:'Bondei proverb',meaning:'Unity gives strength that individuals lack alone.'},
+  {start:'The heart of the wise man',end:'lies quiet like limpid water.',origin:'Cameroonian proverb',meaning:'Wisdom is shown in calm, not noise.'},
+  {start:'A child's lie is like a dead fish',end:'— you cannot hide it for long.',origin:'African proverb',meaning:'Truth always surfaces eventually.'},
+  {start:'The best time to plant a tree was 20 years ago;',end:'the second best time is now.',origin:'African proverb',meaning:'Do not delay action — begin where you are.'},
+];
+
+var PM = { idx:0, score:0, answered:false, shuffled:[] };
+
+function renderProverbMatch() {
+  var el = document.getElementById('family-title');
+  if (el) el.textContent = 'Proverb Match';
+  PM.shuffled = PROVERBS_GAME.slice().sort(function(){ return Math.random()-.5; });
+  PM.idx = 0; PM.score = 0;
+  renderProverbRound();
+}
+
+function renderProverbRound() {
+  var root = document.getElementById('family-root');
+  if (!root) return;
+  if (PM.idx >= PM.shuffled.length) {
+    root.innerHTML = '<div style="padding:1.6rem;text-align:center">'
+      + '<div style="font-family:var(--impact);font-size:2.5rem;color:#E6B32A">'+PM.score+'/'+PM.shuffled.length+'</div>'
+      + '<div style="font-size:.9rem;color:rgba(255,255,255,.5);margin:.5rem 0 1.2rem">Proverbs matched</div>'
+      + '<button onclick="renderProverbMatch()" style="padding:.6rem 1.4rem;border-radius:100px;border:none;background:#E6B32A;color:#000;font-weight:700;cursor:pointer">Play Again</button>'
+      + '</div>';
+    return;
+  }
+  var p = PM.shuffled[PM.idx];
+  PM.answered = false;
+  // Build 4 options: correct ending + 3 random others
+  var others = PM.shuffled.filter(function(_,i){ return i!==PM.idx && PM.shuffled[i].end; })
+    .sort(function(){ return Math.random()-.5; }).slice(0,3).map(function(x){ return x.end; });
+  var correctEnd = p.end || p.start.split(';')[1] || 'choose the correct completion.';
+  var opts = [correctEnd].concat(others).sort(function(){ return Math.random()-.5; });
+
+  root.innerHTML = '<div style="padding:1.2rem">'
+    + '<div style="display:flex;justify-content:space-between;margin-bottom:1rem">'
+    + '<div style="font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.3)">'+(PM.idx+1)+' of '+PM.shuffled.length+'</div>'
+    + '<div style="font-family:var(--mono);font-size:.5rem;color:#E6B32A">Score: '+PM.score+'</div>'
+    + '</div>'
+    + '<div style="font-family:var(--body,serif);font-size:1.1rem;color:#fff;line-height:1.75;padding:1.2rem;background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.15);border-radius:14px;margin-bottom:1.2rem;font-style:italic">"'+p.start+' ___"</div>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem" id="pm-opts">'
+    + opts.map(function(opt){
+        return '<button onclick="answerProverb(this)" data-ans="'+opt.replace(/"/g,'&quot;')+ '" style="padding:.7rem .8rem;border-radius:10px;border:1px solid rgba(230,179,42,.15);background:rgba(255,255,255,.03);color:rgba(255,255,255,.75);font-size:.8rem;cursor:pointer;text-align:left;line-height:1.5;font-style:italic;transition:all .15s">'+opt+'</button>';
+      }).join('')
+    + '</div>'
+    + '<div id="pm-feedback" style="display:none;margin-top:1rem;padding:.9rem;border-radius:10px;font-size:.82rem;line-height:1.6"></div>'
+    + '</div>';
+  window._pmCorrect = correctEnd;
+  window._pmOrigin = p.origin;
+  window._pmMeaning = p.meaning;
+}
+
+function answerProverb(btn) {
+  if (PM.answered) return;
+  PM.answered = true;
+  var ans = btn.dataset.ans;
+  var correct = ans === window._pmCorrect;
+  if (correct) PM.score++;
+  var opts = document.getElementById('pm-opts').querySelectorAll('button');
+  opts.forEach(function(b) {
+    b.disabled = true;
+    if (b.dataset.ans === window._pmCorrect) { b.style.background='rgba(230,179,42,.15)'; b.style.borderColor='rgba(230,179,42,.4)'; b.style.color='#E6B32A'; }
+    else if (b===btn && !correct) { b.style.background='rgba(255,80,80,.1)'; b.style.color='#ff9090'; }
+  });
+  var fb = document.getElementById('pm-feedback');
+  fb.style.display = 'block';
+  fb.style.background = correct ? 'rgba(230,179,42,.07)' : 'rgba(255,100,100,.07)';
+  fb.style.border = '1px solid '+(correct?'rgba(230,179,42,.2)':'rgba(255,100,100,.15)');
+  fb.innerHTML = (correct?'<i class="ph ph-check-circle" style="color:#E6B32A"></i> Correct! ':'<i class="ph ph-x-circle" style="color:#ff7070"></i> The answer was: <em>'+window._pmCorrect+'</em><br>')
+    + '<span style="color:rgba(255,255,255,.4);font-size:.78rem">'+window._pmOrigin+' — '+window._pmMeaning+'</span>'
+    + '<br><button onclick="PM.idx++;renderProverbRound()" style="margin-top:.7rem;padding:.4rem 1rem;border-radius:8px;border:none;background:'+(correct?'#E6B32A':'rgba(255,255,255,.1)')+';color:'+(correct?'#000':'#fff')+';font-size:.78rem;font-weight:700;cursor:pointer">Next Proverb</button>';
+}
+
+// ════════════════════════════════════════════════════════════════
+// NUMBER PATTERNS — Family Game (Grade 4–12)
+// ════════════════════════════════════════════════════════════════
+var NP_SETS = {
+  easy:[
+    {seq:[2,4,6,8,'?'],ans:10,rule:'Add 2 each time'},
+    {seq:[5,10,15,20,'?'],ans:25,rule:'Add 5 each time'},
+    {seq:[1,3,5,7,'?'],ans:9,rule:'Add 2 (odd numbers)'},
+    {seq:[10,20,30,40,'?'],ans:50,rule:'Add 10 each time'},
+    {seq:[3,6,9,12,'?'],ans:15,rule:'Multiply by 3 (3 times tables)'},
+    {seq:[100,90,80,70,'?'],ans:60,rule:'Subtract 10 each time'},
+  ],
+  medium:[
+    {seq:[2,4,8,16,'?'],ans:32,rule:'Multiply by 2 each time'},
+    {seq:[1,4,9,16,'?'],ans:25,rule:'Square numbers: 1²,2²,3²,4²,5²'},
+    {seq:[1,1,2,3,5,'?'],ans:8,rule:'Fibonacci: add the two before'},
+    {seq:[3,9,27,81,'?'],ans:243,rule:'Multiply by 3 each time'},
+    {seq:[100,50,25,'?'],ans:12.5,rule:'Divide by 2 each time'},
+    {seq:[2,5,10,17,26,'?'],ans:37,rule:'Add 3, 5, 7, 9, 11... (odd differences)'},
+  ],
+  hard:[
+    {seq:[1,8,27,64,'?'],ans:125,rule:'Cube numbers: 1³,2³,3³,4³,5³'},
+    {seq:[2,6,12,20,30,'?'],ans:42,rule:'n×(n+1): 1×2, 2×3, 3×4...'},
+    {seq:[1,3,7,15,31,'?'],ans:63,rule:'Double and add 1 each time'},
+    {seq:[0,1,3,6,10,'?'],ans:15,rule:'Triangular numbers: add 1, 2, 3, 4, 5...'},
+    {seq:[1,-1,1,-1,'?'],ans:1,rule:'Alternating 1 and -1'},
+    {seq:[2,3,5,7,11,'?'],ans:13,rule:'Prime numbers in order'},
+  ]
+};
+
+var NP = { level:'easy', idx:0, score:0, total:6 };
+
+function renderNumPattern() {
+  var el = document.getElementById('family-title');
+  if (el) el.textContent = 'Number Patterns';
+  NP.idx=0; NP.score=0;
+  var root = document.getElementById('family-root');
+  if (!root) return;
+  root.innerHTML = '<div style="padding:1.2rem">'
+    + '<div style="font-family:var(--mono);font-size:.5rem;color:rgba(100,181,232,.5);text-transform:uppercase;margin-bottom:.8rem">Choose difficulty</div>'
+    + '<div style="display:flex;gap:.6rem;margin-bottom:1.2rem">'
+    + ['easy','medium','hard'].map(function(l){
+        var labels={easy:'Easy (Grade 4–6)',medium:'Medium (Grade 7–9)',hard:'Hard (Grade 10–12)'};
+        return '<button onclick="NP.level=''+l+'';NP.idx=0;NP.score=0;renderNPRound()" style="padding:.5rem .9rem;border-radius:8px;border:1px solid rgba(100,181,232,.25);background:rgba(100,181,232,.06);color:#64B5E8;font-size:.72rem;cursor:pointer;flex:1">'+labels[l]+'</button>';
+      }).join('')
+    + '</div>'
+    + '<div style="font-size:.85rem;color:rgba(255,255,255,.35);line-height:1.6">Find the missing number in each sequence. 6 patterns per level, 10 pts each. All sequences are from real maths curricula.</div>'
+    + '</div>';
+}
+
+function renderNPRound() {
+  var root = document.getElementById('family-root');
+  var set = NP_SETS[NP.level];
+  if (NP.idx >= set.length) {
+    root.innerHTML = '<div style="padding:1.6rem;text-align:center">'
+      + '<div style="font-family:var(--impact);font-size:3rem;color:#64B5E8">'+(NP.score*10)+'</div>'
+      + '<div style="font-size:.9rem;color:rgba(255,255,255,.4);margin:.4rem 0 1.2rem">out of '+(set.length*10)+' points · '+NP.level+' level</div>'
+      + '<div style="display:flex;gap:.6rem;justify-content:center">'
+      + '<button onclick="renderNumPattern()" style="padding:.55rem 1.2rem;border-radius:100px;border:none;background:#64B5E8;color:#000;font-weight:700;cursor:pointer">Change Level</button>'
+      + '<button onclick="NP.idx=0;NP.score=0;renderNPRound()" style="padding:.55rem 1.2rem;border-radius:100px;border:1px solid rgba(100,181,232,.3);background:none;color:#64B5E8;cursor:pointer">Try Again</button>'
+      + '</div></div>';
+    return;
+  }
+  var p = set[NP.idx];
+  var seqHTML = p.seq.map(function(n){ return '<div style="min-width:44px;height:44px;border-radius:10px;background:'+(n==='?'?'rgba(100,181,232,.15)':'rgba(255,255,255,.06)')+';border:1px solid rgba(100,181,232,'+(n==='?'?.4:.15)+');display:flex;align-items:center;justify-content:center;font-family:var(--impact);font-size:1.2rem;color:'+(n==='?'?'#64B5E8':'#fff')+'">'+n+'</div>'; }).join('<div style="color:rgba(255,255,255,.2);font-size:1.1rem;align-self:center">→</div>');
+  // 4 answer options
+  var ans = p.ans;
+  var opts = [ans, ans+p.seq.filter(function(n){return n!=='?';}).slice(-1)[0]||1, ans-1, ans*2].filter(function(v,i,a){ return a.indexOf(v)===i; }).sort(function(){ return Math.random()-.5; }).slice(0,4);
+  if (!opts.includes(ans)) opts[0]=ans;
+  opts = opts.sort(function(){ return Math.random()-.5; });
+
+  root.innerHTML = '<div style="padding:1.2rem">'
+    + '<div style="display:flex;justify-content:space-between;margin-bottom:1rem">'
+    + '<div style="font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.3)">'+(NP.idx+1)+'/'+set.length+' · '+NP.level+'</div>'
+    + '<div style="font-family:var(--mono);font-size:.5rem;color:#64B5E8">Score: '+NP.score*10+'</div>'
+    + '</div>'
+    + '<div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-bottom:1.4rem;padding:1rem;background:rgba(100,181,232,.04);border-radius:14px;border:1px solid rgba(100,181,232,.1)">'+seqHTML+'</div>'
+    + '<div style="font-family:var(--mono);font-size:.52rem;color:rgba(255,255,255,.3);margin-bottom:.7rem">What is the missing number?</div>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem" id="np-opts">'
+    + opts.map(function(opt){ return '<button onclick="answerNP(this,'+opt+')" style="padding:.8rem;border-radius:10px;border:1px solid rgba(100,181,232,.15);background:rgba(255,255,255,.03);color:#fff;font-family:var(--impact);font-size:1.2rem;cursor:pointer;transition:all .15s">'+opt+'</button>'; }).join('')
+    + '</div>'
+    + '<div id="np-feedback" style="display:none;margin-top:1rem;padding:.8rem 1rem;border-radius:10px;font-size:.82rem"></div>'
+    + '</div>';
+  window._npAns = ans;
+  window._npRule = p.rule;
+}
+
+function answerNP(btn, val) {
+  var correct = val === window._npAns;
+  if (correct) NP.score++;
+  var opts = document.getElementById('np-opts').querySelectorAll('button');
+  opts.forEach(function(b) {
+    b.disabled = true;
+    if (parseInt(b.textContent)===window._npAns||parseFloat(b.textContent)===window._npAns) { b.style.background='rgba(100,181,232,.2)'; b.style.borderColor='#64B5E8'; b.style.color='#64B5E8'; }
+    else if (b===btn) { b.style.background='rgba(255,80,80,.1)'; b.style.color='#ff9090'; }
+  });
+  var fb = document.getElementById('np-feedback');
+  fb.style.display='block';
+  fb.style.background=correct?'rgba(100,181,232,.08)':'rgba(255,100,100,.07)';
+  fb.style.border='1px solid '+(correct?'rgba(100,181,232,.2)':'rgba(255,100,100,.15)');
+  fb.innerHTML=(correct?'<i class="ph ph-check-circle" style="color:#64B5E8"></i> Correct! ':'<i class="ph ph-x-circle" style="color:#ff7070"></i> Answer: <strong>'+window._npAns+'</strong> — ')
+    +'<span style="color:rgba(255,255,255,.4)">'+window._npRule+'</span>'
+    +'<br><button onclick="NP.idx++;renderNPRound()" style="margin-top:.7rem;padding:.4rem 1rem;border-radius:8px;border:none;background:'+(correct?'#64B5E8':'rgba(255,255,255,.1)')+';color:'+(correct?'#000':'#fff')+';font-size:.78rem;font-weight:700;cursor:pointer">Next Pattern</button>';
+}
 
 
 // Boot presence when user logs in
