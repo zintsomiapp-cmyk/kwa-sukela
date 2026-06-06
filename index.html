@@ -3226,6 +3226,13 @@ body::after{
         <button class="npill" onclick="showWorld('youtube')" style="color:#FF4444;border-color:rgba(255,68,68,.3)" id="pill-youtube"><i class="ph ph-youtube-logo"></i> YouTube</button>
         <button class="npill" onclick="showWorld('subscribe')" style="color:#B088E8;border-color:rgba(123,79,208,.3)" id="pill-subscribe"><i class="ph ph-star"></i> Subscribe</button>
         <button class="npill" onclick="showWorld('admin')" style="color:#ff6b6b;border-color:rgba(255,107,107,.35);display:none" id="pill-admin"><i class="ph ph-shield-star"></i> Admin</button>
+        <button class="npill" onclick="showWorld('riddle')" style="color:#E6B32A;border-color:rgba(230,179,42,.3)" id="pill-riddle"><i class="ph ph-scroll"></i> Riddle</button>
+        <button class="npill" onclick="showWorld('trivia')" style="color:#6EE78E;border-color:rgba(110,231,142,.3)" id="pill-trivia"><i class="ph ph-lightning"></i> Trivia</button>
+        <button class="npill" onclick="showWorld('story60')" style="color:#C850FF;border-color:rgba(200,80,255,.3)" id="pill-story60"><i class="ph ph-timer"></i> 60s Story</button>
+        <button class="npill" id="pill-notif" onclick="toggleNotifPanel()" style="position:relative">
+          <i class="ph ph-bell"></i>
+          <span id="notif-badge" style="display:none;position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:#F5761A;border:1.5px solid var(--bg,#060C1E)"></span>
+        </button>
       </div>
       <div class="nav-auth-wrap" style="position:relative">
         <!-- Logged-out state -->
@@ -4264,6 +4271,7 @@ body::after{
           <div class="vr-compat-badge"><span style="color:#6EE78E">●</span> Desktop 360° Mode</div>
         </div>
         <div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap">
+          <button class="help-btn" onclick="openHelp('vr')" style="margin-bottom:1rem;display:inline-flex"><i class="ph ph-question"></i> How it works</button>
           <button class="btn" onclick="openVRStory(0)" style="font-size:.62rem;padding:.8rem 1.8rem"><i class="ph ph-eyeglasses"></i> Enter VR Now</button>
           <a class="btn" href="vr-forest.html" style="font-size:.62rem;padding:.8rem 1.8rem;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem"><i class="ph ph-tree-evergreen"></i> Dr Sasa's Quest — Play Game</a>
           <button class="btn btn-out" style="border-color:rgba(200,240,74,.3);color:var(--acid)" onclick="document.getElementById('vr-pods-section').scrollIntoView({behavior:'smooth'})">Browse Stories ↓</button>
@@ -4780,7 +4788,8 @@ body::after{
             <em>Built for</em><br>
             Every Human Being.
           </p>
-          <div class="home-hero-btns"><button id="home-replay-btn" onclick="replayIntro()" style="display:none;align-items:center;gap:.5rem;background:rgba(14,16,22,.8);backdrop-filter:blur(12px);border:1.5px solid rgba(245,118,26,.4);border-radius:100px;color:var(--fire);font-family:var(--mono);font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;padding:.55rem 1.2rem;cursor:pointer;transition:all .2s;margin-bottom:.5rem" onmouseover="this.style.background='rgba(245,118,26,.15)'" onmouseout="this.style.background='rgba(14,16,22,.8)'"><i class="ph ph-arrow-counter-clockwise"></i>&nbsp; Replay Intro</button>
+          <div class="home-hero-btns"><button id="home-replay-btn" onclick="replayIntro()" style="display:none;align-items:center;gap:.5rem;background:rgba(14,16,22,.8);backdrop-filter:blur(12px);border:1.5px solid rgba(245,118,26,.4);border-radius:100px;color:var(--fire);font-family:var(--mono);font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;padding:.55rem 1.2rem;cursor:pointer;transition:all .2s;margin-bottom:.5rem" onmouseover="this.style.background='rgba(245,118,26,.15)'" onmouseout="this.style.background='rgba(14,16,22,.8)'">
+          <button onclick="openHelp('home')" class="help-btn" style="margin-top:.8rem;display:inline-flex"><i class="ph ph-question"></i> How the app works</button><i class="ph ph-arrow-counter-clockwise"></i>&nbsp; Replay Intro</button>
             <button class="btn" style="font-size:.95rem;padding:.9rem 2.2rem;letter-spacing:.06em" onclick="showWorld('courses')"><i class="ph ph-books"></i> Start Learning</button>
           </div>
         </div>
@@ -4845,7 +4854,11 @@ body::after{
       <div class="world-card reveal stagger-6" onclick="showWorld('battle')"><div class="wc-bg-glyph"><i class="ph ph-swords"></i></div><div class="wc-icon"><i class="ph ph-swords"></i></div><div class="wc-name">Story Battles</div><div class="wc-sub">Two storytellers. One prompt. Community votes. 24 hours. Winner earns Griot XP.</div><div class="wc-tag">Competitive · Social · Daily</div></div>
       <div class="world-card reveal stagger-1" onclick="showWorld('ubuntu')"><div class="wc-bg-glyph"><i class="ph ph-hand-heart"></i></div><div class="wc-icon"><i class="ph ph-hand-heart"></i></div><div class="wc-name">Ubuntu Mode</div><div class="wc-sub">Stuck? Find a peer tutor first. AI second. Real help from real people in your community.</div><div class="wc-tag">Peer Learning · Community First</div></div>
       <div class="world-card reveal stagger-2" onclick="showWorld('unstuck')"><div class="wc-bg-glyph"><i class="ph ph-lightning"></i></div><div class="wc-icon"><i class="ph ph-lightning"></i></div><div class="wc-name">Unstuck AI</div><div class="wc-sub">Paste any essay topic. Get 3 angles, a structure, and an ancestor proverb that fits. Never stare at a blank page again.</div><div class="wc-tag">Grade 8–Varsity · Essays · Exams</div></div>
-      <div class="world-card reveal stagger-3" onclick="showWorld('audio')"><div class="wc-bg-glyph"><i class="ph ph-music-note"></i></div><div class="wc-icon"><i class="ph ph-music-note"></i></div><div class="wc-name">Audio Archive</div><div class="wc-sub">Umemolo songs, izinganekwane, lullabies, folklore. Upload your own voice to Community Voices.</div><div class="wc-tag">Coming Soon · Contribute</div></div>
+      <div class="world-card reveal stagger-1" onclick="showWorld('riddle')" style="border-bottom:3px solid #E6B32A"><div class="wc-bg-glyph"><i class="ph ph-scroll"></i></div><div class="wc-icon"><i class="ph ph-scroll"></i></div><div class="wc-name">Ancestor's Riddle</div><div class="wc-sub">One riddle every morning from African oral tradition. First 10 correct answers earn bonus XP. Daily habit, daily wisdom.</div><div class="wc-tag" style="color:#E6B32A">Daily · African Wisdom · Free</div></div>
+      <div class="world-card reveal stagger-2" onclick="showWorld('trivia')" style="border-bottom:3px solid #6EE78E"><div class="wc-bg-glyph"><i class="ph ph-lightning"></i></div><div class="wc-icon"><i class="ph ph-lightning"></i></div><div class="wc-name">Cultural Trivia Showdown</div><div class="wc-sub">10-question lightning round. African history, languages, proverbs, geography. Race the clock. Share your score.</div><div class="wc-tag" style="color:#6EE78E">Daily · Multiplayer · Free</div></div>
+      <div class="world-card reveal stagger-3" onclick="showWorld('story60')" style="border-bottom:3px solid #C850FF"><div class="wc-bg-glyph"><i class="ph ph-timer"></i></div><div class="wc-icon"><i class="ph ph-timer"></i></div><div class="wc-name">60-Second Story</div><div class="wc-sub">Dr Sasa starts a folktale. You have 60 seconds to finish it. AI judges creativity and cultural depth. Daily leaderboard resets at midnight.</div><div class="wc-tag" style="color:#C850FF">60 Seconds · Daily · Competitive</div></div>
+      <div class="world-card reveal stagger-3" onclick="showWorld('audio')">
+<div class="wc-bg-glyph"><i class="ph ph-music-note"></i></div><div class="wc-icon"><i class="ph ph-music-note"></i></div><div class="wc-name">Audio Archive</div><div class="wc-sub">Umemolo songs, izinganekwane, lullabies, folklore. Upload your own voice to Community Voices.</div><div class="wc-tag">Coming Soon · Contribute</div></div>
       <div class="world-card reveal stagger-1" onclick="showWorld('vrvillage')" style="border-bottom:3px solid var(--acid)"><div class="wc-bg-glyph"><i class="ph ph-eyeglasses"></i></div><div class="wc-icon"><i class="ph ph-eyeglasses"></i></div><div class="wc-name">VR Story Village</div><div class="wc-sub">8 immersive story pods. Wear your VR glasses and step inside an African night filled with ancestral stories.</div><div class="wc-tag" style="color:var(--acid)">Google Cardboard · WebXR · Free</div></div>
     </div>
     <div class="ndebele"></div>
@@ -5315,6 +5328,9 @@ body::after{
         <div style="font-family:var(--mono);font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:.7rem;display:flex;align-items:center;gap:.6rem"><span style="width:22px;height:1px;background:#B088E8;display:inline-block"></span>Self-Paced · Certificate of Attendance</div>
         <h2 style="font-family:var(--serif);font-size:clamp(2.4rem,5vw,3.8rem);font-weight:700;color:#fff;letter-spacing:-.02em">Storytelling <span style=";color:#B088E8" style="color:var(--ember)">Courses</span></h2>
         <p style="font-size:1rem;color:rgba(255,255,255,.48);max-width:500px;margin:.7rem auto 0;line-height:1.85">Eight complete storytelling courses by Zintsomi Storytelling College. Work at your own pace. Earn your certificate of attendance when you finish.</p>
+        <button class="help-btn" onclick="openHelp('courses')" style="margin:0 auto 1.2rem;display:flex"><i class="ph ph-question"></i> How it works</button>
+
+        
       </div>
     </div>
 
@@ -12005,6 +12021,123 @@ function purchaseCourse(courseIdx) {
 })();
 </script>
 
+
+  <!-- ══════════════ ANCESTOR'S RIDDLE WORLD ══════════════ -->
+  <div class="world" id="riddle-world">
+    <div class="world-header"><button class="world-back" onclick="showWorld('home')"><i class="ph ph-arrow-left"></i></button><h2 class="world-title"><i class="ph ph-scroll"></i> Ancestor's Riddle</h2><button class="help-btn" onclick="openHelp('riddle')"><i class="ph ph-question"></i> How it works</button></div>
+    <div class="world-body" style="max-width:540px;margin:0 auto;padding:1.2rem">
+      <div style="text-align:center;margin-bottom:1.5rem">
+        <div id="riddle-date" style="font-family:var(--mono);font-size:.5rem;letter-spacing:.12em;color:rgba(255,255,255,.25);text-transform:uppercase;margin-bottom:.5rem"></div>
+        <div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;color:rgba(230,179,42,.5);text-transform:uppercase;margin-bottom:1rem">Today's Riddle from the Ancestors</div>
+        <div id="riddle-text" style="font-family:var(--body,serif);font-size:1.15rem;color:#fff;line-height:1.75;padding:1.4rem 1.6rem;background:rgba(230,179,42,.05);border:1px solid rgba(230,179,42,.2);border-radius:16px;margin-bottom:1.2rem;min-height:80px"></div>
+        <div id="riddle-hint-text" style="font-size:.78rem;color:rgba(255,255,255,.3);font-style:italic;margin-bottom:1.2rem;display:none"></div>
+        <div style="display:flex;gap:.6rem;margin-bottom:1rem">
+          <input id="riddle-input" type="text" placeholder="Type your answer..." maxlength="80"
+            style="flex:1;background:rgba(255,255,255,.05);border:1px solid rgba(230,179,42,.25);border-radius:10px;padding:.65rem .9rem;color:#fff;font-size:.9rem;outline:none"
+            onkeydown="if(event.key==='Enter')submitRiddle()">
+          <button onclick="submitRiddle()" style="padding:.65rem 1.3rem;border-radius:10px;border:none;background:#E6B32A;color:#000;font-weight:700;font-size:.85rem;cursor:pointer"><i class="ph ph-paper-plane-tilt"></i> Submit</button>
+        </div>
+        <button onclick="showRiddleHint()" id="riddle-hint-btn" style="background:none;border:none;color:rgba(255,255,255,.25);font-size:.75rem;cursor:pointer;text-decoration:underline">Show hint (-5 XP)</button>
+      </div>
+      <div id="riddle-result" style="display:none;text-align:center;padding:1.4rem;border-radius:14px;margin-bottom:1.2rem"></div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:1.1rem 1.3rem;margin-bottom:.8rem">
+        <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:.8rem"><i class="ph ph-trophy"></i> Today's First Solvers</div>
+        <div id="riddle-solvers"><span style="font-size:.78rem;color:rgba(255,255,255,.2)">Be the first to solve today's riddle!</span></div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:1.1rem 1.3rem">
+        <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:.6rem"><i class="ph ph-calendar-check"></i> Your Riddle Streak</div>
+        <div id="riddle-streak-display" style="font-family:var(--impact);font-size:2rem;color:#E6B32A">0 days</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ CULTURAL TRIVIA SHOWDOWN ══════════════ -->
+  <div class="world" id="trivia-world">
+    <div class="world-header"><button class="world-back" onclick="showWorld('home')"><i class="ph ph-arrow-left"></i></button><h2 class="world-title"><i class="ph ph-lightning"></i> Cultural Trivia Showdown</h2><button class="help-btn" onclick="openHelp('trivia')"><i class="ph ph-question"></i> How it works</button></div>
+    <div class="world-body" style="max-width:560px;margin:0 auto;padding:1.2rem">
+      <div id="trivia-lobby">
+        <div style="text-align:center;margin-bottom:1.4rem">
+          <div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;color:rgba(110,231,142,.5);text-transform:uppercase;margin-bottom:.6rem">10 Questions - Beat the Clock</div>
+          <div style="font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:1.3rem">African history, proverbs, geography, languages and culture.<br>10 seconds per question. Each correct = 10 XP.</div>
+          <div style="display:flex;gap:.8rem;justify-content:center;margin-bottom:1.3rem">
+            <div style="padding:.8rem 1.2rem;background:rgba(110,231,142,.06);border:1px solid rgba(110,231,142,.15);border-radius:12px;text-align:center;min-width:100px">
+              <div style="font-family:var(--impact);font-size:1.6rem;color:#6EE78E" id="trivia-today-high">-</div>
+              <div style="font-family:var(--mono);font-size:.44rem;color:rgba(255,255,255,.3);text-transform:uppercase">Today's High</div>
+            </div>
+            <div style="padding:.8rem 1.2rem;background:rgba(100,181,232,.06);border:1px solid rgba(100,181,232,.15);border-radius:12px;text-align:center;min-width:100px">
+              <div style="font-family:var(--impact);font-size:1.6rem;color:#64B5E8" id="trivia-my-best">-</div>
+              <div style="font-family:var(--mono);font-size:.44rem;color:rgba(255,255,255,.3);text-transform:uppercase">Your Best</div>
+            </div>
+          </div>
+          <button onclick="startTrivia()" style="padding:.8rem 2.4rem;border-radius:100px;border:none;background:linear-gradient(135deg,#6EE78E,#3cb371);color:#000;font-family:var(--impact);font-size:1rem;letter-spacing:.06em;cursor:pointer"><i class="ph ph-play"></i> Start Showdown</button>
+        </div>
+        <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:1.1rem 1.3rem">
+          <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:.7rem">Today's Leaderboard</div>
+          <div id="trivia-leaderboard"><span style="font-size:.78rem;color:rgba(255,255,255,.2)">No scores yet today. Be first!</span></div>
+        </div>
+      </div>
+      <div id="trivia-game" style="display:none">
+        <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1rem">
+          <div style="flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden"><div id="trivia-timer-bar" style="height:100%;background:#6EE78E;border-radius:3px;width:100%;transition:width 1s linear"></div></div>
+          <div id="trivia-timer-text" style="font-family:var(--impact);font-size:1.2rem;color:#6EE78E;width:1.8rem;text-align:right">10</div>
+        </div>
+        <div style="font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.3);margin-bottom:.6rem">Question <span id="trivia-qnum">1</span> of 10 &nbsp;|&nbsp; Score: <span id="trivia-score-display">0</span></div>
+        <div id="trivia-question" style="font-size:1rem;color:#fff;font-weight:600;line-height:1.6;margin-bottom:1.1rem;min-height:2.5rem"></div>
+        <div id="trivia-options" style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem"></div>
+        <div id="trivia-feedback" style="display:none;margin-top:.8rem;padding:.8rem 1rem;border-radius:10px;font-size:.82rem;line-height:1.5"></div>
+      </div>
+      <div id="trivia-result" style="display:none;text-align:center;padding:1.5rem 0"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════ 60-SECOND STORY WORLD ══════════════ -->
+  <div class="world" id="story60-world">
+    <div class="world-header"><button class="world-back" onclick="showWorld('home')"><i class="ph ph-arrow-left"></i></button><h2 class="world-title"><i class="ph ph-timer"></i> 60-Second Story</h2><button class="help-btn" onclick="openHelp('story60')"><i class="ph ph-question"></i> How it works</button></div>
+    <div class="world-body" style="max-width:560px;margin:0 auto;padding:1.2rem">
+      <div id="s60-lobby">
+        <div style="text-align:center;margin-bottom:1.4rem">
+          <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;color:rgba(200,80,255,.5);text-transform:uppercase;margin-bottom:.5rem">Daily Challenge - Resets Midnight</div>
+          <div style="font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:1.2rem">Dr Sasa begins a story. You have 60 seconds to finish it.<br>AI judges creativity, cultural depth and storytelling craft.</div>
+          <div style="padding:1.2rem 1.4rem;background:rgba(200,80,255,.05);border:1px solid rgba(200,80,255,.2);border-radius:14px;margin-bottom:1.2rem;text-align:left">
+            <div style="font-family:var(--mono);font-size:.46rem;color:rgba(200,80,255,.5);text-transform:uppercase;margin-bottom:.5rem">Today's Opening - by Dr Sasa</div>
+            <div id="s60-opening" style="font-family:var(--body,serif);font-size:.92rem;color:rgba(255,255,255,.8);line-height:1.75;font-style:italic">Loading...</div>
+          </div>
+          <button onclick="startStory60()" id="s60-start-btn" style="padding:.8rem 2.2rem;border-radius:100px;border:none;background:linear-gradient(135deg,#C850FF,#8B00D4);color:#fff;font-family:var(--impact);font-size:1rem;letter-spacing:.06em;cursor:pointer"><i class="ph ph-pencil"></i> Start Writing</button>
+        </div>
+        <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:1.1rem 1.3rem">
+          <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:.7rem"><i class="ph ph-trophy"></i> Today's Top Stories</div>
+          <div id="s60-leaderboard"><span style="font-size:.78rem;color:rgba(255,255,255,.2)">No entries yet today. Be first!</span></div>
+        </div>
+      </div>
+      <div id="s60-arena" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem">
+          <div style="font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.3)">Words: <span id="s60-wordcount">0</span></div>
+          <div id="s60-timer" style="font-family:var(--impact);font-size:2rem;color:#C850FF">60</div>
+          <div style="font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.3)">sec left</div>
+        </div>
+        <div style="height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;margin-bottom:1rem"><div id="s60-timer-bar" style="height:100%;background:#C850FF;border-radius:2px;width:100%;transition:width 1s linear"></div></div>
+        <div style="font-family:var(--body,serif);font-size:.85rem;color:rgba(200,80,255,.65);line-height:1.7;margin-bottom:.8rem;font-style:italic;padding:.7rem .9rem;background:rgba(200,80,255,.04);border-radius:8px" id="s60-opening-mini"></div>
+        <textarea id="s60-textarea" placeholder="Continue the story..." rows="8"
+          style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.04);border:1px solid rgba(200,80,255,.25);border-radius:12px;padding:.9rem 1rem;color:#fff;font-family:var(--body,serif);font-size:.92rem;line-height:1.75;outline:none;resize:none"></textarea>
+      </div>
+      <div id="s60-judging" style="display:none;text-align:center;padding:2rem 0">
+        <div style="font-family:var(--mono);font-size:.52rem;color:rgba(200,80,255,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.7rem">Dr Sasa is reading your story...</div>
+      </div>
+      <div id="s60-result" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════ NOTIFICATION PANEL ══════════════ -->
+  <div id="notif-panel" style="display:none;position:fixed;top:3.8rem;right:.8rem;width:300px;max-height:400px;overflow-y:auto;background:rgba(10,14,26,.98);border:1px solid rgba(255,255,255,.1);border-radius:16px;z-index:9997;box-shadow:0 12px 40px rgba(0,0,0,.6);backdrop-filter:blur(20px)">
+    <div style="padding:.9rem 1.1rem;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:.5rem;position:sticky;top:0;background:rgba(10,14,26,.98)">
+      <i class="ph ph-bell" style="color:var(--fire)"></i>
+      <span style="font-family:var(--mono);font-size:.5rem;letter-spacing:.1em;color:rgba(255,255,255,.45);text-transform:uppercase">Notifications</span>
+      <button onclick="openHelp('notifications')" style="background:none;border:none;color:rgba(255,255,255,.25);font-size:.68rem;cursor:pointer;font-family:var(--mono)"><i class="ph ph-question"></i></button><button onclick="clearAllNotifs()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,.25);font-size:.68rem;cursor:pointer;font-family:var(--mono)">Clear all</button>
+    </div>
+    <div id="notif-list" style="padding:.5rem"></div>
+  </div>
+
+
   <!-- ═══ ADMIN WORLD ═══ -->
 
   <!-- ══════════════ STORY BATTLE WORLD ══════════════ -->
@@ -12014,6 +12147,7 @@ function purchaseCourse(courseIdx) {
         <div class="sec-lbl" style="color:rgba(200,80,255,.4);justify-content:center;margin-bottom:.5rem"><i class="ph ph-swords"></i> Arena</div>
         <h2 style="font-family:var(--impact);font-size:clamp(2.8rem,6vw,5rem);text-align:center;letter-spacing:.06em;color:#fff;margin-bottom:.3rem">Story <span style="color:#C850FF">Battles</span></h2>
         <p style="text-align:center;color:rgba(255,255,255,.4);font-size:.9rem;margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto">Two writers. One prompt. 24 hours. The community decides who wins. Winners earn Griot XP and a spot in the VR Fireside.</p>
+        <button class="help-btn" onclick="openHelp('battle')" style="margin:0 auto 1.2rem;display:flex"><i class="ph ph-question"></i> How it works</button>
 
         <!-- ACTIVE BATTLE CARD -->
         <div id="battle-active-card" style="background:rgba(200,80,255,.06);border:1px solid rgba(200,80,255,.2);border-radius:20px;padding:1.6rem;margin-bottom:1.5rem">
@@ -12058,6 +12192,9 @@ function purchaseCourse(courseIdx) {
         <div class="sec-lbl" style="color:rgba(110,231,142,.4);justify-content:center;margin-bottom:.5rem"><i class="ph ph-hand-heart"></i> Community</div>
         <h2 style="font-family:var(--impact);font-size:clamp(2.8rem,6vw,5rem);text-align:center;letter-spacing:.06em;color:#fff;margin-bottom:.3rem">Ubuntu <span style="color:#6EE78E">Mode</span></h2>
         <p style="text-align:center;color:rgba(255,255,255,.4);font-size:.9rem;margin-bottom:.5rem;max-width:520px;margin-left:auto;margin-right:auto">"Umuntu ngumuntu ngabantu" — A person is a person through other people. Ask your community first. AI is always here as backup.</p>
+        <button class="help-btn" onclick="openHelp('ubuntu')" style="margin:0 auto 1.2rem;display:flex"><i class="ph ph-question"></i> How it works</button>
+
+        
 
         <!-- ASK A QUESTION -->
         <div style="background:rgba(110,231,142,.05);border:1px solid rgba(110,231,142,.15);border-radius:20px;padding:1.6rem;margin-bottom:1.5rem">
@@ -12102,6 +12239,9 @@ function purchaseCourse(courseIdx) {
         <div class="sec-lbl" style="color:rgba(100,181,232,.4);justify-content:center;margin-bottom:.5rem"><i class="ph ph-lightning"></i> AI Study Tool</div>
         <h2 style="font-family:var(--impact);font-size:clamp(2.8rem,6vw,5rem);text-align:center;letter-spacing:.06em;color:#fff;margin-bottom:.3rem"><span style="color:#64B5E8">Unstuck</span> AI</h2>
         <p style="text-align:center;color:rgba(255,255,255,.4);font-size:.9rem;margin-bottom:2rem;max-width:520px;margin-left:auto;margin-right:auto">Paste your essay topic, exam question, or assignment. Get 3 strong angles, a structure, a proverb that fits — and never stare at a blank page again.</p>
+        <button class="help-btn" onclick="openHelp('unstuck')" style="margin:0 auto 1.2rem;display:flex"><i class="ph ph-question"></i> How it works</button>
+
+        
 
         <!-- MODE TABS -->
         <div style="display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap">
@@ -16477,6 +16617,878 @@ async function notifyMeAudio(btn) {
     // Table may not exist yet — button feedback is enough for now
   }
 }
+
+
+// ════════════════════════════════════════════════════════════════
+// ANCESTOR'S RIDDLE
+// Tables: riddle_solvers (riddle_date, user_id, user_name, solved_at)
+// Riddles are hardcoded — zero DB storage cost
+// ════════════════════════════════════════════════════════════════
+var RIDDLES = [
+  { r:"I have cities but no houses, mountains but no trees, water but no fish, and roads but no cars. What am I?", a:["map","a map"], h:"You use me to find your way.", p:"The map does not judge the traveller — it only shows the path." },
+  { r:"I speak without a mouth and hear without ears. I have no body but I come alive with wind. What am I?", a:["echo","an echo"], h:"I repeat what you say.", p:"Speak good words into the valley — they will return to you." },
+  { r:"The more you take, the more you leave behind. What am I?", a:["footsteps","footstep","steps"], h:"Look behind you on a sandy path.", p:"Every journey leaves its mark — walk with intention." },
+  { r:"I am always in front of you but cannot be seen. I can be wasted but never stored. What am I?", a:["future","the future","time"], h:"The elders always speak of making good use of me.", p:"A wasted day is a well that cannot be refilled." },
+  { r:"What has roots as nobody sees, is taller than trees, up, up, up it goes, and yet never grows?", a:["mountain","a mountain"], h:"It is part of the land itself.", p:"The mountain does not boast of its height — it simply stands." },
+  { r:"I am light as a feather, yet the strongest person cannot hold me for more than five minutes. What am I?", a:["breath","your breath","air"], h:"You do it every second without thinking.", p:"Even the mightiest warrior must breathe." },
+  { r:"The poor have it, the rich need it, and if you eat it you will die. What am I?", a:["nothing"], h:"It is the absence of something.", p:"Ubuntu teaches us: without community, we have nothing." },
+  { r:"I have branches but no fruit, no trunk, and no leaves. What am I?", a:["bank","a bank","river bank"], h:"It holds something that flows.", p:"The river banks hold the water as elders hold the youth — with firm gentleness." },
+  { r:"What can run but never walks, has a mouth but never talks, has a head but never weeps, has a bed but never sleeps?", a:["river","a river"], h:"It flows through the heart of Africa.", p:"The river does not ask where it is going — it trusts the slope." },
+  { r:"I can be cracked, made, told and played. What am I?", a:["joke","a joke"], h:"The elders used me to teach without pain.", p:"A good story is medicine wrapped in laughter." },
+  { r:"What gets wetter the more it dries?", a:["towel","a towel"], h:"You use it after bathing.", p:"Service to others soaks you in purpose." },
+  { r:"I have hands but I cannot clap. What am I?", a:["clock","a clock","watch"], h:"The elders say I wait for no one.", p:"Do not let time clap for you — be ready before it arrives." },
+  { r:"What has to be broken before you can use it?", a:["egg","an egg"], h:"A chick knows this well.", p:"New life always costs something first." },
+  { r:"The more of this there is, the less you see. What am I?", a:["darkness","dark"], h:"It comes when the sun leaves.", p:"Even in darkness, the griot knows where the fire was." },
+  { r:"I am always hungry, I must always be fed. The finger I touch turns red. What am I?", a:["fire"], h:"It warms the fireside circle.", p:"Like fire, a good story must be fed — with truth, breath, and silence." },
+  { r:"What belongs to you but others use it more than you do?", a:["name","your name"], h:"Your parents gave it to you.", p:"A name carries a clan. Speak yours with pride." },
+  { r:"What comes once in a minute, twice in a moment, but never in a thousand years?", a:["m","letter m","the letter m"], h:"Look at the words, not the meaning.", p:"Wisdom hides in plain sight — train your eyes to see it." },
+  { r:"I have a neck but no head, and I wear a cap. What am I?", a:["bottle","a bottle"], h:"Water lives in me.", p:"Like a bottle, hold good things inside — pour them out for those who thirst." },
+  { r:"What can you catch but not throw?", a:["cold","a cold"], h:"It spreads in winter.", p:"Bad habits spread like illness — but so does joy." },
+  { r:"I am not alive but I can grow. I have no lungs but I need air. I have no mouth but water kills me. What am I?", a:["fire"], h:"The ancestors gathered around me every night.", p:"A community with no fire — no warmth, no light, no story." },
+  { r:"What has words but never speaks?", a:["book","a book"], h:"Dr Sasa loves these.", p:"Books are ancestors who never die." },
+  { r:"What has one eye but cannot see?", a:["needle","a needle"], h:"Your grandmother used one to sew.", p:"Even the blind needle threads community together." },
+  { r:"I go up but never come down. What am I?", a:["age","your age"], h:"You celebrate it every year.", p:"Every year is a gift — wear your age like a crown." },
+  { r:"What is so fragile that saying its name breaks it?", a:["silence"], h:"The forest has it before the lion roars.", p:"In silence, the ancestors speak loudest." },
+  { r:"I have cities full of people but not a single person lives in me. What am I?", a:["map","a map","atlas"], h:"You hang me on classroom walls.", p:"The map names the land. The griot gives it a soul." },
+  { r:"What runs all around a kraal but never moves?", a:["fence","a fence","wall"], h:"It protects the cattle.", p:"Good boundaries protect what is precious." },
+  { r:"What can travel around the world while staying in a corner?", a:["stamp","a stamp","postage stamp"], h:"You put me on a letter.", p:"A single story, sent with love, can travel everywhere." },
+  { r:"The more you have of it, the less you see. What am I?", a:["fog","mist","darkness"], h:"It hides the mountains in the morning.", p:"Too much noise, like fog, hides the truth. Seek quiet." },
+  { r:"What has 13 hearts but no other organs?", a:["deck of cards","cards","pack of cards"], h:"You play games with me.", p:"Even in play, every card has its place and purpose." },
+  { r:"What is always in front of you but cannot be seen?", a:["future","the future"], h:"The sangoma tries to read it.", p:"Plant good seeds today — your future will harvest them." }
+];
+
+var RIDDLE_STATE = {
+  todayIdx: 0,
+  solved: false,
+  hintUsed: false,
+  streak: 0
+};
+
+function getTodayRiddleIdx() {
+  var d = new Date();
+  var dayOfYear = Math.floor((d - new Date(d.getFullYear(),0,0)) / 86400000);
+  return dayOfYear % RIDDLES.length;
+}
+
+function initRiddleWorld() {
+  var idx = getTodayRiddleIdx();
+  RIDDLE_STATE.todayIdx = idx;
+  var riddle = RIDDLES[idx];
+  var dateEl = document.getElementById('riddle-date');
+  var textEl = document.getElementById('riddle-text');
+  if (dateEl) dateEl.textContent = new Date().toLocaleDateString('en-ZA',{weekday:'long',day:'numeric',month:'long'});
+  if (textEl) textEl.textContent = riddle.r;
+
+  // Check if already solved today
+  var solvedKey = 'zintsomi_riddle_' + new Date().toDateString();
+  if (localStorage.getItem(solvedKey)) {
+    RIDDLE_STATE.solved = true;
+    showRiddleSolved(true);
+  }
+  // Load streak
+  RIDDLE_STATE.streak = parseInt(localStorage.getItem('zintsomi_riddle_streak')||'0');
+  var streakEl = document.getElementById('riddle-streak-display');
+  if (streakEl) streakEl.textContent = RIDDLE_STATE.streak + ' day' + (RIDDLE_STATE.streak !== 1 ? 's':'');
+  loadRiddleSolvers();
+}
+
+function submitRiddle() {
+  if (RIDDLE_STATE.solved) return;
+  var input = document.getElementById('riddle-input');
+  var answer = (input ? input.value : '').trim().toLowerCase();
+  if (!answer) return;
+  var riddle = RIDDLES[RIDDLE_STATE.todayIdx];
+  var correct = riddle.a.some(function(a){ return answer === a || answer.includes(a); });
+  var result = document.getElementById('riddle-result');
+  if (correct) {
+    RIDDLE_STATE.solved = true;
+    var xp = RIDDLE_STATE.hintUsed ? 10 : 20;
+    awardXP && awardXP(xp, 'Ancestor Riddle');
+    // Save solved state
+    localStorage.setItem('zintsomi_riddle_' + new Date().toDateString(), '1');
+    // Update streak
+    var lastDay = localStorage.getItem('zintsomi_riddle_last_day');
+    var yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+    if (lastDay === yesterday.toDateString()) {
+      RIDDLE_STATE.streak++;
+    } else if (lastDay !== new Date().toDateString()) {
+      RIDDLE_STATE.streak = 1;
+    }
+    localStorage.setItem('zintsomi_riddle_streak', RIDDLE_STATE.streak);
+    localStorage.setItem('zintsomi_riddle_last_day', new Date().toDateString());
+    var streakEl = document.getElementById('riddle-streak-display');
+    if (streakEl) streakEl.textContent = RIDDLE_STATE.streak + ' day' + (RIDDLE_STATE.streak !== 1 ? 's':'');
+
+    if (result) {
+      result.style.display = 'block';
+      result.style.background = 'rgba(110,231,142,.08)';
+      result.style.border = '1px solid rgba(110,231,142,.2)';
+      result.innerHTML = '<i class="ph ph-check-circle" style="font-size:2rem;color:#6EE78E;display:block;margin-bottom:.6rem"></i>'
+        + '<div style="font-size:1rem;font-weight:700;color:#fff;margin-bottom:.4rem">Correct! The ancestors are pleased.</div>'
+        + '<div style="font-size:.82rem;color:rgba(255,255,255,.5);margin-bottom:.7rem">+'+xp+' XP earned</div>'
+        + '<div style="font-family:var(--body,serif);font-size:.88rem;color:rgba(230,179,42,.7);font-style:italic">"' + riddle.p + '"</div>';
+    }
+    if (input) { input.disabled = true; input.value = answer; }
+    saveSolverToSupabase();
+    addNotification('<i class="ph ph-scroll" style="color:#E6B32A"></i>', 'You solved today\'s riddle!', 'Streak: ' + RIDDLE_STATE.streak + ' days');
+  } else {
+    if (result) {
+      result.style.display = 'block';
+      result.style.background = 'rgba(255,100,100,.07)';
+      result.style.border = '1px solid rgba(255,100,100,.15)';
+      result.innerHTML = '<div style="font-size:.88rem;color:rgba(255,150,150,.8)">Not quite. Try again — the ancestors are patient.</div>';
+      setTimeout(function(){ if(result) result.style.display='none'; }, 2000);
+    }
+  }
+}
+
+function showRiddleHint() {
+  if (RIDDLE_STATE.solved || RIDDLE_STATE.hintUsed) return;
+  RIDDLE_STATE.hintUsed = true;
+  var riddle = RIDDLES[RIDDLE_STATE.todayIdx];
+  var hintEl = document.getElementById('riddle-hint-text');
+  var hintBtn = document.getElementById('riddle-hint-btn');
+  if (hintEl) { hintEl.textContent = 'Hint: ' + riddle.h; hintEl.style.display = 'block'; }
+  if (hintBtn) { hintBtn.style.display = 'none'; }
+  // Deduct 5 XP
+  if (typeof currentXP !== 'undefined') currentXP = Math.max(0, (currentXP||0) - 5);
+}
+
+function showRiddleSolved(alreadyDone) {
+  var wrap = document.getElementById('riddle-input') && document.getElementById('riddle-input').parentNode;
+  if (wrap) wrap.style.opacity = '.4';
+  var result = document.getElementById('riddle-result');
+  if (result && alreadyDone) {
+    result.style.display = 'block';
+    result.style.background = 'rgba(110,231,142,.05)';
+    result.style.border = '1px solid rgba(110,231,142,.15)';
+    result.innerHTML = '<div style="font-size:.88rem;color:#6EE78E"><i class="ph ph-check-circle"></i> You already solved today\'s riddle! Come back tomorrow.</div>';
+  }
+}
+
+async function saveSolverToSupabase() {
+  if (!supa || !currentUser) return;
+  try {
+    await supa.from('riddle_solvers').upsert({
+      riddle_date: new Date().toDateString(),
+      user_id: currentUser.id,
+      user_name: (currentUser.profile && currentUser.profile.full_name) || 'Anonymous',
+      solved_at: new Date().toISOString()
+    }, { onConflict: 'riddle_date,user_id' });
+    await loadRiddleSolvers();
+  } catch(e) {}
+}
+
+async function loadRiddleSolvers() {
+  if (!supa) return;
+  try {
+    var { data } = await supa.from('riddle_solvers')
+      .select('user_name, solved_at')
+      .eq('riddle_date', new Date().toDateString())
+      .order('solved_at', { ascending: true })
+      .limit(10);
+    var el = document.getElementById('riddle-solvers');
+    if (!el || !data || !data.length) return;
+    var medals = ['#E6B32A','#aaa','#cd7f32'];
+    el.innerHTML = data.map(function(s, i) {
+      var t = new Date(s.solved_at);
+      var timeStr = t.getHours() + ':' + String(t.getMinutes()).padStart(2,'0');
+      return '<div style="display:flex;align-items:center;gap:.6rem;padding:.4rem 0;border-bottom:1px solid rgba(255,255,255,.04)">'
+        + '<span style="font-family:var(--mono);font-size:.6rem;color:'+(medals[i]||'rgba(255,255,255,.2)')+';width:1.2rem">' + (i+1) + '</span>'
+        + '<span style="flex:1;font-size:.82rem;color:rgba(255,255,255,.7)">' + s.user_name + '</span>'
+        + '<span style="font-family:var(--mono);font-size:.48rem;color:rgba(255,255,255,.2)">' + timeStr + '</span>'
+        + '</div>';
+    }).join('');
+  } catch(e) {}
+}
+
+// ════════════════════════════════════════════════════════════════
+// CULTURAL TRIVIA SHOWDOWN
+// All questions hardcoded — zero DB cost. Scores save to existing XP.
+// Tables: trivia_scores (user_id, user_name, score, played_at)
+// ════════════════════════════════════════════════════════════════
+var TRIVIA_QUESTIONS = [
+  { q:"What does 'Ubuntu' mean?", o:["I am because we are","Strength in silence","A type of food","Ancient wisdom"], a:0, f:"Ubuntu — 'Umuntu ngumuntu ngabantu' — is one of Africa's greatest gifts to humanity." },
+  { q:"Which African country has the most languages?", o:["Nigeria","South Africa","Ethiopia","Cameroon"], a:0, f:"Nigeria has over 500 languages. South Africa has 11 official languages." },
+  { q:"The Great Zimbabwe ruins are in which country?", o:["Zambia","Zimbabwe","Mozambique","Botswana"], a:1, f:"Great Zimbabwe was a medieval city and the capital of the Kingdom of Zimbabwe." },
+  { q:"What is a 'griot'?", o:["A type of drum","A West African storyteller and historian","A royal crown","A traditional dish"], a:1, f:"Griots are the living libraries of West Africa — keepers of oral history, music, and praise poetry." },
+  { q:"Which river is the longest in Africa?", o:["Congo","Niger","Nile","Zambezi"], a:2, f:"The Nile is the world's longest river at approximately 6,650 km." },
+  { q:"In Zulu culture, what is an 'izibongo'?", o:["A funeral song","Praise poetry","A war dance","A wedding gift"], a:1, f:"Izibongo is the Zulu tradition of praise poetry — celebrating a person's lineage and character." },
+  { q:"Who was the first democratically elected president of South Africa?", o:["Oliver Tambo","Walter Sisulu","Chris Hani","Nelson Mandela"], a:3, f:"Nelson Mandela became president on 10 May 1994, after 27 years in prison." },
+  { q:"What does 'Sawubona' mean in isiZulu?", o:["Goodbye","I see you","Thank you","Welcome home"], a:1, f:"Sawubona means 'I see you' — it acknowledges the full humanity of the person you greet." },
+  { q:"Which African kingdom was known as the 'Land of Gold'?", o:["Mali Empire","Zulu Kingdom","Kush","Axum"], a:0, f:"The Mali Empire, especially under Mansa Musa, was the wealthiest kingdom in medieval history." },
+  { q:"What is the national animal of South Africa?", o:["Lion","Elephant","Springbok","Leopard"], a:2, f:"The Springbok is South Africa's national animal and the name of the rugby team." },
+  { q:"Which oral storytelling tradition involves folktales told around a fire at night?", o:["Izinganekwane","Ubuntu","Ukubuyisa","Lobola"], a:0, f:"Izinganekwane are Zulu folktales — traditionally told to children around the fire after sunset." },
+  { q:"Mount Kilimanjaro is in which country?", o:["Kenya","Uganda","Tanzania","Rwanda"], a:2, f:"Kilimanjaro is in Tanzania and is Africa's highest peak at 5,895 metres." },
+  { q:"What instrument is the 'mbira' made of?", o:["Animal skin","Metal tines on a wooden board","Hollow reeds","Stretched string"], a:1, f:"The mbira — also called 'thumb piano' — is sacred in Shona culture and used to communicate with ancestors." },
+  { q:"Which South African language has click consonants?", o:["Sesotho","isiZulu","isiXhosa","Setswana"], a:2, f:"isiXhosa has three distinct click sounds: dental, alveolar, and lateral clicks." },
+  { q:"What does 'lobola' represent in African culture?", o:["A dowry showing respect and gratitude","A type of punishment","A coming-of-age ceremony","A war declaration"], a:0, f:"Lobola is a gift from the groom's family to the bride's family — it builds bonds between families." },
+  { q:"Who wrote 'Things Fall Apart'?", o:["Ngugi wa Thiong'o","Chimamanda Ngozi Adichie","Chinua Achebe","Wole Soyinka"], a:2, f:"Chinua Achebe's 1958 novel is one of the most widely read African books in the world." },
+  { q:"What is the Swahili word for 'family'?", o:["Jamaa","Baba","Mama","Watoto"], a:0, f:"Jamaa means family in Swahili. Swahili is spoken by over 200 million people across East Africa." },
+  { q:"Which African country was never colonised?", o:["Ghana","Ethiopia","Nigeria","Senegal"], a:1, f:"Ethiopia successfully resisted colonisation, defeating Italy at the Battle of Adwa in 1896." },
+  { q:"What is a 'sangoma' in Southern African tradition?", o:["A praise poet","A traditional healer","A village chief","A drummer"], a:1, f:"Sangomas are divination specialists who act as intermediaries between the living and the ancestors." },
+  { q:"The baobab tree is known as the 'Tree of Life' because:", o:["It grows for 1,000 years","It stores thousands of litres of water inside its trunk","It only blooms at night","Its bark cures all illness"], a:1, f:"The baobab can store up to 120,000 litres of water — sustaining animals and communities in dry seasons." },
+  { q:"Which South African city is called 'The Mother City'?", o:["Johannesburg","Durban","Pretoria","Cape Town"], a:3, f:"Cape Town, established in 1652, is South Africa's oldest city and seat of Parliament." },
+  { q:"What does 'Nkosi Sikelel' iAfrika' mean?", o:["Africa will rise","God bless Africa","Africa is one","Land of our fathers"], a:1, f:"'Nkosi Sikelel' iAfrika' — composed in 1897 — forms part of South Africa's national anthem." },
+  { q:"The African proverb 'If you want to go fast, go alone; if you want to go far...' ends with:", o:["go with strength","go with wisdom","go together","go slowly"], a:2, f:"This proverb captures Ubuntu — collective progress outlasts individual speed." },
+  { q:"Which country is the birthplace of coffee?", o:["Kenya","Ethiopia","Uganda","Rwanda"], a:1, f:"Coffee originated in Ethiopia, where legend says a goat herder named Kaldi first noticed its effects." },
+  { q:"What is 'isishweshwe' in South African culture?", o:["A traditional dance","A type of fabric","A praise name","A harvest festival"], a:1, f:"Isishweshwe is an iconic patterned fabric widely worn across South Africa, originally from Germany but fully claimed by African culture." },
+  { q:"The Zulu word 'Bayede' is used to:", o:["Greet a stranger","Salute royalty","Begin a story","Call for help"], a:1, f:"'Bayede' is the highest Zulu royal salute — reserved for the king." },
+  { q:"Which African city is home to the pyramids of Giza?", o:["Cairo","Khartoum","Luxor","Alexandria"], a:0, f:"The Pyramids of Giza are located just outside Cairo, Egypt — built over 4,500 years ago." },
+  { q:"In African oral tradition, why were stories told at night?", o:["So animals couldn't hear","Because fire was needed","So the ancestors could listen","Tradition from the elders"], a:2, f:"Many African traditions held that storytelling at night invited the ancestors to gather and listen." },
+  { q:"What does 'Kwa-Sukela' mean?", o:["Place of fire","Place of sweetness","Place of stories","Place of learning"], a:1, f:"'Kwa-Sukela' means 'place of sweetness' — the heart name of Zintsomi Storytelling College." },
+  { q:"Who is considered the father of the African Renaissance?", o:["Thabo Mbeki","Kwame Nkrumah","Julius Nyerere","Patrice Lumumba"], a:1, f:"Kwame Nkrumah of Ghana championed African unity and independence across the continent." }
+];
+
+var TRIVIA = {
+  questions: [],
+  current: 0,
+  score: 0,
+  timer: null,
+  timeLeft: 10,
+  answered: false
+};
+
+function initTriviaWorld() {
+  loadTriviaLeaderboard();
+  loadTriviaMyBest();
+}
+
+function startTrivia() {
+  // Shuffle and pick 10
+  var shuffled = TRIVIA_QUESTIONS.slice().sort(function(){ return Math.random()-.5; });
+  TRIVIA.questions = shuffled.slice(0, 10);
+  TRIVIA.current = 0;
+  TRIVIA.score = 0;
+  TRIVIA.answered = false;
+
+  document.getElementById('trivia-lobby').style.display = 'none';
+  document.getElementById('trivia-game').style.display = 'block';
+  document.getElementById('trivia-result').style.display = 'none';
+  renderTriviaQuestion();
+}
+
+function renderTriviaQuestion() {
+  var q = TRIVIA.questions[TRIVIA.current];
+  TRIVIA.answered = false;
+  TRIVIA.timeLeft = 10;
+
+  document.getElementById('trivia-qnum').textContent = TRIVIA.current + 1;
+  document.getElementById('trivia-score-display').textContent = TRIVIA.score;
+  document.getElementById('trivia-question').textContent = q.q;
+  document.getElementById('trivia-feedback').style.display = 'none';
+
+  var opts = document.getElementById('trivia-options');
+  opts.innerHTML = q.o.map(function(opt, i) {
+    return '<button onclick="answerTrivia('+i+')" style="padding:.7rem .8rem;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(255,255,255,.8);font-size:.82rem;cursor:pointer;text-align:left;transition:all .15s;line-height:1.4" onmouseover="this.style.background=\'rgba(110,231,142,.1)\'" onmouseout="if(!this.dataset.locked)this.style.background=\'rgba(255,255,255,.04)\'">' + opt + '</button>';
+  }).join('');
+
+  // Timer
+  clearInterval(TRIVIA.timer);
+  updateTriviaTimer();
+  TRIVIA.timer = setInterval(function() {
+    TRIVIA.timeLeft--;
+    updateTriviaTimer();
+    if (TRIVIA.timeLeft <= 0) {
+      clearInterval(TRIVIA.timer);
+      if (!TRIVIA.answered) answerTrivia(-1); // timeout
+    }
+  }, 1000);
+}
+
+function updateTriviaTimer() {
+  var bar = document.getElementById('trivia-timer-bar');
+  var txt = document.getElementById('trivia-timer-text');
+  if (bar) bar.style.width = (TRIVIA.timeLeft / 10 * 100) + '%';
+  if (txt) { txt.textContent = TRIVIA.timeLeft; txt.style.color = TRIVIA.timeLeft <= 3 ? '#ff7070' : '#6EE78E'; }
+}
+
+function answerTrivia(idx) {
+  if (TRIVIA.answered) return;
+  TRIVIA.answered = true;
+  clearInterval(TRIVIA.timer);
+
+  var q = TRIVIA.questions[TRIVIA.current];
+  var correct = idx === q.a;
+  if (correct) TRIVIA.score += 10;
+
+  // Colour the options
+  var btns = document.getElementById('trivia-options').querySelectorAll('button');
+  btns.forEach(function(b, i) {
+    b.dataset.locked = '1';
+    b.style.cursor = 'default';
+    b.onmouseover = null; b.onmouseout = null;
+    if (i === q.a) { b.style.background = 'rgba(110,231,142,.2)'; b.style.borderColor = '#6EE78E'; b.style.color = '#6EE78E'; }
+    else if (i === idx) { b.style.background = 'rgba(255,100,100,.15)'; b.style.borderColor = 'rgba(255,100,100,.4)'; b.style.color = '#ff9090'; }
+  });
+
+  var fb = document.getElementById('trivia-feedback');
+  if (fb) {
+    fb.style.display = 'block';
+    fb.style.background = correct ? 'rgba(110,231,142,.08)' : 'rgba(255,100,100,.08)';
+    fb.style.border = '1px solid ' + (correct ? 'rgba(110,231,142,.2)' : 'rgba(255,100,100,.15)');
+    fb.style.color = 'rgba(255,255,255,.65)';
+    fb.textContent = (correct ? 'Correct! ' : (idx === -1 ? 'Time up! ' : 'Not quite. ')) + q.f;
+  }
+
+  setTimeout(function() {
+    TRIVIA.current++;
+    if (TRIVIA.current < TRIVIA.questions.length) {
+      renderTriviaQuestion();
+    } else {
+      endTrivia();
+    }
+  }, 2200);
+}
+
+async function endTrivia() {
+  clearInterval(TRIVIA.timer);
+  document.getElementById('trivia-game').style.display = 'none';
+  document.getElementById('trivia-result').style.display = 'block';
+
+  var pct = Math.round(TRIVIA.score / 100 * 100);
+  var grade = pct >= 90 ? 'Master Griot' : pct >= 70 ? 'Senior Griot' : pct >= 50 ? 'Griot' : pct >= 30 ? 'Apprentice' : 'Keep Learning';
+  var gradeColor = pct >= 90 ? '#E6B32A' : pct >= 70 ? '#6EE78E' : pct >= 50 ? '#64B5E8' : 'rgba(255,255,255,.5)';
+
+  document.getElementById('trivia-result').innerHTML =
+    '<div style="font-family:var(--impact);font-size:3rem;color:'+gradeColor+'">'+TRIVIA.score+'</div>'
+    + '<div style="font-family:var(--mono);font-size:.52rem;color:rgba(255,255,255,.35);text-transform:uppercase;margin-bottom:.6rem">out of 100 points</div>'
+    + '<div style="font-size:1.1rem;font-weight:700;color:'+gradeColor+';margin-bottom:.8rem">'+grade+'</div>'
+    + '<div style="font-size:.82rem;color:rgba(255,255,255,.4);margin-bottom:1.4rem">'+TRIVIA.current+' questions answered</div>'
+    + '<div style="display:flex;gap:.6rem;justify-content:center">'
+    + '<button onclick="startTrivia()" style="padding:.6rem 1.4rem;border-radius:100px;border:none;background:#6EE78E;color:#000;font-weight:700;font-size:.82rem;cursor:pointer"><i class="ph ph-repeat"></i> Play Again</button>'
+    + '<button onclick="document.getElementById(\'trivia-lobby\').style.display=\'block\';document.getElementById(\'trivia-result\').style.display=\'none\';" style="padding:.6rem 1.2rem;border-radius:100px;border:1px solid rgba(255,255,255,.15);background:none;color:rgba(255,255,255,.5);font-size:.82rem;cursor:pointer">Leaderboard</button>'
+    + '</div>';
+
+  awardXP && awardXP(Math.floor(TRIVIA.score/2), 'Trivia Showdown');
+
+  // Save score
+  var myBest = parseInt(localStorage.getItem('zintsomi_trivia_best')||'0');
+  if (TRIVIA.score > myBest) {
+    localStorage.setItem('zintsomi_trivia_best', TRIVIA.score);
+    var bestEl = document.getElementById('trivia-my-best');
+    if (bestEl) bestEl.textContent = TRIVIA.score;
+  }
+
+  if (supa && currentUser) {
+    try {
+      await supa.from('trivia_scores').insert({
+        user_id: currentUser.id,
+        user_name: (currentUser.profile && currentUser.profile.full_name) || 'Anonymous',
+        score: TRIVIA.score,
+        played_at: new Date().toISOString()
+      });
+      await loadTriviaLeaderboard();
+    } catch(e) {}
+  }
+  addNotification('<i class="ph ph-lightning" style="color:#6EE78E"></i>', 'Trivia: ' + TRIVIA.score + '/100 — ' + grade, 'Check the leaderboard!');
+}
+
+async function loadTriviaLeaderboard() {
+  if (!supa) return;
+  try {
+    var today = new Date().toISOString().split('T')[0];
+    var { data } = await supa.from('trivia_scores')
+      .select('user_name, score')
+      .gte('played_at', today)
+      .order('score', { ascending: false })
+      .limit(5);
+    var el = document.getElementById('trivia-leaderboard');
+    if (!el || !data || !data.length) return;
+    var medals = ['#E6B32A','#aaa','#cd7f32'];
+    el.innerHTML = data.map(function(s,i){
+      return '<div style="display:flex;align-items:center;gap:.6rem;padding:.45rem 0;border-bottom:1px solid rgba(255,255,255,.04)">'
+        + '<span style="font-family:var(--mono);font-size:.6rem;color:'+(medals[i]||'rgba(255,255,255,.2)')+';width:1.2rem">'+(i+1)+'</span>'
+        + '<span style="flex:1;font-size:.82rem;color:rgba(255,255,255,.7)">'+s.user_name+'</span>'
+        + '<span style="font-family:var(--mono);font-size:.55rem;color:#6EE78E">'+s.score+'</span>'
+        + '</div>';
+    }).join('');
+    var high = data[0] ? data[0].score : '-';
+    var highEl = document.getElementById('trivia-today-high');
+    if (highEl) highEl.textContent = high;
+  } catch(e) {}
+}
+
+function loadTriviaMyBest() {
+  var best = localStorage.getItem('zintsomi_trivia_best') || '-';
+  var el = document.getElementById('trivia-my-best');
+  if (el) el.textContent = best;
+}
+
+// ════════════════════════════════════════════════════════════════
+// 60-SECOND STORY
+// Tables: story60_entries (user_id, user_name, opening_idx, story, score, feedback, played_at)
+// ════════════════════════════════════════════════════════════════
+var STORY60_OPENINGS = [
+  "The old woman at the edge of the village had not spoken in seven years. On this morning, she looked at the child and said...",
+  "They said the river would rise when the ancestors were angry. Tonight, it rose higher than anyone had ever seen...",
+  "The chief's youngest son discovered a door in the baobab tree that had stood for three hundred years...",
+  "When the last storyteller died, the village forgot how to dream. Until one night, a stranger arrived carrying...",
+  "The sangoma threw the bones and went very quiet for a long time. Finally, she looked up and said, 'The map is wrong.'...",
+  "Everyone in the village knew not to go near the hill after sunset. But Lerato was tired of being afraid...",
+  "The letter arrived from a grandmother who had been dead for forty years. Inside was one sentence...",
+  "When the lights went out across the whole city, only one building stayed bright — the school at the end of Soweto Road...",
+  "The young man who could speak to birds brought a message to the village council. The birds, he said, had voted...",
+  "She found her grandfather's old phone. When she turned it on, there was one unread voice note, recorded yesterday..."
+];
+
+var S60 = {
+  openingIdx: 0,
+  timer: null,
+  timeLeft: 60,
+  running: false
+};
+
+function initStory60World() {
+  var d = new Date();
+  S60.openingIdx = d.getDate() % STORY60_OPENINGS.length;
+  var el = document.getElementById('s60-opening');
+  if (el) el.textContent = STORY60_OPENINGS[S60.openingIdx];
+  loadStory60Leaderboard();
+}
+
+function startStory60() {
+  if (!currentUser) { openAuthModal(); return; }
+  var lobby = document.getElementById('s60-lobby');
+  var arena = document.getElementById('s60-arena');
+  if (lobby) lobby.style.display = 'none';
+  if (arena) arena.style.display = 'block';
+
+  var mini = document.getElementById('s60-opening-mini');
+  if (mini) mini.textContent = STORY60_OPENINGS[S60.openingIdx];
+
+  var ta = document.getElementById('s60-textarea');
+  if (ta) { ta.value = ''; ta.focus(); }
+
+  // word count
+  if (ta) ta.addEventListener('input', function(){
+    var w = this.value.trim().split(/\s+/).filter(Boolean).length;
+    var wc = document.getElementById('s60-wordcount');
+    if (wc) wc.textContent = w;
+  });
+
+  S60.timeLeft = 60;
+  S60.running = true;
+  updateS60Timer();
+  S60.timer = setInterval(function() {
+    S60.timeLeft--;
+    updateS60Timer();
+    if (S60.timeLeft <= 0) {
+      clearInterval(S60.timer);
+      S60.running = false;
+      submitStory60();
+    }
+  }, 1000);
+}
+
+function updateS60Timer() {
+  var t = document.getElementById('s60-timer');
+  var bar = document.getElementById('s60-timer-bar');
+  if (t) {
+    t.textContent = S60.timeLeft;
+    t.style.color = S60.timeLeft <= 10 ? '#ff7070' : '#C850FF';
+  }
+  if (bar) bar.style.width = (S60.timeLeft / 60 * 100) + '%';
+}
+
+async function submitStory60() {
+  var ta = document.getElementById('s60-textarea');
+  var text = ta ? ta.value.trim() : '';
+  if (text.length < 10) {
+    showWorld('story60'); return;
+  }
+  document.getElementById('s60-arena').style.display = 'none';
+  document.getElementById('s60-judging').style.display = 'block';
+
+  var system = 'You are Dr Sasa, a storytelling griot and judge. Evaluate this 60-second story continuation in JSON only:\n'
+    + '{"score":0-100,"creativity":"...","cultural_depth":"...","craft":"...","best_line":"...","encouragement":"..."}';
+  var prompt = 'Opening: "' + STORY60_OPENINGS[S60.openingIdx] + '"\n\nContinuation: "' + text + '"';
+
+  try {
+    var raw = await zintsomiAI(system, prompt, 400);
+    var obj = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    showStory60Result(obj, text);
+    if (supa && currentUser) {
+      await supa.from('story60_entries').insert({
+        user_id: currentUser.id,
+        user_name: (currentUser.profile && currentUser.profile.full_name) || 'Anonymous',
+        opening_idx: S60.openingIdx,
+        story: text,
+        score: obj.score || 0,
+        played_at: new Date().toISOString()
+      }).catch(function(){});
+      await loadStory60Leaderboard();
+    }
+    awardXP && awardXP(Math.floor((obj.score||50)/10)*5, '60-Second Story');
+    addNotification('<i class="ph ph-timer" style="color:#C850FF"></i>', '60s Story scored: ' + (obj.score||'?') + '/100', obj.best_line ? '"' + obj.best_line.slice(0,50) + '..."' : '');
+  } catch(e) {
+    document.getElementById('s60-judging').style.display = 'none';
+    document.getElementById('s60-result').style.display = 'block';
+    document.getElementById('s60-result').innerHTML = '<div style="color:rgba(255,255,255,.4);font-size:.88rem">Could not evaluate. Your story was saved.</div>'
+      + '<button onclick="initStory60World();document.getElementById(\'s60-lobby\').style.display=\'block\';document.getElementById(\'s60-result\').style.display=\'none\'" style="margin-top:1rem;padding:.5rem 1.2rem;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:none;color:rgba(255,255,255,.5);font-size:.8rem;cursor:pointer">Try Again</button>';
+  }
+}
+
+function showStory60Result(obj, text) {
+  document.getElementById('s60-judging').style.display = 'none';
+  document.getElementById('s60-result').style.display = 'block';
+  var score = obj.score || 50;
+  var color = score >= 80 ? '#E6B32A' : score >= 60 ? '#6EE78E' : score >= 40 ? '#64B5E8' : '#C850FF';
+  document.getElementById('s60-result').innerHTML =
+    '<div style="text-align:center;margin-bottom:1.2rem">'
+    + '<div style="font-family:var(--impact);font-size:3.5rem;color:'+color+'">'+score+'</div>'
+    + '<div style="font-family:var(--mono);font-size:.5rem;color:rgba(255,255,255,.3);text-transform:uppercase">out of 100</div>'
+    + '</div>'
+    + (obj.best_line ? '<div style="padding:.8rem 1rem;background:rgba(200,80,255,.06);border:1px solid rgba(200,80,255,.18);border-radius:10px;font-family:var(--body,serif);font-style:italic;font-size:.88rem;color:rgba(255,255,255,.7);margin-bottom:.9rem"><i class="ph ph-quotes" style="color:#C850FF"></i> Best line: "' + obj.best_line + '"</div>' : '')
+    + '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:1rem">'
+    + _s60Badge('Creativity', obj.creativity)
+    + _s60Badge('Cultural Depth', obj.cultural_depth)
+    + _s60Badge('Craft', obj.craft)
+    + '</div>'
+    + (obj.encouragement ? '<div style="font-size:.85rem;color:rgba(255,255,255,.55);line-height:1.6;margin-bottom:1.2rem">'+obj.encouragement+'</div>' : '')
+    + '<button onclick="initStory60World();document.getElementById(\'s60-lobby\').style.display=\'block\';document.getElementById(\'s60-result\').style.display=\'none\'" style="padding:.6rem 1.4rem;border-radius:100px;border:none;background:#C850FF;color:#fff;font-weight:700;font-size:.82rem;cursor:pointer"><i class="ph ph-repeat"></i> Try Again Tomorrow</button>';
+}
+
+function _s60Badge(label, text) {
+  if (!text) return '';
+  return '<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:.6rem .7rem;text-align:center">'
+    + '<div style="font-family:var(--mono);font-size:.42rem;color:rgba(255,255,255,.3);text-transform:uppercase;margin-bottom:.3rem">'+label+'</div>'
+    + '<div style="font-size:.75rem;color:rgba(255,255,255,.65);line-height:1.4">'+text+'</div>'
+    + '</div>';
+}
+
+async function loadStory60Leaderboard() {
+  if (!supa) return;
+  try {
+    var today = new Date().toISOString().split('T')[0];
+    var { data } = await supa.from('story60_entries')
+      .select('user_name, score, story')
+      .gte('played_at', today)
+      .order('score', { ascending: false })
+      .limit(3);
+    var el = document.getElementById('s60-leaderboard');
+    if (!el || !data || !data.length) return;
+    var medals = ['#E6B32A','#aaa','#cd7f32'];
+    el.innerHTML = data.map(function(e,i){
+      return '<div style="padding:.7rem 0;border-bottom:1px solid rgba(255,255,255,.05)">'
+        + '<div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.3rem">'
+        + '<span style="font-family:var(--mono);font-size:.6rem;color:'+(medals[i]||'rgba(255,255,255,.2)')+'">'+('★'.repeat(3-i))+'</span>'
+        + '<span style="flex:1;font-size:.82rem;color:rgba(255,255,255,.7)">'+e.user_name+'</span>'
+        + '<span style="font-family:var(--mono);font-size:.55rem;color:#C850FF">'+e.score+'/100</span>'
+        + '</div>'
+        + '<div style="font-family:var(--body,serif);font-size:.75rem;color:rgba(255,255,255,.3);font-style:italic;line-height:1.5;padding-left:1.5rem">"'+(e.story||'').slice(0,120)+'..."</div>'
+        + '</div>';
+    }).join('');
+  } catch(e) {}
+}
+
+// ════════════════════════════════════════════════════════════════
+// DAILY PERSONALISED NOTIFICATION SYSTEM
+// ════════════════════════════════════════════════════════════════
+var NOTIF_STORE_KEY = 'zintsomi_notifications';
+
+function getNotifications() {
+  try { return JSON.parse(localStorage.getItem(NOTIF_STORE_KEY)) || []; } catch(e) { return []; }
+}
+
+function saveNotifications(notifs) {
+  localStorage.setItem(NOTIF_STORE_KEY, JSON.stringify(notifs.slice(0, 20)));
+}
+
+function addNotification(icon, title, body) {
+  var notifs = getNotifications();
+  notifs.unshift({ icon: icon, title: title, body: body, time: Date.now(), read: false });
+  saveNotifications(notifs);
+  renderNotifPanel();
+  updateNotifBadge();
+}
+
+function renderNotifPanel() {
+  var list = document.getElementById('notif-list');
+  if (!list) return;
+  var notifs = getNotifications();
+  if (!notifs.length) {
+    list.innerHTML = '<div style="padding:1rem;text-align:center;font-size:.78rem;color:rgba(255,255,255,.2)">No notifications yet</div>';
+    return;
+  }
+  list.innerHTML = notifs.map(function(n, i) {
+    var ago = getTimeAgo(n.time);
+    return '<div style="display:flex;gap:.7rem;padding:.75rem .8rem;border-radius:10px;margin-bottom:.2rem;background:'+(n.read?'transparent':'rgba(245,118,26,.04)')+';cursor:pointer" onclick="markNotifRead('+i+')">'
+      + '<div style="flex-shrink:0;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:.9rem">'+n.icon+'</div>'
+      + '<div style="flex:1;min-width:0">'
+      + '<div style="font-size:.8rem;font-weight:600;color:'+(n.read?'rgba(255,255,255,.5)':'#fff')+';margin-bottom:.15rem">'+n.title+'</div>'
+      + (n.body ? '<div style="font-size:.72rem;color:rgba(255,255,255,.3);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+n.body+'</div>' : '')
+      + '<div style="font-family:var(--mono);font-size:.42rem;color:rgba(255,255,255,.18);margin-top:.2rem">'+ago+'</div>'
+      + '</div></div>';
+  }).join('');
+}
+
+function markNotifRead(idx) {
+  var notifs = getNotifications();
+  if (notifs[idx]) { notifs[idx].read = true; saveNotifications(notifs); renderNotifPanel(); updateNotifBadge(); }
+}
+
+function clearAllNotifs() {
+  saveNotifications([]);
+  renderNotifPanel();
+  updateNotifBadge();
+}
+
+function updateNotifBadge() {
+  var badge = document.getElementById('notif-badge');
+  var unread = getNotifications().filter(function(n){ return !n.read; }).length;
+  if (badge) badge.style.display = unread > 0 ? 'block' : 'none';
+}
+
+function toggleNotifPanel() {
+  var panel = document.getElementById('notif-panel');
+  if (!panel) return;
+  var open = panel.style.display === 'block';
+  panel.style.display = open ? 'none' : 'block';
+  if (!open) {
+    renderNotifPanel();
+    setTimeout(function() {
+      document.addEventListener('click', function closeNP(e) {
+        var btn = document.getElementById('pill-notif');
+        if (!panel.contains(e.target) && btn && !btn.contains(e.target)) {
+          panel.style.display = 'none';
+          document.removeEventListener('click', closeNP);
+        }
+      });
+    }, 50);
+  }
+}
+
+function getTimeAgo(ts) {
+  var diff = Date.now() - ts;
+  if (diff < 60000) return 'just now';
+  if (diff < 3600000) return Math.floor(diff/60000) + 'm ago';
+  if (diff < 86400000) return Math.floor(diff/3600000) + 'h ago';
+  return Math.floor(diff/86400000) + 'd ago';
+}
+
+// ── Daily Login Notification ──────────────────────────────────────
+function triggerDailyNotifications(profile) {
+  var h = new Date().getHours();
+  var greeting = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : h < 21 ? 'Good evening' : 'Night owl alert';
+  var firstName = profile && profile.full_name ? profile.full_name.split(' ')[0] : null;
+  var name = firstName ? ', ' + firstName : '';
+
+  // Only show daily notifs once per day
+  var lastNotifDay = localStorage.getItem('zintsomi_last_notif_day');
+  if (lastNotifDay === new Date().toDateString()) return;
+  localStorage.setItem('zintsomi_last_notif_day', new Date().toDateString());
+
+  setTimeout(function() {
+    addNotification('<i class="ph ph-scroll" style="color:#E6B32A"></i>',
+      greeting + name + ' — Ancestor\'s Riddle is waiting',
+      'A new riddle from the elders. Can you solve it today?');
+  }, 1500);
+
+  setTimeout(function() {
+    addNotification('<i class="ph ph-lightning" style="color:#6EE78E"></i>',
+      'Trivia Showdown resets today!',
+      'Climb the leaderboard — 10 questions, 100 XP on the line.');
+  }, 3000);
+
+  setTimeout(function() {
+    addNotification('<i class="ph ph-timer" style="color:#C850FF"></i>',
+      '60-Second Story — new opening today',
+      'Dr Sasa started a story. Finish it in 60 seconds.');
+  }, 4500);
+
+  // Check if they have a riddle streak to protect
+  var streak = parseInt(localStorage.getItem('zintsomi_riddle_streak')||'0');
+  if (streak >= 3) {
+    setTimeout(function() {
+      addNotification('<i class="ph ph-fire" style="color:var(--fire)"></i>',
+        'Protect your ' + streak + '-day riddle streak!',
+        'Solve today\'s riddle before midnight or your streak resets.');
+    }, 6000);
+  }
+}
+
+// ── Hook into auth ────────────────────────────────────────────────
+var _origUpdateNavFinal = window.updateNavForUser;
+window.updateNavForUser = function(profile) {
+  if (_origUpdateNavFinal) _origUpdateNavFinal(profile);
+  if (profile) {
+    updateNotifBadge();
+    setTimeout(function(){ triggerDailyNotifications(profile); }, 1000);
+  }
+};
+
+// ── Hook showWorld for new worlds ────────────────────────────────
+var _origShowWorldEnt = window.showWorld;
+window.showWorld = function(id) {
+  if (_origShowWorldEnt) _origShowWorldEnt(id);
+  if (id === 'riddle')   setTimeout(initRiddleWorld, 100);
+  if (id === 'trivia')   setTimeout(initTriviaWorld, 100);
+  if (id === 'story60')  setTimeout(initStory60World, 100);
+};
+
+// ════════════════════════════════════════════════════════════════
+// GLOBAL HELP SYSTEM
+// ════════════════════════════════════════════════════════════════
+var HELP_CONTENT = {
+  home: {
+    title: "Welcome to Kwa-Sukela",
+    icon: "ph-house",
+    color: "#F5761A",
+    sections: [
+      { heading: "What is this place?", body: "Kwa-Sukela means 'place of sweetness' — it is Zintsomi Storytelling College's digital village. Every button, world, and feature is designed around African storytelling, learning, and community." },
+      { heading: "How do I navigate?", body: "Use the pill buttons at the top to move between worlds. Tap any world card on the home screen to open that experience. Press the back arrow (←) inside any world to return home." },
+      { heading: "What is XP?", body: "XP (Experience Points) measures your journey. Solve riddles, complete trivia, submit stories, answer Ubuntu questions, and complete course modules to earn XP and climb your Griot rank." },
+      { heading: "Do I need to pay?", body: "Most features are completely free. Courses, Lecturer's Notes, and the full VR Village require a Premium subscription. Look for the gold 'Premium' badge." }
+    ]
+  },
+  riddle: {
+    title: "Ancestor's Riddle — How to Play",
+    icon: "ph-scroll",
+    color: "#E6B32A",
+    sections: [
+      { heading: "One riddle every day", body: "A new riddle from African oral tradition appears every morning. The riddle resets at midnight so every day brings fresh wisdom." },
+      { heading: "How to answer", body: "Type your answer in the box and press Submit (or hit Enter). You can try multiple times — the ancestors are patient. Spelling doesn't have to be perfect, but your meaning must be clear." },
+      { heading: "Hints cost XP", body: "Stuck? Click 'Show hint' to get a clue — but it costs you 5 XP. A correct answer without a hint earns 20 XP. With a hint, you earn 10 XP." },
+      { heading: "Build your streak", body: "Solve the riddle every day to build a streak. A streak of 7 days unlocks a special Griot badge. Miss one day and it resets — so come back daily!" },
+      { heading: "First Solvers board", body: "The first 10 people to solve each day's riddle are listed on the board. Be fast — it is a mark of honour." }
+    ]
+  },
+  trivia: {
+    title: "Cultural Trivia Showdown — How to Play",
+    icon: "ph-lightning",
+    color: "#6EE78E",
+    sections: [
+      { heading: "10 questions, 10 seconds each", body: "Every game gives you 10 randomly selected questions about African history, proverbs, geography, languages, and culture. You have exactly 10 seconds per question — the timer bar shows you how much time is left." },
+      { heading: "How to answer", body: "Tap one of the four options before the timer runs out. The correct answer turns green immediately so you learn even when you get it wrong." },
+      { heading: "Scoring", body: "Each correct answer earns 10 points (max 100). Your score is also converted to XP — roughly 1 XP per 2 points. Play multiple times — only your best score of the day counts on the leaderboard." },
+      { heading: "Daily leaderboard", body: "Scores reset every midnight. Compete with the whole Zintsomi community for the top spot. The leaderboard shows today's top 5 scores." },
+      { heading: "Share your score", body: "After finishing, screenshot your result and share it to WhatsApp or Instagram — challenge your friends to beat you!" }
+    ]
+  },
+  story60: {
+    title: "60-Second Story — How to Play",
+    icon: "ph-timer",
+    color: "#C850FF",
+    sections: [
+      { heading: "Dr Sasa starts — you finish", body: "Every day Dr Sasa writes the opening lines of a folktale. Your job is to continue the story in your own words. You have exactly 60 seconds once you press Start." },
+      { heading: "The clock is running", body: "The purple timer counts down from 60. When it hits zero your story is automatically submitted — even mid-sentence. Write fast, write freely, do not overthink." },
+      { heading: "How AI judges your story", body: "Dr Sasa's AI reads your continuation and scores it out of 100 across three areas: Creativity (did you surprise us?), Cultural Depth (did you honour African wisdom?), and Craft (did you use storytelling technique?)." },
+      { heading: "Your best line", body: "The AI picks out your single best sentence and highlights it. This is the line that made the ancestors smile." },
+      { heading: "Daily leaderboard", body: "Top 3 stories of the day are shown with their score and an excerpt. All entries reset at midnight. Come back every day — a new opening awaits." },
+      { heading: "Tips for a high score", body: "Use specific African details (a real place, a real tradition). Give your characters emotion. End with a twist or a proverb. These things push your score above 80." }
+    ]
+  },
+  battle: {
+    title: "Story Battles — How to Play",
+    icon: "ph-swords",
+    color: "#C850FF",
+    sections: [
+      { heading: "One prompt, 24 hours", body: "Every day a new battle prompt is posted. All entries must be submitted within 24 hours. The prompt is the same for everyone — the best storytelling wins." },
+      { heading: "How to enter", body: "Read the prompt, then write your story in the entry box (20–300 words). Click 'Enter Battle'. You can only submit one entry per battle." },
+      { heading: "Voting", body: "Once you have submitted, you can vote for someone else's entry. You cannot vote for your own story. Each user gets one vote per battle. Voting earns you 10 XP." },
+      { heading: "Winning", body: "The entry with the most votes at the end of 24 hours wins. The winner earns 50 XP and a crown on the leaderboard. Past battles are archived so you can read old winning stories." },
+      { heading: "Tips", body: "Short and powerful beats long and wandering. Use African imagery. Give your story an unexpected ending. The community responds to emotion and surprise." }
+    ]
+  },
+  ubuntu: {
+    title: "Ubuntu Mode — How it Works",
+    icon: "ph-hand-heart",
+    color: "#6EE78E",
+    sections: [
+      { heading: "People first, AI second", body: "Ubuntu Mode is the community help desk. When you are stuck, post your question here first. Real people in the Zintsomi community see it and can answer. If nobody answers quickly, Dr Sasa AI steps in." },
+      { heading: "How to ask", body: "Choose your subject tag (Essay, Maths, Science, Story, Career, or Life). Type your question. Click Post. The whole community can see it." },
+      { heading: "How to answer someone", body: "Browse the question feed. If you know the answer, click 'Help Answer' on any question. Type your response and post it. Helping earns you 20 XP — asking earns 5 XP." },
+      { heading: "Ask Dr Sasa directly", body: "Click 'Ask Dr Sasa Instead' to get an immediate AI response grounded in African wisdom. Dr Sasa always includes a relevant proverb and speaks to you like an elder who believes in you." },
+      { heading: "What kinds of questions?", body: "Essay help, exam prep, career questions, life advice, story ideas, language questions — anything a student or storyteller might need. Be specific — the more detail you give, the better the help." }
+    ]
+  },
+  unstuck: {
+    title: "Unstuck AI — How it Works",
+    icon: "ph-lightning",
+    color: "#64B5E8",
+    sections: [
+      { heading: "Never stare at a blank page again", body: "Paste any essay topic, exam question, presentation title, or story idea. Unstuck AI breaks it down into 3 different angles you could explore, a clear structure, and an African proverb that fits." },
+      { heading: "Choose your mode", body: "Essay — for assignments and written tasks. Exam — breaks down what the question is really asking. Present — slide-by-slide structure. Story — creative directions and African narrative structure. Boss Battle — turns your deadline into a quest." },
+      { heading: "Boss Battle Mode", body: "Enter your assignment name and due date. Dr Sasa turns it into an RPG-style quest with daily checkpoints and XP rewards. Each checkpoint is a manageable task. Completing the quest = submitting your assignment." },
+      { heading: "Grade setting", body: "Tell the AI what grade or level you are at. The depth and vocabulary of the response adjusts — a Grade 8 answer is different from a varsity answer." },
+      { heading: "The ancestor proverb", body: "Every Unstuck response ends with an African proverb that connects to your topic. This is not decoration — it is a different way of seeing your subject that often unlocks new ideas." }
+    ]
+  },
+  courses: {
+    title: "Storytelling Courses — How it Works",
+    icon: "ph-books",
+    color: "#B088E8",
+    sections: [
+      { heading: "9 full courses", body: "Zintsomi offers courses from Basics of Storytelling all the way to Mythopreneur Consultancy. Each course has multiple modules with lesson content, a quiz, and downloadable resources." },
+      { heading: "Free preview", body: "The first module of every course is free. You can read it, take the quiz, and get a feel for the course before subscribing." },
+      { heading: "Premium access", body: "Full course access requires a Premium subscription (R299/month or R2,499/year). Premium also unlocks Lecturer's Notes downloads, full VR Village, and all future content." },
+      { heading: "Lecturer's Notes", body: "Premium users see a gold download section inside each module. These are the full educator's notes for that module — detailed, printable, and ideal for classroom use." },
+      { heading: "Progress tracking", body: "Your progress is saved automatically. Pick up where you left off — even on a different device. Complete all modules to earn a Certificate of Attendance." },
+      { heading: "Quizzes", body: "Every module ends with a quiz. Get it right to earn XP. You can retake quizzes as many times as you like — learning is the goal, not the grade." }
+    ]
+  },
+  vr: {
+    title: "VR Story Village — How it Works",
+    icon: "ph-eyeglasses",
+    color: "#C8F04A",
+    sections: [
+      { heading: "8 immersive story pods", body: "The VR Village contains 8 pods: Fireside, Ancestor Theatre, Story Map, Story Library, Community Voices, Izibongo AI, Schools Hub, and World stage. Each is a different storytelling experience." },
+      { heading: "No VR headset needed", body: "The village works in any browser on desktop or mobile. For the full VR experience, use a Google Cardboard headset with your phone — they cost under R100." },
+      { heading: "How to move", body: "On desktop: drag to look around. On mobile: move your phone to look. Tap glowing spots to enter each pod." },
+      { heading: "Izibongo AI", body: "Enter the Izibongo pod, type your name, and Dr Sasa AI generates a personalised African praise poem in your honour. You can copy and share it." },
+      { heading: "Community Voices", body: "Listen to stories submitted by the Zintsomi community from across Africa. This section grows as more people contribute." }
+    ]
+  },
+  notifications: {
+    title: "Notifications — How they Work",
+    icon: "ph-bell",
+    color: "#F5761A",
+    sections: [
+      { heading: "The bell icon in your nav", body: "The orange dot on the bell means you have unread notifications. Tap the bell to open the notification panel." },
+      { heading: "What triggers a notification?", body: "Daily riddle reminders, trivia resets, story battle results, Ubuntu answers from the community, XP milestones, and your riddle streak reminders all send notifications." },
+      { heading: "Daily morning greeting", body: "Every day when you log in, the app sends you a personalised greeting based on your name and time of day, plus a summary of what is fresh today — riddle, trivia, 60s story." },
+      { heading: "Streak alerts", body: "If you have a riddle streak of 3 or more days, you get a daily reminder to protect it before midnight." },
+      { heading: "Clearing notifications", body: "Tap any notification to mark it read. Tap 'Clear all' to remove everything. Notifications are stored on your device — they do not use any server storage." }
+    ]
+  }
+};
+
+function openHelp(worldId) {
+  var help = HELP_CONTENT[worldId] || HELP_CONTENT['home'];
+  var ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto';
+  var sectionsHTML = (help.sections||[]).map(function(s) {
+    return '<div style="margin-bottom:1.1rem">'
+      + '<div style="font-weight:700;color:#fff;font-size:.88rem;margin-bottom:.3rem;display:flex;align-items:center;gap:.4rem">'
+      + '<i class="ph ph-caret-right" style="color:'+help.color+';font-size:.8rem"></i>' + s.heading + '</div>'
+      + '<div style="font-size:.82rem;color:rgba(255,255,255,.55);line-height:1.7;padding-left:1rem">' + s.body + '</div>'
+      + '</div>';
+  }).join('');
+  ov.innerHTML = '<div style="background:#0a0e1a;border:1px solid rgba(255,255,255,.1);border-top:3px solid '+help.color+';border-radius:16px;padding:1.6rem;width:100%;max-width:460px;max-height:88vh;overflow-y:auto">'
+    + '<div style="display:flex;align-items:center;gap:.7rem;margin-bottom:1.3rem">'
+    + '<div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">'
+    + '<i class="ph '+help.icon+'" style="font-size:1.1rem;color:'+help.color+'"></i></div>'
+    + '<div><div style="font-family:var(--impact);font-size:1.05rem;letter-spacing:.04em;color:#fff">' + help.title + '</div>'
+    + '<div style="font-family:var(--mono);font-size:.44rem;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.1em;margin-top:.1rem">How it works</div></div>'
+    + '<button onclick="this.closest('[style*=inset]').remove()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:1.1rem;flex-shrink:0"><i class="ph ph-x"></i></button>'
+    + '</div>'
+    + sectionsHTML
+    + '<div style="margin-top:1.2rem;padding:.8rem;background:rgba(255,255,255,.03);border-radius:10px;font-size:.75rem;color:rgba(255,255,255,.25);text-align:center">'
+    + 'Still stuck? Ask the community in <button onclick="this.closest('[style*=inset]').remove();showWorld('ubuntu')" style="background:none;border:none;color:rgba(110,231,142,.6);cursor:pointer;font-size:.75rem;text-decoration:underline;padding:0">Ubuntu Mode</button>'
+    + ' or message us at <span style="color:rgba(255,255,255,.35)">support@zintsomistorytellingcollege.co.za</span></div>'
+    + '</div>';
+  document.body.appendChild(ov);
+  ov.addEventListener('click', function(e){ if(e.target===ov) ov.remove(); });
+}
+
+// Add CSS for help button
+(function(){
+  var s = document.createElement('style');
+  s.textContent = '.help-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.28rem .65rem;border-radius:100px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:rgba(255,255,255,.35);font-size:.65rem;cursor:pointer;font-family:var(--mono,monospace);letter-spacing:.04em;transition:all .15s;flex-shrink:0}.help-btn:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.7)}';
+  document.head.appendChild(s);
+})();
+
 
 // Boot presence when user logs in
 (function() {
