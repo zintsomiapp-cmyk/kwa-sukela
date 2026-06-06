@@ -4789,7 +4789,7 @@ body::after{
             Every Human Being.
           </p>
           <div class="home-hero-btns"><button id="home-replay-btn" onclick="replayIntro()" style="display:none;align-items:center;gap:.5rem;background:rgba(14,16,22,.8);backdrop-filter:blur(12px);border:1.5px solid rgba(245,118,26,.4);border-radius:100px;color:var(--fire);font-family:var(--mono);font-size:.48rem;letter-spacing:.14em;text-transform:uppercase;padding:.55rem 1.2rem;cursor:pointer;transition:all .2s;margin-bottom:.5rem" onmouseover="this.style.background='rgba(245,118,26,.15)'" onmouseout="this.style.background='rgba(14,16,22,.8)'">
-          <button onclick="openHelp('home')" class="help-btn" style="margin-top:.8rem;display:inline-flex"><i class="ph ph-question"></i> How the app works</button><i class="ph ph-arrow-counter-clockwise"></i>&nbsp; Replay Intro</button>
+          <i class="ph ph-arrow-counter-clockwise"></i>&nbsp; Replay Intro</button>
             <button class="btn" style="font-size:.95rem;padding:.9rem 2.2rem;letter-spacing:.06em" onclick="showWorld('courses')"><i class="ph ph-books"></i> Start Learning</button>
           </div>
         </div>
@@ -4844,6 +4844,118 @@ body::after{
       <span style="font-family:var(--impact);font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;color:#fff">Learning & Culture</span>
     </div>
     <div class="ndebele"></div>
+
+    <!-- ══ HOW THE APP WORKS — DASHBOARD SECTION ══════════════ -->
+    <div id="how-it-works-section" style="padding:2rem 1.5rem 0;max-width:1400px;margin:0 auto">
+      <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:1.4rem">
+        <i class="ph ph-compass" style="font-size:1.4rem;color:var(--fire)"></i>
+        <div>
+          <div style="font-family:var(--impact);font-size:1.1rem;letter-spacing:.06em;color:#fff">How the App Works</div>
+          <div style="font-family:var(--mono);font-size:.48rem;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-top:.1rem">Your guide to Kwa-Sukela</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.8rem;margin-bottom:2rem">
+
+        <!-- Card 1 — Getting Started -->
+        <div onclick="openHelp('home')" style="background:rgba(245,118,26,.06);border:1px solid rgba(245,118,26,.18);border-top:3px solid var(--fire);border-radius:14px;padding:1.1rem 1.2rem;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(245,118,26,.12)'" onmouseout="this.style.background='rgba(245,118,26,.06)'">
+          <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(245,118,26,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="ph ph-house" style="color:var(--fire);font-size:1rem"></i>
+            </div>
+            <span style="font-weight:700;color:#fff;font-size:.88rem">Getting Started</span>
+          </div>
+          <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.6">Navigate worlds, earn XP, build your Griot rank. Everything you need to know.</div>
+          <div style="margin-top:.8rem;font-family:var(--mono);font-size:.46rem;color:rgba(245,118,26,.6);text-transform:uppercase;letter-spacing:.1em">Tap to read <i class="ph ph-arrow-right"></i></div>
+        </div>
+
+        <!-- Card 2 — Courses -->
+        <div onclick="openHelp('courses')" style="background:rgba(123,79,208,.06);border:1px solid rgba(123,79,208,.18);border-top:3px solid #7B4FD0;border-radius:14px;padding:1.1rem 1.2rem;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(123,79,208,.12)'" onmouseout="this.style.background='rgba(123,79,208,.06)'">
+          <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(123,79,208,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="ph ph-books" style="color:#B088E8;font-size:1rem"></i>
+            </div>
+            <span style="font-weight:700;color:#fff;font-size:.88rem">Storytelling Courses</span>
+          </div>
+          <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.6">9 full courses. Free previews. Premium unlocks Lecturer's Notes and certificates.</div>
+          <div style="margin-top:.8rem;font-family:var(--mono);font-size:.46rem;color:rgba(123,79,208,.6);text-transform:uppercase;letter-spacing:.1em">Tap to read <i class="ph ph-arrow-right"></i></div>
+        </div>
+
+        <!-- Card 3 — Story Battles -->
+        <div onclick="openHelp('battle')" style="background:rgba(200,80,255,.06);border:1px solid rgba(200,80,255,.18);border-top:3px solid #C850FF;border-radius:14px;padding:1.1rem 1.2rem;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(200,80,255,.12)'" onmouseout="this.style.background='rgba(200,80,255,.06)'">
+          <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(200,80,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="ph ph-swords" style="color:#C850FF;font-size:1rem"></i>
+            </div>
+            <span style="font-weight:700;color:#fff;font-size:.88rem">Story Battles</span>
+          </div>
+          <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.6">Daily writing competition. One prompt, 24 hours, community votes the winner.</div>
+          <div style="margin-top:.8rem;font-family:var(--mono);font-size:.46rem;color:rgba(200,80,255,.6);text-transform:uppercase;letter-spacing:.1em">Tap to read <i class="ph ph-arrow-right"></i></div>
+        </div>
+
+        <!-- Card 4 — Ubuntu Mode -->
+        <div onclick="openHelp('ubuntu')" style="background:rgba(110,231,142,.06);border:1px solid rgba(110,231,142,.18);border-top:3px solid #6EE78E;border-radius:14px;padding:1.1rem 1.2rem;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(110,231,142,.12)'" onmouseout="this.style.background='rgba(110,231,142,.06)'">
+          <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(110,231,142,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="ph ph-hand-heart" style="color:#6EE78E;font-size:1rem"></i>
+            </div>
+            <span style="font-weight:700;color:#fff;font-size:.88rem">Ubuntu Mode</span>
+          </div>
+          <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.6">Stuck on homework? Ask the community first. Dr Sasa AI steps in if no one answers.</div>
+          <div style="margin-top:.8rem;font-family:var(--mono);font-size:.46rem;color:rgba(110,231,142,.6);text-transform:uppercase;letter-spacing:.1em">Tap to read <i class="ph ph-arrow-right"></i></div>
+        </div>
+
+        <!-- Card 5 — Unstuck AI -->
+        <div onclick="openHelp('unstuck')" style="background:rgba(100,181,232,.06);border:1px solid rgba(100,181,232,.18);border-top:3px solid #64B5E8;border-radius:14px;padding:1.1rem 1.2rem;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(100,181,232,.12)'" onmouseout="this.style.background='rgba(100,181,232,.06)'">
+          <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(100,181,232,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="ph ph-lightning" style="color:#64B5E8;font-size:1rem"></i>
+            </div>
+            <span style="font-weight:700;color:#fff;font-size:.88rem">Unstuck AI</span>
+          </div>
+          <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.6">Paste any essay topic. Get 3 angles, a structure, and an ancestor proverb. Never blank again.</div>
+          <div style="margin-top:.8rem;font-family:var(--mono);font-size:.46rem;color:rgba(100,181,232,.6);text-transform:uppercase;letter-spacing:.1em">Tap to read <i class="ph ph-arrow-right"></i></div>
+        </div>
+
+        <!-- Card 6 — Daily Features -->
+        <div onclick="openHelp('riddle')" style="background:rgba(230,179,42,.06);border:1px solid rgba(230,179,42,.18);border-top:3px solid #E6B32A;border-radius:14px;padding:1.1rem 1.2rem;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(230,179,42,.12)'" onmouseout="this.style.background='rgba(230,179,42,.06)'">
+          <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(230,179,42,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="ph ph-scroll" style="color:#E6B32A;font-size:1rem"></i>
+            </div>
+            <span style="font-weight:700;color:#fff;font-size:.88rem">Daily Challenges</span>
+          </div>
+          <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.6">Ancestor's Riddle, Trivia Showdown, 60s Story. Build streaks. Earn XP. Come back every day.</div>
+          <div style="margin-top:.8rem;font-family:var(--mono);font-size:.46rem;color:rgba(230,179,42,.6);text-transform:uppercase;letter-spacing:.1em">Tap to read <i class="ph ph-arrow-right"></i></div>
+        </div>
+
+        <!-- Card 7 — VR Village -->
+        <div onclick="openHelp('vr')" style="background:rgba(200,240,74,.06);border:1px solid rgba(200,240,74,.15);border-top:3px solid #C8F04A;border-radius:14px;padding:1.1rem 1.2rem;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(200,240,74,.1)'" onmouseout="this.style.background='rgba(200,240,74,.06)'">
+          <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(200,240,74,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="ph ph-eyeglasses" style="color:#C8F04A;font-size:1rem"></i>
+            </div>
+            <span style="font-weight:700;color:#fff;font-size:.88rem">VR Story Village</span>
+          </div>
+          <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.6">8 immersive story pods. No headset needed. Works in any browser on any device.</div>
+          <div style="margin-top:.8rem;font-family:var(--mono);font-size:.46rem;color:rgba(200,240,74,.5);text-transform:uppercase;letter-spacing:.1em">Tap to read <i class="ph ph-arrow-right"></i></div>
+        </div>
+
+        <!-- Card 8 — Notifications -->
+        <div onclick="openHelp('notifications')" style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-top:3px solid rgba(255,255,255,.2);border-radius:14px;padding:1.1rem 1.2rem;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.06)'" onmouseout="this.style.background='rgba(255,255,255,.03)'">
+          <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem">
+            <div style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <i class="ph ph-bell" style="color:rgba(255,255,255,.6);font-size:1rem"></i>
+            </div>
+            <span style="font-weight:700;color:#fff;font-size:.88rem">Notifications</span>
+          </div>
+          <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.6">Daily reminders, streak alerts, battle results and community answers — all in the bell icon.</div>
+          <div style="margin-top:.8rem;font-family:var(--mono);font-size:.46rem;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.1em">Tap to read <i class="ph ph-arrow-right"></i></div>
+        </div>
+
+      </div>
+    </div>
+    <!-- ══ END HOW THE APP WORKS ══════════════════════════════ -->
+
     <div class="worlds-grid" id="worlds-bento">
       <div class="world-card reveal stagger-1" onclick="showWorld('games')"><div class="wc-bg-glyph"><i class="ph ph-game-controller"></i></div><div class="wc-icon"><i class="ph ph-game-controller"></i></div><div class="wc-name">African Traditional Games</div><div class="wc-sub">Diketo, Kgati, Ncuva and more. Traditional African games meet digital play.</div><div class="wc-tag">African Traditional Games · Savannah World</div></div>
       <div class="world-card reveal stagger-2" onclick="showWorld('instruments')"><div class="wc-bg-glyph"><i class="ph ph-music-notes"></i></div><div class="wc-icon"><i class="ph ph-music-notes"></i></div><div class="wc-name">Music Studio</div><div class="wc-sub">Play Djembe, Marimba, Hosho & Uhadi. This is both a music studio and a recording space — record your session and share it with the community.</div><div class="wc-tag">African Instruments · Record & Share</div></div>
