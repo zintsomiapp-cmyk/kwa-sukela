@@ -525,14 +525,16 @@ nav{
 .home-hero-bg-word{
   position:absolute;
   font-family:var(--impact);
-  font-size:clamp(28vw,38vw,52vw);
+  font-size:clamp(14vw,20vw,28vw);
+  font-weight:900;
+  font-variation-settings:'wdth' 75;
   line-height:.85;
-  color:rgba(255,90,20,.14);
-  text-shadow:0 0 32px rgba(255,80,20,.2);
-  letter-spacing:-.02em;
+  color:rgba(255,90,20,.10);
+  text-shadow:0 0 32px rgba(255,80,20,.15);
+  letter-spacing:-.03em;
   pointer-events:none;
   user-select:none;
-  top:50%;left:-4vw;
+  top:50%;left:-2vw;
   transform:translateY(-50%);
   z-index:0;
   white-space:nowrap;
@@ -559,7 +561,7 @@ nav{
 /* Main content layer */
 .home-hero-content{
   position:relative;z-index:3;
-  padding:7rem 3rem 4rem;
+  padding:4rem 3rem 3rem;
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:0;
@@ -577,10 +579,10 @@ nav{
 .home-hero-headline .line3{
   display:block;
   font-family:var(--impact);
-  font-weight:900;
-  font-variation-settings:'wdth' 125;
-  font-size:clamp(4.5rem,18vw,19rem);
-  line-height:.85;
+  font-weight:800;
+  font-variation-settings:'wdth' 100;
+  font-size:clamp(2.8rem,7vw,8rem);
+  line-height:.9;
   letter-spacing:-.01em;
   color:#FFFFFF;
   text-transform:uppercase;
@@ -594,10 +596,10 @@ nav{
   color:#F5C060;
   padding-left:0;
   font-family:var(--serif);
-  font-size:clamp(4rem,9vw,10rem);
+  font-size:clamp(2.4rem,5.5vw,6.5rem);
   font-style:italic;
   font-weight:400;
-  letter-spacing:.03em;
+  letter-spacing:.02em;
   line-height:1.05;
   margin-top:.4rem;
   text-shadow:0 0 60px rgba(245,160,48,.5);
@@ -1281,7 +1283,7 @@ nav{
   .home-hero-content{padding:5rem 1.5rem 2.5rem}
   
   
-  .home-hero-bg-word{font-size:55vw}
+  .home-hero-bg-word{font-size:28vw}
   .worlds-grid{grid-template-columns:1fr;padding:1rem}
   .ctr{padding:0 1.2rem}
   .games-grid{grid-template-columns:1fr}
@@ -3149,8 +3151,8 @@ body::after{
 .home-hero-headline .line1,.home-hero-headline .line2,
 .home-hero-headline .line3,.sudoku-complete-title,
 .logo,.nav-logo-text {
-  font-weight:900;
-  font-variation-settings:'wdth' 125;
+  font-weight:800;
+  font-variation-settings:'wdth' 100;
   letter-spacing:-.01em;
 }
 /* DM Sans — body text optical sizing */
