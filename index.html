@@ -6,7 +6,17 @@
 <title>Zintsomi Storytelling College</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wdth,wght@0,75..125,200..900;1,75..125,200..900&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+/* Mona Sans variable font fallback — loads from GitHub CDN */
+@font-face {
+  font-family: 'Mona Sans';
+  src: url('https://github.com/mona-sans/mona-sans/raw/main/fonts/variable/MonaSans%5BwdthwghtItal%5D.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-style: normal oblique;
+  font-display: swap;
+}
+</style>
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -118,11 +128,11 @@ document.addEventListener('DOMContentLoaded', function(){
   --glass-strong:rgba(255,255,255,.1);
 
   /* ── Type System ── */
-  --impact:'Bebas Neue',sans-serif;
-  --serif:'Playfair Display',serif;
-  --display:'Plus Jakarta Sans',sans-serif;
-  --body:'Plus Jakarta Sans',sans-serif;
-  --mono:'Plus Jakarta Sans',sans-serif;
+  --impact:'Mona Sans','DM Sans',sans-serif;
+  --serif:'DM Sans',sans-serif;
+  --display:'Mona Sans','DM Sans',sans-serif;
+  --body:'DM Sans','Mona Sans',sans-serif;
+  --mono:'Mona Sans','DM Sans',monospace;
 
   /* ── Spacing ── */
   --r:10px;--r-lg:18px;--r-xl:28px;
@@ -250,10 +260,12 @@ body::after{
 #intro-logo.show{opacity:1;transform:none}
 #intro-logo h1{
   font-family:var(--impact);
-  font-size:clamp(3.8rem,10vw,9rem);
-  letter-spacing:.14em;
+  font-size:clamp(2.8rem,10vw,8rem);
+  letter-spacing:.03em;
   color:#FFFFFF;
   line-height:.88;
+  overflow:hidden;
+  width:100%;
   /* Hard shadow so letters pop on any background */
   text-shadow:
     0 0 0 2px rgba(0,0,0,.9),
@@ -313,7 +325,7 @@ nav{
 .nav-logo-wrap{flex-shrink:0}
 .nav-auth-wrap{flex-shrink:0;display:flex;align-items:center;gap:.5rem;margin-left:auto}
 .logo{
-  font-family:var(--impact);font-weight:400;font-size:.95rem;
+  font-family:var(--impact);font-weight:800;font-stretch:condensed;font-size:.95rem;
   color:#fff;text-decoration:none;cursor:pointer;
   letter-spacing:.1em;text-transform:uppercase;
   white-space:nowrap;flex-shrink:0;
@@ -565,9 +577,11 @@ nav{
 .home-hero-headline .line3{
   display:block;
   font-family:var(--impact);
+  font-weight:900;
+  font-variation-settings:'wdth' 125;
   font-size:clamp(4.5rem,18vw,19rem);
   line-height:.85;
-  letter-spacing:.02em;
+  letter-spacing:-.01em;
   color:#FFFFFF;
   text-transform:uppercase;
 }
@@ -1942,11 +1956,11 @@ nav{
    Raw hex colors consolidated into vars
    
    ── Font hierarchy (consistent) ──
-   --impact : Bebas Neue           → hero titles, world names, stats
-   --serif  : Playfair Display     → quotes, Dr Sasa, editorial
+   --impact : Mona Sans (900/125%) → hero titles, world names, stats
+   --serif  : DM Sans               → quotes, Dr Sasa, editorial
    --display: Syne                 → section titles, card names, UI labels
-   --body   : Plus Jakarta Sans    → paragraphs, descriptions, UI text
-   --mono   : Space Mono           → tags, metadata, badges, small caps
+   --body   : DM Sans              → paragraphs, descriptions, UI text
+   --mono   : Mona Sans            → tags, metadata, badges, small caps
    ═══════════════════════════════════════════════════════════ */
 
 /* ── CONSOLIDATED COLOR TOKENS ── */
@@ -3104,7 +3118,7 @@ body::after{
 #onboarding-overlay{position:fixed;inset:0;z-index:99999;background:rgba(4,8,18,.92);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;padding:1.5rem}
 #onboarding-overlay.hidden{display:none}
 .ob-card{background:rgba(20,23,30,1);border:1px solid rgba(245,118,26,.3);border-radius:1.2rem;max-width:420px;width:100%;padding:2rem 1.8rem;position:relative}
-.ob-logo{font-family:var(--display,'Bebas Neue'),sans-serif;font-size:2rem;color:var(--fire,#F5761A);letter-spacing:.1em;margin-bottom:.2rem}
+.ob-logo{font-family:var(--display,'Mona Sans'),sans-serif;font-size:2rem;color:var(--fire,#F5761A);letter-spacing:.1em;margin-bottom:.2rem}
 .ob-title{font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:.25rem}
 .ob-sub{font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:1.5rem;line-height:1.6}
 .ob-steps{display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.5rem}
@@ -3116,7 +3130,7 @@ body::after{
 .ob-step-desc{font-size:.65rem;color:rgba(255,255,255,.38);margin-top:.1rem}
 .ob-step-check{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.65rem;transition:all .2s}
 .ob-step.done .ob-step-check{background:rgba(110,231,142,.8);border-color:rgba(110,231,142,.8);color:#000}
-.ob-cta{width:100%;padding:.75rem;background:var(--fire,#F5761A);border:none;border-radius:.6rem;font-family:var(--display,'Bebas Neue'),sans-serif;font-size:.9rem;letter-spacing:.1em;color:#fff;cursor:pointer;transition:all .2s}
+.ob-cta{width:100%;padding:.75rem;background:var(--fire,#F5761A);border:none;border-radius:.6rem;font-family:var(--display,'Mona Sans'),sans-serif;font-size:.9rem;letter-spacing:.1em;color:#fff;cursor:pointer;transition:all .2s}
 .ob-cta:hover{background:#c4520e}
 .ob-skip{display:block;text-align:center;margin-top:.75rem;font-size:.6rem;color:rgba(255,255,255,.25);cursor:pointer;background:none;border:none;width:100%}
 .ob-skip:hover{color:rgba(255,255,255,.5)}
@@ -3125,8 +3139,31 @@ body::after{
 #live-streak-badge{position:fixed;bottom:1.2rem;left:1rem;z-index:500;background:rgba(14,16,22,.88);border:1px solid rgba(245,118,26,.3);border-radius:.8rem;padding:.5rem .85rem;display:flex;align-items:center;gap:.5rem;backdrop-filter:blur(10px);cursor:pointer;transition:all .2s}
 #live-streak-badge:hover{border-color:var(--fire,#F5761A);transform:translateY(-2px)}
 .lsb-fire{font-size:1.2rem}
-.lsb-count{font-family:var(--display,'Bebas Neue'),sans-serif;font-size:1.1rem;color:var(--fire,#F5761A);line-height:1}
+.lsb-count{font-family:var(--display,'Mona Sans'),sans-serif;font-size:1.1rem;color:var(--fire,#F5761A);line-height:1}
 .lsb-label{font-size:.52rem;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;font-family:var(--mono,monospace)}
+/* ── Mona Sans — Impact heading tuning ─────────────────────── */
+/* Any element using --impact gets bold condensed Mona Sans */
+.world-title,.wc-name,.wh-title,.plans-name,
+.stat-num,.score-val,.gt-name,.gm-title,.gm-score-item strong,
+.sv-title h2,.inst-hero h2,.inst-play-title,.rec-title,
+.home-hero-headline .line1,.home-hero-headline .line2,
+.home-hero-headline .line3,.sudoku-complete-title,
+.logo,.nav-logo-text {
+  font-weight:900;
+  font-variation-settings:'wdth' 125;
+  letter-spacing:-.01em;
+}
+/* DM Sans — body text optical sizing */
+[style*="var(--body)"],
+[style*="var(--sans)"],
+.lesson-body p,
+.world-body p,
+.bc-text,.bp-body,.wall-content {
+  font-optical-sizing: auto;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
 /* ── Mobile touch targets & accessibility ─────────────────── */
 button,.btn,.npill,.world-card,.game-tile,.help-btn{-webkit-tap-highlight-color:transparent}
 .npill{min-height:2rem}
@@ -3207,7 +3244,11 @@ canvas{touch-action:none}
 <div id="intro">
   <canvas id="intro-canvas"></canvas>
   <div id="intro-logo">
-    <h1 style="font-weight:900;line-height:.88;letter-spacing:.03em;width:100%"><span style="display:block;color:var(--fire);font-weight:900;font-size:clamp(3.5rem,18vw,18rem);letter-spacing:.08em;line-height:.9;white-space:nowrap">ZINTSOMI</span><span style="display:block;font-size:clamp(1.5rem,10.5vw,11rem);letter-spacing:.08em;color:#fff;line-height:.9;white-space:nowrap">STORYTELLING</span><span style="display:block;color:var(--fire);font-weight:900;font-size:clamp(1.2rem,5vw,5.5rem);letter-spacing:.28em;margin-top:.3em;white-space:nowrap">COLLEGE</span></h1>
+    <h1 style="font-weight:900;line-height:.88;letter-spacing:.03em;width:100%;overflow:hidden">
+      <span style="display:block;color:var(--fire);font-weight:900;font-size:clamp(2.8rem,11vw,10rem);font-variation-settings:'wdth' 110;letter-spacing:.04em;line-height:.9;white-space:nowrap;width:100%;text-align:center">ZINTSOMI</span>
+      <span style="display:block;font-size:clamp(1.2rem,6.5vw,6rem);font-variation-settings:'wdth' 110;letter-spacing:.06em;color:#fff;line-height:.9;white-space:nowrap;width:100%;text-align:center">STORYTELLING</span>
+      <span style="display:block;color:var(--fire);font-weight:900;font-size:clamp(1rem,4vw,3.8rem);font-variation-settings:'wdth' 110;letter-spacing:.2em;margin-top:.3em;white-space:nowrap;width:100%;text-align:center">COLLEGE</span>
+    </h1>
     <p>Africa's Storytelling World · 2026</p>
   </div>
   <button id="skip-btn">Skip Intro</button>
