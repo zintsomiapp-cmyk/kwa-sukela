@@ -1206,7 +1206,7 @@ nav{
 @keyframes spin{100%{transform:rotate(360deg)}}
 
 /* ═══ AUTH ═══ */
-#auth-overlay{display:none;position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);align-items:center;justify-content:center}
+#auth-overlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);align-items:center;justify-content:center}
 #auth-overlay.open{display:flex}
 .auth-box{background:var(--ink);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-xl);padding:2.2rem;max-width:400px;width:90%;box-shadow:0 30px 80px rgba(0,0,0,.5)}
 .auth-title{font-family:var(--impact);font-size:1.8rem;letter-spacing:.1em;color:#fff;margin-bottom:.3rem}
@@ -3308,12 +3308,41 @@ canvas{touch-action:none}
           </button>
         </div>
         <!-- Profile dropdown menu -->
-        <div id="profile-dropdown" style="display:none;position:fixed;top:3.8rem;right:.5rem;min-width:200px;width:min(220px,calc(100vw - 1rem));background:rgba(10,14,26,.97);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:.4rem;box-shadow:0 12px 40px rgba(0,0,0,.6);z-index:9999;backdrop-filter:blur(16px)">
-          <div id="pd-user-name" style="padding:.55rem .75rem .3rem;font-family:var(--mono);font-size:.52rem;letter-spacing:.06em;color:rgba(255,255,255,.35);text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:.3rem"></div>
-          <button class="pd-item" onclick="openEditProfile()"><i class="ph ph-pencil-simple"></i> Edit Profile</button>
-          <button class="pd-item" onclick="openProfileSettings()"><i class="ph ph-gear"></i> Settings</button>
-          <button class="pd-item" id="pd-premium-btn"><i class="ph ph-star"></i> Upgrade to Premium</button>
+        <div id="profile-dropdown" style="display:none;position:fixed;top:3.8rem;right:.5rem;min-width:240px;width:min(260px,calc(100vw - 1rem));background:rgba(10,14,26,.97);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:.5rem;box-shadow:0 12px 40px rgba(0,0,0,.6);z-index:9999;backdrop-filter:blur(16px)">
+
+          <!-- Profile header — avatar + name + XP -->
+          <div style="display:flex;align-items:center;gap:.8rem;padding:.7rem .85rem .6rem;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:.3rem">
+            <div id="pd-avatar-large" onclick="openEditProfile()" title="Change photo"
+              style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#a84200,#F5761A);border:2px solid rgba(245,118,26,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-family:var(--mono);font-size:.8rem;font-weight:700;color:#fff;overflow:hidden;position:relative">
+              <span id="pd-initials-large">?</span>
+              <img id="pd-avatar-img" src="" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%">
+              <div style="position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;border-radius:50%" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0">
+                <i class="ph ph-camera" style="color:#fff;font-size:.8rem"></i>
+              </div>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div id="pd-user-name" style="font-weight:600;color:#fff;font-size:.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+              <div id="pd-user-rank" style="font-family:var(--mono);font-size:.46rem;color:rgba(245,118,26,.7);text-transform:uppercase;letter-spacing:.08em;margin-top:.1rem">Apprentice Griot</div>
+            </div>
+            <div id="pd-xp-badge" style="text-align:center;flex-shrink:0">
+              <div style="font-family:var(--impact);font-size:1rem;color:#E6B32A;line-height:1" id="pd-xp-num">0</div>
+              <div style="font-family:var(--mono);font-size:.4rem;color:rgba(255,255,255,.25);text-transform:uppercase">XP</div>
+            </div>
+          </div>
+
+          <!-- Quick actions -->
+          <button class="pd-item" onclick="openEditProfile();closeProfileMenu()"><i class="ph ph-pencil-simple"></i> Edit Profile & Photo</button>
+          <button class="pd-item" onclick="openWhoIsOnline();closeProfileMenu()"><i class="ph ph-users-three"></i> Who's Online</button>
+          <button class="pd-item" onclick="showWorld('schools');closeProfileMenu()"><i class="ph ph-chalkboard-teacher"></i> Schools Hub</button>
+          <button class="pd-item" onclick="openHelp('home');closeProfileMenu()"><i class="ph ph-question"></i> Help & Guide</button>
+
           <div style="height:1px;background:rgba(255,255,255,.06);margin:.3rem 0"></div>
+
+          <button class="pd-item" onclick="openProfileSettings()"><i class="ph ph-gear"></i> Settings</button>
+          <button class="pd-item" id="pd-premium-btn" onclick="showWorld('subscribe');closeProfileMenu()"><i class="ph ph-star"></i> Upgrade to Premium</button>
+
+          <div style="height:1px;background:rgba(255,255,255,.06);margin:.3rem 0"></div>
+
           <button class="pd-item pd-danger" onclick="confirmDeleteProfile()"><i class="ph ph-trash"></i> Delete Account</button>
           <button class="pd-item pd-logout" onclick="logOut();closeProfileMenu()"><i class="ph ph-sign-out"></i> Log Out</button>
         </div>
@@ -4535,7 +4564,7 @@ canvas{touch-action:none}
         <!-- AUDIO TAB -->
         <div class="vr-tab-pane" id="vr-tab-audio">
           <div class="vr-audio-bar-wrap">
-            <button class="vr-play-btn-big" id="vr-audio-play-btn" onclick="toggleVRAudio()">▶</button>
+            <button class="vr-play-btn-big" id="vr-audio-play-btn" onclick="toggleVRAudio()" style="display:flex;align-items:center;justify-content:center"><i class="ph ph-play" style="font-size:1.4rem"></i></button>
             <div class="vr-audio-track">
               <div class="vr-audio-track-bar">
                 <div class="vr-audio-track-fill" id="vr-audio-fill"></div>
@@ -5736,27 +5765,74 @@ function checkProfileComplete(profile) {
 
 function openEditProfile() {
   closeProfileMenu();
+  window._epAvatarDataUrl = null;
   var profile = (currentUser && currentUser.profile) ? currentUser.profile : {};
   var safeVal = function(v){ return (v||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); };
+  var avatarUrl = profile.avatar_url || '';
+  var initials = profile.full_name ? profile.full_name.split(' ').map(function(p){return p[0];}).join('').slice(0,2).toUpperCase() : '?';
   var ov = document.createElement('div');
-  ov.style.cssText='position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,.78);display:flex;align-items:center;justify-content:center;padding:1rem';
-  ov.innerHTML='<div style="background:#0e1016;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:1.6rem;width:100%;max-width:380px">'
-    +'<div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1.2rem">'
+  ov.id = 'edit-profile-overlay';
+  ov.style.cssText='position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto';
+  ov.innerHTML=
+    '<div style="background:#0e1016;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:1.6rem;width:100%;max-width:400px;position:relative">'
+    // Header
+    +'<div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1.4rem">'
     +'<i class="ph ph-user-circle" style="font-size:1.4rem;color:var(--fire,#F5761A)"></i>'
-    +'<span style="font-family:var(--mono);font-size:.54rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5)">Edit Profile</span>'
-    +'<button onclick="this.parentNode.parentNode.remove()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:1.1rem"><i class="ph ph-x"></i></button>'
+    +'<span style="font-family:var(--mono);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45)">Edit Profile</span>'
+    +'<button onclick="document.getElementById(&quot;edit-profile-overlay&quot;).remove()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:1.2rem;line-height:1"><i class="ph ph-x"></i></button>'
     +'</div>'
+    // Avatar section
+    +'<div style="text-align:center;margin-bottom:1.4rem">'
+    +'<div style="position:relative;display:inline-block">'
+    +'<div id="ep-avatar-preview" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#a84200,#F5761A);border:3px solid rgba(245,118,26,.4);display:flex;align-items:center;justify-content:center;margin:0 auto .6rem;overflow:hidden;cursor:pointer;position:relative" onclick="document.getElementById(&quot;ep-file-input&quot;).click()">'
+    +(avatarUrl
+      ? '<img src="'+avatarUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'
+      : '<span style="font-family:var(--mono);font-size:1.2rem;font-weight:700;color:#fff">'+initials+'</span>')
+    +'<div style="position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:.2s;border-radius:50%" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0"><i class="ph ph-camera" style="color:#fff;font-size:1.2rem"></i></div>'
+    +'</div>'
+    +'<input type="file" id="ep-file-input" accept="image/*" style="display:none" onchange="previewEpAvatar(this)">'
+    +'<div style="display:flex;gap:.5rem;justify-content:center">'
+    +'<button onclick="document.getElementById(&quot;ep-file-input&quot;).click()" style="padding:.3rem .8rem;border-radius:100px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:rgba(255,255,255,.6);font-size:.72rem;cursor:pointer"><i class="ph ph-upload-simple"></i> Change Photo</button>'
+    +(avatarUrl ? '<button onclick="removeEpAvatar()" style="padding:.3rem .8rem;border-radius:100px;border:1px solid rgba(255,80,80,.2);background:rgba(255,80,80,.05);color:rgba(255,120,120,.7);font-size:.72rem;cursor:pointer"><i class="ph ph-trash"></i> Remove</button>' : '')
+    +'</div>'
+    +'</div>'
+    // Name
     +'<label style="display:block;margin-bottom:.9rem"><span style="font-size:.72rem;color:rgba(255,255,255,.4);display:block;margin-bottom:.3rem">Display Name</span>'
     +'<input id="ep-name" type="text" value="'+safeVal(profile.full_name)+'" placeholder="Your full name" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:.55rem .75rem;color:#fff;font-size:.88rem;outline:none"></label>'
+    // Bio
     +'<label style="display:block;margin-bottom:.9rem"><span style="font-size:.72rem;color:rgba(255,255,255,.4);display:block;margin-bottom:.3rem">Short Bio</span>'
     +'<textarea id="ep-bio" rows="2" placeholder="A sentence about yourself..." style="width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:.55rem .75rem;color:#fff;font-size:.88rem;outline:none;resize:vertical">'+safeVal(profile.bio)+'</textarea></label>'
+    // Message
     +'<div id="ep-msg" style="font-size:.75rem;color:#6EE78E;display:none;margin-bottom:.6rem"></div>'
+    // Buttons
     +'<div style="display:flex;gap:.5rem;justify-content:flex-end">'
-    +'<button onclick="this.parentNode.parentNode.remove()" style="padding:.5rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:none;color:rgba(255,255,255,.45);font-size:.8rem;cursor:pointer">Cancel</button>'
-    +'<button onclick="saveEditProfile(this)" style="padding:.5rem 1.2rem;border-radius:8px;border:none;background:var(--fire,#F5761A);color:#fff;font-size:.8rem;font-weight:700;cursor:pointer">Save</button>'
+    +'<button onclick="document.getElementById(&quot;edit-profile-overlay&quot;).remove()" style="padding:.5rem 1rem;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:none;color:rgba(255,255,255,.45);font-size:.8rem;cursor:pointer">Cancel</button>'
+    +'<button onclick="saveEditProfile(this)" style="padding:.5rem 1.2rem;border-radius:8px;border:none;background:var(--fire,#F5761A);color:#fff;font-size:.8rem;font-weight:700;cursor:pointer"><i class="ph ph-check"></i> Save</button>'
     +'</div></div>';
   document.body.appendChild(ov);
   ov.addEventListener('click',function(e){if(e.target===ov)ov.remove();});
+}
+
+function previewEpAvatar(input) {
+  if (!input.files || !input.files[0]) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    window._epAvatarDataUrl = e.target.result;
+    var preview = document.getElementById("ep-avatar-preview");
+    if (preview) {
+      preview.innerHTML = '<img src="'+e.target.result+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'
+        + '<div style="position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:.2s;border-radius:50%" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0"><i class="ph ph-camera" style="color:#fff;font-size:1.2rem"></i></div>';
+    }
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+function removeEpAvatar() {
+  window._epAvatarDataUrl = 'REMOVE';
+  var preview = document.getElementById("ep-avatar-preview");
+  var profile = currentUser && currentUser.profile ? currentUser.profile : {};
+  var initials = profile.full_name ? profile.full_name.split(' ').map(function(p){return p[0];}).join('').slice(0,2).toUpperCase() : '?';
+  if (preview) preview.innerHTML = '<span style="font-family:var(--mono);font-size:1.2rem;font-weight:700;color:#fff">'+initials+'</span>';
 }
 
 async function saveEditProfile(btn) {
@@ -5765,17 +5841,30 @@ async function saveEditProfile(btn) {
   var bio  = document.getElementById('ep-bio').value.trim();
   var msg  = document.getElementById('ep-msg');
   if (!name) { if(msg){msg.style.color='#F1948A';msg.textContent='Name cannot be empty.';msg.style.display='block';} return; }
-  btn.disabled=true; btn.textContent='Saving...';
+  btn.disabled=true; btn.innerHTML='<i class="ph ph-spinner"></i> Saving...';
   try {
-    await supa.from('profiles').update({ full_name: name, bio: bio }).eq('id', currentUser.id);
-    currentUser.profile.full_name = name;
-    currentUser.profile.bio = bio;
+    var updateData = { full_name: name, bio: bio };
+    // Handle avatar
+    if (window._epAvatarDataUrl === 'REMOVE') {
+      updateData.avatar_url = null;
+      window._epAvatarDataUrl = null;
+    } else if (window._epAvatarDataUrl) {
+      // Upload to Supabase Storage
+      var blob = await (await fetch(window._epAvatarDataUrl)).blob();
+      var path = 'avatars/' + currentUser.id + '.jpg';
+      await supa.storage.from('avatars').upload(path, blob, { upsert: true, contentType: 'image/jpeg' });
+      var { data: urlData } = supa.storage.from('avatars').getPublicUrl(path);
+      updateData.avatar_url = urlData.publicUrl;
+      window._epAvatarDataUrl = null;
+    }
+    await supa.from('profiles').update(updateData).eq('id', currentUser.id);
+    Object.assign(currentUser.profile, updateData);
     updateNavForUser(currentUser.profile);
-    if(msg){msg.style.color='#6EE78E';msg.textContent='Saved!';msg.style.display='block';}
+    if(msg){msg.style.color='#6EE78E';msg.textContent='Profile saved!';msg.style.display='block';}
     setTimeout(function(){ var ov=document.querySelector('[style*="inset:0"][style*="99998"]'); if(ov) ov.remove(); },900);
   } catch(e) {
-    if(msg){msg.style.color='#F1948A';msg.textContent='Could not save. Try again.';msg.style.display='block';}
-    btn.disabled=false; btn.textContent='Save';
+    if(msg){msg.style.color='#F1948A';msg.textContent='Could not save — try again.';msg.style.display='block';}
+    btn.disabled=false; btn.innerHTML='<i class="ph ph-check"></i> Save';
   }
 }
 
@@ -8102,10 +8191,17 @@ var COURSES = [
 var completedModules = [[],[],[],[],[],[],[],[],[]]; // 9 courses
 
 function closeCourseDetail() {
-  // Scroll back to course tabs at top of courses world
-  var layout = document.getElementById('course-layout');
-  var tabs   = document.getElementById('course-tabs');
-  if (tabs) tabs.scrollIntoView({ behavior:'smooth', block:'start' });
+  // Hide lesson content, show module list
+  var lc = document.getElementById('lesson-content');
+  var ml = document.getElementById('module-list');
+  var courseLayout = document.getElementById('course-layout');
+  if (lc) lc.innerHTML = '';
+  if (ml) ml.style.display = 'block';
+  // Scroll to top of courses world
+  var coursesWorld = document.getElementById('courses-world');
+  if (coursesWorld) coursesWorld.scrollTo({ top: 0, behavior: 'smooth' });
+  var tabs = document.getElementById('course-tabs');
+  if (tabs) tabs.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function selectCourse(idx){
@@ -8201,9 +8297,10 @@ function renderLesson(){
     +'</div>';
 
   html += '<div class="lesson-nav">'
-    +(activeModule>0?'<button class="btn btn-out" style="border-color:rgba(123,79,208,.4);color:#B088E8" onclick="goModule('+(activeModule-1)+')"><i class="ph ph-arrow-left"></i> Previous</button>':'<span></span>')
+    +'<button class="btn btn-out" style="border-color:rgba(255,255,255,.15);color:rgba(255,255,255,.4);font-size:.72rem" onclick="closeCourseDetail()"><i class="ph ph-arrow-left"></i> All Modules</button>'
+    +(activeModule>0?'<button class="btn btn-out" style="border-color:rgba(123,79,208,.4);color:#B088E8" onclick="goModule('+(activeModule-1)+')"><i class="ph ph-caret-left"></i> Prev</button>':'<span></span>')
     +'<button class="complete-btn" id="complete-btn" onclick="markDone()" '+(isDone?'disabled':'')+'>'+( isDone?'<i class="ph ph-check"></i> Completed':'<i class="ph ph-check-square"></i> Mark Complete')+'</button>'
-    +(activeModule<totalMods-1?'<button class="btn" style="background:#7B4FD0" onclick="goModule('+(activeModule+1)+')">Next Lesson <i class="ph ph-arrow-right"></i></button>':'<button class="btn" style="background:#7B4FD0" onclick="checkCertificate()"><i class="ph ph-certificate"></i> Finish Course</button>')
+    +(activeModule<totalMods-1?'<button class="btn" style="background:#7B4FD0" onclick="goModule('+(activeModule+1)+')">Next <i class="ph ph-caret-right"></i></button>':'<button class="btn" style="background:#7B4FD0" onclick="checkCertificate()"><i class="ph ph-certificate"></i> Finish Course</button>')
     +'</div>';
 
   lc.innerHTML = html;
@@ -10533,6 +10630,56 @@ var VR_STORIES = [
 ];
 
 var vrAudioPlaying = false;
+// ── VR AUDIO TOGGLE ─────────────────────────────────────────────
+var vrAudioEl = null;
+
+function toggleVRAudio() {
+  var btn    = document.getElementById('vr-audio-play-btn');
+  var hudBtn = document.getElementById('vr-hud-play');
+  var fill   = document.getElementById('vr-audio-fill');
+
+  if (!vrAudioEl) {
+    // Find the first audio track
+    var tracks = document.querySelectorAll('.vr-audio-track');
+    if (tracks.length) {
+      var src = tracks[0].dataset.src;
+      if (src) {
+        vrAudioEl = new Audio(src);
+        vrAudioEl.ontimeupdate = function() {
+          if (!vrAudioEl.duration) return;
+          var pct = (vrAudioEl.currentTime / vrAudioEl.duration) * 100;
+          if (fill) fill.style.width = pct + '%';
+        };
+        vrAudioEl.onended = function() {
+          vrAudioPlaying = false;
+          if (btn) btn.innerHTML = '<i class="ph ph-play"></i>';
+          if (hudBtn) hudBtn.innerHTML = '<i class="ph ph-play"></i>';
+        };
+      }
+    }
+  }
+
+  if (!vrAudioEl) {
+    // No audio src — show toast
+    mpShowToast && mpShowToast('Audio tracks coming soon — subscribe to unlock.');
+    return;
+  }
+
+  if (vrAudioPlaying) {
+    vrAudioEl.pause();
+    vrAudioPlaying = false;
+    if (btn)    btn.innerHTML    = '<i class="ph ph-play"></i>';
+    if (hudBtn) hudBtn.innerHTML = '<i class="ph ph-play"></i>';
+  } else {
+    vrAudioEl.play().catch(function() {
+      mpShowToast && mpShowToast('Tap again to play audio.');
+    });
+    vrAudioPlaying = true;
+    if (btn)    btn.innerHTML    = '<i class="ph ph-pause"></i>';
+    if (hudBtn) hudBtn.innerHTML = '<i class="ph ph-pause"></i>';
+  }
+}
+
 var vrAudioProgress = 0;
 var vrAudioInterval = null;
 var vrCurrentStory = 0;
@@ -11452,7 +11599,7 @@ function toggleCommunityRecording() {
   if (!vrIsRecording) {
     // Start recording
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      alert('Recording requires a browser that supports microphone access (Chrome, Safari, Firefox).');
+      mpShowToast&&mpShowToast('Recording needs microphone access. Use Chrome, Safari, or Firefox.');
       return;
     }
     navigator.mediaDevices.getUserMedia({ audio: true })
@@ -11472,7 +11619,7 @@ function toggleCommunityRecording() {
         if(btn){ btn.textContent='⏹ Stop Recording'; btn.classList.add('recording'); }
       })
       .catch(function() {
-        alert('Microphone access denied. Please allow microphone access and try again.');
+        mpShowToast&&mpShowToast('Microphone access denied. Please allow microphone in browser settings.');
       });
   } else {
     // Stop recording
@@ -12384,6 +12531,10 @@ function purchaseCourse(courseIdx) {
           <div id="battle-leaderboard"></div>
         </div>
 
+        <!-- SEED BATTLE if admin -->
+        <div id="battle-seed-wrap" style="display:none;text-align:center;margin-bottom:1rem">
+          <button onclick="createNewBattle()" style="padding:.5rem 1.2rem;border-radius:100px;border:1px solid rgba(200,80,255,.3);background:rgba(200,80,255,.08);color:#C850FF;font-size:.78rem;cursor:pointer"><i class="ph ph-plus-circle"></i> Create Today's Battle (Admin)</button>
+        </div>
         <!-- PAST BATTLES -->
         <div style="margin-top:1.5rem">
           <div style="font-family:var(--mono);font-size:.52rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:1rem"><i class="ph ph-clock-counter-clockwise"></i> Past Battles</div>
@@ -13519,7 +13670,7 @@ function triggerPWAInstall(){
     });
   } else {
     /* Fallback: show manual instructions */
-    alert('To install: tap the Share button (iOS Safari) or browser menu → "Add to Home Screen"');
+    mpShowToast&&mpShowToast('To install: tap Share (iOS) or browser menu → Add to Home Screen');
   }
 }
 
@@ -16206,6 +16357,11 @@ async function initBattleWorld() {
     // Table not created yet — fallback already shown, just log
     console.warn('Battle DB not ready:', e.message);
   }
+  // Show admin seed button if user is admin
+  var seedWrap = document.getElementById('battle-seed-wrap');
+  if (seedWrap && currentUser && currentUser.profile && currentUser.profile.is_admin) {
+    seedWrap.style.display = 'block';
+  }
 }
 
 async function createNewBattle() {
@@ -18105,6 +18261,36 @@ function answerNP(btn, val) {
     +'<br><button onclick="NP.idx++;renderNPRound()" style="margin-top:.7rem;padding:.4rem 1rem;border-radius:8px;border:none;background:'+(correct?'#64B5E8':'rgba(255,255,255,.1)')+';color:'+(correct?'#000':'#fff')+';font-size:.78rem;font-weight:700;cursor:pointer">Next Pattern</button>';
 }
 
+
+
+function openWhoIsOnline() {
+  var keys = Object.keys(onlineUsers || {});
+  var ov = document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,.82);display:flex;align-items:center;justify-content:center;padding:1rem';
+  var usersHTML = keys.length
+    ? keys.map(function(uid){
+        var u = onlineUsers[uid];
+        return '<div style="display:flex;align-items:center;gap:.8rem;padding:.65rem .9rem;border-radius:10px;border:1px solid rgba(110,231,142,.12);background:rgba(110,231,142,.04);margin-bottom:.4rem">'
+          +'<span style="width:8px;height:8px;border-radius:50%;background:#6EE78E;box-shadow:0 0 6px #6EE78E;flex-shrink:0"></span>'
+          +'<span style="flex:1;font-size:.85rem;color:rgba(255,255,255,.8)">'+escapeHtml(u.name||'Anonymous')+'</span>'
+          +'<button onclick="promptInvite(''+uid+'',''+escapeHtml(u.name||'Player')+'')" style="padding:.3rem .75rem;border-radius:100px;border:1px solid rgba(100,181,232,.3);background:rgba(100,181,232,.08);color:#64B5E8;font-size:.7rem;cursor:pointer"><i class="ph ph-game-controller"></i> Invite</button>'
+          +'</div>';
+      }).join('')
+    : '<div style="text-align:center;padding:2rem;color:rgba(255,255,255,.25);font-size:.85rem">No one else online right now.<br><span style="font-size:.75rem;margin-top:.3rem;display:block">Share the app with friends!</span></div>';
+
+  ov.innerHTML='<div style="background:#0e1016;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:1.4rem;width:100%;max-width:360px">'
+    +'<div style="display:flex;align-items:center;gap:.6rem;margin-bottom:1.1rem">'
+    +'<span style="width:8px;height:8px;border-radius:50%;background:#6EE78E;box-shadow:0 0 6px #6EE78E"></span>'
+    +'<span style="font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;color:rgba(255,255,255,.45);text-transform:uppercase">Who's Online Now</span>'
+    +'<span style="margin-left:auto;font-family:var(--mono);font-size:.5rem;color:rgba(110,231,142,.5)">'+keys.length+' online</span>'
+    +'<button onclick="this.parentNode.parentNode.parentNode.remove()" style="background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:1.1rem;line-height:1;margin-left:.5rem"><i class="ph ph-x"></i></button>'
+    +'</div>'
+    +usersHTML
+    +'<div style="margin-top:.8rem;padding:.7rem;background:rgba(255,255,255,.03);border-radius:8px;font-size:.72rem;color:rgba(255,255,255,.3);text-align:center">Tap Invite to challenge someone to a game</div>'
+    +'</div>';
+  document.body.appendChild(ov);
+  ov.addEventListener('click',function(e){if(e.target===ov)ov.remove();});
+}
 
 // Boot presence when user logs in
 (function() {
