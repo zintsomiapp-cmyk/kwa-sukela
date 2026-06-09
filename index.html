@@ -9704,15 +9704,26 @@ function loadBlogYT(postId, videoId) {
 // ════ SUBSCRIBE / PRICING ════
 // ════ PAYFAST PAYMENT ════
 // CONFIGURATION — replace sandbox values with live credentials before go-live
-// ⚠️ PAYMENT GATEWAY: Ozow integration pending merchant approval
-// Replace this entire block with Ozow once Site Code & Private Key received
-var PAYFAST_CONFIG = {
-  merchant_id:  '10000100',              // ← replace with your PayFast Merchant ID
-  merchant_key: '46f0cd694581a',         // ← replace with your PayFast Merchant Key
-  sandbox: true,                         // ← set false for production
-  return_url:   window.location.href,    // user lands back here on success
-  cancel_url:   window.location.href,    // user lands back here on cancel
-  notify_url:   '',                      // ← set your ITN webhook URL for server confirmation
+// ── OZOW LIVE — ZINTSOMI STORY HOLDINGS (PTY)LTD ──────────────
+// ── OZOW PAYMENT GATEWAY ───────────────────────────────────────
+// ZINTSOMI STORY HOLDINGS (PTY)LTD
+var OZOW_CONFIG = {
+  siteCode:    'ZIN-ZIN-005',
+  privateKey:  '9b3d8e12b3514ef99df8d0fd531228c0',
+  apiKey:      '8b76215ed14440b7b853f2a89f69dda1',
+  countryCode: 'ZA',
+  currencyCode:'ZAR',
+  isTest:      false,                         // LIVE — real payments
+  successUrl:  window.location.origin + window.location.pathname + '?ozow=success',
+  errorUrl:    window.location.origin + window.location.pathname + '?ozow=error',
+  cancelUrl:   window.location.origin + window.location.pathname + '?ozow=cancel',
+  notifyUrl:   'https://natjezquifgddzzawhgo.supabase.co/functions/v1/ozow-webhook',
+};
+
+var OZOW_PLANS = {
+  monthly:  { name:'Zintsomi Premium Monthly',  amount:'299.00', description:'Monthly Premium Subscription — Full Course Access' },
+  annual:   { name:'Zintsomi Premium Annual',   amount:'2499.00', description:'Annual Premium Subscription — Best Value' },
+  lifetime: { name:'Zintsomi Lifetime Access',  amount:'5999.00', description:'Lifetime Premium Access — One-Time Payment' },
 };
 
 var PAYFAST_PLANS = {
@@ -9736,67 +9747,55 @@ function selectPlan(plan) {
   launchPayFast(plan);
 }
 
-function launchPayFast(plan) {
-  var cfg  = PAYFAST_CONFIG;
-  var pd   = PAYFAST_PLANS[plan];
+function launchOzow(planKey) {
+  var cfg = OZOW_CONFIG;
+  var pd  = OZOW_PLANS[planKey];
   if (!pd) { mpShowToast&&mpShowToast('Unknown plan. Please try again.'); return; }
 
-  var endpoint = cfg.sandbox
-    ? 'https://sandbox.payfast.co.za/eng/process'
-    : 'https://www.payfast.co.za/eng/process';
+  var email     = (currentUser && currentUser.email) || '';
+  var userId    = (currentUser && currentUser.id) || 'guest';
+  var txRef     = 'ZTC-' + Date.now() + '-' + planKey;
 
-  // Build form fields
-  var email = (currentUser && currentUser.email) ? currentUser.email : '';
-  var firstName = email ? email.split('@')[0] : 'Learner';
-
-  var fields = {
-    merchant_id:          cfg.merchant_id,
-    merchant_key:         cfg.merchant_key,
-    return_url:           cfg.return_url,
-    cancel_url:           cfg.cancel_url,
-    notify_url:           cfg.notify_url || '',
-    email_address:        email,
-    name_first:           firstName,
-    item_name:            pd.name,
-    item_description:     pd.name + ' — Monthly Subscription',
-    amount:               pd.amount,
-    subscription_type:    '1',
-    billing_date:         new Date().toISOString().split('T')[0],
-    recurring_amount:     pd.amount,
-    frequency:            String(pd.frequency),
-    cycles:               String(pd.cycles),
-    m_payment_id:         'ZTC-' + Date.now() + '-' + plan,
-    custom_str1:          plan,
-    custom_str2:          email,
+  // Ozow uses a GET redirect to their payment page
+  var params = {
+    SiteCode:        cfg.siteCode,
+    CountryCode:     cfg.countryCode,
+    CurrencyCode:    cfg.currencyCode,
+    Amount:          pd.amount,
+    TransactionReference: txRef,
+    BankReference:   'ZINTSOMI-' + planKey.toUpperCase(),
+    Customer:        email,
+    IsTest:          cfg.isTest ? 'true' : 'false',
+    SuccessUrl:      cfg.successUrl + '&plan=' + planKey + '&ref=' + txRef,
+    ErrorUrl:        cfg.errorUrl  + '&plan=' + planKey + '&ref=' + txRef,
+    CancelUrl:       cfg.cancelUrl + '&plan=' + planKey + '&ref=' + txRef,
+    NotifyUrl:       cfg.notifyUrl,
+    Optional1:       userId,
+    Optional2:       planKey,
   };
 
-  // Remove empty fields (PayFast rejects empty strings for optional fields)
-  Object.keys(fields).forEach(function(k){ if(!fields[k]) delete fields[k]; });
+  // Build Ozow checkout URL
+  var base = 'https://pay.ozow.com/';
+  var qs = Object.keys(params).map(function(k){
+    return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]);
+  }).join('&');
 
-  // Create and submit form
-  var form = document.createElement('form');
-  form.method = 'POST';
-  form.action = endpoint;
-  form.style.display = 'none';
+  // Store pending plan for post-payment handling
+  try { sessionStorage.setItem('ozow_pending', JSON.stringify({ plan: planKey, ref: txRef, email: email })); } catch(e){}
 
-  Object.keys(fields).forEach(function(k){
-    var input = document.createElement('input');
-    input.type  = 'hidden';
-    input.name  = k;
-    input.value = fields[k];
-    form.appendChild(input);
-  });
-
-  document.body.appendChild(form);
-  form.submit();
+  // Redirect to Ozow payment page
+  window.location.href = base + '?' + qs;
 }
+
+// Keep old name as alias for backward compat
+function launchPayFast(plan) { launchOzow(plan); }
 
 // After login, check if a plan was pending
 function checkPendingPlan() {
   if (window._pendingPlan) {
     var plan = window._pendingPlan;
     window._pendingPlan = null;
-    setTimeout(function(){ launchPayFast(plan); }, 400);
+    setTimeout(function(){ launchOzow(plan); }, 400);
   }
 }
 
@@ -11971,30 +11970,27 @@ function renderShopBooks(books) {
 }
 
 function buyBook(id, title, price) {
-  // PayFast checkout for book purchase
-  var form = document.createElement('form');
-  form.method = 'POST';
-  form.action = 'https://sandbox.payfast.co.za/eng/process';
-  var fields = {
-    merchant_id: '10000100',
-    merchant_key: '46f0cd694581a',
-    return_url: window.location.href,
-    cancel_url: window.location.href,
-    notify_url: 'https://natjezquifgddzzawhgo.supabase.co/functions/v1/payfast-webhook',
-    name_first: (currentUser && currentUser.profile && currentUser.profile.full_name) || 'Zintsomi',
-    email_address: (currentUser && currentUser.email) || '',
-    amount: price.toFixed(2),
-    item_name: title,
-    custom_str1: 'book_'+id,
-    custom_str2: currentUser ? currentUser.id : ''
+  if (!currentUser) { openAuthModal(); return; }
+  var txRef = 'ZTC-BOOK-' + id + '-' + Date.now();
+  var params = {
+    SiteCode:             OZOW_CONFIG.siteCode,
+    CountryCode:          OZOW_CONFIG.countryCode,
+    CurrencyCode:         OZOW_CONFIG.currencyCode,
+    Amount:               price.toFixed(2),
+    TransactionReference: txRef,
+    BankReference:        'ZINTSOMI-BOOK-' + id,
+    Customer:             (currentUser && currentUser.email) || '',
+    IsTest:               OZOW_CONFIG.isTest ? 'true' : 'false',
+    SuccessUrl:           OZOW_CONFIG.successUrl + '&type=book&bookId=' + id + '&ref=' + txRef,
+    ErrorUrl:             OZOW_CONFIG.errorUrl   + '&type=book&bookId=' + id + '&ref=' + txRef,
+    CancelUrl:            OZOW_CONFIG.cancelUrl  + '&type=book&bookId=' + id + '&ref=' + txRef,
+    NotifyUrl:            OZOW_CONFIG.notifyUrl,
+    Optional1:            (currentUser && currentUser.id) || '',
+    Optional2:            'book_' + id,
   };
-  Object.keys(fields).forEach(function(k) {
-    var inp = document.createElement('input');
-    inp.type='hidden'; inp.name=k; inp.value=fields[k];
-    form.appendChild(inp);
-  });
-  document.body.appendChild(form);
-  form.submit();
+  try { sessionStorage.setItem('ozow_pending', JSON.stringify({ type:'book', bookId:id, title:title, ref:txRef })); } catch(e) {}
+  var qs = Object.keys(params).map(function(k){ return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]); }).join('&');
+  window.location.href = 'https://pay.ozow.com/?' + qs;
 }
 
 /* ──────────────────────────────────
@@ -12177,39 +12173,31 @@ function closeVRPaywall() {
 }
 
 function purchaseVRAccess() {
-  if (!currentUser) {
-    closeVRPaywall();
-    openAuthModal();
-    return;
-  }
+  if (!currentUser) { closeVRPaywall(); openAuthModal(); return; }
   var plan = VR_PRICES[vrSelectedPlan];
-  // PayFast checkout
-  var form = document.createElement('form');
-  form.method = 'POST';
-  form.action = 'https://sandbox.payfast.co.za/eng/process';
-  var fields = {
-    merchant_id: '10000100',
-    merchant_key: '46f0cd694581a',
-    return_url: window.location.href + '?vr_access=1&plan=' + vrSelectedPlan,
-    cancel_url: window.location.href,
-    notify_url: 'https://natjezquifgddzzawhgo.supabase.co/functions/v1/payfast-webhook',
-    name_first: (currentUser.profile && currentUser.profile.full_name) || 'Zintsomi',
-    email_address: currentUser.email || '',
-    amount: plan.price.toFixed(2),
-    item_name: 'Zintsomi VR Village — ' + plan.label,
-    custom_str1: 'vr_access_' + vrSelectedPlan,
-    custom_str2: currentUser.id
+  var txRef = 'ZTC-VR-' + vrSelectedPlan + '-' + Date.now();
+  var params = {
+    SiteCode:             OZOW_CONFIG.siteCode,
+    CountryCode:          OZOW_CONFIG.countryCode,
+    CurrencyCode:         OZOW_CONFIG.currencyCode,
+    Amount:               plan.price.toFixed(2),
+    TransactionReference: txRef,
+    BankReference:        'ZINTSOMI-VR-' + vrSelectedPlan.toUpperCase(),
+    Customer:             currentUser.email || '',
+    IsTest:               OZOW_CONFIG.isTest ? 'true' : 'false',
+    SuccessUrl:           window.location.origin + window.location.pathname + '?vr_access=1&plan=' + vrSelectedPlan + '&ref=' + txRef,
+    ErrorUrl:             OZOW_CONFIG.errorUrl + '&type=vr',
+    CancelUrl:            OZOW_CONFIG.cancelUrl + '&type=vr',
+    NotifyUrl:            OZOW_CONFIG.notifyUrl,
+    Optional1:            currentUser.id || '',
+    Optional2:            'vr_' + vrSelectedPlan,
   };
-  Object.keys(fields).forEach(function(k) {
-    var inp = document.createElement('input');
-    inp.type = 'hidden'; inp.name = k; inp.value = fields[k];
-    form.appendChild(inp);
-  });
-  document.body.appendChild(form);
-  form.submit();
+  try { sessionStorage.setItem('ozow_pending', JSON.stringify({ type:'vr', plan:vrSelectedPlan, ref:txRef })); } catch(e) {}
+  var qs = Object.keys(params).map(function(k){ return encodeURIComponent(k)+'='+encodeURIComponent(params[k]); }).join('&');
+  window.location.href = 'https://pay.ozow.com/?' + qs;
 }
 
-// Check URL for return from PayFast
+// Check URL for return from Ozow payment
 (function checkVRReturn() {
   var params = new URLSearchParams(window.location.search);
   if (params.get('vr_access') === '1') {
@@ -12325,35 +12313,28 @@ function showCoursePurchasePrompt(courseIdx) {
 }
 
 function purchaseCourse(courseIdx) {
-  if (!currentUser) {
-    document.getElementById('course-purchase-overlay').remove();
-    openAuthModal();
-    return;
-  }
+  if (!currentUser) { document.getElementById('course-purchase-overlay').remove(); openAuthModal(); return; }
   var course = COURSES[courseIdx];
-  var form = document.createElement('form');
-  form.method = 'POST';
-  form.action = 'https://sandbox.payfast.co.za/eng/process';
-  var fields = {
-    merchant_id: '10000100',
-    merchant_key: '46f0cd694581a',
-    return_url: window.location.href + '?course_purchased=' + courseIdx,
-    cancel_url: window.location.href,
-    notify_url: 'https://natjezquifgddzzawhgo.supabase.co/functions/v1/payfast-webhook',
-    name_first: (currentUser.profile && currentUser.profile.full_name) || 'Zintsomi',
-    email_address: currentUser.email || '',
-    amount: COURSE_PRICE.toFixed(2),
-    item_name: 'Zintsomi Course: ' + (course ? course.title : 'Course'),
-    custom_str1: 'course_' + courseIdx,
-    custom_str2: currentUser.id
+  var txRef = 'ZTC-COURSE-' + courseIdx + '-' + Date.now();
+  var params = {
+    SiteCode:             OZOW_CONFIG.siteCode,
+    CountryCode:          OZOW_CONFIG.countryCode,
+    CurrencyCode:         OZOW_CONFIG.currencyCode,
+    Amount:               COURSE_PRICE.toFixed(2),
+    TransactionReference: txRef,
+    BankReference:        'ZINTSOMI-COURSE-' + courseIdx,
+    Customer:             currentUser.email || '',
+    IsTest:               OZOW_CONFIG.isTest ? 'true' : 'false',
+    SuccessUrl:           window.location.origin + window.location.pathname + '?course_purchased=' + courseIdx + '&ref=' + txRef,
+    ErrorUrl:             OZOW_CONFIG.errorUrl + '&type=course',
+    CancelUrl:            OZOW_CONFIG.cancelUrl + '&type=course',
+    NotifyUrl:            OZOW_CONFIG.notifyUrl,
+    Optional1:            currentUser.id || '',
+    Optional2:            'course_' + courseIdx,
   };
-  Object.keys(fields).forEach(function(k) {
-    var inp = document.createElement('input');
-    inp.type = 'hidden'; inp.name = k; inp.value = fields[k];
-    form.appendChild(inp);
-  });
-  document.body.appendChild(form);
-  form.submit();
+  try { sessionStorage.setItem('ozow_pending', JSON.stringify({ type:'course', courseIdx:courseIdx, ref:txRef })); } catch(e) {}
+  var qs = Object.keys(params).map(function(k){ return encodeURIComponent(k)+'='+encodeURIComponent(params[k]); }).join('&');
+  window.location.href = 'https://pay.ozow.com/?' + qs;
 }
 
 // Check URL for course purchase return
@@ -12779,7 +12760,7 @@ function purchaseCourse(courseIdx) {
         <!-- ── BOOKS & SHOP PANEL ── -->
         <div class="admin-panel" id="panel-books">
           <div class="admin-section-title">Books & Shop</div>
-          <div class="admin-section-sub">Add Dr Sasa\'s books for sale. People can buy directly from the app. Set price in Rands — PayFast handles payment.</div>
+          <div class="admin-section-sub">Add Dr Sasa\'s books for sale. People can buy directly from the app. Set price in Rands — Ozow handles payment.</div>
 
           <div class="admin-card">
             <div class="admin-card-title"><i class="ph ph-plus-circle"></i> Add Book to Shop</div>
