@@ -903,7 +903,7 @@ nav{
 .inst-hero{padding:0;height:340px;position:relative;overflow:hidden;display:flex;align-items:flex-end}
 .inst-hero h2{font-family:var(--impact);font-size:clamp(3rem,6vw,5rem);letter-spacing:.08em;color:#fff}
 .inst-hero h2 .accent{color:var(--fire);font-style:normal}
-.inst-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;padding:2rem 2.5rem;background:var(--deep)}
+.inst-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;padding:1.5rem;background:var(--deep);overflow-y:auto;max-height:calc(100vh - 220px)}
 /* Studio modern overrides */
 .inst-btn{
   background:rgba(20,24,36,1);border:1px solid rgba(255,255,255,.16);
@@ -3112,7 +3112,7 @@ body::after{
 .pd-item i{font-size:1rem;flex-shrink:0}
 .pd-danger{color:rgba(255,100,100,.7)}.pd-danger:hover{background:rgba(255,80,80,.1);color:#ff7070}
 .pd-logout{color:rgba(245,118,26,.7)}.pd-logout:hover{background:rgba(245,118,26,.1);color:var(--fire,#F5761A)}
-#lang-toggle{position:fixed;top:1rem;right:1rem;z-index:500;display:flex;gap:.3rem;background:rgba(14,16,22,.85);border:1px solid rgba(245,118,26,.25);border-radius:100px;padding:.25rem .4rem;backdrop-filter:blur(12px)}
+#lang-toggle{position:fixed;top:1rem;right:1rem;z-index:500;display:none!important;gap:.3rem;background:rgba(14,16,22,.85);border:1px solid rgba(245,118,26,.25);border-radius:100px;padding:.25rem .4rem;backdrop-filter:blur(12px)}
 .lang-btn{font-family:var(--mono,monospace);font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;padding:.22rem .55rem;border-radius:100px;border:1px solid transparent;background:none;color:rgba(255,255,255,.38);cursor:pointer;transition:all .18s}
 .lang-btn.active,.lang-btn:hover{background:rgba(245,118,26,.22);border-color:var(--fire,#F5761A);color:var(--fire,#F5761A)}
 
@@ -3138,7 +3138,7 @@ body::after{
 .ob-skip:hover{color:rgba(255,255,255,.5)}
 
 /* ═══ REAL STREAK BADGE ═══ */
-#live-streak-badge{position:fixed;bottom:1.2rem;left:1rem;z-index:500;background:rgba(14,16,22,.88);border:1px solid rgba(245,118,26,.3);border-radius:.8rem;padding:.5rem .85rem;display:flex;align-items:center;gap:.5rem;backdrop-filter:blur(10px);cursor:pointer;transition:all .2s}
+#live-streak-badge{position:fixed;bottom:1.2rem;left:1rem;z-index:400;background:rgba(14,16,22,.88);border:1px solid rgba(245,118,26,.3);border-radius:.8rem;padding:.5rem .85rem;display:flex;align-items:center;gap:.5rem;backdrop-filter:blur(10px);cursor:pointer;transition:all .2s}
 #live-streak-badge:hover{border-color:var(--fire,#F5761A);transform:translateY(-2px)}
 .lsb-fire{font-size:1.2rem}
 .lsb-count{font-family:var(--display,'Mona Sans'),sans-serif;font-size:1.1rem;color:var(--fire,#F5761A);line-height:1}
@@ -3172,6 +3172,8 @@ button,.btn,.npill,.world-card,.game-tile,.help-btn{-webkit-tap-highlight-color:
 img{max-width:100%;height:auto}
 canvas{touch-action:none}
 @media(max-width:480px){
+  #live-streak-badge{bottom:5rem;left:.5rem;font-size:.72rem;padding:.4rem .65rem}
+  #live-streak-badge .lsb-count{font-size:.9rem}
   .nav-w{padding:.4rem .7rem;gap:.3rem}
   .npill{padding:.3rem .5rem;font-size:.48rem}
   .world-body{padding:.8rem}
@@ -3930,7 +3932,7 @@ canvas{touch-action:none}
       <div style="text-align:center;padding:4rem 2rem 2rem">
         <div style="font-family:var(--mono);font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:var(--fire);margin-bottom:.6rem">Access & Pricing</div>
         <h1 style="font-family:var(--impact);font-size:clamp(2.5rem,6vw,6rem);color:#fff;letter-spacing:.06em;line-height:.88;margin-bottom:.8rem">CHOOSE YOUR<br><span style="color:var(--fire)">JOURNEY</span></h1>
-        <p style="font-size:.92rem;color:rgba(255,255,255,.4);max-width:500px;margin:0 auto;line-height:1.9">Each course and the VR Village is sold separately. Buy what you need, when you need it.</p>
+        <p style="font-size:.92rem;color:rgba(255,255,255,.5);max-width:560px;margin:0 auto;line-height:1.9">Unlock full learning access. Choose per-course enrolment at <strong style="color:#E6B32A">R3,500</strong>, or get unlimited VR access from <strong style="color:var(--acid)">R650/month</strong>. Engage with peers, complete all courses, and earn accredited certificates.</p>
       </div>
 
       <div class="ctr" style="padding-bottom:4rem">
@@ -18272,6 +18274,29 @@ function openWhoIsOnline() {
   document.body.appendChild(ov);
   ov.addEventListener('click',function(e){if(e.target===ov)ov.remove();});
 }
+
+
+// ── SWIPE RIGHT TO GO BACK (mobile) ────────────────────────────
+(function() {
+  var touchStartX = 0;
+  var touchStartY = 0;
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', function(e) {
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    var dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+    // Swipe right from left edge (within 40px) — go back
+    if (touchStartX < 40 && dx > 80 && dy < 60) {
+      // Find active world and go home
+      var active = document.querySelector('.world.active');
+      if (active && active.id !== 'home-world') {
+        showWorld('home');
+      }
+    }
+  }, { passive: true });
+})();
 
 // Boot presence when user logs in
 (function() {
