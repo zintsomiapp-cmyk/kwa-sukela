@@ -3213,6 +3213,7 @@ body::after{
         <button class="npill blog-pill" onclick="showWorld('blog')"><i class="ph ph-pencil-line"></i> Dr Sasa</button>
         <button class="npill" onclick="showWorld('youtube')" style="color:#FF4444;border-color:rgba(255,68,68,.3)" id="pill-youtube"><i class="ph ph-youtube-logo"></i> YouTube</button>
         <button class="npill" onclick="showWorld('subscribe')" style="color:#B088E8;border-color:rgba(123,79,208,.3)" id="pill-subscribe"><i class="ph ph-star"></i> Subscribe</button>
+        <button class="npill" onclick="showWorld('contact')" style="color:var(--fire);border-color:rgba(245,118,26,.32)" id="pill-contact"><i class="ph ph-phone-call"></i> Contact</button>
         <button class="npill" onclick="showWorld('admin')" style="color:#ff6b6b;border-color:rgba(255,107,107,.35);display:none" id="pill-admin"><i class="ph ph-shield-star"></i> Admin</button>
       </div>
       <div class="nav-auth-wrap">
@@ -3907,6 +3908,35 @@ body::after{
       </div>
     </div>
   </div><!-- /subscribe-world -->
+
+
+  <!-- CONTACT -->
+  <div class="world" id="contact-world">
+    <div style="min-height:calc(100vh - 80px);background:radial-gradient(circle at 15% 10%,rgba(245,118,26,.16),transparent 32%),linear-gradient(180deg,#0E1016 0%,#171A22 100%);padding:7rem 1.5rem 4rem">
+      <div class="ctr" style="max-width:980px">
+        <div style="font-family:var(--mono);font-size:.56rem;letter-spacing:.18em;text-transform:uppercase;color:var(--fire);margin-bottom:.7rem">Contact Us</div>
+        <h2 class="sec-title" style="color:#fff;margin-bottom:.7rem">Speak to <span style="color:var(--fire)">Dr Sasa&apos;s Team</span></h2>
+        <p style="font-size:1rem;line-height:1.8;color:rgba(255,255,255,.55);max-width:680px;margin-bottom:2rem">For course enquiries, school bookings, VR storytelling demos, subscriptions, or help with your account, contact Zintsomi Storytelling College directly.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem">
+          <a href="tel:+27615265356" style="text-decoration:none;background:rgba(255,255,255,.045);border:1px solid rgba(245,118,26,.22);border-radius:18px;padding:1.4rem;display:flex;gap:1rem;align-items:flex-start;transition:all .2s" onmouseover="this.style.borderColor='rgba(245,118,26,.6)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(245,118,26,.22)';this.style.transform='translateY(0)'">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(245,118,26,.14);display:grid;place-items:center;color:var(--fire);font-size:1.25rem;flex-shrink:0"><i class="ph ph-phone-call"></i></div>
+            <div><div style="font-family:var(--display);font-weight:800;color:#fff;margin-bottom:.25rem">Call / SMS</div><div style="font-family:var(--mono);font-size:.75rem;color:rgba(255,255,255,.68)">+27 61 526 5356</div></div>
+          </a>
+          <a href="https://wa.me/27615265356" target="_blank" rel="noopener" style="text-decoration:none;background:rgba(255,255,255,.045);border:1px solid rgba(20,232,200,.2);border-radius:18px;padding:1.4rem;display:flex;gap:1rem;align-items:flex-start;transition:all .2s" onmouseover="this.style.borderColor='rgba(20,232,200,.55)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(20,232,200,.2)';this.style.transform='translateY(0)'">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(20,232,200,.1);display:grid;place-items:center;color:var(--acid);font-size:1.25rem;flex-shrink:0"><i class="ph ph-whatsapp-logo"></i></div>
+            <div><div style="font-family:var(--display);font-weight:800;color:#fff;margin-bottom:.25rem">WhatsApp</div><div style="font-size:.82rem;color:rgba(255,255,255,.58);line-height:1.6">Message us for enrolment support or bookings.</div></div>
+          </a>
+          <a href="https://www.linkedin.com/in/dr-sasa-07627179/?lipi=urn%3Ali%3Apage%3Ad_flagship3_feed%3BV6qyffxyTkC5AArkEUqwxA%3D%3D" target="_blank" rel="noopener" style="text-decoration:none;background:rgba(255,255,255,.045);border:1px solid rgba(176,136,232,.24);border-radius:18px;padding:1.4rem;display:flex;gap:1rem;align-items:flex-start;transition:all .2s" onmouseover="this.style.borderColor='rgba(176,136,232,.65)';this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='rgba(176,136,232,.24)';this.style.transform='translateY(0)'">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(176,136,232,.12);display:grid;place-items:center;color:#B088E8;font-size:1.25rem;flex-shrink:0"><i class="ph ph-linkedin-logo"></i></div>
+            <div><div style="font-family:var(--display);font-weight:800;color:#fff;margin-bottom:.25rem">LinkedIn</div><div style="font-size:.82rem;color:rgba(255,255,255,.58);line-height:1.6">Connect with Dr Sasa professionally.</div></div>
+          </a>
+        </div>
+        <div style="margin-top:2rem;background:rgba(245,118,26,.08);border:1px solid rgba(245,118,26,.2);border-radius:18px;padding:1.4rem;color:rgba(255,255,255,.6);line-height:1.8">
+          <strong style="color:#fff">Best for:</strong> course registration, school packages, storytelling workshops, VR demos, subscription support, and partnership conversations.
+        </div>
+      </div>
+    </div>
+  </div><!-- /contact-world -->
 
   <!-- AUTH MODAL -->
   <div id="auth-overlay" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.75);align-items:center;justify-content:center;padding:1rem">
