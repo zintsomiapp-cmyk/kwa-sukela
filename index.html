@@ -5536,33 +5536,22 @@ var currentSpotWorld = "";
 })();
 
 // Check session on every page load
-//
-// IMPORTANT: Supabase has a documented bug where making an async Supabase
-// call directly inside onAuthStateChange can deadlock every later call on
-// this client — see:
-// https://supabase.com/docs/guides/troubleshooting/why-is-my-supabase-api-call-not-returning-PGzXw0
-// loadUserProfile() below runs Supabase queries, so its work is deferred
-// with setTimeout to let this handler return (and its internal lock
-// release) before those queries fire. This is what was causing the
-// "Maximum call stack size exceeded" error on password update.
-supa.auth.onAuthStateChange((event, session) => {
-  setTimeout(function () {
-    if (event === 'PASSWORD_RECOVERY') {
-      // Reset link brought the user back with a recovery session — open the
-      // auth modal straight into Reset Password mode instead of silently
-      // logging them in.
-      currentUser = session ? session.user : null;
-      enterPasswordRecoveryMode();
-      return;
-    }
-    if (session) {
-      currentUser = session.user;
-      loadUserProfile();
-    } else {
-      currentUser = null;
-      updateNavForUser(null);
-    }
-  }, 0);
+supa.auth.onAuthStateChange(async (event, session) => {
+  if (event === 'PASSWORD_RECOVERY') {
+    // Reset link brought the user back with a recovery session — open the
+    // auth modal straight into Reset Password mode instead of silently
+    // logging them in.
+    currentUser = session ? session.user : null;
+    enterPasswordRecoveryMode();
+    return;
+  }
+  if (session) {
+    currentUser = session.user;
+    await loadUserProfile();
+  } else {
+    currentUser = null;
+    updateNavForUser(null);
+  }
 });
 
 async function signUp(email, password, fullName) {
@@ -5729,14 +5718,19 @@ async function handlePasswordReset() {
   var pw2 = (document.getElementById('auth-confirm-password') || {}).value || '';
   if (!pw1 || pw1.length < 6) { showAuthMsg('Password must be at least 6 characters.', 'error'); return; }
   if (pw1 !== pw2) { showAuthMsg('Passwords do not match.', 'error'); return; }
+  var btn = document.getElementById('auth-submit-btn');
+  if (btn && btn.disabled) return; // already in flight — ignore a second click/Enter
+  if (btn) btn.disabled = true;
   showAuthMsg('Updating password\u2026', 'ok');
   try {
     var result = await supa.auth.updateUser({ password: pw1 });
     if (result.error) throw result.error;
   } catch(e) {
     showAuthMsg('Could not update password: ' + (e.message || e), 'error');
+    if (btn) btn.disabled = false;
     return;
   }
+  if (btn) btn.disabled = false;
   // Password update itself succeeded — everything below is just refreshing
   // the UI, so an error here must never be reported as a failed update.
   showAuthMsg('\u2713 Password updated! You are signed in.', 'ok');
