@@ -1283,6 +1283,8 @@ nav{
   nav .nav-pills{gap:.15rem}
   .npill{padding:.28rem .55rem;font-size:.46rem}
   .stat-div{display:none}
+  #lang-toggle{gap:.1rem;padding:.2rem .3rem}
+  .lang-btn{padding:.18rem .4rem;font-size:.42rem}
 }
 
 /* Card glow colors per position */
@@ -3117,7 +3119,11 @@ body::after{
 </style>
 <style>
 /* ═══ LANGUAGE TOGGLE ═══ */
-#lang-toggle{position:fixed;top:1rem;right:1rem;z-index:9999;display:flex;gap:.3rem;background:rgba(14,16,22,.85);border:1px solid rgba(245,118,26,.25);border-radius:100px;padding:.25rem .4rem;backdrop-filter:blur(12px)}
+/* Now lives inside nav's flex row (see .nav-w) instead of a fixed top-right
+   overlay, so it can no longer cover the auth controls. flex-shrink:0 keeps
+   it from being squashed; .nav-pills (flex:1, overflow-x:auto) absorbs any
+   space crunch first. */
+#lang-toggle{flex-shrink:0;display:flex;gap:.3rem;background:rgba(14,16,22,.85);border:1px solid rgba(245,118,26,.25);border-radius:100px;padding:.25rem .4rem;backdrop-filter:blur(12px)}
 .lang-btn{font-family:var(--mono,monospace);font-size:.5rem;letter-spacing:.08em;text-transform:uppercase;padding:.22rem .55rem;border-radius:100px;border:1px solid transparent;background:none;color:rgba(255,255,255,.38);cursor:pointer;transition:all .18s}
 .lang-btn.active,.lang-btn:hover{background:rgba(245,118,26,.22);border-color:var(--fire,#F5761A);color:var(--fire,#F5761A)}
 
@@ -3154,14 +3160,6 @@ body::after{
 <canvas id="sky-bg"></canvas>
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
-
-<!-- ═══ LANGUAGE TOGGLE ═══ -->
-<div id="lang-toggle">
-  <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
-  <button class="lang-btn" onclick="setLang('zu')" data-lang="zu">isiZulu</button>
-  <button class="lang-btn" onclick="setLang('xh')" data-lang="xh">isiXhosa</button>
-  <button class="lang-btn" onclick="setLang('st')" data-lang="st">Sesotho</button>
-</div>
 
 <!-- ═══ LIVE STREAK BADGE ═══ -->
 <div id="live-streak-badge" title="Your daily learning streak">
@@ -3242,6 +3240,12 @@ body::after{
         <button class="npill" onclick="showWorld('subscribe')" style="color:#B088E8;border-color:rgba(123,79,208,.3)" id="pill-subscribe"><i class="ph ph-star"></i> Subscribe</button>
         <button class="npill" onclick="showWorld('home');setTimeout(function(){var c=document.getElementById('contact-section');if(c)c.scrollIntoView({behavior:'smooth'});},300)" style="color:rgba(245,118,26,.8);border-color:rgba(245,118,26,.25)" title="Contact Us"><i class="ph ph-envelope"></i> Contact</button>
         <button class="npill" onclick="showWorld('admin')" style="color:#ff6b6b;border-color:rgba(255,107,107,.35);display:none" id="pill-admin"><i class="ph ph-shield-star"></i> Admin</button>
+      </div>
+      <div id="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('en')" data-lang="en">EN</button>
+        <button class="lang-btn" onclick="setLang('zu')" data-lang="zu">isiZulu</button>
+        <button class="lang-btn" onclick="setLang('xh')" data-lang="xh">isiXhosa</button>
+        <button class="lang-btn" onclick="setLang('st')" data-lang="st">Sesotho</button>
       </div>
       <div class="nav-auth-wrap">
         <span id="auth-nav-name" style="font-family:var(--mono);font-size:.54rem;letter-spacing:.05em;color:rgba(255,255,255,.35);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
@@ -3986,11 +3990,11 @@ body::after{
           <label style="font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);display:block;margin-bottom:.3rem">Full Name</label>
           <input id="auth-name" type="text" placeholder="Your name" style="width:100%;padding:.65rem .9rem;border-radius:4px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font-family:var(--body);font-size:1rem;outline:none">
         </div>
-        <div>
+        <div id="auth-email-row">
           <label style="font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);display:block;margin-bottom:.3rem">Email</label>
           <input id="auth-email" type="email" placeholder="you@email.com" style="width:100%;padding:.65rem .9rem;border-radius:4px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font-family:var(--body);font-size:1rem;outline:none">
         </div>
-        <div>
+        <div id="auth-password-row">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem">
             <label style="font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35)">Password</label>
             <button id="auth-forgot-link" onclick="handleForgotPassword()" style="background:none;border:none;font-family:var(--mono);font-size:.52rem;letter-spacing:.04em;color:var(--fire);cursor:pointer;text-decoration:underline;padding:0">Forgot password?</button>
@@ -3999,6 +4003,12 @@ body::after{
             <input id="auth-password" type="password" placeholder="Min 6 characters" style="width:100%;padding:.65rem 2.6rem .65rem .9rem;border-radius:4px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font-family:var(--body);font-size:1rem;outline:none">
             <button type="button" onclick="togglePasswordVisibility()" title="Show / hide password" style="position:absolute;right:.6rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:rgba(255,255,255,.4);font-size:1.1rem;line-height:1;padding:.2rem"><i class="ph ph-eye" id="auth-eye-icon"></i></button>
           </div>
+        </div>
+        <div id="auth-reset-row" style="display:none">
+          <label style="font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);display:block;margin-bottom:.3rem">New Password</label>
+          <input id="auth-new-password" type="password" placeholder="Min 6 characters" style="width:100%;padding:.65rem .9rem;border-radius:4px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font-family:var(--body);font-size:1rem;outline:none;margin-bottom:.6rem">
+          <label style="font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.35);display:block;margin-bottom:.3rem">Confirm Password</label>
+          <input id="auth-confirm-password" type="password" placeholder="Re-enter password" style="width:100%;padding:.65rem .9rem;border-radius:4px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font-family:var(--body);font-size:1rem;outline:none">
         </div>
         <div id="auth-msg" style="display:none;font-size:1rem;padding:.5rem .7rem;border-radius:3px;background:rgba(255,255,255,.04)"></div>
         <button id="auth-submit-btn" class="btn" style="width:100%;justify-content:center;margin-top:.3rem" onclick="handleAuthSubmit()">Log In</button>
@@ -5504,6 +5514,14 @@ var currentSpotWorld = "";
 
 // Check session on every page load
 supa.auth.onAuthStateChange(async (event, session) => {
+  if (event === 'PASSWORD_RECOVERY') {
+    // Reset link brought the user back with a recovery session — open the
+    // auth modal straight into Reset Password mode instead of silently
+    // logging them in.
+    currentUser = session ? session.user : null;
+    enterPasswordRecoveryMode();
+    return;
+  }
   if (session) {
     currentUser = session.user;
     await loadUserProfile();
@@ -5602,6 +5620,10 @@ function openAuthModal() {
   authMode = 'login';
   document.getElementById('auth-mode-title').textContent = 'Log In';
   document.getElementById('auth-name-row').style.display = 'none';
+  document.getElementById('auth-email-row').style.display = '';
+  document.getElementById('auth-password-row').style.display = '';
+  document.getElementById('auth-reset-row').style.display = 'none';
+  document.getElementById('auth-toggle-link').style.display = '';
   document.getElementById('auth-submit-btn').textContent = 'Log In';
   document.getElementById('auth-toggle-link').textContent = 'No account? Sign up free';
   document.getElementById('auth-msg').style.display = 'none';
@@ -5643,6 +5665,48 @@ async function handleForgotPassword() {
   }
 }
 
+function enterPasswordRecoveryMode() {
+  authMode = 'reset';
+  document.getElementById('auth-mode-title').textContent = 'Reset Password';
+  document.getElementById('auth-name-row').style.display = 'none';
+  document.getElementById('auth-email-row').style.display = 'none';
+  document.getElementById('auth-password-row').style.display = 'none';
+  document.getElementById('auth-reset-row').style.display = 'block';
+  document.getElementById('auth-toggle-link').style.display = 'none';
+  document.getElementById('auth-submit-btn').textContent = 'Update Password';
+  document.getElementById('auth-msg').style.display = 'none';
+  document.getElementById('auth-new-password').value = '';
+  document.getElementById('auth-confirm-password').value = '';
+  document.getElementById('auth-overlay').style.display = 'flex';
+}
+
+function exitPasswordRecoveryMode() {
+  authMode = 'login';
+  document.getElementById('auth-mode-title').textContent = 'Log In';
+  document.getElementById('auth-email-row').style.display = '';
+  document.getElementById('auth-password-row').style.display = '';
+  document.getElementById('auth-reset-row').style.display = 'none';
+  document.getElementById('auth-toggle-link').style.display = '';
+  document.getElementById('auth-submit-btn').textContent = 'Log In';
+}
+
+async function handlePasswordReset() {
+  var pw1 = (document.getElementById('auth-new-password') || {}).value || '';
+  var pw2 = (document.getElementById('auth-confirm-password') || {}).value || '';
+  if (!pw1 || pw1.length < 6) { showAuthMsg('Password must be at least 6 characters.', 'error'); return; }
+  if (pw1 !== pw2) { showAuthMsg('Passwords do not match.', 'error'); return; }
+  showAuthMsg('Updating password\u2026', 'ok');
+  try {
+    var result = await supa.auth.updateUser({ password: pw1 });
+    if (result.error) throw result.error;
+    showAuthMsg('\u2713 Password updated! You are signed in.', 'ok');
+    await loadUserProfile(); // Supabase keeps the recovery session signed in
+    setTimeout(function(){ closeAuthModal(); exitPasswordRecoveryMode(); }, 1800);
+  } catch(e) {
+    showAuthMsg('Could not update password: ' + (e.message || e), 'error');
+  }
+}
+
 // Hide Forgot Password when in Sign Up mode
 document.addEventListener('DOMContentLoaded', function() {
   var _orig = window.toggleAuthMode;
@@ -5667,6 +5731,7 @@ function toggleAuthMode() {
 }
 
 function handleAuthSubmit() {
+  if (authMode === 'reset') { handlePasswordReset(); return; }
   const email = document.getElementById('auth-email').value.trim();
   const password = document.getElementById('auth-password').value;
   if (!email || !password) { showAuthMsg('Please fill in email and password.', 'error'); return; }
