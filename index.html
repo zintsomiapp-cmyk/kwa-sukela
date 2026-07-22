@@ -5699,12 +5699,18 @@ async function handlePasswordReset() {
   try {
     var result = await supa.auth.updateUser({ password: pw1 });
     if (result.error) throw result.error;
-    showAuthMsg('\u2713 Password updated! You are signed in.', 'ok');
-    await loadUserProfile(); // Supabase keeps the recovery session signed in
-    setTimeout(function(){ closeAuthModal(); exitPasswordRecoveryMode(); }, 1800);
   } catch(e) {
     showAuthMsg('Could not update password: ' + (e.message || e), 'error');
+    return;
   }
+  // Password update itself succeeded — everything below is just refreshing
+  // the UI, so an error here must never be reported as a failed update.
+  showAuthMsg('\u2713 Password updated! You are signed in.', 'ok');
+  setTimeout(function(){
+    loadUserProfile().catch(function(){}); // Supabase keeps the recovery session signed in
+    closeAuthModal();
+    exitPasswordRecoveryMode();
+  }, 1200);
 }
 
 // Hide Forgot Password when in Sign Up mode
