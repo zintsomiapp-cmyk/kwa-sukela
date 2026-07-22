@@ -5512,23 +5512,57 @@ var villageInitialized = false;
 var villageAnimId = null;
 var currentSpotWorld = "";
 
+// If a reset/recovery link's one-time token was already used or has expired,
+// Supabase redirects back with an error in the URL hash instead of a valid
+// session (e.g. #error=access_denied&error_code=otp_expired&...). Surface
+// that clearly and clear the hash so it can't linger and affect anything
+// else that runs during this page load.
+(function () {
+  var hash = window.location.hash || '';
+  if (hash.indexOf('error=') === -1) return;
+  var params = new URLSearchParams(hash.replace(/^#/, ''));
+  var errCode = params.get('error_code');
+  var errDesc = params.get('error_description');
+  history.replaceState(null, '', window.location.pathname + window.location.search);
+  document.addEventListener('DOMContentLoaded', function () {
+    openAuthModal();
+    showAuthMsg(
+      errCode === 'otp_expired'
+        ? 'That reset link has expired or was already used. Please request a new one below.'
+        : (errDesc ? errDesc.replace(/\+/g, ' ') : 'That link is no longer valid. Please request a new one below.'),
+      'error'
+    );
+  });
+})();
+
 // Check session on every page load
-supa.auth.onAuthStateChange(async (event, session) => {
-  if (event === 'PASSWORD_RECOVERY') {
-    // Reset link brought the user back with a recovery session — open the
-    // auth modal straight into Reset Password mode instead of silently
-    // logging them in.
-    currentUser = session ? session.user : null;
-    enterPasswordRecoveryMode();
-    return;
-  }
-  if (session) {
-    currentUser = session.user;
-    await loadUserProfile();
-  } else {
-    currentUser = null;
-    updateNavForUser(null);
-  }
+//
+// IMPORTANT: Supabase has a documented bug where making an async Supabase
+// call directly inside onAuthStateChange can deadlock every later call on
+// this client — see:
+// https://supabase.com/docs/guides/troubleshooting/why-is-my-supabase-api-call-not-returning-PGzXw0
+// loadUserProfile() below runs Supabase queries, so its work is deferred
+// with setTimeout to let this handler return (and its internal lock
+// release) before those queries fire. This is what was causing the
+// "Maximum call stack size exceeded" error on password update.
+supa.auth.onAuthStateChange((event, session) => {
+  setTimeout(function () {
+    if (event === 'PASSWORD_RECOVERY') {
+      // Reset link brought the user back with a recovery session — open the
+      // auth modal straight into Reset Password mode instead of silently
+      // logging them in.
+      currentUser = session ? session.user : null;
+      enterPasswordRecoveryMode();
+      return;
+    }
+    if (session) {
+      currentUser = session.user;
+      loadUserProfile();
+    } else {
+      currentUser = null;
+      updateNavForUser(null);
+    }
+  }, 0);
 });
 
 async function signUp(email, password, fullName) {
