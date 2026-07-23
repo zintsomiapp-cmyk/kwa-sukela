@@ -9707,10 +9707,10 @@ function updateBlogUI() {
 
 // Hook into auth state so blog updates whenever login changes
 var _origUpdateNav = updateNavForUser;
-function updateNavForUser(profile) {
+updateNavForUser = function(profile) {
   _origUpdateNav(profile);
   updateBlogUI();
-}
+};
 
 // ── COMPOSE TYPE SELECTOR ──
 var bcCurrentType = 'text';
