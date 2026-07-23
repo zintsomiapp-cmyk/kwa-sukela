@@ -5536,22 +5536,33 @@ var currentSpotWorld = "";
 })();
 
 // Check session on every page load
-supa.auth.onAuthStateChange(async (event, session) => {
-  if (event === 'PASSWORD_RECOVERY') {
-    // Reset link brought the user back with a recovery session — open the
-    // auth modal straight into Reset Password mode instead of silently
-    // logging them in.
-    currentUser = session ? session.user : null;
-    enterPasswordRecoveryMode();
-    return;
-  }
-  if (session) {
-    currentUser = session.user;
-    await loadUserProfile();
-  } else {
-    currentUser = null;
-    updateNavForUser(null);
-  }
+//
+// IMPORTANT: Supabase has a documented bug where making an async Supabase
+// call directly inside onAuthStateChange can deadlock every later call on
+// this client — see:
+// https://supabase.com/docs/guides/troubleshooting/why-is-my-supabase-api-call-not-returning-PGzXw0
+// loadUserProfile() below runs Supabase queries, so its work is deferred
+// with setTimeout to let this handler return (and its internal lock
+// release) before those queries fire. This is what was causing the
+// "Maximum call stack size exceeded" error on password update.
+supa.auth.onAuthStateChange((event, session) => {
+  setTimeout(function () {
+    if (event === 'PASSWORD_RECOVERY') {
+      // Reset link brought the user back with a recovery session — open the
+      // auth modal straight into Reset Password mode instead of silently
+      // logging them in.
+      currentUser = session ? session.user : null;
+      enterPasswordRecoveryMode();
+      return;
+    }
+    if (session) {
+      currentUser = session.user;
+      loadUserProfile();
+    } else {
+      currentUser = null;
+      updateNavForUser(null);
+    }
+  }, 0);
 });
 
 async function signUp(email, password, fullName) {
@@ -5569,11 +5580,24 @@ async function signUp(email, password, fullName) {
 }
 
 async function logIn(email, password) {
-  const { data, error } = await supa.auth.signInWithPassword({ email, password });
-  if (error) { showAuthMsg(error.message, 'error'); return; }
-  currentUser = data.user;
-  await loadUserProfile();
-  closeAuthModal();
+  try {
+    // Defensive timeout: if signInWithPassword() ever hangs (this Supabase
+    // client has a history of auth calls not resolving in some conditions),
+    // surface a clear message instead of leaving the button doing nothing.
+    const authPromise = supa.auth.signInWithPassword({ email, password });
+    const timeoutPromise = new Promise(function (_, reject) {
+      setTimeout(function () {
+        reject(new Error('Login is taking too long. Please refresh the page and try again.'));
+      }, 10000);
+    });
+    const { data, error } = await Promise.race([authPromise, timeoutPromise]);
+    if (error) { showAuthMsg(error.message, 'error'); return; }
+    currentUser = data.user;
+    closeAuthModal();
+    loadUserProfile().catch(function(){}); // don't let a profile hiccup block the login itself
+  } catch (e) {
+    showAuthMsg(e.message || 'Could not log in. Please try again.', 'error');
+  }
 }
 
 async function logOut() {
@@ -5718,19 +5742,14 @@ async function handlePasswordReset() {
   var pw2 = (document.getElementById('auth-confirm-password') || {}).value || '';
   if (!pw1 || pw1.length < 6) { showAuthMsg('Password must be at least 6 characters.', 'error'); return; }
   if (pw1 !== pw2) { showAuthMsg('Passwords do not match.', 'error'); return; }
-  var btn = document.getElementById('auth-submit-btn');
-  if (btn && btn.disabled) return; // already in flight — ignore a second click/Enter
-  if (btn) btn.disabled = true;
   showAuthMsg('Updating password\u2026', 'ok');
   try {
     var result = await supa.auth.updateUser({ password: pw1 });
     if (result.error) throw result.error;
   } catch(e) {
     showAuthMsg('Could not update password: ' + (e.message || e), 'error');
-    if (btn) btn.disabled = false;
     return;
   }
-  if (btn) btn.disabled = false;
   // Password update itself succeeded — everything below is just refreshing
   // the UI, so an error here must never be reported as a failed update.
   showAuthMsg('\u2713 Password updated! You are signed in.', 'ok');
