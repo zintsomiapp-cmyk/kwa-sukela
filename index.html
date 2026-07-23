@@ -9663,11 +9663,14 @@ function switchBlogTab(tab, btn) {
 //   DR SASA BLOG — ADMIN + USER SYSTEM
 // ════════════════════════════════════════
 
-// The one and only admin email — only this person sees the compose panel
+// Admin emails — these people see the compose panel and can post
 var DR_SASA_EMAIL = 'drsasa@zintsomi.co.za';
+var ADMIN_EMAILS = [DR_SASA_EMAIL, 'zintsomistorytellingcollege@gmail.com'];
 
 function isDrSasa() {
-  return currentUser && currentUser.email && currentUser.email.toLowerCase() === DR_SASA_EMAIL.toLowerCase();
+  if (!currentUser || !currentUser.email) return false;
+  var email = currentUser.email.toLowerCase();
+  return ADMIN_EMAILS.some(function (e) { return email === e.toLowerCase(); });
 }
 
 function updateBlogUI() {
@@ -9846,9 +9849,9 @@ function postComment(btn, postId) {
   btn.classList.remove('active');
 }
 
-// ── PUBLISH POST (Dr Sasa only) ──
+// ── PUBLISH POST (admins only) ──
 function publishPost() {
-  if (!isDrSasa()) { alert('Only Dr Sasa can post here.'); return; }
+  if (!isDrSasa()) { alert('Only admins can post here.'); return; }
   var text = document.getElementById('compose-text').value.trim();
   var mediaUrl  = window._bcMediaUrl || null;
   var mediaKind = window._bcMediaKind || null;
